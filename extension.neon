@@ -1,0 +1,10 @@
+services:
+	-
+		class: Lookyman\PHPStan\Symfony\Type\ContainerInterfaceDynamicReturnTypeExtension
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+	-
+		class: Lookyman\PHPStan\Symfony\Rules\ContainerInterfacePrivateServiceRule
+		tags: [phpstan.rules.rule]
+	-
+		class: Lookyman\PHPStan\Symfony\Rules\ContainerInterfaceUnknownServiceRule
+		tags: [phpstan.rules.rule]

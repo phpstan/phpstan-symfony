@@ -1,0 +1,36 @@
+language: php
+
+sudo: false
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+env: # intentionally blank
+
+php:
+  - 7.0
+  - 7.1
+
+matrix:
+  fast_finish: true
+  include:
+    - php: 7.1
+      env: COVERAGE="1"
+  allow_failures:
+    - php: 7.1
+      env: COVERAGE="1"
+
+install:
+  - travis_retry composer install --no-interaction --prefer-dist
+
+script:
+  - if [ "$COVERAGE" != "1" ]; then composer check; fi
+  - if [ "$COVERAGE" == "1" ]; then ./vendor/bin/phpunit --coverage-clover=./coverage.xml; fi
+
+after_success:
+  - >
+    if [ $COVERAGE == "1" ]; then
+    wget https://github.com/satooshi/php-coveralls/releases/download/v1.0.1/coveralls.phar
+    && php ./coveralls.phar --verbose
+    || true; fi
