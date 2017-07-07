@@ -31,15 +31,11 @@ final class ContainerInterfacePrivateServiceRule implements Rule
 		return MethodCall::class;
 	}
 
-	/**
-	 * @param MethodCall $node
-	 * @param Scope $scope
-	 * @return array
-	 */
 	public function processNode(Node $node, Scope $scope): array
 	{
 		$services = $this->serviceMap->getServices();
-		return $node->name === 'get'
+		return $node instanceof MethodCall
+			&& $node->name === 'get'
 			&& $scope->getType($node->var)->getClass() === ContainerInterface::class
 			&& isset($node->args[0])
 			&& $node->args[0] instanceof Arg
