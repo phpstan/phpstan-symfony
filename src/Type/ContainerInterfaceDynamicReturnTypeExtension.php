@@ -49,7 +49,7 @@ final class ContainerInterfaceDynamicReturnTypeExtension implements DynamicMetho
 			&& $methodCall->args[0]->value instanceof String_
 			&& \array_key_exists($methodCall->args[0]->value->value, $services)
 			&& !$services[$methodCall->args[0]->value->value]['synthetic']
-			? new ObjectType($services[$methodCall->args[0]->value->value]['class'], \false)
+			? new ObjectType($services[$methodCall->args[0]->value->value]['class'])
 			: $methodReflection->getReturnType();
 	}
 
