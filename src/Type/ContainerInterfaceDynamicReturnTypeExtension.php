@@ -5,14 +5,14 @@ declare(strict_types = 1);
 namespace Lookyman\PHPStan\Symfony\Type;
 
 use Lookyman\PHPStan\Symfony\ServiceMap;
-use PhpParser\Node\Arg;
-use PhpParser\Node\Expr\MethodCall;
-use PhpParser\Node\Scalar\String_;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
+use PhpParser\Node\Arg;
+use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Scalar\String_;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 final class ContainerInterfaceDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
@@ -52,4 +52,5 @@ final class ContainerInterfaceDynamicReturnTypeExtension implements DynamicMetho
 			? new ObjectType($services[$methodCall->args[0]->value->value]['class'], \false)
 			: $methodReflection->getReturnType();
 	}
+
 }

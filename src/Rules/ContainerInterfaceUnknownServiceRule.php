@@ -5,12 +5,12 @@ declare(strict_types = 1);
 namespace Lookyman\PHPStan\Symfony\Rules;
 
 use Lookyman\PHPStan\Symfony\ServiceMap;
+use PHPStan\Analyser\Scope;
+use PHPStan\Rules\Rule;
 use PhpParser\Node;
 use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Scalar\String_;
-use PHPStan\Analyser\Scope;
-use PHPStan\Rules\Rule;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 final class ContainerInterfaceUnknownServiceRule implements Rule
@@ -48,4 +48,5 @@ final class ContainerInterfaceUnknownServiceRule implements Rule
 			? [\sprintf('Service "%s" is not registered in the container.', $node->args[0]->value->value)]
 			: [];
 	}
+
 }

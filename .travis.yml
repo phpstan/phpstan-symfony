@@ -25,7 +25,10 @@ install:
   - travis_retry composer install --no-interaction --prefer-dist
 
 script:
-  - if [ "$COVERAGE" != "1" ]; then composer check; fi
+  - >
+    if [ "$COVERAGE" != "1" ]; then
+    phpenv config-rm xdebug.ini
+    && composer check; fi
   - if [ "$COVERAGE" == "1" ]; then ./vendor/bin/phpunit --coverage-clover=./coverage.xml; fi
 
 after_success:
