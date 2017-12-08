@@ -28,7 +28,7 @@ final class ContainerInterfaceDynamicReturnTypeExtension implements DynamicMetho
 		$this->serviceMap = $symfonyServiceMap;
 	}
 
-	public static function getClass(): string
+	public function getClass(): string
 	{
 		return ContainerInterface::class;
 	}

@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ruleset name="PHPStan Symfony">
-    <rule ref="vendor/lookyman/coding-standard/LookymanCodingStandard/ruleset-7.0.xml"/>
+    <rule ref="vendor/lookyman/coding-standard/LookymanCodingStandard/ruleset-7.0.xml">
+        <exclude name="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly.ReferenceViaFullyQualifiedName"/>
+    </rule>
 </ruleset>
