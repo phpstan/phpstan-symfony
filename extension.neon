@@ -8,3 +8,4 @@ services:
 	-
 		class: Lookyman\PHPStan\Symfony\Rules\ContainerInterfaceUnknownServiceRule
 		tags: [phpstan.rules.rule]
+	- Lookyman\PHPStan\Symfony\ServiceMap(%symfony.srcDevDebugProjectContainerXml%)

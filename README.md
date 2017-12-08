@@ -18,12 +18,13 @@ Put this into your `phpstan.neon` config:
 ```neon
 includes:
 	- vendor/lookyman/phpstan-symfony/extension.neon
-services:
-	- Lookyman\PHPStan\Symfony\ServiceMap(/path/to/appDevDebugProjectContainer.xml)
+parameters:
+	symfony:
+		srcDevDebugProjectContainerXml: %rootDir%/../../../var/cache/dev/srcDevDebugProjectContainer.xml
 ```
 
 ## Limitations
 
 It can only recognize pure strings passed into `ContainerInterface::get()` method. This follows from the nature of static code analysis.
 
-You have to provide a path to `appDevDebugProjectContainer.xml` or similar xml file describing your container. To generate it, you have to run the `Sensio\Bundle\DistributionBundle\Composer\ScriptHandler::installAssets` composer script, which is part of Symfony's postinstall scripts. And to be able to run it, you have to have a database ready. Which kinda defeats the purpose of static code analysis, but whatever..
+You have to provide a path to `srcDevDebugProjectContainer.xml` or similar xml file describing your container.

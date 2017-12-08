@@ -34,7 +34,7 @@ final class ContainerInterfaceDynamicReturnTypeExtensionTest extends TestCase
 	public function testGetClass()
 	{
 		$extension = new ContainerInterfaceDynamicReturnTypeExtension(new ServiceMap(__DIR__ . '/../container.xml'));
-		self::assertEquals(ContainerInterface::class, $extension::getClass());
+		self::assertEquals(ContainerInterface::class, $extension->getClass());
 	}
 
 	public function testIsMethodSupported()
