@@ -25,6 +25,6 @@ parameters:
 
 ## Limitations
 
-It can only recognize pure strings passed into `ContainerInterface::get()` method. This follows from the nature of static code analysis.
+It can only recognize pure strings or `::class` constants passed into `ContainerInterface::get()` method. This follows from the nature of static code analysis.
 
 You have to provide a path to `srcDevDebugProjectContainer.xml` or similar xml file describing your container.
