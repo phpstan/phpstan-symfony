@@ -12,7 +12,6 @@ use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\MethodCall;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 final class ContainerInterfaceDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
@@ -29,7 +28,7 @@ final class ContainerInterfaceDynamicReturnTypeExtension implements DynamicMetho
 
 	public function getClass(): string
 	{
-		return ContainerInterface::class;
+		return 'Symfony\Component\DependencyInjection\ContainerInterface';
 	}
 
 	public function isMethodSupported(MethodReflection $methodReflection): bool

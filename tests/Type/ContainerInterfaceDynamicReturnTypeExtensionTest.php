@@ -15,7 +15,6 @@ use PhpParser\Node\Arg;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Scalar\String_;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @covers \Lookyman\PHPStan\Symfony\Type\ContainerInterfaceDynamicReturnTypeExtension
@@ -34,7 +33,7 @@ final class ContainerInterfaceDynamicReturnTypeExtensionTest extends TestCase
 	public function testGetClass()
 	{
 		$extension = new ContainerInterfaceDynamicReturnTypeExtension(new ServiceMap(__DIR__ . '/../container.xml'));
-		self::assertEquals(ContainerInterface::class, $extension->getClass());
+		self::assertEquals('Symfony\Component\DependencyInjection\ContainerInterface', $extension->getClass());
 	}
 
 	public function testIsMethodSupported()

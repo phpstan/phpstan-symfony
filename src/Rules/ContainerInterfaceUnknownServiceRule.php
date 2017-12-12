@@ -11,7 +11,6 @@ use PHPStan\Type\ObjectType;
 use PhpParser\Node;
 use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\MethodCall;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 final class ContainerInterfaceUnknownServiceRule implements Rule
 {
@@ -36,7 +35,7 @@ final class ContainerInterfaceUnknownServiceRule implements Rule
 		if ($node instanceof MethodCall && $node->name === 'get') {
 			$type = $scope->getType($node->var);
 			if ($type instanceof ObjectType
-				&& $type->getClassName() === ContainerInterface::class
+				&& $type->getClassName() === 'Symfony\Component\DependencyInjection\ContainerInterface'
 				&& isset($node->args[0])
 				&& $node->args[0] instanceof Arg
 			) {
