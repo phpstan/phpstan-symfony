@@ -35,7 +35,7 @@ final class ContainerInterfaceUnknownServiceRule implements Rule
 		if ($node instanceof MethodCall && $node->name === 'get') {
 			$type = $scope->getType($node->var);
 			if ($type instanceof ObjectType
-				&& $type->getClassName() === 'Symfony\Component\DependencyInjection\ContainerInterface'
+				&& \in_array($type->getClassName(), ['Symfony\Component\DependencyInjection\ContainerInterface', 'Symfony\Bundle\FrameworkBundle\Controller\Controller'], \true)
 				&& isset($node->args[0])
 				&& $node->args[0] instanceof Arg
 			) {
