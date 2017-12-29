@@ -6,8 +6,6 @@ namespace Lookyman\PHPStan\Symfony\Rules\data;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-include __DIR__ . '/Controller.php';
-
 final class ExampleController extends Controller
 {
 
