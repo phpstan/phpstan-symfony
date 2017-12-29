@@ -24,6 +24,14 @@ final class ServiceMapTest extends TestCase
 		self::assertEquals($service, $serviceMap->getServiceFromNode(new String_($service['id'])));
 	}
 
+	/**
+	 * @expectedException \Lookyman\PHPStan\Symfony\Exception\XmlContainerNotExistsException
+	 */
+	public function testFileNotExists()
+	{
+		new ServiceMap(__DIR__ . '/foo.xml');
+	}
+
 	public function getServiceFromNodeProvider(): array
 	{
 		return [

@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Lookyman\PHPStan\Symfony;
 
+use Lookyman\PHPStan\Symfony\Exception\XmlContainerNotExistsException;
 use PhpParser\Node;
 use PhpParser\Node\Expr\ClassConstFetch;
 use PhpParser\Node\Name;
@@ -21,7 +22,11 @@ final class ServiceMap
 	{
 		$this->services = $aliases = [];
 		/** @var \SimpleXMLElement $def */
-		foreach (\simplexml_load_file($containerXml)->services->service as $def) {
+		$xml = @\simplexml_load_file($containerXml);
+		if ($xml === false) {
+			throw new XmlContainerNotExistsException(\sprintf('Container %s not exists', $containerXml));
+		}
+		foreach ($xml->services->service as $def) {
 			$attrs = $def->attributes();
 			if (!isset($attrs->id)) {
 				continue;
