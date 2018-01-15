@@ -21,4 +21,10 @@ final class ExampleController extends Controller
 		$service->noMethod();
 	}
 
+	public function getVariableService(string $serviceKey)
+	{
+		$service = $this->get($serviceKey);
+		$service->noMethod();
+	}
+
 }
