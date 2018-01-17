@@ -75,7 +75,10 @@ final class ServiceMap
 			return $node->value;
 		}
 		if ($node instanceof ClassConstFetch && $node->class instanceof Name) {
-			return $node->class->toString();
+			$serviceId = $node->class->toString();
+			if (!\in_array($serviceId, ['self', 'static', 'parent'], true)) {
+				return $serviceId;
+			}
 		}
 		return \null;
 	}

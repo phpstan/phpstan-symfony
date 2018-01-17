@@ -22,7 +22,11 @@ final class ContainerInterfaceUnknownServiceRuleTest extends \PHPStan\Testing\Ru
 		$this->analyse([__DIR__ . '/data/ExampleController.php'], [
 			[
 				'Service "service.not.found" is not registered in the container.',
-				20,
+				21,
+			],
+			[
+				'Service "Lookyman\PHPStan\Symfony\ServiceMap" is not registered in the container.',
+				27,
 			],
 		]);
 	}

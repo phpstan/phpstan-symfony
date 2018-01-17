@@ -22,7 +22,7 @@ final class ContainerInterfacePrivateServiceRuleTest extends \PHPStan\Testing\Ru
 		$this->analyse([__DIR__ . '/data/ExampleController.php'], [
 			[
 				'Service "private" is private.',
-				14,
+				15,
 			],
 		]);
 	}
