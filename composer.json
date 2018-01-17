@@ -19,7 +19,8 @@
     "phpunit/phpunit": "^6.4",
     "phpstan/phpstan-phpunit": "^0.9.0",
     "lookyman/coding-standard": "^0.0.6",
-    "symfony/framework-bundle": "^4.0"
+    "symfony/framework-bundle": "^4.0",
+    "phpstan/phpstan-strict-rules": "^0.9.0"
   },
   "autoload": {
     "psr-4": {
