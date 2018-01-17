@@ -10,11 +10,6 @@ use PHPStan\Rules\Rule;
 final class ContainerInterfaceUnknownServiceRuleTest extends \PHPStan\Testing\RuleTestCase
 {
 
-	protected function setUp()
-	{
-		include_once __DIR__ . '/data/Controller.php';
-	}
-
 	protected function getRule(): Rule
 	{
 		$serviceMap = new ServiceMap(__DIR__ . '/../container.xml');
