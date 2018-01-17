@@ -27,4 +27,10 @@ final class ExampleController extends Controller
 		$service->noMethod();
 	}
 
+	public function getConcatenatedService(string $serviceKey)
+	{
+		$service = $this->get('service.' . self::class);
+		$service->noMethod();
+	}
+
 }

@@ -12,7 +12,6 @@ use PHPStan\Type\ThisType;
 use PhpParser\Node;
 use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\MethodCall;
-use PhpParser\Node\Expr\Variable;
 
 final class ContainerInterfaceUnknownServiceRule implements Rule
 {
@@ -42,11 +41,13 @@ final class ContainerInterfaceUnknownServiceRule implements Rule
 			if (($isInstanceOfController || $isContainerInterface)
 				&& isset($node->args[0])
 				&& $node->args[0] instanceof Arg
-				&& !$node->args[0]->value instanceof Variable
 			) {
 				$service = $this->serviceMap->getServiceFromNode($node->args[0]->value);
 				if ($service === \null) {
-					return [\sprintf('Service "%s" is not registered in the container.', ServiceMap::getServiceIdFromNode($node->args[0]->value))];
+					$serviceId = ServiceMap::getServiceIdFromNode($node->args[0]->value);
+					if ($serviceId !== null) {
+						return [\sprintf('Service "%s" is not registered in the container.', $serviceId)];
+					}
 				}
 			}
 		}
