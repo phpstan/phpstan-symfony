@@ -6,6 +6,7 @@ namespace Lookyman\PHPStan\Symfony;
 
 use Lookyman\PHPStan\Symfony\Exception\XmlContainerNotExistsException;
 use PhpParser\Node;
+use PhpParser\Node\Expr\BinaryOp\Concat;
 use PhpParser\Node\Expr\ClassConstFetch;
 use PhpParser\Node\Name;
 use PhpParser\Node\Scalar\String_;
@@ -78,6 +79,13 @@ final class ServiceMap
 			$serviceId = $node->class->toString();
 			if (!\in_array($serviceId, ['self', 'static', 'parent'], true)) {
 				return $serviceId;
+			}
+		}
+		if ($node instanceof Concat) {
+			$left = self::getServiceIdFromNode($node->left);
+			$right = self::getServiceIdFromNode($node->right);
+			if ($left !== null && $right !== null) {
+				return \sprintf('%s%s', $left, $right);
 			}
 		}
 		return \null;

@@ -36,7 +36,7 @@ final class ExampleController extends Controller
 
 	public function getConcatenatedService()
 	{
-		$service = $this->get('service.' . self::class);
+		$service = $this->get('service.' . ServiceMap::class);
 		$service->noMethod();
 	}
 
