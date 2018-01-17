@@ -20,7 +20,7 @@ includes:
 	- vendor/lookyman/phpstan-symfony/extension.neon
 parameters:
 	symfony:
-		srcDevDebugProjectContainerXml: %rootDir%/../../../var/cache/dev/srcDevDebugProjectContainer.xml
+		container_xml_path: %rootDir%/../../../var/cache/dev/srcDevDebugProjectContainer.xml
 ```
 
 ## Limitations
