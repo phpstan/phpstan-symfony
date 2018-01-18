@@ -1,6 +1,5 @@
 <?php
-
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Lookyman\PHPStan\Symfony\Type;
 
@@ -22,7 +21,7 @@ use PhpParser\Node\Scalar\String_;
 final class ContainerInterfaceDynamicReturnTypeExtensionTest extends TestCase
 {
 
-	public function testImplementsDynamicMethodReturnTypeExtension()
+	public function testImplementsDynamicMethodReturnTypeExtension(): void
 	{
 		self::assertInstanceOf(
 			DynamicMethodReturnTypeExtension::class,
@@ -30,13 +29,13 @@ final class ContainerInterfaceDynamicReturnTypeExtensionTest extends TestCase
 		);
 	}
 
-	public function testGetClass()
+	public function testGetClass(): void
 	{
 		$extension = new ContainerInterfaceDynamicReturnTypeExtension(new ServiceMap(__DIR__ . '/../container.xml'));
 		self::assertEquals('Symfony\Component\DependencyInjection\ContainerInterface', $extension->getClass());
 	}
 
-	public function testIsMethodSupported()
+	public function testIsMethodSupported(): void
 	{
 		$methodGet = $this->createMock(MethodReflection::class);
 		$methodGet->expects(self::once())->method('getName')->willReturn('get');
@@ -52,7 +51,7 @@ final class ContainerInterfaceDynamicReturnTypeExtensionTest extends TestCase
 	/**
 	 * @dataProvider getTypeFromMethodCallProvider
 	 */
-	public function testGetTypeFromMethodCall(MethodReflection $methodReflection, MethodCall $methodCall, Type $expectedType)
+	public function testGetTypeFromMethodCall(MethodReflection $methodReflection, MethodCall $methodCall, Type $expectedType): void
 	{
 		$extension = new ContainerInterfaceDynamicReturnTypeExtension(new ServiceMap(__DIR__ . '/../container.xml'));
 		$type = $extension->getTypeFromMethodCall(

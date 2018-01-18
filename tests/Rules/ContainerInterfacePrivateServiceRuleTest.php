@@ -1,6 +1,5 @@
 <?php
-
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Lookyman\PHPStan\Symfony\Rules;
 
@@ -17,12 +16,12 @@ final class ContainerInterfacePrivateServiceRuleTest extends \PHPStan\Testing\Ru
 		return new ContainerInterfacePrivateServiceRule($serviceMap);
 	}
 
-	public function testGetPrivateService()
+	public function testGetPrivateService(): void
 	{
 		$this->analyse([__DIR__ . '/data/ExampleController.php'], [
 			[
 				'Service "private" is private.',
-				15,
+				14,
 			],
 		]);
 	}

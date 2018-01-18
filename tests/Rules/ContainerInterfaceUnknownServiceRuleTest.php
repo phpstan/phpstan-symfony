@@ -1,6 +1,5 @@
 <?php
-
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Lookyman\PHPStan\Symfony\Rules;
 
@@ -17,20 +16,20 @@ final class ContainerInterfaceUnknownServiceRuleTest extends \PHPStan\Testing\Ru
 		return new ContainerInterfaceUnknownServiceRule($serviceMap);
 	}
 
-	public function testGetUnknownService()
+	public function testGetUnknownService(): void
 	{
 		$this->analyse([__DIR__ . '/data/ExampleController.php'], [
 			[
 				'Service "service.not.found" is not registered in the container.',
-				21,
+				20,
 			],
 			[
 				'Service "Lookyman\PHPStan\Symfony\ServiceMap" is not registered in the container.',
-				27,
+				26,
 			],
 			[
 				'Service "service.Lookyman\PHPStan\Symfony\ServiceMap" is not registered in the container.',
-				39,
+				38,
 			],
 		]);
 	}

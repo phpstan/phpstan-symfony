@@ -1,6 +1,5 @@
 <?php
-
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Lookyman\PHPStan\Symfony;
 
@@ -18,7 +17,7 @@ final class ServiceMapTest extends TestCase
 	/**
 	 * @dataProvider getServiceFromNodeProvider
 	 */
-	public function testGetServiceFromNode(array $service)
+	public function testGetServiceFromNode(array $service): void
 	{
 		$serviceMap = new ServiceMap(__DIR__ . '/container.xml');
 		self::assertEquals($service, $serviceMap->getServiceFromNode(new String_($service['id'])));
@@ -27,7 +26,7 @@ final class ServiceMapTest extends TestCase
 	/**
 	 * @expectedException \Lookyman\PHPStan\Symfony\Exception\XmlContainerNotExistsException
 	 */
-	public function testFileNotExists()
+	public function testFileNotExists(): void
 	{
 		new ServiceMap(__DIR__ . '/foo.xml');
 	}
@@ -45,7 +44,7 @@ final class ServiceMapTest extends TestCase
 		];
 	}
 
-	public function testGetServiceIdFromNode()
+	public function testGetServiceIdFromNode(): void
 	{
 		self::assertEquals('foo', ServiceMap::getServiceIdFromNode(new String_('foo')));
 		self::assertEquals('bar', ServiceMap::getServiceIdFromNode(new ClassConstFetch(new Name('bar'), '')));

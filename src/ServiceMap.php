@@ -1,6 +1,5 @@
 <?php
-
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Lookyman\PHPStan\Symfony;
 
@@ -56,21 +55,13 @@ final class ServiceMap
 		}
 	}
 
-	/**
-	 * @param Node $node
-	 * @return array|null
-	 */
-	public function getServiceFromNode(Node $node)
+	public function getServiceFromNode(Node $node): ?array
 	{
 		$serviceId = self::getServiceIdFromNode($node);
 		return $serviceId !== \null && \array_key_exists($serviceId, $this->services) ? $this->services[$serviceId] : \null;
 	}
 
-	/**
-	 * @param Node $node
-	 * @return string|null
-	 */
-	public static function getServiceIdFromNode(Node $node)
+	public static function getServiceIdFromNode(Node $node): ?string
 	{
 		if ($node instanceof String_) {
 			return $node->value;
