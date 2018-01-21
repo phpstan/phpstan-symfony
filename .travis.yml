@@ -1,43 +1,15 @@
 language: php
-
-sudo: false
-
-cache:
-  directories:
-    - $HOME/.composer/cache
-
-env:
-  - DEPENDENCIES="--prefer-lowest"
-  - DEPENDENCIES=""
-
 php:
   - 7.1
   - 7.2
-  - master
-
-matrix:
-  fast_finish: true
-  include:
-    - php: 7.2
-      env: COVERAGE="1"
-  allow_failures:
-    - php: 7.2
-      env: COVERAGE="1"
-    - php: master
-
-install:
-  - travis_retry composer update --no-interaction --prefer-dist $DEPENDENCIES
-
+env:
+  - dependencies=lowest
+  - dependencies=highest
+before_script:
+  - composer self-update
+  - if [ "$dependencies" = "lowest" ]; then composer update --prefer-lowest --no-interaction; fi;
+  - if [ "$dependencies" = "highest" ]; then composer update --no-interaction; fi;
 script:
-  - >
-    if [ "$COVERAGE" != "1" ]; then
-    phpenv config-rm xdebug.ini
-    && composer check; fi
-  - if [ "$COVERAGE" == "1" ]; then ./vendor/bin/phpunit --coverage-clover=./coverage.xml; fi
-
-after_success:
-  - >
-    if [ $COVERAGE == "1" ]; then
-    wget https://github.com/satooshi/php-coveralls/releases/download/v1.0.1/coveralls.phar
-    && php ./coveralls.phar --verbose
-    || true; fi
+  - vendor/bin/phing
+after_script:
+  - php vendor/bin/coveralls -v

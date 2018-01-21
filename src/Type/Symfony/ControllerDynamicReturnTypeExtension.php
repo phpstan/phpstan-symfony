@@ -1,23 +1,19 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
-namespace Lookyman\PHPStan\Symfony\Type;
+namespace PHPStan\Type\Symfony;
 
-use Lookyman\PHPStan\Symfony\ServiceMap;
+use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
+use PHPStan\Symfony\ServiceMap;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
-use PhpParser\Node\Arg;
-use PhpParser\Node\Expr\MethodCall;
 
-final class ContainerInterfaceDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
+final class ControllerDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
 
-	/**
-	 * @var ServiceMap
-	 */
+	/** @var ServiceMap */
 	private $serviceMap;
 
 	public function __construct(ServiceMap $symfonyServiceMap)
@@ -27,7 +23,7 @@ final class ContainerInterfaceDynamicReturnTypeExtension implements DynamicMetho
 
 	public function getClass(): string
 	{
-		return 'Symfony\Component\DependencyInjection\ContainerInterface';
+		return 'Symfony\Bundle\FrameworkBundle\Controller\Controller';
 	}
 
 	public function isMethodSupported(MethodReflection $methodReflection): bool
@@ -39,12 +35,11 @@ final class ContainerInterfaceDynamicReturnTypeExtension implements DynamicMetho
 		MethodReflection $methodReflection,
 		MethodCall $methodCall,
 		Scope $scope
-	): Type {
-		if (isset($methodCall->args[0])
-			&& $methodCall->args[0] instanceof Arg
-		) {
+	): Type
+	{
+		if (isset($methodCall->args[0])) {
 			$service = $this->serviceMap->getServiceFromNode($methodCall->args[0]->value, $scope);
-			if ($service !== \null && !$service['synthetic']) {
+			if ($service !== null && $service['synthetic'] === false) {
 				return new ObjectType($service['class'] ?? $service['id']);
 			}
 		}

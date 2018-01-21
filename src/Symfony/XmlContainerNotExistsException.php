@@ -1,7 +1,6 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
-namespace Lookyman\PHPStan\Symfony\Exception;
+namespace PHPStan\Symfony;
 
 final class XmlContainerNotExistsException extends \InvalidArgumentException
 {

@@ -5,4 +5,7 @@ includes:
 
 parameters:
 	excludes_analyse:
-		- %rootDir%/../../../tests/*/data/*
+		- */tests/*/data/*
+	ignoreErrors:
+		- '#Call to an undefined method object::noMethod\(\)\.#'
+		- '#Offset mixed does not exist on array\(\)\.#'

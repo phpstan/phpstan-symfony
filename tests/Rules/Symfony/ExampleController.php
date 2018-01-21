@@ -1,9 +1,8 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
-namespace Lookyman\PHPStan\Symfony\Rules\data;
+namespace PHPStan\Rules\Symfony;
 
-use Lookyman\PHPStan\Symfony\ServiceMap;
+use PHPStan\Symfony\ServiceMap;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 final class ExampleController extends Controller

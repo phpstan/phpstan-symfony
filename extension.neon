@@ -1,14 +1,18 @@
 services:
 	-
-		class: Lookyman\PHPStan\Symfony\Type\ContainerInterfaceDynamicReturnTypeExtension
-		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+		class: PHPStan\Type\Symfony\ContainerInterfaceDynamicReturnTypeExtension
+		tags:
+			- phpstan.broker.dynamicMethodReturnTypeExtension
 	-
-		class: Lookyman\PHPStan\Symfony\Type\ControllerDynamicReturnTypeExtension
-		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+		class: PHPStan\Type\Symfony\ControllerDynamicReturnTypeExtension
+		tags:
+			- phpstan.broker.dynamicMethodReturnTypeExtension
 	-
-		class: Lookyman\PHPStan\Symfony\Rules\ContainerInterfacePrivateServiceRule
-		tags: [phpstan.rules.rule]
+		class: PHPStan\Rules\Symfony\ContainerInterfacePrivateServiceRule
+		tags:
+			- phpstan.rules.rule
 	-
-		class: Lookyman\PHPStan\Symfony\Rules\ContainerInterfaceUnknownServiceRule
-		tags: [phpstan.rules.rule]
-	- Lookyman\PHPStan\Symfony\ServiceMap(%symfony.container_xml_path%)
+		class: PHPStan\Rules\Symfony\ContainerInterfaceUnknownServiceRule
+		tags:
+			- phpstan.rules.rule
+	- PHPStan\Symfony\ServiceMap(%symfony.container_xml_path%)

@@ -1,23 +1,19 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
-namespace Lookyman\PHPStan\Symfony\Rules;
+namespace PHPStan\Rules\Symfony;
 
-use Lookyman\PHPStan\Symfony\ServiceMap;
+use PhpParser\Node;
+use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
+use PHPStan\Symfony\ServiceMap;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\ThisType;
-use PhpParser\Node;
-use PhpParser\Node\Arg;
-use PhpParser\Node\Expr\MethodCall;
 
 final class ContainerInterfaceUnknownServiceRule implements Rule
 {
 
-	/**
-	 * @var ServiceMap
-	 */
+	/** @var ServiceMap */
 	private $serviceMap;
 
 	public function __construct(ServiceMap $symfonyServiceMap)
@@ -30,6 +26,11 @@ final class ContainerInterfaceUnknownServiceRule implements Rule
 		return MethodCall::class;
 	}
 
+	/**
+	 * @param Node $node
+	 * @param Scope $scope
+	 * @return string[]
+	 */
 	public function processNode(Node $node, Scope $scope): array
 	{
 		if ($node instanceof MethodCall && $node->name === 'get') {
@@ -37,15 +38,12 @@ final class ContainerInterfaceUnknownServiceRule implements Rule
 			$baseController = new ObjectType('Symfony\Bundle\FrameworkBundle\Controller\Controller');
 			$isInstanceOfController = $type instanceof ThisType && $baseController->isSuperTypeOf($type)->yes();
 			$isContainerInterface = $type instanceof ObjectType && $type->getClassName() === 'Symfony\Component\DependencyInjection\ContainerInterface';
-			if (($isInstanceOfController || $isContainerInterface)
-				&& isset($node->args[0])
-				&& $node->args[0] instanceof Arg
-			) {
+			if (($isInstanceOfController || $isContainerInterface) && isset($node->args[0])) {
 				$service = $this->serviceMap->getServiceFromNode($node->args[0]->value, $scope);
-				if ($service === \null) {
+				if ($service === null) {
 					$serviceId = ServiceMap::getServiceIdFromNode($node->args[0]->value, $scope);
 					if ($serviceId !== null) {
-						return [\sprintf('Service "%s" is not registered in the container.', $serviceId)];
+						return [sprintf('Service "%s" is not registered in the container.', $serviceId)];
 					}
 				}
 			}
