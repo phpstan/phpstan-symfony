@@ -22,7 +22,7 @@ includes:
 	- vendor/lookyman/phpstan-symfony/extension.neon
 parameters:
 	symfony:
-		container_xml_path: %rootDir%/../../../var/cache/dev/srcDevDebugProjectContainer.xml
+		container_xml_path: %rootDir%/../../../var/cache/dev/srcDevDebugProjectContainer.xml # or appDevDebugProjectContainer.xml for Symfony < 4
 ```
 
 ## Limitations
