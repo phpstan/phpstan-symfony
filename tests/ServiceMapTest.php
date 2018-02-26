@@ -3,10 +3,15 @@ declare(strict_types=1);
 
 namespace Lookyman\PHPStan\Symfony;
 
-use PHPUnit\Framework\TestCase;
+use Lookyman\PHPStan\Symfony\Rules\data\ExampleController;
+use PHPStan\Analyser\Scope;
+use PHPStan\Analyser\TypeSpecifier;
+use PHPStan\Testing\TestCase;
+use PhpParser\Node\Expr\BinaryOp\Concat;
 use PhpParser\Node\Expr\ClassConstFetch;
 use PhpParser\Node\Name;
 use PhpParser\Node\Scalar\String_;
+use PhpParser\PrettyPrinter\Standard;
 
 /**
  * @covers \Lookyman\PHPStan\Symfony\ServiceMap
@@ -19,8 +24,13 @@ final class ServiceMapTest extends TestCase
 	 */
 	public function testGetServiceFromNode(array $service): void
 	{
+		$printer = new Standard();
+
 		$serviceMap = new ServiceMap(__DIR__ . '/container.xml');
-		self::assertEquals($service, $serviceMap->getServiceFromNode(new String_($service['id'])));
+		self::assertSame($service, $serviceMap->getServiceFromNode(
+			new String_($service['id']),
+			new Scope($this->createBroker(), $printer, new TypeSpecifier($printer), '')
+		));
 	}
 
 	/**
@@ -46,8 +56,16 @@ final class ServiceMapTest extends TestCase
 
 	public function testGetServiceIdFromNode(): void
 	{
-		self::assertEquals('foo', ServiceMap::getServiceIdFromNode(new String_('foo')));
-		self::assertEquals('bar', ServiceMap::getServiceIdFromNode(new ClassConstFetch(new Name('bar'), '')));
+		$broker = $this->createBroker();
+		$printer = new Standard();
+		$scope = new Scope($broker, $printer, new TypeSpecifier($printer), '');
+
+		self::assertSame('foo', ServiceMap::getServiceIdFromNode(new String_('foo'), $scope));
+		self::assertSame('bar', ServiceMap::getServiceIdFromNode(new ClassConstFetch(new Name('bar'), ''), $scope));
+		self::assertSame('foobar', ServiceMap::getServiceIdFromNode(new Concat(new String_('foo'), new ClassConstFetch(new Name('bar'), '')), $scope));
+
+		$scope = $scope->enterClass($broker->getClass(ExampleController::class));
+		self::assertEquals(ExampleController::class, ServiceMap::getServiceIdFromNode(new ClassConstFetch(new Name('static'), ExampleController::class), $scope));
 	}
 
 }

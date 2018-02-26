@@ -31,6 +31,10 @@ final class ContainerInterfaceUnknownServiceRuleTest extends \PHPStan\Testing\Ru
 				'Service "service.Lookyman\PHPStan\Symfony\ServiceMap" is not registered in the container.',
 				38,
 			],
+			[
+				'Service "Lookyman\PHPStan\Symfony\Rules\data\ExampleController" is not registered in the container.',
+				44,
+			],
 		]);
 	}
 

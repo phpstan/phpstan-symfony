@@ -43,7 +43,7 @@ final class ControllerDynamicReturnTypeExtension implements DynamicMethodReturnT
 		if (isset($methodCall->args[0])
 			&& $methodCall->args[0] instanceof Arg
 		) {
-			$service = $this->serviceMap->getServiceFromNode($methodCall->args[0]->value);
+			$service = $this->serviceMap->getServiceFromNode($methodCall->args[0]->value, $scope);
 			if ($service !== \null && !$service['synthetic']) {
 				return new ObjectType($service['class'] ?? $service['id']);
 			}

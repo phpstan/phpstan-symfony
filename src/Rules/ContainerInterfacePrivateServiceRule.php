@@ -41,7 +41,7 @@ final class ContainerInterfacePrivateServiceRule implements Rule
 				&& isset($node->args[0])
 				&& $node->args[0] instanceof Arg
 			) {
-				$service = $this->serviceMap->getServiceFromNode($node->args[0]->value);
+				$service = $this->serviceMap->getServiceFromNode($node->args[0]->value, $scope);
 				if ($service !== \null && !$service['public']) {
 					return [\sprintf('Service "%s" is private.', $service['id'])];
 				}
