@@ -22,14 +22,14 @@ includes:
 	- vendor/lookyman/phpstan-symfony/extension.neon
 parameters:
 	symfony:
-		container_xml_path: %rootDir%/../../../var/cache/dev/srcDevDebugProjectContainer.xml # or appDevDebugProjectContainer.xml for Symfony < 4
+		container_xml_path: %rootDir%/../../../var/cache/dev/appDevDebugProjectContainer.xml # or srcDevDebugProjectContainer.xml for Symfony 4+
 ```
 
 ## Limitations
 
 It can only recognize pure strings or `::class` constants passed into `get()` method. This follows from the nature of static code analysis.
 
-You have to provide a path to `srcDevDebugProjectContainer.xml` or similar xml file describing your container.
+You have to provide a path to `appDevDebugProjectContainer.xml` or similar xml file describing your container.
 
 ## Need something?
 
