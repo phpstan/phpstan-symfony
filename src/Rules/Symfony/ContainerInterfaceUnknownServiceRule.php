@@ -8,7 +8,6 @@ use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
 use PHPStan\Symfony\ServiceMap;
 use PHPStan\Type\ObjectType;
-use PHPStan\Type\ThisType;
 
 final class ContainerInterfaceUnknownServiceRule implements Rule
 {
@@ -27,27 +26,31 @@ final class ContainerInterfaceUnknownServiceRule implements Rule
 	}
 
 	/**
-	 * @param Node $node
+	 * @param MethodCall $node
 	 * @param Scope $scope
 	 * @return string[]
 	 */
 	public function processNode(Node $node, Scope $scope): array
 	{
-		if ($node instanceof MethodCall && $node->name === 'get') {
-			$type = $scope->getType($node->var);
-			$baseController = new ObjectType('Symfony\Bundle\FrameworkBundle\Controller\Controller');
-			$isInstanceOfController = $type instanceof ThisType && $baseController->isSuperTypeOf($type)->yes();
-			$isContainerInterface = $type instanceof ObjectType && $type->getClassName() === 'Symfony\Component\DependencyInjection\ContainerInterface';
-			if (($isInstanceOfController || $isContainerInterface) && isset($node->args[0])) {
-				$service = $this->serviceMap->getServiceFromNode($node->args[0]->value, $scope);
-				if ($service === null) {
-					$serviceId = ServiceMap::getServiceIdFromNode($node->args[0]->value, $scope);
-					if ($serviceId !== null) {
-						return [sprintf('Service "%s" is not registered in the container.', $serviceId)];
-					}
-				}
+		if ($node->name !== 'get' || !isset($node->args[0])) {
+			return [];
+		}
+
+		$argType = $scope->getType($node->var);
+		$isControllerType = (new ObjectType('Symfony\Bundle\FrameworkBundle\Controller\Controller'))->isSuperTypeOf($argType);
+		$isContainerType = (new ObjectType('Symfony\Component\DependencyInjection\ContainerInterface'))->isSuperTypeOf($argType);
+		if (!$isControllerType->yes() && !$isContainerType->yes()) {
+			return [];
+		}
+
+		$serviceId = ServiceMap::getServiceIdFromNode($node->args[0]->value, $scope);
+		if ($serviceId !== null) {
+			$service = $this->serviceMap->getService($serviceId);
+			if ($service === null) {
+				return [sprintf('Service "%s" is not registered in the container.', $serviceId)];
 			}
 		}
+
 		return [];
 	}
 

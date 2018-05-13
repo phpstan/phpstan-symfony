@@ -2,12 +2,9 @@
 
 namespace PHPStan\Symfony;
 
-use PhpParser\Node;
-use PhpParser\Node\Expr\BinaryOp\Concat;
-use PhpParser\Node\Expr\ClassConstFetch;
-use PhpParser\Node\Name;
-use PhpParser\Node\Scalar\String_;
+use PhpParser\Node\Expr;
 use PHPStan\Analyser\Scope;
+use PHPStan\Type\Constant\ConstantStringType;
 
 final class ServiceMap
 {
@@ -54,32 +51,18 @@ final class ServiceMap
 	}
 
 	/**
-	 * @param Node $node
-	 * @param Scope $scope
+	 * @param string $id
 	 * @return mixed[]|null
 	 */
-	public function getServiceFromNode(Node $node, Scope $scope): ?array
+	public function getService(string $id): ?array
 	{
-		$serviceId = self::getServiceIdFromNode($node, $scope);
-		return $serviceId !== null && array_key_exists($serviceId, $this->services) ? $this->services[$serviceId] : null;
+		return $this->services[$id] ?? null;
 	}
 
-	public static function getServiceIdFromNode(Node $node, Scope $scope): ?string
+	public static function getServiceIdFromNode(Expr $node, Scope $scope): ?string
 	{
-		if ($node instanceof String_) {
-			return $node->value;
-		}
-		if ($node instanceof ClassConstFetch && $node->class instanceof Name) {
-			return $scope->resolveName($node->class);
-		}
-		if ($node instanceof Concat) {
-			$left = self::getServiceIdFromNode($node->left, $scope);
-			$right = self::getServiceIdFromNode($node->right, $scope);
-			if ($left !== null && $right !== null) {
-				return sprintf('%s%s', $left, $right);
-			}
-		}
-		return null;
+		$nodeType = $scope->getType($node);
+		return $nodeType instanceof ConstantStringType ? $nodeType->getValue() : null;
 	}
 
 }

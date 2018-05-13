@@ -38,13 +38,20 @@ final class ContainerInterfaceDynamicReturnTypeExtension implements DynamicMetho
 		Scope $scope
 	): Type
 	{
-		if (isset($methodCall->args[0])) {
-			$service = $this->serviceMap->getServiceFromNode($methodCall->args[0]->value, $scope);
+		$returnType = ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
+		if (!isset($methodCall->args[0])) {
+			return $returnType;
+		}
+
+		$serviceId = ServiceMap::getServiceIdFromNode($methodCall->args[0]->value, $scope);
+		if ($serviceId !== null) {
+			$service = $this->serviceMap->getService($serviceId);
 			if ($service !== null && $service['synthetic'] === false) {
 				return new ObjectType($service['class'] ?? $service['id']);
 			}
 		}
-		return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
+
+		return $returnType;
 	}
 
 }

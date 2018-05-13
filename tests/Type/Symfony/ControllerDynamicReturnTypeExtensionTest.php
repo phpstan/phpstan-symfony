@@ -10,7 +10,9 @@ use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\ParametersAcceptor;
 use PHPStan\Symfony\ServiceMap;
+use PHPStan\Type\Constant\ConstantStringType;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
+use PHPStan\Type\ErrorType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 use PHPUnit\Framework\TestCase;
@@ -53,14 +55,15 @@ final class ControllerDynamicReturnTypeExtensionTest extends TestCase
 	 * @param MethodReflection $methodReflection
 	 * @param MethodCall $methodCall
 	 * @param Type $expectedType
+	 * @param Scope $scope
 	 */
-	public function testGetTypeFromMethodCall(MethodReflection $methodReflection, MethodCall $methodCall, Type $expectedType): void
+	public function testGetTypeFromMethodCall(MethodReflection $methodReflection, MethodCall $methodCall, Type $expectedType, Scope $scope): void
 	{
 		$extension = new ControllerDynamicReturnTypeExtension(new ServiceMap(__DIR__ . '/../../Symfony/data/container.xml'));
 		$type = $extension->getTypeFromMethodCall(
 			$methodReflection,
 			$methodCall,
-			$this->createMock(Scope::class)
+			$scope
 		);
 		self::assertEquals($expectedType, $type);
 	}
@@ -70,23 +73,34 @@ final class ControllerDynamicReturnTypeExtensionTest extends TestCase
 	 */
 	public function getTypeFromMethodCallProvider(): array
 	{
-		$notFoundType = $this->createMock(Type::class);
+		$foundType = new ObjectType('Foo');
+		$parametersAcceptorFound = $this->createMock(ParametersAcceptor::class);
+		$parametersAcceptorFound->expects(self::once())->method('getReturnType')->willReturn($foundType);
+		$methodReflectionFound = $this->createMock(MethodReflection::class);
+		$methodReflectionFound->expects(self::once())->method('getVariants')->willReturn([$parametersAcceptorFound]);
+		$scopeFound = $this->createMock(Scope::class);
+		$scopeFound->expects(self::once())->method('getType')->willReturn(new ConstantStringType('withClass'));
 
+		$notFoundType = $this->createMock(Type::class);
 		$parametersAcceptorNotFound = $this->createMock(ParametersAcceptor::class);
 		$parametersAcceptorNotFound->expects(self::once())->method('getReturnType')->willReturn($notFoundType);
 		$methodReflectionNotFound = $this->createMock(MethodReflection::class);
 		$methodReflectionNotFound->expects(self::once())->method('getVariants')->willReturn([$parametersAcceptorNotFound]);
+		$scopeNotFound = $this->createMock(Scope::class);
+		$scopeNotFound->expects(self::once())->method('getType')->willReturn(new ErrorType());
 
 		return [
 			'found' => [
-				$this->createMock(MethodReflection::class),
-				new MethodCall($this->createMock(Expr::class), '', [new Arg(new String_('withClass'))]),
+				$methodReflectionFound,
+				new MethodCall($this->createMock(Expr::class), 'someMethod', [new Arg(new String_('withClass'))]),
 				new ObjectType('Foo'),
+				$scopeFound,
 			],
 			'notFound' => [
 				$methodReflectionNotFound,
-				new MethodCall($this->createMock(Expr::class), ''),
+				new MethodCall($this->createMock(Expr::class), 'someMethod', [new Arg(new String_('foobarbaz'))]),
 				$notFoundType,
+				$scopeNotFound,
 			],
 		];
 	}

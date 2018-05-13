@@ -8,6 +8,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 final class ExampleController extends Controller
 {
 
+	public const BAR = 'bar';
+
 	public function getPrivateServiceAction(): void
 	{
 		$service = $this->get('private');
