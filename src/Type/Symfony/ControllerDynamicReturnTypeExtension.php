@@ -5,6 +5,7 @@ namespace PHPStan\Type\Symfony;
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
+use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Symfony\ServiceMap;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\ObjectType;
@@ -43,7 +44,7 @@ final class ControllerDynamicReturnTypeExtension implements DynamicMethodReturnT
 				return new ObjectType($service['class'] ?? $service['id']);
 			}
 		}
-		return $methodReflection->getReturnType();
+		return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
 	}
 
 }

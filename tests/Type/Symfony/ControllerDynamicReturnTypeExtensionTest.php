@@ -8,6 +8,7 @@ use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Scalar\String_;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
+use PHPStan\Reflection\ParametersAcceptor;
 use PHPStan\Symfony\ServiceMap;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\ObjectType;
@@ -71,8 +72,10 @@ final class ControllerDynamicReturnTypeExtensionTest extends TestCase
 	{
 		$notFoundType = $this->createMock(Type::class);
 
+		$parametersAcceptorNotFound = $this->createMock(ParametersAcceptor::class);
+		$parametersAcceptorNotFound->expects(self::once())->method('getReturnType')->willReturn($notFoundType);
 		$methodReflectionNotFound = $this->createMock(MethodReflection::class);
-		$methodReflectionNotFound->expects(self::once())->method('getReturnType')->willReturn($notFoundType);
+		$methodReflectionNotFound->expects(self::once())->method('getVariants')->willReturn([$parametersAcceptorNotFound]);
 
 		return [
 			'found' => [
