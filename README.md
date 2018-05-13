@@ -33,6 +33,4 @@ parameters:
 
 ## Limitations
 
-It can only recognize pure strings or `::class` constants passed into `get()` method. This follows from the nature of static code analysis.
-
 You have to provide a path to `appDevDebugProjectContainer.xml` or similar xml file describing your container.
