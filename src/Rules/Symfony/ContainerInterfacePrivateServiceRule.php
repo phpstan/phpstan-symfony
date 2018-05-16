@@ -32,7 +32,11 @@ final class ContainerInterfacePrivateServiceRule implements Rule
 	 */
 	public function processNode(Node $node, Scope $scope): array
 	{
-		if ($node->name !== 'get' || !isset($node->args[0])) {
+		if (!$node->name instanceof Node\Identifier) {
+			return [];
+		}
+
+		if ($node->name->name !== 'get' || !isset($node->args[0])) {
 			return [];
 		}
 
