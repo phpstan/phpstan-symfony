@@ -8,4 +8,4 @@ parameters:
 		- */tests/*/data/*
 	ignoreErrors:
 		- '#Call to an undefined method object::noMethod\(\)\.#'
-		- '#Offset mixed does not exist on array\(\)\.#'
+		- '#Offset string does not exist on array\(\)\.#'
