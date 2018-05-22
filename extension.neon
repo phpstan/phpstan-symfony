@@ -8,6 +8,10 @@ services:
 		tags:
 			- phpstan.broker.dynamicMethodReturnTypeExtension
 	-
+		class: PHPStan\Type\Symfony\RequestDynamicReturnTypeExtension
+		tags:
+			- phpstan.broker.dynamicMethodReturnTypeExtension
+	-
 		class: PHPStan\Rules\Symfony\ContainerInterfacePrivateServiceRule
 		tags:
 			- phpstan.rules.rule

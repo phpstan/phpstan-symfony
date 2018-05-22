@@ -10,6 +10,7 @@ This extension provides following features:
 
 * Provides correct return type for `ContainerInterface::get()` method.
 * Provides correct return type for `Controller::get()` method.
+* Provides correct return type for `Request::getContent()` method based on the `$asResource` parameter.
 * Notifies you when you try to get an unregistered service from the container.
 * Notifies you when you try to get a private service from the container.
 
