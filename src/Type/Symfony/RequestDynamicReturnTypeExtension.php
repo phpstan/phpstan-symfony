@@ -36,11 +36,17 @@ final class RequestDynamicReturnTypeExtension implements DynamicMethodReturnType
 		}
 
 		$argType = $scope->getType($methodCall->args[0]->value);
-		if (!$argType instanceof ConstantBooleanType) {
-			return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
+		$isTrueType = (new ConstantBooleanType(true))->isSuperTypeOf($argType);
+		$isFalseType = (new ConstantBooleanType(false))->isSuperTypeOf($argType);
+		$compareTypes = $isTrueType->compareTo($isFalseType);
+		if ($compareTypes === $isTrueType) {
+			return new ResourceType();
+		}
+		if ($compareTypes === $isFalseType) {
+			return new StringType();
 		}
 
-		return $argType->getValue() ? new ResourceType() : new StringType();
+		return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
 	}
 
 }
