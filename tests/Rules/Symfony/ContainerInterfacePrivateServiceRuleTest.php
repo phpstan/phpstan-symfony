@@ -5,9 +5,6 @@ namespace PHPStan\Rules\Symfony;
 use PHPStan\Rules\Rule;
 use PHPStan\Symfony\ServiceMap;
 
-/**
- * @covers \PHPStan\Rules\Symfony\ContainerInterfacePrivateServiceRule
- */
 final class ContainerInterfacePrivateServiceRuleTest extends \PHPStan\Testing\RuleTestCase
 {
 
@@ -21,11 +18,11 @@ final class ContainerInterfacePrivateServiceRuleTest extends \PHPStan\Testing\Ru
 	public function testGetPrivateService(): void
 	{
 		$this->analyse(
-			[__DIR__ . '/ExampleController.php'],
+			[__DIR__ . '/../../Symfony/data/ExampleController.php'],
 			[
 				[
 					'Service "private" is private.',
-					15,
+					14,
 				],
 			]
 		);

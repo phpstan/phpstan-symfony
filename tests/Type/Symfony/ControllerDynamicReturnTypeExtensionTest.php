@@ -17,9 +17,6 @@ use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \PHPStan\Type\Symfony\ControllerDynamicReturnTypeExtension
- */
 final class ControllerDynamicReturnTypeExtensionTest extends TestCase
 {
 

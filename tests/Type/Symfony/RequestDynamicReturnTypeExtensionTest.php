@@ -16,9 +16,6 @@ use PHPStan\Type\StringType;
 use PHPStan\Type\Type;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \PHPStan\Type\Symfony\RequestDynamicReturnTypeExtension
- */
 final class RequestDynamicReturnTypeExtensionTest extends TestCase
 {
 

@@ -4,17 +4,18 @@ namespace PHPStan\Symfony;
 
 use PhpParser\Node\Expr;
 use PHPStan\Analyser\Scope;
-use PHPStan\Type\Constant\ConstantStringType;
+use PHPStan\Type\TypeUtils;
 
 final class ServiceMap
 {
 
-	/** @var array<string, array> */
-	private $services;
+	/** @var Service[] */
+	private $services = [];
 
 	public function __construct(string $containerXml)
 	{
-		$this->services = $aliases = [];
+		/** @var Service[] $aliases */
+		$aliases = [];
 		/** @var \SimpleXMLElement|false $xml */
 		$xml = @simplexml_load_file($containerXml);
 		if ($xml === false) {
@@ -25,44 +26,42 @@ final class ServiceMap
 			if (!isset($attrs->id)) {
 				continue;
 			}
-			$service = [
-				'id' => (string) $attrs->id,
-				'class' => isset($attrs->class) ? (string) $attrs->class : null,
-				'public' => !isset($attrs->public) || (string) $attrs->public !== 'false',
-				'synthetic' => isset($attrs->synthetic) && (string) $attrs->synthetic === 'true',
-			];
-			if (isset($attrs->alias)) {
-				$aliases[(string) $attrs->id] = array_merge($service, ['alias' => (string) $attrs->alias]);
+			$service = new Service(
+				(string) $attrs->id,
+				isset($attrs->class) ? (string) $attrs->class : null,
+				!isset($attrs->public) || (string) $attrs->public !== 'false',
+				isset($attrs->synthetic) && (string) $attrs->synthetic === 'true',
+				isset($attrs->alias) ? (string) $attrs->alias : null
+			);
+			if ($service->getAlias() !== null) {
+				$aliases[] = $service;
 			} else {
-				$this->services[(string) $attrs->id] = $service;
+				$this->services[$service->getId()] = $service;
 			}
 		}
-		foreach ($aliases as $id => $alias) {
-			if (!array_key_exists($alias['alias'], $this->services)) {
+		foreach ($aliases as $service) {
+			if ($service->getAlias() !== null && !array_key_exists($service->getAlias(), $this->services)) {
 				continue;
 			}
-			$this->services[$id] = [
-				'id' => $id,
-				'class' => $this->services[$alias['alias']]['class'],
-				'public' => $alias['public'],
-				'synthetic' => $alias['synthetic'],
-			];
+			$this->services[$service->getId()] = new Service(
+				$service->getId(),
+				$this->services[$service->getAlias()]->getClass(),
+				$service->isPublic(),
+				$service->isSynthetic(),
+				null
+			);
 		}
 	}
 
-	/**
-	 * @param string $id
-	 * @return mixed[]|null
-	 */
-	public function getService(string $id): ?array
+	public function getService(string $id): ?Service
 	{
 		return $this->services[$id] ?? null;
 	}
 
 	public static function getServiceIdFromNode(Expr $node, Scope $scope): ?string
 	{
-		$nodeType = $scope->getType($node);
-		return $nodeType instanceof ConstantStringType ? $nodeType->getValue() : null;
+		$strings = TypeUtils::getConstantStrings($scope->getType($node));
+		return count($strings) === 1 ? $strings[0]->getValue() : null;
 	}
 
 }

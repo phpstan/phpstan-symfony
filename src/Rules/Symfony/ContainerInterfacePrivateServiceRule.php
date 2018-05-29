@@ -28,7 +28,7 @@ final class ContainerInterfacePrivateServiceRule implements Rule
 	/**
 	 * @param MethodCall $node
 	 * @param Scope $scope
-	 * @return mixed[]
+	 * @return string[]
 	 */
 	public function processNode(Node $node, Scope $scope): array
 	{
@@ -50,8 +50,8 @@ final class ContainerInterfacePrivateServiceRule implements Rule
 		$serviceId = ServiceMap::getServiceIdFromNode($node->args[0]->value, $scope);
 		if ($serviceId !== null) {
 			$service = $this->serviceMap->getService($serviceId);
-			if ($service !== null && $service['public'] === false) {
-				return [sprintf('Service "%s" is private.', $service['id'])];
+			if ($service !== null && !$service->isPublic()) {
+				return [sprintf('Service "%s" is private.', $serviceId)];
 			}
 		}
 

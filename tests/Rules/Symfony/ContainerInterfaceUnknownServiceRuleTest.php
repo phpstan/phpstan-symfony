@@ -5,9 +5,6 @@ namespace PHPStan\Rules\Symfony;
 use PHPStan\Rules\Rule;
 use PHPStan\Symfony\ServiceMap;
 
-/**
- * @covers \PHPStan\Rules\Symfony\ContainerInterfaceUnknownServiceRule
- */
 final class ContainerInterfaceUnknownServiceRuleTest extends \PHPStan\Testing\RuleTestCase
 {
 
@@ -21,23 +18,23 @@ final class ContainerInterfaceUnknownServiceRuleTest extends \PHPStan\Testing\Ru
 	public function testGetUnknownService(): void
 	{
 		$this->analyse(
-			[__DIR__ . '/ExampleController.php'],
+			[__DIR__ . '/../../Symfony/data/ExampleController.php'],
 			[
 				[
 					'Service "service.not.found" is not registered in the container.',
-					21,
+					20,
 				],
 				[
 					'Service "PHPStan\Symfony\ServiceMap" is not registered in the container.',
-					27,
+					26,
 				],
 				[
 					'Service "service.PHPStan\Symfony\ServiceMap" is not registered in the container.',
-					39,
+					38,
 				],
 				[
-					'Service "PHPStan\Rules\Symfony\ExampleController" is not registered in the container.',
-					45,
+					'Service "PHPStan\Symfony\ExampleController" is not registered in the container.',
+					44,
 				],
 			]
 		);

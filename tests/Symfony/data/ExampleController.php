@@ -1,8 +1,7 @@
 <?php declare(strict_types = 1);
 
-namespace PHPStan\Rules\Symfony;
+namespace PHPStan\Symfony;
 
-use PHPStan\Symfony\ServiceMap;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 final class ExampleController extends Controller

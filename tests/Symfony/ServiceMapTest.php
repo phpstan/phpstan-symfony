@@ -9,12 +9,8 @@ use PhpParser\Node\Scalar\String_;
 use PhpParser\PrettyPrinter\Standard;
 use PHPStan\Analyser\Scope;
 use PHPStan\Analyser\ScopeContext;
-use PHPStan\Rules\Symfony\ExampleController;
 use PHPStan\Testing\TestCase;
 
-/**
- * @covers \PHPStan\Symfony\ServiceMap
- */
 final class ServiceMapTest extends TestCase
 {
 
@@ -48,8 +44,8 @@ final class ServiceMapTest extends TestCase
 		$scope = new Scope($broker, $printer, $typeSpecifier, ScopeContext::create(''));
 
 		self::assertSame('foo', ServiceMap::getServiceIdFromNode(new String_('foo'), $scope));
-		self::assertSame('bar', ServiceMap::getServiceIdFromNode(new ClassConstFetch(new Name('PHPStan\Rules\Symfony\ExampleController'), 'BAR'), $scope));
-		self::assertSame('foobar', ServiceMap::getServiceIdFromNode(new Concat(new String_('foo'), new ClassConstFetch(new Name('PHPStan\Rules\Symfony\ExampleController'), 'BAR')), $scope));
+		self::assertSame('bar', ServiceMap::getServiceIdFromNode(new ClassConstFetch(new Name(ExampleController::class), 'BAR'), $scope));
+		self::assertSame('foobar', ServiceMap::getServiceIdFromNode(new Concat(new String_('foo'), new ClassConstFetch(new Name(ExampleController::class), 'BAR')), $scope));
 
 		$scope = $scope->enterClass($broker->getClass(ExampleController::class));
 		self::assertSame('bar', ServiceMap::getServiceIdFromNode(new ClassConstFetch(new Name('static'), 'BAR'), $scope));

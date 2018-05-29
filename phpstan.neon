@@ -6,6 +6,3 @@ includes:
 parameters:
 	excludes_analyse:
 		- */tests/*/data/*
-	ignoreErrors:
-		- '#Call to an undefined method object::noMethod\(\)\.#'
-		- '#Offset string does not exist on array\(\)\.#'

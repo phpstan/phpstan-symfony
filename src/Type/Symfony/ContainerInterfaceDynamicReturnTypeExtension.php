@@ -46,8 +46,8 @@ final class ContainerInterfaceDynamicReturnTypeExtension implements DynamicMetho
 		$serviceId = ServiceMap::getServiceIdFromNode($methodCall->args[0]->value, $scope);
 		if ($serviceId !== null) {
 			$service = $this->serviceMap->getService($serviceId);
-			if ($service !== null && $service['synthetic'] === false) {
-				return new ObjectType($service['class'] ?? $service['id']);
+			if ($service !== null && !$service->isSynthetic()) {
+				return new ObjectType($service->getClass() ?? $serviceId);
 			}
 		}
 
