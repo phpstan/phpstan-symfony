@@ -27,11 +27,12 @@ final class ServiceMap
 				continue;
 			}
 			$service = new Service(
-				(string) $attrs->id,
+				strpos((string) $attrs->id, '.') === 0 ? substr((string) $attrs->id, 1) : (string) $attrs->id,
 				isset($attrs->class) ? (string) $attrs->class : null,
 				!isset($attrs->public) || (string) $attrs->public !== 'false',
 				isset($attrs->synthetic) && (string) $attrs->synthetic === 'true',
-				isset($attrs->alias) ? (string) $attrs->alias : null
+				isset($attrs->alias) ? (string) $attrs->alias : null,
+				strpos((string) $attrs->id, '.') === 0
 			);
 			if ($service->getAlias() !== null) {
 				$aliases[] = $service;
@@ -48,7 +49,8 @@ final class ServiceMap
 				$this->services[$service->getAlias()]->getClass(),
 				$service->isPublic(),
 				$service->isSynthetic(),
-				null
+				$service->getAlias(),
+				$service->isHidden()
 			);
 		}
 	}
