@@ -3,6 +3,7 @@
 namespace PHPStan\Symfony;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Test\TestContainer;
 
 final class ExampleController extends Controller
 {
@@ -43,6 +44,16 @@ final class ExampleController extends Controller
 	{
 		$service = $this->get(self::class);
 		$service->noMethod();
+	}
+
+	public function testContainer(): void
+	{
+		$service = $this->getTestContainer()->get('private');
+		$service->noMethod();
+	}
+
+	private function getTestContainer(): TestContainer
+	{
 	}
 
 }

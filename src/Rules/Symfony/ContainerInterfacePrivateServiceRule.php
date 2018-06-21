@@ -43,7 +43,8 @@ final class ContainerInterfacePrivateServiceRule implements Rule
 		$argType = $scope->getType($node->var);
 		$isControllerType = (new ObjectType('Symfony\Bundle\FrameworkBundle\Controller\Controller'))->isSuperTypeOf($argType);
 		$isContainerType = (new ObjectType('Symfony\Component\DependencyInjection\ContainerInterface'))->isSuperTypeOf($argType);
-		if (!$isControllerType->yes() && !$isContainerType->yes()) {
+		$isTestContainerType = (new ObjectType('Symfony\Bundle\FrameworkBundle\Test\TestContainer'))->isSuperTypeOf($argType);
+		if ($isTestContainerType->yes() || (!$isControllerType->yes() && !$isContainerType->yes())) {
 			return [];
 		}
 

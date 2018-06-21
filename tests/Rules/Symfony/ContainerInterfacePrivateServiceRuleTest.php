@@ -22,7 +22,7 @@ final class ContainerInterfacePrivateServiceRuleTest extends \PHPStan\Testing\Ru
 			[
 				[
 					'Service "private" is private.',
-					14,
+					15,
 				],
 			]
 		);
