@@ -28,4 +28,12 @@ final class ContainerInterfacePrivateServiceRuleTest extends \PHPStan\Testing\Ru
 		);
 	}
 
+	public function testGetPrivateServiceOnTestContainer(): void
+	{
+		$this->analyse(
+			[__DIR__ . '/../../Symfony/data/KernelTestExample.php'],
+			[]
+		);
+	}
+
 }

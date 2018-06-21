@@ -41,7 +41,7 @@ final class ServiceMapTest extends TestCase
 		$broker = $this->createBroker();
 		$printer = new Standard();
 		$typeSpecifier = $this->createTypeSpecifier($printer, $broker);
-		$scope = new Scope($broker, $printer, $typeSpecifier, ScopeContext::create(''));
+		$scope = new Scope($this->createScopeFactory($broker, $typeSpecifier), $broker, $printer, $typeSpecifier, ScopeContext::create(''));
 
 		self::assertSame('foo', ServiceMap::getServiceIdFromNode(new String_('foo'), $scope));
 		self::assertSame('bar', ServiceMap::getServiceIdFromNode(new ClassConstFetch(new Name(ExampleController::class), 'BAR'), $scope));

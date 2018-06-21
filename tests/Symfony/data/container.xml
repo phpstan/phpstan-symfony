@@ -9,5 +9,6 @@
     <service id="private" class="Foo" public="false"></service>
     <service id="synthetic" class="Foo" synthetic="true"></service>
     <service id="alias" class="Bar" alias="withClass"></service>
+    <service id="test.service_container" class="Symfony\Bundle\FrameworkBundle\Test\TestContainer"></service>
   </services>
 </container>

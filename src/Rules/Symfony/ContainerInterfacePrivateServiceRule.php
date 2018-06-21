@@ -43,7 +43,7 @@ final class ContainerInterfacePrivateServiceRule implements Rule
 		$argType = $scope->getType($node->var);
 		$isControllerType = (new ObjectType('Symfony\Bundle\FrameworkBundle\Controller\Controller'))->isSuperTypeOf($argType);
 		$isContainerType = (new ObjectType('Symfony\Component\DependencyInjection\ContainerInterface'))->isSuperTypeOf($argType);
-		if (!$isControllerType->yes() && !$isContainerType->yes()) {
+		if ((!$isControllerType->yes() && !$isContainerType->yes()) || $this->isTestContainer($scope)) {
 			return [];
 		}
 
@@ -56,6 +56,24 @@ final class ContainerInterfacePrivateServiceRule implements Rule
 		}
 
 		return [];
+	}
+
+	private function isTestContainer(Scope $scope): bool
+	{
+		$classReflection = $scope->getClassReflection();
+		if ($classReflection === null || !$classReflection->isSubclassOf('Symfony\Bundle\FrameworkBundle\Test\KernelTestCase')) {
+			return false;
+		}
+
+		$testContainer = $this->serviceMap->getService('test.service_container');
+		if ($testContainer === null) {
+			return false;
+		}
+		$class = $testContainer->getClass();
+
+		return $testContainer->isPublic()
+			&& $class !== null
+			&& (new ObjectType('Symfony\Bundle\FrameworkBundle\Test\TestContainer'))->isSuperTypeOf(new ObjectType($class))->yes();
 	}
 
 }
