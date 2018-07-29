@@ -19,4 +19,15 @@ services:
 		class: PHPStan\Rules\Symfony\ContainerInterfaceUnknownServiceRule
 		tags:
 			- phpstan.rules.rule
-	- PHPStan\Symfony\ServiceMap(%symfony.container_xml_path%)
+	-
+		class: PHPStan\Type\Symfony\ContainerInterfaceMethodTypeSpecifyingExtension
+		tags:
+			- phpstan.typeSpecifier.methodTypeSpecifyingExtension
+	-
+		class: PHPStan\Type\Symfony\ControllerMethodTypeSpecifyingExtension
+		tags:
+			- phpstan.typeSpecifier.methodTypeSpecifyingExtension
+	-
+		class: PHPStan\Symfony\ServiceMap
+		arguments:
+			containerXml: %symfony.container_xml_path%

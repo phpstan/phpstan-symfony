@@ -56,4 +56,12 @@ final class ExampleController extends Controller
 	{
 	}
 
+	public function testGetUnknownServiceWithGuard(): void
+	{
+		if ($this->has('service.not.found')) {
+			$service = $this->get('service.not.found');
+			$service->noMethod();
+		}
+	}
+
 }
