@@ -27,7 +27,7 @@ final class ContainerInterfaceDynamicReturnTypeExtension implements DynamicMetho
 
 	public function isMethodSupported(MethodReflection $methodReflection): bool
 	{
-		return $methodReflection->getName() === 'get';
+		return in_array($methodReflection->getName(), ['get', 'has'], true);
 	}
 
 	public function getTypeFromMethodCall(
@@ -36,7 +36,13 @@ final class ContainerInterfaceDynamicReturnTypeExtension implements DynamicMetho
 		Scope $scope
 	): Type
 	{
-		return Helper::getTypeFromMethodCall($methodReflection, $methodCall, $scope, $this->serviceMap);
+		switch ($methodReflection->getName()) {
+			case 'get':
+				return Helper::getGetTypeFromMethodCall($methodReflection, $methodCall, $scope, $this->serviceMap);
+			case 'has':
+				return Helper::getHasTypeFromMethodCall($methodReflection, $methodCall, $scope, $this->serviceMap);
+		}
+		throw new \PHPStan\ShouldNotHappenException();
 	}
 
 }

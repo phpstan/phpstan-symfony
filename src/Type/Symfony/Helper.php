@@ -12,6 +12,7 @@ use PHPStan\Analyser\TypeSpecifierContext;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Symfony\ServiceMap;
+use PHPStan\Type\Constant\ConstantBooleanType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 use PHPStan\Type\VerbosityLevel;
@@ -19,7 +20,7 @@ use PHPStan\Type\VerbosityLevel;
 final class Helper
 {
 
-	public static function getTypeFromMethodCall(
+	public static function getGetTypeFromMethodCall(
 		MethodReflection $methodReflection,
 		MethodCall $methodCall,
 		Scope $scope,
@@ -37,6 +38,27 @@ final class Helper
 			if ($service !== null && !$service->isSynthetic()) {
 				return new ObjectType($service->getClass() ?? $serviceId);
 			}
+		}
+
+		return $returnType;
+	}
+
+	public static function getHasTypeFromMethodCall(
+		MethodReflection $methodReflection,
+		MethodCall $methodCall,
+		Scope $scope,
+		ServiceMap $serviceMap
+	): Type
+	{
+		$returnType = ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
+		if (!isset($methodCall->args[0])) {
+			return $returnType;
+		}
+
+		$serviceId = ServiceMap::getServiceIdFromNode($methodCall->args[0]->value, $scope);
+		if ($serviceId !== null) {
+			$service = $serviceMap->getService($serviceId);
+			return new ConstantBooleanType($service !== null && $service->isPublic());
 		}
 
 		return $returnType;
