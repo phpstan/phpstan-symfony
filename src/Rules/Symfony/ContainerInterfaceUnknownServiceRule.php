@@ -4,10 +4,12 @@ namespace PHPStan\Rules\Symfony;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr\MethodCall;
+use PhpParser\PrettyPrinter\Standard;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
 use PHPStan\Symfony\ServiceMap;
 use PHPStan\Type\ObjectType;
+use PHPStan\Type\Symfony\Helper;
 
 final class ContainerInterfaceUnknownServiceRule implements Rule
 {
@@ -15,9 +17,13 @@ final class ContainerInterfaceUnknownServiceRule implements Rule
 	/** @var ServiceMap */
 	private $serviceMap;
 
-	public function __construct(ServiceMap $symfonyServiceMap)
+	/** @var \PhpParser\PrettyPrinter\Standard */
+	private $printer;
+
+	public function __construct(ServiceMap $symfonyServiceMap, Standard $printer)
 	{
 		$this->serviceMap = $symfonyServiceMap;
+		$this->printer = $printer;
 	}
 
 	public function getNodeType(): string
@@ -50,7 +56,7 @@ final class ContainerInterfaceUnknownServiceRule implements Rule
 		$serviceId = ServiceMap::getServiceIdFromNode($node->args[0]->value, $scope);
 		if ($serviceId !== null) {
 			$service = $this->serviceMap->getService($serviceId);
-			if ($service === null) {
+			if ($service === null && !$scope->isSpecified(Helper::createMarkerNode($node->var, $scope->getType($node->args[0]->value), $this->printer))) {
 				return [sprintf('Service "%s" is not registered in the container.', $serviceId)];
 			}
 		}

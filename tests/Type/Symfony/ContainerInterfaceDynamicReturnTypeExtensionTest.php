@@ -74,6 +74,7 @@ final class ContainerInterfaceDynamicReturnTypeExtensionTest extends TestCase
 		$parametersAcceptorFound = $this->createMock(ParametersAcceptor::class);
 		$parametersAcceptorFound->expects(self::once())->method('getReturnType')->willReturn($foundType);
 		$methodReflectionFound = $this->createMock(MethodReflection::class);
+		$methodReflectionFound->expects(self::once())->method('getName')->willReturn('get');
 		$methodReflectionFound->expects(self::once())->method('getVariants')->willReturn([$parametersAcceptorFound]);
 		$scopeFound = $this->createMock(Scope::class);
 		$scopeFound->expects(self::once())->method('getType')->willReturn(new ConstantStringType('withClass'));
@@ -82,6 +83,7 @@ final class ContainerInterfaceDynamicReturnTypeExtensionTest extends TestCase
 		$parametersAcceptorNotFound = $this->createMock(ParametersAcceptor::class);
 		$parametersAcceptorNotFound->expects(self::once())->method('getReturnType')->willReturn($notFoundType);
 		$methodReflectionNotFound = $this->createMock(MethodReflection::class);
+		$methodReflectionNotFound->expects(self::once())->method('getName')->willReturn('get');
 		$methodReflectionNotFound->expects(self::once())->method('getVariants')->willReturn([$parametersAcceptorNotFound]);
 		$scopeNotFound = $this->createMock(Scope::class);
 		$scopeNotFound->expects(self::once())->method('getType')->willReturn(new ErrorType());

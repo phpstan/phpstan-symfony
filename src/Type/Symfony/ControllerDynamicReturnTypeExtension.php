@@ -5,10 +5,8 @@ namespace PHPStan\Type\Symfony;
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
-use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Symfony\ServiceMap;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
-use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 
 final class ControllerDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
@@ -29,7 +27,7 @@ final class ControllerDynamicReturnTypeExtension implements DynamicMethodReturnT
 
 	public function isMethodSupported(MethodReflection $methodReflection): bool
 	{
-		return $methodReflection->getName() === 'get';
+		return in_array($methodReflection->getName(), ['get', 'has'], true);
 	}
 
 	public function getTypeFromMethodCall(
@@ -38,20 +36,13 @@ final class ControllerDynamicReturnTypeExtension implements DynamicMethodReturnT
 		Scope $scope
 	): Type
 	{
-		$returnType = ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
-		if (!isset($methodCall->args[0])) {
-			return $returnType;
+		switch ($methodReflection->getName()) {
+			case 'get':
+				return Helper::getGetTypeFromMethodCall($methodReflection, $methodCall, $scope, $this->serviceMap);
+			case 'has':
+				return Helper::getHasTypeFromMethodCall($methodReflection, $methodCall, $scope, $this->serviceMap);
 		}
-
-		$serviceId = ServiceMap::getServiceIdFromNode($methodCall->args[0]->value, $scope);
-		if ($serviceId !== null) {
-			$service = $this->serviceMap->getService($serviceId);
-			if ($service !== null && !$service->isSynthetic()) {
-				return new ObjectType($service->getClass() ?? $serviceId);
-			}
-		}
-
-		return $returnType;
+		throw new \PHPStan\ShouldNotHappenException();
 	}
 
 }
