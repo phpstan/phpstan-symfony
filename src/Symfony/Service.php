@@ -23,13 +23,17 @@ final class Service
 	/** @var bool */
 	private $hidden;
 
+	/** @var array */
+	private $methodCalls;
+
 	public function __construct(
 		string $id,
 		?string $class,
 		bool $public,
 		bool $synthetic,
 		?string $alias,
-		bool $hidden
+		bool $hidden,
+        array $methodCalls
 	)
 	{
 		$this->id = $id;
@@ -38,6 +42,7 @@ final class Service
 		$this->synthetic = $synthetic;
 		$this->alias = $alias;
 		$this->hidden = $hidden;
+		$this->methodCalls = $methodCalls;
 	}
 
 	public function getId(): string
@@ -69,5 +74,10 @@ final class Service
 	{
 		return $this->hidden;
 	}
+
+	public function getMethodCalls(): array
+    {
+        return $this->methodCalls;
+    }
 
 }

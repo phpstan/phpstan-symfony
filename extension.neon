@@ -20,6 +20,10 @@ services:
 		tags:
 			- phpstan.rules.rule
 	-
+		class: PHPStan\Rules\Symfony\ModifiedServiceStateRule
+		tags:
+			- phpstan.rules.rule
+	-
 		class: PHPStan\Type\Symfony\ContainerInterfaceMethodTypeSpecifyingExtension
 		tags:
 			- phpstan.typeSpecifier.methodTypeSpecifyingExtension
