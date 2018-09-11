@@ -48,7 +48,7 @@ class ModifiedServiceStateRule implements \PHPStan\Rules\Rule
 				sprintf(
 					'%s->%s modifies internal state of a Symfony service',
 					$classReflection->getName(),
-					(string)$node->name
+					(string) $node->name
 				),
 			];
 		}
@@ -60,7 +60,7 @@ class ModifiedServiceStateRule implements \PHPStan\Rules\Rule
 	{
 		$serviceId = $this->serviceMap->getServiceIdsFromClassname($scope->getClassReflection()->getName());
 
-		return $serviceId != null && count($serviceId) > 0;
+		return $serviceId !== null && count($serviceId) > 0;
 	}
 
 	private function isDependencyInjectionMethod(Node $parserNode, Scope $scope): bool
@@ -69,7 +69,7 @@ class ModifiedServiceStateRule implements \PHPStan\Rules\Rule
 		foreach ($serviceIds as $serviceId) {
 			$service = $this->serviceMap->getService($serviceId);
 			foreach ($service->getMethodCalls() as $curMethodCall) {
-				if ($curMethodCall == $parserNode->name) {
+				if ($curMethodCall === $parserNode->name) {
 					return true;
 				}
 			}
@@ -102,4 +102,5 @@ class ModifiedServiceStateRule implements \PHPStan\Rules\Rule
 
 		return false;
 	}
+
 }

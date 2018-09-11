@@ -26,7 +26,15 @@ final class Service
 	/** @var string[] */
 	private $methodCalls;
 
-	/** @param string[] $methodCalls */
+	/**
+	 * @param string $id
+	 * @param string|null $class
+	 * @param bool $public
+	 * @param bool $synthetic
+	 * @param string|null $alias
+	 * @param bool $hidden
+	 * @param string[] $methodCalls
+	 */
 	public function __construct(
 		string $id,
 		?string $class,
