@@ -75,7 +75,7 @@ class ModifiedServiceStateRule implements \PHPStan\Rules\Rule
 		}
 		foreach ($serviceIds as $serviceId) {
 			$service = $this->serviceMap->getService($serviceId);
-			if ($service == null) {
+			if ($service === null) {
 				continue;
 			}
 			foreach ($service->getMethodCalls() as $curMethodCall) {
