@@ -46,9 +46,10 @@ final class ServiceMap
 			} else {
 				$this->services[$service->getId()] = $service;
 			}
-			if (isset($attrs->class)) {
-				$this->serviceClasses[(string) $attrs->class][] = $serviceId;
+			if (!isset($attrs->class)) {
+				continue;
 			}
+			$this->serviceClasses[(string) $attrs->class][] = $serviceId;
 		}
 		foreach ($aliases as $service) {
 			if ($service->getAlias() !== null && !array_key_exists($service->getAlias(), $this->services)) {
@@ -74,10 +75,11 @@ final class ServiceMap
 	{
 		$methodCalls = [];
 		foreach ($def as $type => $element) {
-			if ($type === 'call') {
-				$attrs = $element->attributes();
-				$methodCalls[] = (string) $attrs->method;
+			if ($type !== 'call') {
+				continue;
 			}
+			$attrs = $element->attributes();
+			$methodCalls[] = (string) $attrs->method;
 		}
 
 		return $methodCalls;
