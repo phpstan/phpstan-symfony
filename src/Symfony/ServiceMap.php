@@ -12,7 +12,7 @@ final class ServiceMap
 	/** @var Service[] */
 	private $services = [];
 
-	/** @var string[] */
+	/** @var string[][] */
 	private $serviceClasses = [];
 
 	public function __construct(string $containerXml)
@@ -68,7 +68,7 @@ final class ServiceMap
 	}
 
 	/**
-	 * @param SimpleXMLElement $def
+	 * @param \SimpleXMLElement $def
 	 * @return string[]
 	 */
 	private function getMethodCalls(\SimpleXMLElement $def): array
