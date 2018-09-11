@@ -23,9 +23,10 @@ final class Service
 	/** @var bool */
 	private $hidden;
 
-	/** @var array */
+	/** @var string[] */
 	private $methodCalls;
 
+	/** @param string[] $methodCalls */
 	public function __construct(
 		string $id,
 		?string $class,
@@ -75,6 +76,7 @@ final class Service
 		return $this->hidden;
 	}
 
+	/** @return string[] */
 	public function getMethodCalls(): array
 	{
 		return $this->methodCalls;

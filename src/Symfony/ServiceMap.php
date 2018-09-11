@@ -11,6 +11,8 @@ final class ServiceMap
 
 	/** @var Service[] */
 	private $services = [];
+
+	/** @var string[] */
 	private $serviceClasses = [];
 
 	public function __construct(string $containerXml)
@@ -29,14 +31,14 @@ final class ServiceMap
 			if (!isset($attrs->id)) {
 				continue;
 			}
-			$serviceId = strpos((string)$attrs->id, '.') === 0 ? substr((string)$attrs->id, 1) : (string)$attrs->id;
+			$serviceId = strpos((string) $attrs->id, '.') === 0 ? substr((string) $attrs->id, 1) : (string) $attrs->id;
 			$service = new Service(
 				$serviceId,
-				isset($attrs->class) ? (string)$attrs->class : null,
-				!isset($attrs->public) || (string)$attrs->public !== 'false',
-				isset($attrs->synthetic) && (string)$attrs->synthetic === 'true',
-				isset($attrs->alias) ? (string)$attrs->alias : null,
-				strpos((string)$attrs->id, '.') === 0,
+				isset($attrs->class) ? (string) $attrs->class : null,
+				!isset($attrs->public) || (string) $attrs->public !== 'false',
+				isset($attrs->synthetic) && (string) $attrs->synthetic === 'true',
+				isset($attrs->alias) ? (string) $attrs->alias : null,
+				strpos((string) $attrs->id, '.') === 0,
 				$this->getMethodCalls($def)
 			);
 			if ($service->getAlias() !== null) {
@@ -45,7 +47,7 @@ final class ServiceMap
 				$this->services[$service->getId()] = $service;
 			}
 			if (isset($attrs->class)) {
-				$this->serviceClasses[(string)$attrs->class][] = $serviceId;
+				$this->serviceClasses[(string) $attrs->class][] = $serviceId;
 			}
 		}
 		foreach ($aliases as $service) {
@@ -70,7 +72,7 @@ final class ServiceMap
 		foreach ($def as $type => $element) {
 			if ($type == 'call') {
 				$attrs = $element->attributes();
-				$methodCalls[] = (string)$attrs->method;
+				$methodCalls[] = (string) $attrs->method;
 			}
 		}
 
@@ -89,6 +91,7 @@ final class ServiceMap
 		return count($strings) === 1 ? $strings[0]->getValue() : null;
 	}
 
+	/** @return string[] */
 	public function getServiceIdsFromClassname(string $classname): ?array
 	{
 		return @$this->serviceClasses[$classname];
