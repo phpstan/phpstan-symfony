@@ -67,10 +67,10 @@ final class ServiceMap
 	}
 
 	/**
-	* @param SimpleXMLElement $def
-	* @return string[]
-	*/
-	private function getMethodCalls($def): array
+	 * @param SimpleXMLElement $def
+	 * @return string[]
+	 */
+	private function getMethodCalls(\SimpleXMLElement $def): array
 	{
 		$methodCalls = [];
 		foreach ($def as $type => $element) {
@@ -96,9 +96,9 @@ final class ServiceMap
 	}
 
 	/**
-	* @param string $classname
-	* @return string[]|null
-	*/
+	 * @param string $classname
+	 * @return string[]|null
+	 */
 	public function getServiceIdsFromClassname(string $classname): ?array
 	{
 		return @$this->serviceClasses[$classname];
