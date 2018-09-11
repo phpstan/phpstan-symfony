@@ -9,13 +9,14 @@ final class ServiceTest extends TestCase
 
 	public function testGetSet(): void
 	{
-		$service = new Service('foo', 'Bar', true, true, 'alias', true);
+		$service = new Service('foo', 'Bar', true, true, 'alias', true, ['testMethod']);
 		self::assertSame('foo', $service->getId());
 		self::assertSame('Bar', $service->getClass());
 		self::assertTrue($service->isPublic());
 		self::assertTrue($service->isSynthetic());
 		self::assertSame('alias', $service->getAlias());
 		self::assertTrue($service->isHidden());
+		self::assertSame(['testMethod'], $service->getMethodCalls());
 	}
 
 }
