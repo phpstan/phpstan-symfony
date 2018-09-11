@@ -33,7 +33,7 @@ final class Service
 		bool $synthetic,
 		?string $alias,
 		bool $hidden,
-        array $methodCalls
+		array $methodCalls
 	)
 	{
 		$this->id = $id;
@@ -76,8 +76,8 @@ final class Service
 	}
 
 	public function getMethodCalls(): array
-    {
-        return $this->methodCalls;
-    }
+	{
+		return $this->methodCalls;
+	}
 
 }

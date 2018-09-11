@@ -1,16 +1,15 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace PHPStan\Rules\Symfony;
 
 use PhpParser\Node;
-use PhpParser\Node\Name;
 use PhpParser\Node\Stmt\ClassMethod;
 use PHPStan\Analyser\Scope;
 use PHPStan\Symfony\ServiceMap;
-use PHPStan\Type\TypeUtils;
 
 class ModifiedServiceStateRule implements \PHPStan\Rules\Rule
 {
+
     /** @var ServiceMap */
     private $serviceMap;
 
