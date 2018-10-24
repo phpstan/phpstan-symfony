@@ -26,10 +26,10 @@ And include extension.neon in your project's PHPStan config:
 
 ```
 includes:
-	- vendor/phpstan/phpstan-symfony/extension.neon
+    - vendor/phpstan/phpstan-symfony/extension.neon
 parameters:
-	symfony:
-		container_xml_path: %rootDir%/../../../var/cache/dev/appDevDebugProjectContainer.xml # or srcDevDebugProjectContainer.xml for Symfony 4+
+    symfony:
+        container_xml_path: %rootDir%/../../../var/cache/dev/appDevDebugProjectContainer.xml # or srcDevDebugProjectContainer.xml for Symfony 4+
 ```
 
 ## Limitations
