@@ -12,8 +12,11 @@ use PHPStan\Analyser\TypeSpecifierContext;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\MethodTypeSpecifyingExtension;
 
-final class ControllerMethodTypeSpecifyingExtension implements MethodTypeSpecifyingExtension, TypeSpecifierAwareExtension
+final class ServiceTypeSpecifyingExtension implements MethodTypeSpecifyingExtension, TypeSpecifierAwareExtension
 {
+
+	/** @var string */
+	private $className;
 
 	/** @var \PhpParser\PrettyPrinter\Standard */
 	private $printer;
@@ -21,14 +24,15 @@ final class ControllerMethodTypeSpecifyingExtension implements MethodTypeSpecify
 	/** @var \PHPStan\Analyser\TypeSpecifier */
 	private $typeSpecifier;
 
-	public function __construct(Standard $printer)
+	public function __construct(string $className, Standard $printer)
 	{
+		$this->className = $className;
 		$this->printer = $printer;
 	}
 
 	public function getClass(): string
 	{
-		return 'Symfony\Bundle\FrameworkBundle\Controller\Controller';
+		return $this->className;
 	}
 
 	public function isMethodSupported(MethodReflection $methodReflection, MethodCall $node, TypeSpecifierContext $context): bool
@@ -38,7 +42,15 @@ final class ControllerMethodTypeSpecifyingExtension implements MethodTypeSpecify
 
 	public function specifyTypes(MethodReflection $methodReflection, MethodCall $node, Scope $scope, TypeSpecifierContext $context): SpecifiedTypes
 	{
-		return Helper::specifyTypes($methodReflection, $node, $scope, $context, $this->typeSpecifier, $this->printer);
+		if (!isset($node->args[0])) {
+			return new SpecifiedTypes();
+		}
+		$argType = $scope->getType($node->args[0]->value);
+		return $this->typeSpecifier->create(
+			Helper::createMarkerNode($node->var, $argType, $this->printer),
+			$argType,
+			$context
+		);
 	}
 
 	public function setTypeSpecifier(TypeSpecifier $typeSpecifier): void

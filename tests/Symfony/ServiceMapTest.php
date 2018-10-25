@@ -2,53 +2,106 @@
 
 namespace PHPStan\Symfony;
 
-use PhpParser\Node\Expr\BinaryOp\Concat;
-use PhpParser\Node\Expr\ClassConstFetch;
-use PhpParser\Node\Name;
-use PhpParser\Node\Scalar\String_;
-use PhpParser\PrettyPrinter\Standard;
-use PHPStan\Analyser\Scope;
-use PHPStan\Analyser\ScopeContext;
-use PHPStan\Testing\TestCase;
+use Iterator;
+use PHPUnit\Framework\TestCase;
 
 final class ServiceMapTest extends TestCase
 {
 
-	public function testFileNotExists(): void
-	{
-		$this->expectException(\PHPStan\Symfony\XmlContainerNotExistsException::class);
-		new ServiceMap(__DIR__ . '/foo.xml');
-	}
-
 	/**
-	 * @return mixed[]
+	 * @dataProvider getServiceProvider
 	 */
-	public function getServiceFromNodeProvider(): array
+	public function testGetService(string $id, callable $validator): void
 	{
-		return [
-			[['id' => 'withoutClass', 'class' => null, 'public' => true, 'synthetic' => false]],
-			[['id' => 'withClass', 'class' => 'Foo', 'public' => true, 'synthetic' => false]],
-			[['id' => 'withoutPublic', 'class' => 'Foo', 'public' => true, 'synthetic' => false]],
-			[['id' => 'publicNotFalse', 'class' => 'Foo', 'public' => true, 'synthetic' => false]],
-			[['id' => 'private', 'class' => 'Foo', 'public' => false, 'synthetic' => false]],
-			[['id' => 'synthetic', 'class' => 'Foo', 'public' => true, 'synthetic' => true]],
-			[['id' => 'alias', 'class' => 'Foo', 'public' => true, 'synthetic' => false]],
-		];
+		$factory = new XmlServiceMapFactory(__DIR__ . '/container.xml');
+		$validator($factory->create()->getService($id));
 	}
 
-	public function testGetServiceIdFromNode(): void
+	public function getServiceProvider(): Iterator
 	{
-		$broker = $this->createBroker();
-		$printer = new Standard();
-		$typeSpecifier = $this->createTypeSpecifier($printer, $broker);
-		$scope = new Scope($this->createScopeFactory($broker, $typeSpecifier), $broker, $printer, $typeSpecifier, ScopeContext::create(''));
-
-		self::assertSame('foo', ServiceMap::getServiceIdFromNode(new String_('foo'), $scope));
-		self::assertSame('bar', ServiceMap::getServiceIdFromNode(new ClassConstFetch(new Name(ExampleController::class), 'BAR'), $scope));
-		self::assertSame('foobar', ServiceMap::getServiceIdFromNode(new Concat(new String_('foo'), new ClassConstFetch(new Name(ExampleController::class), 'BAR')), $scope));
-
-		$scope = $scope->enterClass($broker->getClass(ExampleController::class));
-		self::assertSame('bar', ServiceMap::getServiceIdFromNode(new ClassConstFetch(new Name('static'), 'BAR'), $scope));
+		yield [
+			'unknown',
+			function (?Service $service): void {
+				self::assertNull($service);
+			},
+		];
+		yield [
+			'withoutClass',
+			function (?Service $service): void {
+				self::assertNotNull($service);
+				self::assertSame('withoutClass', $service->getId());
+				self::assertNull($service->getClass());
+				self::assertTrue($service->isPublic());
+				self::assertFalse($service->isSynthetic());
+				self::assertNull($service->getAlias());
+			},
+		];
+		yield [
+			'withClass',
+			function (?Service $service): void {
+				self::assertNotNull($service);
+				self::assertSame('withClass', $service->getId());
+				self::assertSame('Foo', $service->getClass());
+				self::assertTrue($service->isPublic());
+				self::assertFalse($service->isSynthetic());
+				self::assertNull($service->getAlias());
+			},
+		];
+		yield [
+			'withoutPublic',
+			function (?Service $service): void {
+				self::assertNotNull($service);
+				self::assertSame('withoutPublic', $service->getId());
+				self::assertSame('Foo', $service->getClass());
+				self::assertTrue($service->isPublic());
+				self::assertFalse($service->isSynthetic());
+				self::assertNull($service->getAlias());
+			},
+		];
+		yield [
+			'publicNotFalse',
+			function (?Service $service): void {
+				self::assertNotNull($service);
+				self::assertSame('publicNotFalse', $service->getId());
+				self::assertSame('Foo', $service->getClass());
+				self::assertTrue($service->isPublic());
+				self::assertFalse($service->isSynthetic());
+				self::assertNull($service->getAlias());
+			},
+		];
+		yield [
+			'private',
+			function (?Service $service): void {
+				self::assertNotNull($service);
+				self::assertSame('private', $service->getId());
+				self::assertSame('Foo', $service->getClass());
+				self::assertFalse($service->isPublic());
+				self::assertFalse($service->isSynthetic());
+				self::assertNull($service->getAlias());
+			},
+		];
+		yield [
+			'synthetic',
+			function (?Service $service): void {
+				self::assertNotNull($service);
+				self::assertSame('synthetic', $service->getId());
+				self::assertSame('Foo', $service->getClass());
+				self::assertTrue($service->isPublic());
+				self::assertTrue($service->isSynthetic());
+				self::assertNull($service->getAlias());
+			},
+		];
+		yield [
+			'alias',
+			function (?Service $service): void {
+				self::assertNotNull($service);
+				self::assertSame('alias', $service->getId());
+				self::assertSame('Foo', $service->getClass());
+				self::assertTrue($service->isPublic());
+				self::assertFalse($service->isSynthetic());
+				self::assertSame('withClass', $service->getAlias());
+			},
+		];
 	}
 
 }

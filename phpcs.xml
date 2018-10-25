@@ -7,6 +7,7 @@
         <exclude name="SlevomatCodingStandard.Namespaces.FullyQualifiedExceptions"/>
         <exclude name="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly"/>
         <exclude name="Consistence.Exceptions.ExceptionDeclaration"/>
+        <exclude name="Squiz.Commenting.FunctionComment.MissingParamTag"/>
     </rule>
     <rule ref="SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses">
         <properties>
@@ -39,5 +40,6 @@
             <property name="rootNamespaces" type="array" value="src=>PHPStan,tests=>PHPStan"/>
         </properties>
     </rule>
-    <exclude-pattern>tests/*/data</exclude-pattern>
+    <exclude-pattern>tests/tmp</exclude-pattern>
+    <exclude-pattern>tests/Symfony/ExampleContainer.php</exclude-pattern>
 </ruleset>

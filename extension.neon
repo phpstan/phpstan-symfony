@@ -1,33 +1,38 @@
+rules:
+	- PHPStan\Rules\Symfony\ContainerInterfacePrivateServiceRule
+	- PHPStan\Rules\Symfony\ContainerInterfaceUnknownServiceRule
+
 services:
+	# service map
+	symfony.serviceMapFactory:
+		class: PHPStan\Symfony\ServiceMapFactory
+		factory: PHPStan\Symfony\XmlServiceMapFactory(%symfony.container_xml_path%)
 	-
-		class: PHPStan\Type\Symfony\ContainerInterfaceDynamicReturnTypeExtension
-		tags:
-			- phpstan.broker.dynamicMethodReturnTypeExtension
+		class: PHPStan\Symfony\ServiceMap(@symfony.serviceMapFactory::create())
+
+	# ControllerTrait::get()/has() return type
 	-
-		class: PHPStan\Type\Symfony\ControllerDynamicReturnTypeExtension
-		tags:
-			- phpstan.broker.dynamicMethodReturnTypeExtension
+		class: PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension(Symfony\Component\DependencyInjection\ContainerInterface)
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+	-
+		class: PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension(Symfony\Bundle\FrameworkBundle\Controller\Controller)
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+	-
+		class: PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension(Symfony\Bundle\FrameworkBundle\Controller\AbstractController)
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
+	# ControllerTrait::has() type specification
+	-
+		class: PHPStan\Type\Symfony\ServiceTypeSpecifyingExtension(Symfony\Component\DependencyInjection\ContainerInterface)
+		tags: [phpstan.typeSpecifier.methodTypeSpecifyingExtension]
+	-
+		class: PHPStan\Type\Symfony\ServiceTypeSpecifyingExtension(Symfony\Bundle\FrameworkBundle\Controller\Controller)
+		tags: [phpstan.typeSpecifier.methodTypeSpecifyingExtension]
+	-
+		class: PHPStan\Type\Symfony\ServiceTypeSpecifyingExtension(Symfony\Bundle\FrameworkBundle\Controller\AbstractController)
+		tags: [phpstan.typeSpecifier.methodTypeSpecifyingExtension]
+
+	# Request::getContent() return type
 	-
 		class: PHPStan\Type\Symfony\RequestDynamicReturnTypeExtension
-		tags:
-			- phpstan.broker.dynamicMethodReturnTypeExtension
-	-
-		class: PHPStan\Rules\Symfony\ContainerInterfacePrivateServiceRule
-		tags:
-			- phpstan.rules.rule
-	-
-		class: PHPStan\Rules\Symfony\ContainerInterfaceUnknownServiceRule
-		tags:
-			- phpstan.rules.rule
-	-
-		class: PHPStan\Type\Symfony\ContainerInterfaceMethodTypeSpecifyingExtension
-		tags:
-			- phpstan.typeSpecifier.methodTypeSpecifyingExtension
-	-
-		class: PHPStan\Type\Symfony\ControllerMethodTypeSpecifyingExtension
-		tags:
-			- phpstan.typeSpecifier.methodTypeSpecifyingExtension
-	-
-		class: PHPStan\Symfony\ServiceMap
-		arguments:
-			containerXml: %symfony.container_xml_path%
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]

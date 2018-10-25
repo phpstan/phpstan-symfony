@@ -3,26 +3,27 @@
 namespace PHPStan\Rules\Symfony;
 
 use PHPStan\Rules\Rule;
-use PHPStan\Symfony\ServiceMap;
+use PHPStan\Symfony\XmlServiceMapFactory;
+use PHPStan\Testing\RuleTestCase;
 
-final class ContainerInterfacePrivateServiceRuleTest extends \PHPStan\Testing\RuleTestCase
+final class ContainerInterfacePrivateServiceRuleTest extends RuleTestCase
 {
 
 	protected function getRule(): Rule
 	{
-		$serviceMap = new ServiceMap(__DIR__ . '/../../Symfony/data/container.xml');
-
-		return new ContainerInterfacePrivateServiceRule($serviceMap);
+		return new ContainerInterfacePrivateServiceRule((new XmlServiceMapFactory(__DIR__ . '/container.xml'))->create());
 	}
 
 	public function testGetPrivateService(): void
 	{
 		$this->analyse(
-			[__DIR__ . '/../../Symfony/data/ExampleController.php'],
+			[
+				__DIR__ . '/ExampleController.php',
+			],
 			[
 				[
 					'Service "private" is private.',
-					15,
+					12,
 				],
 			]
 		);

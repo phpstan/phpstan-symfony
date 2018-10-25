@@ -2,7 +2,7 @@
 
 namespace PHPStan\Symfony;
 
-final class Service
+final class Service implements ServiceDefinition
 {
 
 	/** @var string */
@@ -20,16 +20,12 @@ final class Service
 	/** @var string|null */
 	private $alias;
 
-	/** @var bool */
-	private $hidden;
-
 	public function __construct(
 		string $id,
 		?string $class,
 		bool $public,
 		bool $synthetic,
-		?string $alias,
-		bool $hidden
+		?string $alias
 	)
 	{
 		$this->id = $id;
@@ -37,7 +33,6 @@ final class Service
 		$this->public = $public;
 		$this->synthetic = $synthetic;
 		$this->alias = $alias;
-		$this->hidden = $hidden;
 	}
 
 	public function getId(): string
@@ -63,11 +58,6 @@ final class Service
 	public function getAlias(): ?string
 	{
 		return $this->alias;
-	}
-
-	public function isHidden(): bool
-	{
-		return $this->hidden;
 	}
 
 }

@@ -5,57 +5,31 @@ namespace PHPStan\Symfony;
 use PhpParser\Node\Expr;
 use PHPStan\Analyser\Scope;
 use PHPStan\Type\TypeUtils;
+use function count;
 
 final class ServiceMap
 {
 
-	/** @var Service[] */
-	private $services = [];
+	/** @var \PHPStan\Symfony\ServiceDefinition[] */
+	private $services;
 
-	public function __construct(string $containerXml)
+	/**
+	 * @param \PHPStan\Symfony\ServiceDefinition[] $services
+	 */
+	public function __construct(array $services)
 	{
-		/** @var Service[] $aliases */
-		$aliases = [];
-		/** @var \SimpleXMLElement|false $xml */
-		$xml = @simplexml_load_file($containerXml);
-		if ($xml === false) {
-			throw new \PHPStan\Symfony\XmlContainerNotExistsException(sprintf('Container %s not exists', $containerXml));
-		}
-		foreach ($xml->services->service as $def) {
-			$attrs = $def->attributes();
-			if (!isset($attrs->id)) {
-				continue;
-			}
-			$service = new Service(
-				strpos((string) $attrs->id, '.') === 0 ? substr((string) $attrs->id, 1) : (string) $attrs->id,
-				isset($attrs->class) ? (string) $attrs->class : null,
-				!isset($attrs->public) || (string) $attrs->public !== 'false',
-				isset($attrs->synthetic) && (string) $attrs->synthetic === 'true',
-				isset($attrs->alias) ? (string) $attrs->alias : null,
-				strpos((string) $attrs->id, '.') === 0
-			);
-			if ($service->getAlias() !== null) {
-				$aliases[] = $service;
-			} else {
-				$this->services[$service->getId()] = $service;
-			}
-		}
-		foreach ($aliases as $service) {
-			if ($service->getAlias() !== null && !array_key_exists($service->getAlias(), $this->services)) {
-				continue;
-			}
-			$this->services[$service->getId()] = new Service(
-				$service->getId(),
-				$this->services[$service->getAlias()]->getClass(),
-				$service->isPublic(),
-				$service->isSynthetic(),
-				$service->getAlias(),
-				$service->isHidden()
-			);
-		}
+		$this->services = $services;
 	}
 
-	public function getService(string $id): ?Service
+	/**
+	 * @return \PHPStan\Symfony\ServiceDefinition[]
+	 */
+	public function getServices(): array
+	{
+		return $this->services;
+	}
+
+	public function getService(string $id): ?ServiceDefinition
 	{
 		return $this->services[$id] ?? null;
 	}

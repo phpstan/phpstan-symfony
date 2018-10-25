@@ -29,9 +29,9 @@ includes:
 	- vendor/phpstan/phpstan-symfony/extension.neon
 parameters:
 	symfony:
-		container_xml_path: %rootDir%/../../../var/cache/dev/appDevDebugProjectContainer.xml # or srcDevDebugProjectContainer.xml for Symfony 4+
+		container_xml_path: %rootDir%/../../../var/cache/dev/srcDevDebugProjectContainer.xml
 ```
 
 ## Limitations
 
-You have to provide a path to `appDevDebugProjectContainer.xml` or similar xml file describing your container.
+You have to provide a path to `srcDevDebugProjectContainer.xml` or similar xml file describing your container.

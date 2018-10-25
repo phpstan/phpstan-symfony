@@ -8,6 +8,7 @@ use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
 use PHPStan\Symfony\ServiceMap;
 use PHPStan\Type\ObjectType;
+use function sprintf;
 
 final class ContainerInterfacePrivateServiceRule implements Rule
 {
@@ -42,9 +43,10 @@ final class ContainerInterfacePrivateServiceRule implements Rule
 
 		$argType = $scope->getType($node->var);
 		$isControllerType = (new ObjectType('Symfony\Bundle\FrameworkBundle\Controller\Controller'))->isSuperTypeOf($argType);
+		$isAbstractControllerType = (new ObjectType('Symfony\Bundle\FrameworkBundle\Controller\AbstractController'))->isSuperTypeOf($argType);
 		$isContainerType = (new ObjectType('Symfony\Component\DependencyInjection\ContainerInterface'))->isSuperTypeOf($argType);
 		$isTestContainerType = (new ObjectType('Symfony\Bundle\FrameworkBundle\Test\TestContainer'))->isSuperTypeOf($argType);
-		if ($isTestContainerType->yes() || (!$isControllerType->yes() && !$isContainerType->yes())) {
+		if ($isTestContainerType->yes() || (!$isControllerType->yes() && !$isAbstractControllerType->yes() && !$isContainerType->yes())) {
 			return [];
 		}
 
