@@ -1,6 +1,6 @@
 parameters:
 	symfony:
-		container_xml_path: ''
+		container_xml_path: %rootDir%/container.xml
 
 services:
 	- PhpParser\PrettyPrinter\Standard

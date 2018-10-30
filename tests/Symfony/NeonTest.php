@@ -24,6 +24,7 @@ final class NeonTest extends TestCase
 
 		$class = $loader->load(function (Compiler $compiler): void {
 			$compiler->addExtension('rules', new RulesExtension());
+			$compiler->addConfig(['parameters' => ['rootDir' => __DIR__]]);
 			$compiler->loadConfig(__DIR__ . '/config.neon');
 			$compiler->loadConfig(__DIR__ . '/../../extension.neon');
 		}, $key);
@@ -31,8 +32,9 @@ final class NeonTest extends TestCase
 		$container = new $class();
 
 		self::assertSame([
+			'rootDir' => __DIR__,
 			'symfony' => [
-				'container_xml_path' => '',
+				'container_xml_path' => __DIR__ . '/container.xml',
 				'constant_hassers' => true,
 			],
 		], $container->getParameters());
@@ -40,6 +42,7 @@ final class NeonTest extends TestCase
 		self::assertCount(2, $container->findByTag('phpstan.rules.rule'));
 		self::assertCount(4, $container->findByTag('phpstan.broker.dynamicMethodReturnTypeExtension'));
 		self::assertCount(3, $container->findByTag('phpstan.typeSpecifier.methodTypeSpecifyingExtension'));
+		self::assertInstanceOf(ServiceMap::class, $container->getByType(ServiceMap::class));
 	}
 
 }

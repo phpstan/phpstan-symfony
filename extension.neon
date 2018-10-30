@@ -12,7 +12,7 @@ services:
 		class: PHPStan\Symfony\ServiceMapFactory
 		factory: PHPStan\Symfony\XmlServiceMapFactory(%symfony.container_xml_path%)
 	-
-		class: PHPStan\Symfony\ServiceMap(@symfony.serviceMapFactory::create())
+		class: @symfony.serviceMapFactory::create()
 
 	# ControllerTrait::get()/has() return type
 	-
