@@ -10,12 +10,12 @@ class Container_14d7103555 extends Nette\DI\Container
 			'PhpParser\PrettyPrinter\Standard' => [1 => ['3_PhpParser_PrettyPrinter_Standard']],
 			'PHPStan\Symfony\ServiceMap' => [1 => ['4']],
 			'PHPStan\Symfony\ServiceMapFactory' => [1 => ['symfony.serviceMapFactory']],
-			'PHPStan\Type\DynamicMethodReturnTypeExtension' => [1 => ['6', '7', '9', '11']],
+			'PHPStan\Type\DynamicMethodReturnTypeExtension' => [1 => ['6', '10', '11', '12']],
 			'PHPStan\Type\Symfony\RequestDynamicReturnTypeExtension' => [1 => ['6']],
-			'PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension' => [1 => ['7', '9', '11']],
-			'PHPStan\Type\MethodTypeSpecifyingExtension' => [1 => ['8', '10', '12']],
-			'PHPStan\Analyser\TypeSpecifierAwareExtension' => [1 => ['8', '10', '12']],
-			'PHPStan\Type\Symfony\ServiceTypeSpecifyingExtension' => [1 => ['8', '10', '12']],
+			'PHPStan\Type\MethodTypeSpecifyingExtension' => [1 => ['7', '8', '9']],
+			'PHPStan\Analyser\TypeSpecifierAwareExtension' => [1 => ['7', '8', '9']],
+			'PHPStan\Type\Symfony\ServiceTypeSpecifyingExtension' => [1 => ['7', '8', '9']],
+			'PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension' => [1 => ['10', '11', '12']],
 			'Nette\DI\Container' => [1 => ['container']],
 		],
 		'services' => [
@@ -26,17 +26,17 @@ class Container_14d7103555 extends Nette\DI\Container
 			'symfony.serviceMapFactory' => 'PHPStan\Symfony\ServiceMapFactory',
 			4 => 'PHPStan\Symfony\ServiceMap',
 			6 => 'PHPStan\Type\Symfony\RequestDynamicReturnTypeExtension',
-			'PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension',
+			'PHPStan\Type\Symfony\ServiceTypeSpecifyingExtension',
+			'PHPStan\Type\Symfony\ServiceTypeSpecifyingExtension',
 			'PHPStan\Type\Symfony\ServiceTypeSpecifyingExtension',
 			'PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension',
-			'PHPStan\Type\Symfony\ServiceTypeSpecifyingExtension',
 			'PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension',
-			'PHPStan\Type\Symfony\ServiceTypeSpecifyingExtension',
+			'PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension',
 		],
 		'tags' => [
 			'phpstan.rules.rule' => ['rules.0' => true, 'rules.1' => true],
-			'phpstan.broker.dynamicMethodReturnTypeExtension' => [6 => true, true, 9 => true, 11 => true],
-			'phpstan.typeSpecifier.methodTypeSpecifyingExtension' => [8 => true, 10 => true, 12 => true],
+			'phpstan.broker.dynamicMethodReturnTypeExtension' => [6 => true, 10 => true, true, true],
+			'phpstan.typeSpecifier.methodTypeSpecifyingExtension' => [7 => true, true, true],
 		],
 		'aliases' => [],
 	];
@@ -45,7 +45,7 @@ class Container_14d7103555 extends Nette\DI\Container
 	public function __construct(array $params = [])
 	{
 		$this->parameters = $params;
-		$this->parameters += ['symfony' => ['container_xml_path' => '']];
+		$this->parameters += ['symfony' => ['container_xml_path' => '', 'constant_hassers' => true]];
 	}
 
 
@@ -97,14 +97,7 @@ class Container_14d7103555 extends Nette\DI\Container
 	}
 
 
-	public function createService__7(): PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension
-	{
-		$service = new PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension('Symfony\Bundle\FrameworkBundle\Controller\AbstractController', $this->getService('4'));
-		return $service;
-	}
-
-
-	public function createService__8(): PHPStan\Type\Symfony\ServiceTypeSpecifyingExtension
+	public function createService__7(): PHPStan\Type\Symfony\ServiceTypeSpecifyingExtension
 	{
 		$service = new PHPStan\Type\Symfony\ServiceTypeSpecifyingExtension(
 			'Symfony\Bundle\FrameworkBundle\Controller\AbstractController',
@@ -114,14 +107,7 @@ class Container_14d7103555 extends Nette\DI\Container
 	}
 
 
-	public function createService__9(): PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension
-	{
-		$service = new PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension('Symfony\Bundle\FrameworkBundle\Controller\Controller', $this->getService('4'));
-		return $service;
-	}
-
-
-	public function createService__10(): PHPStan\Type\Symfony\ServiceTypeSpecifyingExtension
+	public function createService__8(): PHPStan\Type\Symfony\ServiceTypeSpecifyingExtension
 	{
 		$service = new PHPStan\Type\Symfony\ServiceTypeSpecifyingExtension(
 			'Symfony\Bundle\FrameworkBundle\Controller\Controller',
@@ -131,19 +117,33 @@ class Container_14d7103555 extends Nette\DI\Container
 	}
 
 
-	public function createService__11(): PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension
-	{
-		$service = new PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension('Symfony\Component\DependencyInjection\ContainerInterface', $this->getService('4'));
-		return $service;
-	}
-
-
-	public function createService__12(): PHPStan\Type\Symfony\ServiceTypeSpecifyingExtension
+	public function createService__9(): PHPStan\Type\Symfony\ServiceTypeSpecifyingExtension
 	{
 		$service = new PHPStan\Type\Symfony\ServiceTypeSpecifyingExtension(
 			'Symfony\Component\DependencyInjection\ContainerInterface',
 			$this->getService('3_PhpParser_PrettyPrinter_Standard')
 		);
+		return $service;
+	}
+
+
+	public function createService__10(): PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension
+	{
+		$service = new PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension('Symfony\Bundle\FrameworkBundle\Controller\AbstractController', true, $this->getService('4'));
+		return $service;
+	}
+
+
+	public function createService__11(): PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension
+	{
+		$service = new PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension('Symfony\Bundle\FrameworkBundle\Controller\Controller', true, $this->getService('4'));
+		return $service;
+	}
+
+
+	public function createService__12(): PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension
+	{
+		$service = new PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension('Symfony\Component\DependencyInjection\ContainerInterface', true, $this->getService('4'));
 		return $service;
 	}
 

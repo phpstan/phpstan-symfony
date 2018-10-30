@@ -18,7 +18,7 @@ final class ServiceDynamicReturnTypeExtensionTest extends ExtensionTestCase
 			__DIR__ . '/ExampleController.php',
 			$expression,
 			$type,
-			new ServiceDynamicReturnTypeExtension(Controller::class, (new XmlServiceMapFactory(__DIR__ . '/container.xml'))->create())
+			new ServiceDynamicReturnTypeExtension(Controller::class, true, (new XmlServiceMapFactory(__DIR__ . '/container.xml'))->create())
 		);
 	}
 
@@ -32,6 +32,25 @@ final class ServiceDynamicReturnTypeExtensionTest extends ExtensionTestCase
 		yield ['$has2', 'false'];
 		yield ['$has3', 'bool'];
 		yield ['$has4', 'bool'];
+	}
+
+	/**
+	 * @dataProvider constantHassersOffProvider
+	 */
+	public function testConstantHassersOff(string $expression, string $type): void
+	{
+		$this->processFile(
+			__DIR__ . '/ExampleController.php',
+			$expression,
+			$type,
+			new ServiceDynamicReturnTypeExtension(Controller::class, false, (new XmlServiceMapFactory(__DIR__ . '/container.xml'))->create())
+		);
+	}
+
+	public function constantHassersOffProvider(): Iterator
+	{
+		yield ['$has1', 'bool'];
+		yield ['$has2', 'bool'];
 	}
 
 }

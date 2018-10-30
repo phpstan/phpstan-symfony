@@ -1,3 +1,7 @@
+parameters:
+	symfony:
+		constant_hassers: true
+
 rules:
 	- PHPStan\Rules\Symfony\ContainerInterfacePrivateServiceRule
 	- PHPStan\Rules\Symfony\ContainerInterfaceUnknownServiceRule
@@ -12,13 +16,13 @@ services:
 
 	# ControllerTrait::get()/has() return type
 	-
-		class: PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension(Symfony\Component\DependencyInjection\ContainerInterface)
+		class: PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension(Symfony\Component\DependencyInjection\ContainerInterface, %symfony.constant_hassers%)
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
 	-
-		class: PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension(Symfony\Bundle\FrameworkBundle\Controller\Controller)
+		class: PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension(Symfony\Bundle\FrameworkBundle\Controller\Controller, %symfony.constant_hassers%)
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
 	-
-		class: PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension(Symfony\Bundle\FrameworkBundle\Controller\AbstractController)
+		class: PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension(Symfony\Bundle\FrameworkBundle\Controller\AbstractController, %symfony.constant_hassers%)
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
 
 	# ControllerTrait::has() type specification

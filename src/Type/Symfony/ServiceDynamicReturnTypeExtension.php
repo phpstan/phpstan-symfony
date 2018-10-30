@@ -20,12 +20,16 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 	/** @var string */
 	private $className;
 
+	/** @var bool */
+	private $constantHassers;
+
 	/** @var \PHPStan\Symfony\ServiceMap */
 	private $symfonyServiceMap;
 
-	public function __construct(string $className, ServiceMap $symfonyServiceMap)
+	public function __construct(string $className, bool $constantHassers, ServiceMap $symfonyServiceMap)
 	{
 		$this->className = $className;
+		$this->constantHassers = $constantHassers;
 		$this->symfonyServiceMap = $symfonyServiceMap;
 	}
 
@@ -79,7 +83,7 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 	): Type
 	{
 		$returnType = ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
-		if (!isset($methodCall->args[0])) {
+		if (!isset($methodCall->args[0]) || !$this->constantHassers) {
 			return $returnType;
 		}
 

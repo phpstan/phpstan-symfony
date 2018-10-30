@@ -32,6 +32,24 @@ parameters:
 		container_xml_path: %rootDir%/../../../var/cache/dev/srcDevDebugProjectContainer.xml
 ```
 
-## Limitations
-
 You have to provide a path to `srcDevDebugProjectContainer.xml` or similar xml file describing your container.
+
+## Constant hassers
+
+Sometimes, when you are dealing with optional dependencies, the `::has()` methods can cause problems. For example, the following construct would complain that the condition is always either on or off, depending on whether you have the dependency for `service` installed:
+
+```php
+if ($this->has('service')) {
+    // ...
+}
+```
+
+In that case, you can disable the `::has()` method return type resolving like this: 
+
+```
+parameters:
+	symfony:
+		constant_hassers: false
+```
+
+Be aware that it may hide genuine errors in your application.
