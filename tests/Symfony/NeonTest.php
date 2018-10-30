@@ -22,13 +22,24 @@ final class NeonTest extends TestCase
 		@unlink($generatedContainer);
 		self::assertFileNotExists($generatedContainer);
 
-		$loader->load(function (Compiler $compiler): void {
+		$class = $loader->load(function (Compiler $compiler): void {
 			$compiler->addExtension('rules', new RulesExtension());
 			$compiler->loadConfig(__DIR__ . '/config.neon');
 			$compiler->loadConfig(__DIR__ . '/../../extension.neon');
 		}, $key);
+		/** @var \Nette\DI\Container $container */
+		$container = new $class();
 
-		self::assertFileEquals(__DIR__ . '/ExampleContainer.php', $generatedContainer);
+		self::assertSame([
+			'symfony' => [
+				'container_xml_path' => '',
+				'constant_hassers' => true,
+			],
+		], $container->getParameters());
+
+		self::assertCount(2, $container->findByTag('phpstan.rules.rule'));
+		self::assertCount(4, $container->findByTag('phpstan.broker.dynamicMethodReturnTypeExtension'));
+		self::assertCount(3, $container->findByTag('phpstan.typeSpecifier.methodTypeSpecifyingExtension'));
 	}
 
 }

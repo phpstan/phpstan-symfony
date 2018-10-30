@@ -10,14 +10,12 @@ use PHPStan\Analyser\ScopeContext;
 use PHPStan\Broker\AnonymousClassNameHelper;
 use PHPStan\Cache\Cache;
 use PHPStan\File\FileHelper;
-use PHPStan\File\RelativePathHelper;
 use PHPStan\PhpDoc\PhpDocStringResolver;
 use PHPStan\PhpDoc\TypeNodeResolver;
 use PHPStan\Testing\TestCase;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\FileTypeMapper;
 use PHPStan\Type\VerbosityLevel;
-use const DIRECTORY_SEPARATOR;
 
 abstract class ExtensionTestCase extends TestCase
 {
@@ -41,13 +39,13 @@ abstract class ExtensionTestCase extends TestCase
 		$resolver = new NodeScopeResolver(
 			$broker,
 			$parser,
-			new FileTypeMapper(
+			new FileTypeMapper(...[ // PHPStan commit 7b23c31 broke the constructor so we have to use splat here
 				$parser,
 				$phpDocStringResolver,
 				$this->createMock(Cache::class),
-				new AnonymousClassNameHelper($fileHelper, new RelativePathHelper($currentWorkingDirectory, DIRECTORY_SEPARATOR, [])),
-				$typeNodeResolver
-			),
+				$this->createMock(AnonymousClassNameHelper::class), // PHPStan commit 4fcdccc broke the helper so we have to use a mock here
+				$typeNodeResolver,
+			]),
 			$fileHelper,
 			$typeSpecifier,
 			true,
@@ -66,7 +64,7 @@ abstract class ExtensionTestCase extends TestCase
 				}
 				/** @var \PhpParser\Node\Stmt\Expression $expNode */
 				$expNode = $this->getParser()->parseString(sprintf('<?php %s;', $expression))[0];
-				self::assertSame($type, $scope->getType($expNode->expr)->describe(VerbosityLevel::precise()));
+				self::assertSame($type, $scope->getType($expNode->expr)->describe(VerbosityLevel::typeOnly()));
 				$run = true;
 			}
 		);
