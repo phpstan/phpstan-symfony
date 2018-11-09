@@ -50,6 +50,11 @@ final class ContainerInterfacePrivateServiceRule implements Rule
 			return [];
 		}
 
+		$isServiceSubscriber = (new ObjectType('Symfony\Component\DependencyInjection\ServiceSubscriberInterface'))->isSuperTypeOf($argType);
+		if ($isServiceSubscriber->yes()) {
+			return [];
+		}
+
 		$serviceId = ServiceMap::getServiceIdFromNode($node->args[0]->value, $scope);
 		if ($serviceId !== null) {
 			$service = $this->serviceMap->getService($serviceId);
