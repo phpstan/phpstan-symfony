@@ -29,4 +29,18 @@ final class ContainerInterfacePrivateServiceRuleTest extends RuleTestCase
 		);
 	}
 
+	public function testGetPrivateServiceInServiceSubscriber(): void
+	{
+		if (!interface_exists('Symfony\\Component\\DependencyInjection\\ServiceSubscriberInterface')) {
+			self::markTestSkipped('The test needs Symfony\Component\DependencyInjection\ServiceSubscriberInterface class.');
+		}
+
+		$this->analyse(
+			[
+				__DIR__ . '/ExampleServiceSubscriber.php',
+			],
+			[]
+		);
+	}
+
 }
