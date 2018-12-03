@@ -8,4 +8,5 @@ parameters:
 		- */tests/tmp/*
 		- */tests/*/ExampleContainer.php
 		- */tests/*/ExampleController.php
+		- */tests/*/ExampleServiceSubscriber.php
 		- */tests/*/request_get_content.php
