@@ -29,7 +29,6 @@
     "phpunit/phpunit": "^7.0",
     "phing/phing": "^2.16.0",
     "phpstan/phpstan-strict-rules": "^0.11",
-    "satooshi/php-coveralls": "^1.0",
     "slevomat/coding-standard": "^4.5.2",
     "phpstan/phpstan-phpunit": "^0.11",
     "symfony/framework-bundle": "^3.0 || ^4.0"
