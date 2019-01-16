@@ -50,6 +50,7 @@ abstract class ExtensionTestCase extends TestCase
 			$typeSpecifier,
 			true,
 			true,
+			true,
 			[]
 		);
 		$resolver->setAnalysedFiles([$fileHelper->normalizePath($file)]);
