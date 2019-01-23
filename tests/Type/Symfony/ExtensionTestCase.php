@@ -10,6 +10,7 @@ use PHPStan\Analyser\ScopeContext;
 use PHPStan\Broker\AnonymousClassNameHelper;
 use PHPStan\Cache\Cache;
 use PHPStan\File\FileHelper;
+use PHPStan\Node\InClassMethodNode;
 use PHPStan\PhpDoc\PhpDocStringResolver;
 use PHPStan\PhpDoc\TypeNodeResolver;
 use PHPStan\Testing\TestCase;
@@ -60,7 +61,7 @@ abstract class ExtensionTestCase extends TestCase
 			$parser->parseFile($file),
 			$this->createScopeFactory($broker, $typeSpecifier)->create(ScopeContext::create($file)),
 			function (Node $node, Scope $scope) use ($expression, $type, &$run): void {
-				if ((new Standard())->prettyPrint([$node]) !== 'die') {
+				if ((new Standard())->prettyPrint([$node instanceof InClassMethodNode ? $node->getOriginalNode() : $node]) !== 'die') {
 					return;
 				}
 				/** @var \PhpParser\Node\Stmt\Expression $expNode */
