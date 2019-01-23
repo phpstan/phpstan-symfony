@@ -30,6 +30,8 @@ includes:
 parameters:
 	symfony:
 		container_xml_path: %rootDir%/../../../var/cache/dev/srcDevDebugProjectContainer.xml
+		# or with Symfony 4.2+
+		container_xml_path: '%rootDir%/../../../var/cache/dev/srcApp_KernelDevDebugContainer.xml' 
 ```
 
 You have to provide a path to `srcDevDebugProjectContainer.xml` or similar xml file describing your container.
