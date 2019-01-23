@@ -25,13 +25,10 @@ final class HeaderBagDynamicReturnTypeExtensionTest extends ExtensionTestCase
 		yield ['$test1', 'string|null'];
 		yield ['$test2', 'string|null'];
 		yield ['$test3', 'string'];
-		yield ['$test4', 'array<int, string>|string'];
 		yield ['$test5', 'string|null'];
 		yield ['$test6', 'string'];
-		yield ['$test7', 'array<int, string>|string'];
-		yield ['$test8', 'array<int, string>|null'];
-		yield ['$test9', 'array<int, string>|string'];
-		yield ['$test10', 'array<int, string>'];
+		yield ['$test8', 'array<int, string>'];
+		yield ['$test9', 'array<int, string>'];
 	}
 
 }
