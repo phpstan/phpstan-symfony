@@ -2,11 +2,10 @@
 
 namespace PHPStan\Rules\Symfony;
 
-use Symfony\Contracts\Service\ServiceSubscriberInterface;
+use Symfony\Component\DependencyInjection\ServiceSubscriberInterface;
 
-final class ExampleServiceSubscriber implements ServiceSubscriberInterface
+final class ExampleLegacyServiceSubscriber implements ServiceSubscriberInterface
 {
-
 	public function privateService(): void
 	{
 		$this->get('private');

@@ -2,9 +2,9 @@
 
 namespace PHPStan\Rules\Symfony;
 
-use Symfony\Contracts\Service\ServiceSubscriberInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-final class ExampleServiceSubscriber implements ServiceSubscriberInterface
+final class ExampleServiceSubscriberFromAbstractController extends AbstractController
 {
 
 	public function privateService(): void
