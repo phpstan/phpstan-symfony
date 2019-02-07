@@ -6,6 +6,7 @@ use Symfony\Component\DependencyInjection\ServiceSubscriberInterface;
 
 final class ExampleLegacyServiceSubscriber implements ServiceSubscriberInterface
 {
+
 	public function privateService(): void
 	{
 		$this->get('private');
