@@ -45,3 +45,8 @@ services:
 	-
 		class: PHPStan\Type\Symfony\HeaderBagDynamicReturnTypeExtension
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
+	# SerializerInterface::deserialize() return type
+	-
+		class: PHPStan\Type\Symfony\SerializerInterfaceDynamicReturnTypeExtension
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
