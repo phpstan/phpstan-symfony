@@ -40,7 +40,7 @@ final class NeonTest extends TestCase
 		], $container->getParameters());
 
 		self::assertCount(2, $container->findByTag('phpstan.rules.rule'));
-		self::assertCount(5, $container->findByTag('phpstan.broker.dynamicMethodReturnTypeExtension'));
+		self::assertCount(6, $container->findByTag('phpstan.broker.dynamicMethodReturnTypeExtension'));
 		self::assertCount(3, $container->findByTag('phpstan.typeSpecifier.methodTypeSpecifyingExtension'));
 		self::assertInstanceOf(ServiceMap::class, $container->getByType(ServiceMap::class));
 	}
