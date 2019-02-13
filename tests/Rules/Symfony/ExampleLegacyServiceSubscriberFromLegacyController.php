@@ -2,9 +2,10 @@
 
 namespace PHPStan\Rules\Symfony;
 
-use Symfony\Contracts\Service\ServiceSubscriberInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\DependencyInjection\ServiceSubscriberInterface;
 
-final class ExampleServiceSubscriber implements ServiceSubscriberInterface
+final class ExampleLegacyServiceSubscriberFromLegacyController extends Controller implements ServiceSubscriberInterface
 {
 
 	public function privateService(): void
