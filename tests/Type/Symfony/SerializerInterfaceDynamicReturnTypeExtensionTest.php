@@ -24,6 +24,7 @@ final class SerializerInterfaceDynamicReturnTypeExtensionTest extends ExtensionT
 	{
 		yield ['$first', 'Bar'];
 		yield ['$second', 'array<Bar>'];
+		yield ['$third', 'array<array<Bar>>'];
 	}
 
 }
