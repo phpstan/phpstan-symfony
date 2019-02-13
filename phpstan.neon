@@ -6,7 +6,7 @@ includes:
 parameters:
 	excludes_analyse:
 		- */tests/tmp/*
-		- */tests/*/ExampleContainer.php
-		- */tests/*/ExampleController.php
-		- */tests/*/ExampleServiceSubscriber.php
+		- */tests/*/Example*.php
+		- */tests/*/header_bag_get.php
 		- */tests/*/request_get_content.php
+		- */tests/*/serializer.php
