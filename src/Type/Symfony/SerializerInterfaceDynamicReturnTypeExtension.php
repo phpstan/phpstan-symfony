@@ -34,9 +34,14 @@ class SerializerInterfaceDynamicReturnTypeExtension implements DynamicMethodRetu
 
 		$objectName = $argType->getValue();
 
+		return $this->getType($objectName);
+	}
+
+	private function getType(string $objectName): Type
+	{
 		if (substr($objectName, -2) === '[]') {
 			// The key type is determined by the data
-			return new ArrayType(new MixedType(false), new ObjectType(substr($objectName, 0, -2)));
+			return new ArrayType(new MixedType(false), $this->getType(substr($objectName, 0, -2)));
 		}
 
 		return new ObjectType($objectName);
