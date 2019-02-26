@@ -37,7 +37,14 @@ parameters:
 		container_xml_path: '%rootDir%/../../../var/cache/dev/srcApp_KernelDevDebugContainer.xml' 
 ```
 
-You have to provide a path to `srcDevDebugProjectContainer.xml` or similar xml file describing your container.
+You have to provide a path to `srcApp_KernelDevDebugContainer.xml` or similar xml file describing your container.
+
+To perform framework-specific checks, include also this file:
+
+```
+includes:
+	- vendor/phpstan/phpstan-symfony/rules.neon
+```
 
 ## Constant hassers
 
