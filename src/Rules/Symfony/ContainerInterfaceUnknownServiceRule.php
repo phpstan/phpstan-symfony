@@ -62,7 +62,8 @@ final class ContainerInterfaceUnknownServiceRule implements Rule
 		$serviceId = ServiceMap::getServiceIdFromNode($node->args[0]->value, $scope);
 		if ($serviceId !== null) {
 			$service = $this->serviceMap->getService($serviceId);
-			if ($service === null && !$scope->isSpecified(Helper::createMarkerNode($node->var, $scope->getType($node->args[0]->value), $this->printer))) {
+			$serviceIdType = $scope->getType($node->args[0]->value);
+			if ($service === null && !$scope->getType(Helper::createMarkerNode($node->var, $serviceIdType, $this->printer))->equals($serviceIdType)) {
 				return [sprintf('Service "%s" is not registered in the container.', $serviceId)];
 			}
 		}
