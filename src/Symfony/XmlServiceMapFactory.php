@@ -2,7 +2,7 @@
 
 namespace PHPStan\Symfony;
 
-use function simplexml_load_file;
+use function simplexml_load_string;
 use function sprintf;
 use function strpos;
 use function substr;
@@ -20,7 +20,12 @@ final class XmlServiceMapFactory implements ServiceMapFactory
 
 	public function create(): ServiceMap
 	{
-		$xml = @simplexml_load_file($this->containerXml);
+		$fileContents = file_get_contents($this->containerXml);
+		if ($fileContents === false) {
+			throw new XmlContainerNotExistsException(sprintf('Container %s does not exist or cannot be parsed', $this->containerXml));
+		}
+
+		$xml = @simplexml_load_string($fileContents);
 		if ($xml === false) {
 			throw new XmlContainerNotExistsException(sprintf('Container %s does not exist or cannot be parsed', $this->containerXml));
 		}

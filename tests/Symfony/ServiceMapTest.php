@@ -17,6 +17,14 @@ final class ServiceMapTest extends TestCase
 		$validator($factory->create()->getService($id));
 	}
 
+	public function testGetContainerEscapedPath(): void
+	{
+		$factory = new XmlServiceMapFactory(__DIR__ . '/containers/bugfix%2Fcontainer.xml');
+		$serviceMap = $factory->create();
+
+		self::assertNotNull($serviceMap->getService('withClass'));
+	}
+
 	public function getServiceProvider(): Iterator
 	{
 		yield [
