@@ -18,7 +18,7 @@ final class ServiceMap
 	 */
 	public function __construct(array $services)
 	{
-		$this->services = $services;
+		$this->services = array_change_key_case($services);
 	}
 
 	/**
@@ -31,7 +31,7 @@ final class ServiceMap
 
 	public function getService(string $id): ?ServiceDefinition
 	{
-		return $this->services[$id] ?? null;
+		return $this->services[strtolower($id)] ?? null;
 	}
 
 	public static function getServiceIdFromNode(Expr $node, Scope $scope): ?string
