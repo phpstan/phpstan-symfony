@@ -112,16 +112,17 @@ final class ServiceMapTest extends TestCase
 		];
 	}
 
-    public function testGetServiceIsNotCaseSensitive(): void
-    {
-        $serviceDefinition1 = $this->createMock(ServiceDefinition::class);
-        $serviceDefinition2 = $this->createMock(ServiceDefinition::class);
-        $serviceMap = new ServiceMap([
-            'foobar' => $serviceDefinition1,
-            'FooBarBaz' => $serviceDefinition2,
-        ]);
+	public function testGetServiceIsNotCaseSensitive(): void
+	{
+		$serviceDefinition1 = $this->createMock(ServiceDefinition::class);
+		$serviceDefinition2 = $this->createMock(ServiceDefinition::class);
+		$serviceMap = new ServiceMap([
+			'foobar' => $serviceDefinition1,
+			'FooBarBaz' => $serviceDefinition2,
+		]);
 
-        self::assertSame($serviceDefinition1, $serviceMap->getService('FooBar'));
-        self::assertSame($serviceDefinition2, $serviceMap->getService('foobarbaz'));
-    }
+		self::assertSame($serviceDefinition1, $serviceMap->getService('FooBar'));
+		self::assertSame($serviceDefinition2, $serviceMap->getService('foobarbaz'));
+	}
+
 }
