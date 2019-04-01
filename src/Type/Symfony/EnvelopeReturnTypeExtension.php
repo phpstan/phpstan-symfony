@@ -11,7 +11,6 @@ use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\MixedType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
-use Symfony\Component\Messenger\Stamp\StampInterface;
 
 final class EnvelopeReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
@@ -33,12 +32,12 @@ final class EnvelopeReturnTypeExtension implements DynamicMethodReturnTypeExtens
 	): Type
 	{
 		if (count($methodCall->args) === 0) {
-			return new ArrayType(new MixedType(), new ArrayType(new MixedType(), new ObjectType(StampInterface::class)));
+			return new ArrayType(new MixedType(), new ArrayType(new MixedType(), new ObjectType('Symfony\Component\Messenger\Stamp\StampInterface')));
 		}
 
 		$argType = $scope->getType($methodCall->args[0]->value);
 		if (!$argType instanceof ConstantStringType) {
-			return new ArrayType(new MixedType(), new ObjectType(StampInterface::class));
+			return new ArrayType(new MixedType(), new ObjectType('Symfony\Component\Messenger\Stamp\StampInterface'));
 		}
 
 		return new ArrayType(new MixedType(), new ObjectType($argType->getValue()));
