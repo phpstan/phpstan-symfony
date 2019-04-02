@@ -7,6 +7,8 @@ parameters:
 	excludes_analyse:
 		- */tests/tmp/*
 		- */tests/*/Example*.php
+		- */tests/*/console_application_loader.php
+		- */tests/*/envelope_all.php
 		- */tests/*/header_bag_get.php
 		- */tests/*/request_get_content.php
 		- */tests/*/serializer.php

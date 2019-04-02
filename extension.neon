@@ -1,12 +1,20 @@
 parameters:
 	symfony:
 		constant_hassers: true
+		console_application_loader: null
 
 rules:
 	- PHPStan\Rules\Symfony\ContainerInterfacePrivateServiceRule
 	- PHPStan\Rules\Symfony\ContainerInterfaceUnknownServiceRule
+	- PHPStan\Rules\Symfony\UndefinedArgumentRule
+	- PHPStan\Rules\Symfony\InvalidArgumentDefaultValueRule
 
 services:
+	# console resolver
+	-
+		factory: PHPStan\Symfony\ConsoleApplicationResolver
+		arguments: [%symfony.console_application_loader%]
+
 	# service map
 	symfony.serviceMapFactory:
 		class: PHPStan\Symfony\ServiceMapFactory
@@ -55,3 +63,13 @@ services:
 	-
 		factory: PHPStan\Type\Symfony\EnvelopeReturnTypeExtension
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
+	# InputInterface::getArgument() return type
+	-
+		factory: PHPStan\Type\Symfony\InputInterfaceGetArgumentDynamicReturnTypeExtension
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
+	# InputInterface::hasArgument() type specification
+	-
+		factory: PHPStan\Type\Symfony\ArgumentTypeSpecifyingExtension
+		tags: [phpstan.typeSpecifier.methodTypeSpecifyingExtension]

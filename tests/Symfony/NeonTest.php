@@ -36,12 +36,13 @@ final class NeonTest extends TestCase
 			'symfony' => [
 				'container_xml_path' => __DIR__ . '/container.xml',
 				'constant_hassers' => true,
+				'console_application_loader' => null,
 			],
 		], $container->getParameters());
 
-		self::assertCount(2, $container->findByTag('phpstan.rules.rule'));
-		self::assertCount(7, $container->findByTag('phpstan.broker.dynamicMethodReturnTypeExtension'));
-		self::assertCount(3, $container->findByTag('phpstan.typeSpecifier.methodTypeSpecifyingExtension'));
+		self::assertCount(4, $container->findByTag('phpstan.rules.rule'));
+		self::assertCount(8, $container->findByTag('phpstan.broker.dynamicMethodReturnTypeExtension'));
+		self::assertCount(4, $container->findByTag('phpstan.typeSpecifier.methodTypeSpecifyingExtension'));
 		self::assertInstanceOf(ServiceMap::class, $container->getByType(ServiceMap::class));
 	}
 
