@@ -5,6 +5,7 @@ namespace PHPStan\Rules\Symfony;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 final class ExampleCommand extends Command
@@ -22,6 +23,12 @@ final class ExampleCommand extends Command
 		$this->addArgument('quz1', null, '', ['']);
 
 		$this->addArgument('quz2', InputArgument::IS_ARRAY, '', ['a' => 'b']);
+
+		$this->addOption('aaa');
+
+		$this->addOption('b', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL, '', [1]);
+		$this->addOption('c', null, InputOption::VALUE_OPTIONAL, '', 1);
+		$this->addOption('d', null, InputOption::VALUE_OPTIONAL, '', false);
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output): int
@@ -31,6 +38,13 @@ final class ExampleCommand extends Command
 
 		if ($input->hasArgument('guarded')) {
 			$input->getArgument('guarded');
+		}
+
+		$input->getOption('aaa');
+		$input->getOption('bbb');
+
+		if ($input->hasOption('ccc')) {
+			$input->getOption('ccc');
 		}
 
 		return 0;

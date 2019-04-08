@@ -8,6 +8,8 @@ rules:
 	- PHPStan\Rules\Symfony\ContainerInterfaceUnknownServiceRule
 	- PHPStan\Rules\Symfony\UndefinedArgumentRule
 	- PHPStan\Rules\Symfony\InvalidArgumentDefaultValueRule
+	- PHPStan\Rules\Symfony\UndefinedOptionRule
+	- PHPStan\Rules\Symfony\InvalidOptionDefaultValueRule
 
 services:
 	# console resolver
@@ -72,4 +74,14 @@ services:
 	# InputInterface::hasArgument() type specification
 	-
 		factory: PHPStan\Type\Symfony\ArgumentTypeSpecifyingExtension
+		tags: [phpstan.typeSpecifier.methodTypeSpecifyingExtension]
+
+	# InputInterface::getOption() return type
+	-
+		factory: PHPStan\Type\Symfony\InputInterfaceGetOptionDynamicReturnTypeExtension
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
+	# InputInterface::hasOption() type specification
+	-
+		factory: PHPStan\Type\Symfony\OptionTypeSpecifyingExtension
 		tags: [phpstan.typeSpecifier.methodTypeSpecifyingExtension]

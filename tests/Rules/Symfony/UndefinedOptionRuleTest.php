@@ -6,14 +6,14 @@ use PhpParser\PrettyPrinter\Standard;
 use PHPStan\Rules\Rule;
 use PHPStan\Symfony\ConsoleApplicationResolver;
 use PHPStan\Testing\RuleTestCase;
-use PHPStan\Type\Symfony\ArgumentTypeSpecifyingExtension;
+use PHPStan\Type\Symfony\OptionTypeSpecifyingExtension;
 
-final class UndefinedArgumentRuleTest extends RuleTestCase
+final class UndefinedOptionRuleTest extends RuleTestCase
 {
 
 	protected function getRule(): Rule
 	{
-		return new UndefinedArgumentRule(new ConsoleApplicationResolver(__DIR__ . '/console_application_loader.php'), new Standard());
+		return new UndefinedOptionRule(new ConsoleApplicationResolver(__DIR__ . '/console_application_loader.php'), new Standard());
 	}
 
 	/**
@@ -22,7 +22,7 @@ final class UndefinedArgumentRuleTest extends RuleTestCase
 	protected function getMethodTypeSpecifyingExtensions(): array
 	{
 		return [
-			new ArgumentTypeSpecifyingExtension(new Standard()),
+			new OptionTypeSpecifyingExtension(new Standard()),
 		];
 	}
 
@@ -34,8 +34,8 @@ final class UndefinedArgumentRuleTest extends RuleTestCase
 			],
 			[
 				[
-					'Command "example-rule" does not define argument "undefined".',
-					37,
+					'Command "example-rule" does not define option "bbb".',
+					44,
 				],
 			]
 		);
