@@ -76,6 +76,11 @@ services:
 		factory: PHPStan\Type\Symfony\ArgumentTypeSpecifyingExtension
 		tags: [phpstan.typeSpecifier.methodTypeSpecifyingExtension]
 
+	# InputInterface::hasArgument() return type
+	-
+		factory: PHPStan\Type\Symfony\InputInterfaceHasArgumentDynamicReturnTypeExtension
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
 	# InputInterface::getOption() return type
 	-
 		factory: PHPStan\Type\Symfony\InputInterfaceGetOptionDynamicReturnTypeExtension
@@ -85,3 +90,8 @@ services:
 	-
 		factory: PHPStan\Type\Symfony\OptionTypeSpecifyingExtension
 		tags: [phpstan.typeSpecifier.methodTypeSpecifyingExtension]
+
+	# InputInterface::hasOption() return type
+	-
+		factory: PHPStan\Type\Symfony\InputInterfaceHasOptionDynamicReturnTypeExtension
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]

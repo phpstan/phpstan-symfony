@@ -15,7 +15,7 @@ This extension provides following features:
 * Provides correct return type for `Envelope::all()` method based on the `$stampFqcn` parameter.
 * Notifies you when you try to get an unregistered service from the container.
 * Notifies you when you try to get a private service from the container.
-* Optionally correct return types for `InputInterface::getArgument()` and `::getOption`
+* Optionally correct return types for `InputInterface::getArgument()`, `::getOption`, `::hasArgument`, and `::hasOption`.
 
 ## Usage
 
