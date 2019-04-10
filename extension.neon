@@ -1,5 +1,6 @@
 parameters:
 	symfony:
+		container_xml_path: null
 		constant_hassers: true
 		console_application_loader: null
 

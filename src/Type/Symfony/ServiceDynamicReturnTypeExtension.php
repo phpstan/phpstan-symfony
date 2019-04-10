@@ -24,13 +24,13 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 	private $constantHassers;
 
 	/** @var \PHPStan\Symfony\ServiceMap */
-	private $symfonyServiceMap;
+	private $serviceMap;
 
 	public function __construct(string $className, bool $constantHassers, ServiceMap $symfonyServiceMap)
 	{
 		$this->className = $className;
 		$this->constantHassers = $constantHassers;
-		$this->symfonyServiceMap = $symfonyServiceMap;
+		$this->serviceMap = $symfonyServiceMap;
 	}
 
 	public function getClass(): string
@@ -65,9 +65,9 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 			return $returnType;
 		}
 
-		$serviceId = ServiceMap::getServiceIdFromNode($methodCall->args[0]->value, $scope);
+		$serviceId = $this->serviceMap::getServiceIdFromNode($methodCall->args[0]->value, $scope);
 		if ($serviceId !== null) {
-			$service = $this->symfonyServiceMap->getService($serviceId);
+			$service = $this->serviceMap->getService($serviceId);
 			if ($service !== null && !$service->isSynthetic()) {
 				return new ObjectType($service->getClass() ?? $serviceId);
 			}
@@ -87,9 +87,9 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 			return $returnType;
 		}
 
-		$serviceId = ServiceMap::getServiceIdFromNode($methodCall->args[0]->value, $scope);
+		$serviceId = $this->serviceMap::getServiceIdFromNode($methodCall->args[0]->value, $scope);
 		if ($serviceId !== null) {
-			$service = $this->symfonyServiceMap->getService($serviceId);
+			$service = $this->serviceMap->getService($serviceId);
 			return new ConstantBooleanType($service !== null && $service->isPublic());
 		}
 

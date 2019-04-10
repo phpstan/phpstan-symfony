@@ -25,8 +25,8 @@ final class NeonTest extends TestCase
 		$class = $loader->load(function (Compiler $compiler): void {
 			$compiler->addExtension('rules', new RulesExtension());
 			$compiler->addConfig(['parameters' => ['rootDir' => __DIR__]]);
-			$compiler->loadConfig(__DIR__ . '/config.neon');
 			$compiler->loadConfig(__DIR__ . '/../../extension.neon');
+			$compiler->loadConfig(__DIR__ . '/config.neon');
 		}, $key);
 		/** @var \Nette\DI\Container $container */
 		$container = new $class();

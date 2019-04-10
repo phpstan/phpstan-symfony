@@ -10,16 +10,20 @@ use function substr;
 final class XmlServiceMapFactory implements ServiceMapFactory
 {
 
-	/** @var string */
+	/** @var string|null */
 	private $containerXml;
 
-	public function __construct(string $containerXml)
+	public function __construct(?string $containerXml)
 	{
 		$this->containerXml = $containerXml;
 	}
 
 	public function create(): ServiceMap
 	{
+		if ($this->containerXml === null) {
+			return new FakeServiceMap();
+		}
+
 		$fileContents = file_get_contents($this->containerXml);
 		if ($fileContents === false) {
 			throw new XmlContainerNotExistsException(sprintf('Container %s does not exist or cannot be parsed', $this->containerXml));
@@ -70,7 +74,7 @@ final class XmlServiceMapFactory implements ServiceMapFactory
 			);
 		}
 
-		return new ServiceMap($services);
+		return new DefaultServiceMap($services);
 	}
 
 }
