@@ -24,8 +24,8 @@ final class InputInterfaceGetOptionDynamicReturnTypeExtensionTest extends Extens
 	public function argumentTypesProvider(): Iterator
 	{
 		yield ['$a', 'bool'];
-		yield ['$b', 'string|null'];
-		yield ['$c', 'string|null'];
+		yield ['$b', 'int|string|null'];
+		yield ['$c', 'int|string|null'];
 		yield ['$d', 'array<int, string|null>'];
 		yield ['$e', 'array<int, string>'];
 

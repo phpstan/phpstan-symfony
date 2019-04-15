@@ -66,7 +66,7 @@ final class InvalidOptionDefaultValueRule implements Rule
 
 		// not an array
 		if (($mode & 8) !== 8) {
-			$checkType = new UnionType([new StringType(), new NullType()]);
+			$checkType = new UnionType([new StringType(), new IntegerType(), new NullType()]);
 			if (($mode & 4) === 4) { // https://symfony.com/doc/current/console/input.html#options-with-optional-arguments
 				$checkType = TypeCombinator::union($checkType, new ConstantBooleanType(false));
 			}

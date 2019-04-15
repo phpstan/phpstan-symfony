@@ -67,12 +67,12 @@ final class InputInterfaceGetOptionDynamicReturnTypeExtension implements Dynamic
 				if (!$option->acceptValue()) {
 					$optType = new BooleanType();
 				} else {
-					$optType = TypeCombinator::union(new StringType(), new NullType());
+					$optType = TypeCombinator::union(new StringType(), new IntegerType(), new NullType());
 					if ($option->isValueRequired() && ($option->isArray() || $option->getDefault() !== null)) {
 						$optType = TypeCombinator::removeNull($optType);
 					}
 					if ($option->isArray()) {
-						$optType = new ArrayType(new IntegerType(), $optType);
+						$optType = new ArrayType(new IntegerType(), TypeCombinator::remove($optType, new IntegerType()));
 					}
 					$optType = TypeCombinator::union($optType, $scope->getTypeFromValue($option->getDefault()));
 				}
