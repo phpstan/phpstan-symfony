@@ -1,12 +1,23 @@
 parameters:
 	symfony:
+		container_xml_path: null
 		constant_hassers: true
+		console_application_loader: null
 
 rules:
 	- PHPStan\Rules\Symfony\ContainerInterfacePrivateServiceRule
 	- PHPStan\Rules\Symfony\ContainerInterfaceUnknownServiceRule
+	- PHPStan\Rules\Symfony\UndefinedArgumentRule
+	- PHPStan\Rules\Symfony\InvalidArgumentDefaultValueRule
+	- PHPStan\Rules\Symfony\UndefinedOptionRule
+	- PHPStan\Rules\Symfony\InvalidOptionDefaultValueRule
 
 services:
+	# console resolver
+	-
+		factory: PHPStan\Symfony\ConsoleApplicationResolver
+		arguments: [%symfony.console_application_loader%]
+
 	# service map
 	symfony.serviceMapFactory:
 		class: PHPStan\Symfony\ServiceMapFactory
@@ -54,4 +65,34 @@ services:
 	# Envelope::all() return type
 	-
 		factory: PHPStan\Type\Symfony\EnvelopeReturnTypeExtension
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
+	# InputInterface::getArgument() return type
+	-
+		factory: PHPStan\Type\Symfony\InputInterfaceGetArgumentDynamicReturnTypeExtension
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
+	# InputInterface::hasArgument() type specification
+	-
+		factory: PHPStan\Type\Symfony\ArgumentTypeSpecifyingExtension
+		tags: [phpstan.typeSpecifier.methodTypeSpecifyingExtension]
+
+	# InputInterface::hasArgument() return type
+	-
+		factory: PHPStan\Type\Symfony\InputInterfaceHasArgumentDynamicReturnTypeExtension
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
+	# InputInterface::getOption() return type
+	-
+		factory: PHPStan\Type\Symfony\InputInterfaceGetOptionDynamicReturnTypeExtension
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
+	# InputInterface::hasOption() type specification
+	-
+		factory: PHPStan\Type\Symfony\OptionTypeSpecifyingExtension
+		tags: [phpstan.typeSpecifier.methodTypeSpecifyingExtension]
+
+	# InputInterface::hasOption() return type
+	-
+		factory: PHPStan\Type\Symfony\InputInterfaceHasOptionDynamicReturnTypeExtension
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]

@@ -4,40 +4,17 @@ namespace PHPStan\Symfony;
 
 use PhpParser\Node\Expr;
 use PHPStan\Analyser\Scope;
-use PHPStan\Type\TypeUtils;
-use function count;
 
-final class ServiceMap
+interface ServiceMap
 {
-
-	/** @var \PHPStan\Symfony\ServiceDefinition[] */
-	private $services;
-
-	/**
-	 * @param \PHPStan\Symfony\ServiceDefinition[] $services
-	 */
-	public function __construct(array $services)
-	{
-		$this->services = $services;
-	}
 
 	/**
 	 * @return \PHPStan\Symfony\ServiceDefinition[]
 	 */
-	public function getServices(): array
-	{
-		return $this->services;
-	}
+	public function getServices(): array;
 
-	public function getService(string $id): ?ServiceDefinition
-	{
-		return $this->services[$id] ?? null;
-	}
+	public function getService(string $id): ?ServiceDefinition;
 
-	public static function getServiceIdFromNode(Expr $node, Scope $scope): ?string
-	{
-		$strings = TypeUtils::getConstantStrings($scope->getType($node));
-		return count($strings) === 1 ? $strings[0]->getValue() : null;
-	}
+	public static function getServiceIdFromNode(Expr $node, Scope $scope): ?string;
 
 }

@@ -59,7 +59,7 @@ final class ContainerInterfaceUnknownServiceRule implements Rule
 			return [];
 		}
 
-		$serviceId = ServiceMap::getServiceIdFromNode($node->args[0]->value, $scope);
+		$serviceId = $this->serviceMap::getServiceIdFromNode($node->args[0]->value, $scope);
 		if ($serviceId !== null) {
 			$service = $this->serviceMap->getService($serviceId);
 			$serviceIdType = $scope->getType($node->args[0]->value);

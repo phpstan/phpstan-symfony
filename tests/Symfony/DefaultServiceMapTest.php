@@ -5,7 +5,7 @@ namespace PHPStan\Symfony;
 use Iterator;
 use PHPUnit\Framework\TestCase;
 
-final class ServiceMapTest extends TestCase
+final class DefaultServiceMapTest extends TestCase
 {
 
 	/**

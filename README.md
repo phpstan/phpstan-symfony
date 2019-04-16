@@ -11,8 +11,11 @@ This extension provides following features:
 * Provides correct return type for `ContainerInterface::get()` and `::has()` methods.
 * Provides correct return type for `Controller::get()` and `::has()` methods.
 * Provides correct return type for `Request::getContent()` method based on the `$asResource` parameter.
+* Provides correct return type for `HeaderBag::get()` method based on the `$first` parameter.
+* Provides correct return type for `Envelope::all()` method based on the `$stampFqcn` parameter.
 * Notifies you when you try to get an unregistered service from the container.
 * Notifies you when you try to get a private service from the container.
+* Optionally correct return types for `InputInterface::getArgument()`, `::getOption`, `::hasArgument`, and `::hasOption`.
 
 ## Usage
 
@@ -55,3 +58,21 @@ parameters:
 ```
 
 Be aware that it may hide genuine errors in your application.
+
+## Console command analysis
+
+You can opt in for more advanced analysis by providing the console application from your own application. This will allow the correct argument and option types to be inferred when accessing $input->getArgument() or $input->getOption().
+
+```
+parameters:
+	symfony:
+		console_application_loader: tests/console-application.php
+```
+
+For example, in a Symfony project, `console-application.php` would look something like this:
+
+```php
+require dirname(__DIR__).'/../config/bootstrap.php';
+$kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
+return new \Symfony\Bundle\FrameworkBundle\Console\Application($kernel);
+```
