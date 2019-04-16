@@ -7,7 +7,6 @@ use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\ParametersAcceptorSelector;
-use PHPStan\ShouldNotHappenException;
 use PHPStan\Symfony\ConsoleApplicationResolver;
 use PHPStan\Type\ArrayType;
 use PHPStan\Type\BooleanType;
@@ -51,7 +50,7 @@ final class InputInterfaceGetOptionDynamicReturnTypeExtension implements Dynamic
 
 		$classReflection = $scope->getClassReflection();
 		if ($classReflection === null) {
-			throw new ShouldNotHappenException();
+			return $defaultReturnType;
 		}
 
 		$optStrings = TypeUtils::getConstantStrings($scope->getType($methodCall->args[0]->value));

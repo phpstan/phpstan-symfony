@@ -7,7 +7,6 @@ use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\ParametersAcceptorSelector;
-use PHPStan\ShouldNotHappenException;
 use PHPStan\Symfony\ConsoleApplicationResolver;
 use PHPStan\Type\ArrayType;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
@@ -49,7 +48,7 @@ final class InputInterfaceGetArgumentDynamicReturnTypeExtension implements Dynam
 
 		$classReflection = $scope->getClassReflection();
 		if ($classReflection === null) {
-			throw new ShouldNotHappenException();
+			return $defaultReturnType;
 		}
 
 		$argStrings = TypeUtils::getConstantStrings($scope->getType($methodCall->args[0]->value));

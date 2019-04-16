@@ -49,7 +49,7 @@ final class UndefinedArgumentRule implements Rule
 
 		$classReflection = $scope->getClassReflection();
 		if ($classReflection === null) {
-			throw new ShouldNotHappenException();
+			return [];
 		}
 
 		if (!(new ObjectType('Symfony\Component\Console\Command\Command'))->isSuperTypeOf(new ObjectType($classReflection->getName()))->yes()) {
