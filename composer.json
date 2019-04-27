@@ -1,5 +1,6 @@
 {
   "name": "phpstan/phpstan-symfony",
+  "type": "phpstan-extension",
   "description": "Symfony Framework extensions and rules for PHPStan",
   "license": ["MIT"],
   "authors": [
@@ -14,6 +15,11 @@
   "extra": {
     "branch-alias": {
       "dev-master": "0.11-dev"
+    },
+    "phpstan": {
+      "include": [
+        "extension.neon"
+      ]
     }
   },
   "require": {
