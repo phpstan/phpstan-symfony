@@ -11,6 +11,7 @@ use PHPStan\Type\ArrayType;
 use PHPStan\Type\Constant\ConstantBooleanType;
 use PHPStan\Type\Constant\ConstantIntegerType;
 use PHPStan\Type\IntegerType;
+use PHPStan\Type\MixedType;
 use PHPStan\Type\NullType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\StringType;
@@ -76,8 +77,8 @@ final class InvalidOptionDefaultValueRule implements Rule
 		}
 
 		// is array
-		if (($mode & 8) === 8 && !(new UnionType([new ArrayType(new IntegerType(), new StringType()), new NullType()]))->isSuperTypeOf($defaultType)->yes()) {
-			return [sprintf('Parameter #5 $default of method Symfony\Component\Console\Command\Command::addOption() expects array<int, string>|null, %s given.', $defaultType->describe(VerbosityLevel::typeOnly()))];
+		if (($mode & 8) === 8 && !(new UnionType([new ArrayType(new MixedType(), new StringType()), new NullType()]))->isSuperTypeOf($defaultType)->yes()) {
+			return [sprintf('Parameter #5 $default of method Symfony\Component\Console\Command\Command::addOption() expects array<string>|null, %s given.', $defaultType->describe(VerbosityLevel::typeOnly()))];
 		}
 
 		return [];

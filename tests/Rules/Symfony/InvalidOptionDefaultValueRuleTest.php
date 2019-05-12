@@ -21,7 +21,7 @@ final class InvalidOptionDefaultValueRuleTest extends RuleTestCase
 			],
 			[
 				[
-					'Parameter #5 $default of method Symfony\Component\Console\Command\Command::addOption() expects array<int, string>|null, array<int, int> given.',
+					'Parameter #5 $default of method Symfony\Component\Console\Command\Command::addOption() expects array<string>|null, array<int, int> given.',
 					29,
 				],
 			]
