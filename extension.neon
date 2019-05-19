@@ -4,6 +4,13 @@ parameters:
 		constant_hassers: true
 		console_application_loader: null
 
+parametersSchema:
+	symfony: structure([
+		container_xml_path: schema(string(), nullable())
+		constant_hassers: bool()
+		console_application_loader: schema(string(), nullable())
+	])
+
 rules:
 	- PHPStan\Rules\Symfony\ContainerInterfacePrivateServiceRule
 	- PHPStan\Rules\Symfony\ContainerInterfaceUnknownServiceRule
