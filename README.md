@@ -17,27 +17,40 @@ This extension provides following features:
 * Notifies you when you try to get a private service from the container.
 * Optionally correct return types for `InputInterface::getArgument()`, `::getOption`, `::hasArgument`, and `::hasOption`.
 
-## Usage
+
+## Installation
 
 To use this extension, require it in [Composer](https://getcomposer.org/):
 
-```bash
+```
 composer require --dev phpstan/phpstan-symfony
 ```
 
-And include extension.neon in your project's PHPStan config:
+If you also install [phpstan/extension-installer](https://github.com/phpstan/extension-installer) then you're all set!
+
+<details>
+  <summary>Manual installation</summary>
+
+If you don't want to use `phpstan/extension-installer`, include extension.neon in your project's PHPStan config:
 
 ```
 includes:
-	- vendor/phpstan/phpstan-symfony/extension.neon
+    - vendor/phpstan/phpstan-symfony/extension.neon
+```
+</details>
+
+# Configuration
+
+You have to provide a path to `srcDevDebugProjectContainer.xml` or similar XML file describing your container.
+
+```
 parameters:
-	symfony:
-		container_xml_path: %rootDir%/../../../var/cache/dev/srcDevDebugProjectContainer.xml
-		# or with Symfony 4.2+
-		container_xml_path: '%rootDir%/../../../var/cache/dev/srcApp_KernelDevDebugContainer.xml' 
+    symfony:
+        container_xml_path: %rootDir%/../../../var/cache/dev/srcDevDebugProjectContainer.xml
+        # or with Symfony 4.2+
+        container_xml_path: '%rootDir%/../../../var/cache/dev/srcApp_KernelDevDebugContainer.xml'
 ```
 
-You have to provide a path to `srcDevDebugProjectContainer.xml` or similar xml file describing your container.
 
 ## Constant hassers
 
@@ -49,7 +62,7 @@ if ($this->has('service')) {
 }
 ```
 
-In that case, you can disable the `::has()` method return type resolving like this: 
+In that case, you can disable the `::has()` method return type resolving like this:
 
 ```
 parameters:
