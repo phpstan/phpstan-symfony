@@ -58,6 +58,7 @@ final class InputInterfaceHasArgumentDynamicReturnTypeExtension implements Dynam
 		$returnTypes = [];
 		foreach ($this->consoleApplicationResolver->findCommands($classReflection) as $command) {
 			try {
+				$command->mergeApplicationDefinition();
 				$command->getDefinition()->getArgument($argName);
 				$returnTypes[] = true;
 			} catch (InvalidArgumentException $e) {

@@ -75,6 +75,7 @@ final class UndefinedArgumentRule implements Rule
 		$errors = [];
 		foreach ($this->consoleApplicationResolver->findCommands($classReflection) as $name => $command) {
 			try {
+				$command->mergeApplicationDefinition();
 				$command->getDefinition()->getArgument($argName);
 			} catch (InvalidArgumentException $e) {
 				if ($scope->getType(Helper::createMarkerNode($node->var, $argType, $this->printer))->equals($argType)) {

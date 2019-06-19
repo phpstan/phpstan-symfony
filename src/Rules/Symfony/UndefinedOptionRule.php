@@ -75,6 +75,7 @@ final class UndefinedOptionRule implements Rule
 		$errors = [];
 		foreach ($this->consoleApplicationResolver->findCommands($classReflection) as $name => $command) {
 			try {
+				$command->mergeApplicationDefinition();
 				$command->getDefinition()->getOption($optName);
 			} catch (InvalidArgumentException $e) {
 				if ($scope->getType(Helper::createMarkerNode($node->var, $optType, $this->printer))->equals($optType)) {

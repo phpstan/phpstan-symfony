@@ -58,6 +58,7 @@ final class InputInterfaceHasOptionDynamicReturnTypeExtension implements Dynamic
 		$returnTypes = [];
 		foreach ($this->consoleApplicationResolver->findCommands($classReflection) as $command) {
 			try {
+				$command->mergeApplicationDefinition();
 				$command->getDefinition()->getOption($optName);
 				$returnTypes[] = true;
 			} catch (InvalidArgumentException $e) {

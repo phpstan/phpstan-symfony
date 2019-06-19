@@ -62,6 +62,7 @@ final class InputInterfaceGetOptionDynamicReturnTypeExtension implements Dynamic
 		$optTypes = [];
 		foreach ($this->consoleApplicationResolver->findCommands($classReflection) as $command) {
 			try {
+				$command->mergeApplicationDefinition();
 				$option = $command->getDefinition()->getOption($optName);
 				if (!$option->acceptValue()) {
 					$optType = new BooleanType();
