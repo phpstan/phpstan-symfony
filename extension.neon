@@ -3,12 +3,14 @@ parameters:
 		container_xml_path: null
 		constant_hassers: true
 		console_application_loader: null
+		console_application_kernel_class: null
 
 parametersSchema:
 	symfony: structure([
 		container_xml_path: schema(string(), nullable())
 		constant_hassers: bool()
 		console_application_loader: schema(string(), nullable())
+		console_application_kernel_class: schema(string(), nullable())
 	])
 
 rules:
@@ -23,7 +25,7 @@ services:
 	# console resolver
 	-
 		factory: PHPStan\Symfony\ConsoleApplicationResolver
-		arguments: [%symfony.console_application_loader%]
+		arguments: [%symfony.console_application_loader%, %symfony.console_application_kernel_class%]
 
 	# service map
 	symfony.serviceMapFactory:
