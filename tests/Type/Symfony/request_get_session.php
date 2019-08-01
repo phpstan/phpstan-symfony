@@ -6,11 +6,17 @@ use Symfony\Component\HttpFoundation\Request;
 
 class Foo {
 
-	public function doFoo(Request $request): void
+	public function doFoo($session1, $session2): void
 	{
+		/** @var Request $request */
+		$request = doRequest();
+
 		$session1 = $request->getSession();
+		$session1;
+
 		if ($request->hasSession()) {
 			$session2 = $request->getSession();
+			$session2;
 		}
 	}
 

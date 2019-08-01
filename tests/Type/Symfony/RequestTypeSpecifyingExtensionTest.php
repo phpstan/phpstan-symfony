@@ -19,7 +19,7 @@ final class RequestTypeSpecifyingExtensionTest extends RuleTestCase
 	protected function getMethodTypeSpecifyingExtensions(): array
 	{
 		return [
-			new RequestTypeSpecifyingExtension(),
+			new RequestTypeSpecifyingExtension($this->createBroker()),
 		];
 	}
 
@@ -28,11 +28,11 @@ final class RequestTypeSpecifyingExtensionTest extends RuleTestCase
 		$this->analyse([__DIR__ . '/request_get_session.php'], [
 			[
 				'Variable $session1 is: ' . SessionInterface::class . '|null',
-				11,
+				15,
 			],
 			[
 				'Variable $session2 is: ' . SessionInterface::class,
-				13,
+				19,
 			],
 		]);
 	}
