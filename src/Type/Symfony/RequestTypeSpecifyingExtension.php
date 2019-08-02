@@ -13,10 +13,13 @@ use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Type\MethodTypeSpecifyingExtension;
 use PHPStan\Type\TypeCombinator;
-use Symfony\Component\HttpFoundation\Request;
 
 final class RequestTypeSpecifyingExtension implements MethodTypeSpecifyingExtension, TypeSpecifierAwareExtension
 {
+
+	private const REQUEST_CLASS = 'Symfony\Component\HttpFoundation\Request';
+	private const HAS_METHOD_NAME = 'hasSession';
+	private const GET_METHOD_NAME = 'getSession';
 
 	/** @var Broker */
 	private $broker;
@@ -31,21 +34,21 @@ final class RequestTypeSpecifyingExtension implements MethodTypeSpecifyingExtens
 
 	public function getClass(): string
 	{
-		return Request::class;
+		return self::REQUEST_CLASS;
 	}
 
 	public function isMethodSupported(MethodReflection $methodReflection, MethodCall $node, TypeSpecifierContext $context): bool
 	{
-		return $methodReflection->getName() === 'hasSession' && !$context->null();
+		return $methodReflection->getName() === self::HAS_METHOD_NAME && !$context->null();
 	}
 
 	public function specifyTypes(MethodReflection $methodReflection, MethodCall $node, Scope $scope, TypeSpecifierContext $context): SpecifiedTypes
 	{
-		$classReflection = $this->broker->getClass(Request::class);
-		$methodVariants = $classReflection->getNativeMethod('getSession')->getVariants();
+		$classReflection = $this->broker->getClass(self::REQUEST_CLASS);
+		$methodVariants = $classReflection->getNativeMethod(self::GET_METHOD_NAME)->getVariants();
 
 		return $this->typeSpecifier->create(
-			new MethodCall($node->var, 'getSession'),
+			new MethodCall($node->var, self::GET_METHOD_NAME),
 			TypeCombinator::removeNull(ParametersAcceptorSelector::selectSingle($methodVariants)->getReturnType()),
 			$context
 		);
