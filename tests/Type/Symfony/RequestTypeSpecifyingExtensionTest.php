@@ -28,11 +28,11 @@ final class RequestTypeSpecifyingExtensionTest extends RuleTestCase
 		$this->analyse([__DIR__ . '/request_get_session.php'], [
 			[
 				'Variable $session1 is: ' . SessionInterface::class . '|null',
-				15,
+				7,
 			],
 			[
 				'Variable $session2 is: ' . SessionInterface::class,
-				19,
+				11,
 			],
 		]);
 	}
