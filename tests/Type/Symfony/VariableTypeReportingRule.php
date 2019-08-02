@@ -17,9 +17,9 @@ final class VariableTypeReportingRule implements Rule
 	}
 
 	/**
-	 * @param Node $node
-	 * @param Scope $scope
-	 * @return (string|RuleError)[] errors
+	 * @param \PhpParser\Node\Expr\Variable $node
+	 * @param \PHPStan\Analyser\Scope $scope
+	 * @return string[] errors
 	 */
 	public function processNode(Node $node, Scope $scope): array
 	{
