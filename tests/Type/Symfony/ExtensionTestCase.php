@@ -52,7 +52,8 @@ abstract class ExtensionTestCase extends TestCase
 			true,
 			true,
 			true,
-			[]
+			[],
+			false
 		);
 		$resolver->setAnalysedFiles([$fileHelper->normalizePath($file)]);
 
@@ -65,7 +66,7 @@ abstract class ExtensionTestCase extends TestCase
 					return;
 				}
 				if ((new Standard())->prettyPrint([$node]) !== 'die') {
-					return;
+					//return;
 				}
 				/** @var \PhpParser\Node\Stmt\Expression $expNode */
 				$expNode = $this->getParser()->parseString(sprintf('<?php %s;', $expression))[0];
