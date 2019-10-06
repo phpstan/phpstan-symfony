@@ -40,13 +40,13 @@ abstract class ExtensionTestCase extends TestCase
 		$resolver = new NodeScopeResolver(
 			$broker,
 			$parser,
-			new FileTypeMapper(...[ // PHPStan commit 7b23c31 broke the constructor so we have to use splat here
+			new FileTypeMapper(
 				$parser,
 				$phpDocStringResolver,
 				$this->createMock(Cache::class),
-				$this->createMock(AnonymousClassNameHelper::class), // PHPStan commit 4fcdccc broke the helper so we have to use a mock here
-				$typeNodeResolver,
-			]),
+				$this->createMock(AnonymousClassNameHelper::class),
+				$typeNodeResolver
+			),
 			$fileHelper,
 			$typeSpecifier,
 			true,
