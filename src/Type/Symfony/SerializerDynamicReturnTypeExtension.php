@@ -12,17 +12,29 @@ use PHPStan\Type\MixedType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 
-class SerializerInterfaceDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
+class SerializerDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
+
+	/** @var string */
+	private $class;
+
+	/** @var string */
+	private $method;
+
+	public function __construct(string $class, string $method)
+	{
+		$this->class = $class;
+		$this->method = $method;
+	}
 
 	public function getClass(): string
 	{
-		return 'Symfony\Component\Serializer\SerializerInterface';
+		return $this->class;
 	}
 
 	public function isMethodSupported(MethodReflection $methodReflection): bool
 	{
-		return $methodReflection->getName() === 'deserialize';
+		return $methodReflection->getName() === $this->method;
 	}
 
 	public function getTypeFromMethodCall(MethodReflection $methodReflection, MethodCall $methodCall, Scope $scope): Type

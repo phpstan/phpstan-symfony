@@ -66,7 +66,12 @@ services:
 
 	# SerializerInterface::deserialize() return type
 	-
-		factory: PHPStan\Type\Symfony\SerializerInterfaceDynamicReturnTypeExtension
+		factory: PHPStan\Type\Symfony\SerializerDynamicReturnTypeExtension(Symfony\Component\Serializer\SerializerInterface, deserialize)
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
+	# DenormalizerInterface::denormalize() return type
+	-
+		factory: PHPStan\Type\Symfony\SerializerDynamicReturnTypeExtension(Symfony\Component\Serializer\Normalizer\DenormalizerInterface, denormalize)
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
 
 	# Envelope::all() return type
