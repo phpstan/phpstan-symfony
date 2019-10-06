@@ -14,4 +14,7 @@ parameters:
 		- tests/*/header_bag_get.php
 		- tests/*/kernel_interface.php
 		- tests/*/request_get_content.php
+		- tests/*/request_get_session.php
 		- tests/*/serializer.php
+	ignoreErrors:
+		- '~^Parameter \#1 \$node \(.*\) of method .*Rule::processNode\(\) should be contravariant with parameter \$node \(PhpParser\\Node\) of method PHPStan\\Rules\\Rule::processNode\(\)$~'

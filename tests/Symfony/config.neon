@@ -4,3 +4,14 @@ parameters:
 
 services:
 	- PhpParser\PrettyPrinter\Standard
+
+	-
+		class: PHPStan\DependencyInjection\Container
+		factory: PHPStan\DependencyInjection\Nette\NetteContainer
+
+	broker:
+		class: PHPStan\Broker\Broker
+		factory: @brokerFactory::create
+
+	brokerFactory:
+		class: PHPStan\Broker\BrokerFactory
