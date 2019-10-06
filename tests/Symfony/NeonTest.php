@@ -28,6 +28,7 @@ final class NeonTest extends TestCase
 			$compiler->addExtension('parametersSchema', new ParametersSchemaExtension());
 			$compiler->addConfig(['parameters' => ['rootDir' => __DIR__]]);
 			$compiler->loadConfig(__DIR__ . '/../../extension.neon');
+			$compiler->loadConfig(__DIR__ . '/../../rules.neon');
 			$compiler->loadConfig(__DIR__ . '/config.neon');
 		}, $key);
 		/** @var \Nette\DI\Container $container */

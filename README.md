@@ -37,6 +37,13 @@ If you don't want to use `phpstan/extension-installer`, include extension.neon i
 includes:
     - vendor/phpstan/phpstan-symfony/extension.neon
 ```
+
+To perform framework-specific checks, include also this file:
+
+```
+includes:
+    - vendor/phpstan/phpstan-symfony/rules.neon
+```
 </details>
 
 # Configuration
@@ -50,7 +57,6 @@ parameters:
         # or with Symfony 4.2+
         container_xml_path: '%rootDir%/../../../var/cache/dev/srcApp_KernelDevDebugContainer.xml'
 ```
-
 
 ## Constant hassers
 

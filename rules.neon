@@ -1,0 +1,8 @@
+rules:
+	- PHPStan\Rules\Symfony\ContainerInterfacePrivateServiceRule
+	- PHPStan\Rules\Symfony\ContainerInterfaceUnknownServiceRule
+	- PHPStan\Rules\Symfony\UndefinedArgumentRule
+	- PHPStan\Rules\Symfony\InvalidArgumentDefaultValueRule
+	- PHPStan\Rules\Symfony\UndefinedOptionRule
+	- PHPStan\Rules\Symfony\InvalidOptionDefaultValueRule
+
