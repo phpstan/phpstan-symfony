@@ -37,6 +37,9 @@ services:
 		factory: PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension(Symfony\Component\DependencyInjection\ContainerInterface, %symfony.constant_hassers%)
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
 	-
+		factory: PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension(Psr\Container\ContainerInterface, %symfony.constant_hassers%)
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+	-
 		factory: PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension(Symfony\Bundle\FrameworkBundle\Controller\Controller, %symfony.constant_hassers%)
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
 	-
@@ -46,6 +49,9 @@ services:
 	# ControllerTrait::has() type specification
 	-
 		factory: PHPStan\Type\Symfony\ServiceTypeSpecifyingExtension(Symfony\Component\DependencyInjection\ContainerInterface)
+		tags: [phpstan.typeSpecifier.methodTypeSpecifyingExtension]
+	-
+		factory: PHPStan\Type\Symfony\ServiceTypeSpecifyingExtension(Psr\Container\ContainerInterface)
 		tags: [phpstan.typeSpecifier.methodTypeSpecifyingExtension]
 	-
 		factory: PHPStan\Type\Symfony\ServiceTypeSpecifyingExtension(Symfony\Bundle\FrameworkBundle\Controller\Controller)
