@@ -8,6 +8,9 @@ use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
 use PHPStan\Type\VerbosityLevel;
 
+/**
+ * @implements \PHPStan\Rules\Rule<\PhpParser\Node\Expr\Variable>
+ */
 final class VariableTypeReportingRule implements Rule
 {
 
@@ -16,11 +19,6 @@ final class VariableTypeReportingRule implements Rule
 		return Variable::class;
 	}
 
-	/**
-	 * @param \PhpParser\Node\Expr\Variable $node
-	 * @param \PHPStan\Analyser\Scope $scope
-	 * @return string[] errors
-	 */
 	public function processNode(Node $node, Scope $scope): array
 	{
 		if (!is_string($node->name)) {
