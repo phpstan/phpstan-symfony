@@ -17,4 +17,6 @@ parameters:
 		- tests/*/request_get_session.php
 		- tests/*/serializer.php
 	ignoreErrors:
-		- '~^Parameter \#1 \$node \(.*\) of method .*Rule::processNode\(\) should be contravariant with parameter \$node \(PhpParser\\Node\) of method PHPStan\\Rules\\Rule::processNode\(\)$~'
+		-
+			message: '#should be contravariant with#'
+			path: tests/Type/Symfony/VariableTypeReportingRule.php
