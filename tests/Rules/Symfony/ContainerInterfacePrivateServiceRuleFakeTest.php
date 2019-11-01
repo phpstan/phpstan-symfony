@@ -24,6 +24,16 @@ final class ContainerInterfacePrivateServiceRuleFakeTest extends RuleTestCase
 		);
 	}
 
+	public function testGetPrivateServiceInAbstractController(): void
+	{
+		$this->analyse(
+			[
+				__DIR__ . '/ExampleAbstractController.php',
+			],
+			[]
+		);
+	}
+
 	public function testGetPrivateServiceInLegacyServiceSubscriber(): void
 	{
 		if (!interface_exists('Symfony\\Component\\DependencyInjection\\ServiceSubscriberInterface')) {

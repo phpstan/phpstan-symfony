@@ -37,4 +37,14 @@ final class ContainerInterfaceUnknownServiceRuleFakeTest extends RuleTestCase
 		);
 	}
 
+	public function testGetPrivateServiceInAbstractController(): void
+	{
+		$this->analyse(
+			[
+				__DIR__ . '/ExampleAbstractController.php',
+			],
+			[]
+		);
+	}
+
 }

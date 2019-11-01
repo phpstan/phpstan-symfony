@@ -42,4 +42,19 @@ final class ContainerInterfaceUnknownServiceRuleTest extends RuleTestCase
 		);
 	}
 
+	public function testGetPrivateServiceInAbstractController(): void
+	{
+		$this->analyse(
+			[
+				__DIR__ . '/ExampleAbstractController.php',
+			],
+			[
+				[
+					'Service "unknown" is not registered in the container.',
+					24,
+				],
+			]
+		);
+	}
+
 }
