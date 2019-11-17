@@ -86,7 +86,7 @@
         >
             <arg value="analyse"/>
             <arg value="-l"/>
-            <arg value="7"/>
+            <arg value="8"/>
             <arg value="-c"/>
             <arg path="phpstan.neon"/>
             <arg path="src"/>
