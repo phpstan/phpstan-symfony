@@ -2,53 +2,36 @@
 
 namespace PHPStan\Symfony;
 
-use Nette\DI\Compiler;
-use Nette\DI\ContainerLoader;
-use PHPStan\DependencyInjection\ParametersSchemaExtension;
-use PHPStan\DependencyInjection\RulesExtension;
+use PHPStan\DependencyInjection\ContainerFactory;
 use PHPUnit\Framework\TestCase;
-use function sprintf;
-use function unlink;
 
 final class NeonTest extends TestCase
 {
 
 	public function testExtensionNeon(): void
 	{
-		$key = '';
 		$tmpDir = __DIR__ . '/../tmp';
-		$loader = new ContainerLoader($tmpDir, true);
-		$generatedContainer = sprintf('%s/%s.php', $tmpDir, $loader->getClassName($key));
+		$containerFactory = new ContainerFactory(__DIR__);
+		$container = $containerFactory->create($tmpDir, [
+			__DIR__ . '/../../extension.neon',
+			__DIR__ . '/../../rules.neon',
+			__DIR__ . '/config.neon',
 
-		@unlink($generatedContainer);
-		self::assertFileNotExists($generatedContainer);
-
-		$class = $loader->load(function (Compiler $compiler): void {
-			$compiler->addExtension('rules', new RulesExtension());
-			$compiler->addExtension('parametersSchema', new ParametersSchemaExtension());
-			$compiler->addConfig(['parameters' => ['rootDir' => __DIR__]]);
-			$compiler->loadConfig(__DIR__ . '/../../extension.neon');
-			$compiler->loadConfig(__DIR__ . '/../../rules.neon');
-			$compiler->loadConfig(__DIR__ . '/config.neon');
-		}, $key);
-		/** @var \Nette\DI\Container $container */
-		$container = new $class();
-
+		], []);
 		$parameters = $container->getParameters();
-		unset($parameters['__parametersSchema']);
+		$this->assertArrayHasKey('rootDir', $parameters);
+		$this->assertSame(realpath(__DIR__  . '/../../vendor/phpstan/phpstan'), $parameters['rootDir']);
 
-		self::assertSame([
-			'rootDir' => __DIR__,
-			'symfony' => [
-				'container_xml_path' => __DIR__ . '/container.xml',
-				'constant_hassers' => true,
-				'console_application_loader' => null,
-			],
-		], $parameters);
+		$this->assertArrayHasKey('symfony', $parameters);
+		$this->assertSame([
+			'container_xml_path' => __DIR__ . '/container.xml',
+			'constant_hassers' => true,
+			'console_application_loader' => null,
+		] , $parameters['symfony']);
 
-		self::assertCount(6, $container->findByTag('phpstan.rules.rule'));
-		self::assertCount(12, $container->findByTag('phpstan.broker.dynamicMethodReturnTypeExtension'));
-		self::assertCount(6, $container->findByTag('phpstan.typeSpecifier.methodTypeSpecifyingExtension'));
+		self::assertCount(6, $container->getServicesByTag('phpstan.rules.rule'));
+		self::assertCount(15, $container->getServicesByTag('phpstan.broker.dynamicMethodReturnTypeExtension'));
+		self::assertCount(6, $container->getServicesByTag('phpstan.typeSpecifier.methodTypeSpecifyingExtension'));
 		self::assertInstanceOf(ServiceMap::class, $container->getByType(ServiceMap::class));
 	}
 

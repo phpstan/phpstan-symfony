@@ -11,6 +11,7 @@ use PHPStan\Broker\AnonymousClassNameHelper;
 use PHPStan\Cache\Cache;
 use PHPStan\File\FileHelper;
 use PHPStan\Node\VirtualNode;
+use PHPStan\PhpDoc\PhpDocNodeResolver;
 use PHPStan\PhpDoc\PhpDocStringResolver;
 use PHPStan\PhpDoc\TypeNodeResolver;
 use PHPStan\Testing\TestCase;
@@ -43,6 +44,7 @@ abstract class ExtensionTestCase extends TestCase
 			new FileTypeMapper(
 				$parser,
 				$phpDocStringResolver,
+				self::getContainer()->getByType(PhpDocNodeResolver::class),
 				$this->createMock(Cache::class),
 				$this->createMock(AnonymousClassNameHelper::class),
 				$typeNodeResolver

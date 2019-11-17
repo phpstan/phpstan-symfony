@@ -1,17 +1,3 @@
 parameters:
 	symfony:
-		container_xml_path: %rootDir%/container.xml
-
-services:
-	- PhpParser\PrettyPrinter\Standard
-
-	-
-		class: PHPStan\DependencyInjection\Container
-		factory: PHPStan\DependencyInjection\Nette\NetteContainer
-
-	broker:
-		class: PHPStan\Broker\Broker
-		factory: @brokerFactory::create
-
-	brokerFactory:
-		class: PHPStan\Broker\BrokerFactory
+		container_xml_path: container.xml
