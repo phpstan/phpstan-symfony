@@ -20,6 +20,9 @@ final class HeaderBagDynamicReturnTypeExtensionTest extends ExtensionTestCase
 		);
 	}
 
+	/**
+	 * @return \Iterator<array{string, string}>
+	 */
 	public function getProvider(): Iterator
 	{
 		yield ['$test1', 'string|null'];

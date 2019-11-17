@@ -5,6 +5,9 @@ namespace PHPStan\Rules\Symfony;
 use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 
+/**
+ * @extends RuleTestCase<InvalidOptionDefaultValueRule>
+ */
 final class InvalidOptionDefaultValueRuleTest extends RuleTestCase
 {
 

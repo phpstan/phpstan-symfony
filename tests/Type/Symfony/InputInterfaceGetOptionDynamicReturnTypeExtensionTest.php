@@ -21,6 +21,9 @@ final class InputInterfaceGetOptionDynamicReturnTypeExtensionTest extends Extens
 		);
 	}
 
+	/**
+	 * @return \Iterator<array{string, string}>
+	 */
 	public function argumentTypesProvider(): Iterator
 	{
 		yield ['$a', 'bool'];

@@ -22,6 +22,9 @@ final class EnvelopeReturnTypeExtensionTest extends ExtensionTestCase
 		);
 	}
 
+	/**
+	 * @return \Iterator<mixed>
+	 */
 	public function getProvider(): Iterator
 	{
 		yield ['$test1', 'array<' . ReceivedStamp::class . '>'];

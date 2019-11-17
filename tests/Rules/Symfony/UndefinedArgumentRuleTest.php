@@ -8,6 +8,9 @@ use PHPStan\Symfony\ConsoleApplicationResolver;
 use PHPStan\Testing\RuleTestCase;
 use PHPStan\Type\Symfony\ArgumentTypeSpecifyingExtension;
 
+/**
+ * @extends RuleTestCase<UndefinedArgumentRule>
+ */
 final class UndefinedArgumentRuleTest extends RuleTestCase
 {
 

@@ -16,6 +16,9 @@ use PHPStan\Type\TypeUtils;
 use function count;
 use function sprintf;
 
+/**
+ * @implements Rule<MethodCall>
+ */
 final class UndefinedArgumentRule implements Rule
 {
 

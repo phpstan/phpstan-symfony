@@ -18,6 +18,9 @@ use PHPStan\Type\UnionType;
 use PHPStan\Type\VerbosityLevel;
 use function sprintf;
 
+/**
+ * @implements Rule<MethodCall>
+ */
 final class InvalidArgumentDefaultValueRule implements Rule
 {
 

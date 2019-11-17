@@ -46,8 +46,7 @@ abstract class ExtensionTestCase extends TestCase
 				$phpDocStringResolver,
 				self::getContainer()->getByType(PhpDocNodeResolver::class),
 				$this->createMock(Cache::class),
-				$this->createMock(AnonymousClassNameHelper::class),
-				$typeNodeResolver
+				$this->createMock(AnonymousClassNameHelper::class)
 			),
 			$fileHelper,
 			$typeSpecifier,

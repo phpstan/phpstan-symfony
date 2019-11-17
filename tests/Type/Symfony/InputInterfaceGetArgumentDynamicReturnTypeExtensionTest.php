@@ -21,6 +21,9 @@ final class InputInterfaceGetArgumentDynamicReturnTypeExtensionTest extends Exte
 		);
 	}
 
+	/**
+	 * @return \Iterator<array{string, string}>
+	 */
 	public function argumentTypesProvider(): Iterator
 	{
 		yield ['$base', 'string|null'];

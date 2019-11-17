@@ -9,6 +9,9 @@ use PHPStan\Testing\RuleTestCase;
 use PHPStan\Type\Symfony\ServiceTypeSpecifyingExtension;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+/**
+ * @extends RuleTestCase<ContainerInterfaceUnknownServiceRule>
+ */
 final class ContainerInterfaceUnknownServiceRuleFakeTest extends RuleTestCase
 {
 

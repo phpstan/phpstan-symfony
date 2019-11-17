@@ -6,6 +6,9 @@ use PHPStan\Rules\Rule;
 use PHPStan\Symfony\XmlServiceMapFactory;
 use PHPStan\Testing\RuleTestCase;
 
+/**
+ * @extends RuleTestCase<ContainerInterfacePrivateServiceRule>
+ */
 final class ContainerInterfacePrivateServiceRuleFakeTest extends RuleTestCase
 {
 

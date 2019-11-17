@@ -12,6 +12,9 @@ use PHPStan\Symfony\ServiceMap;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Symfony\Helper;
 
+/**
+ * @implements Rule<MethodCall>
+ */
 final class ContainerInterfaceUnknownServiceRule implements Rule
 {
 

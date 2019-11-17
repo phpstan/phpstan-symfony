@@ -8,6 +8,9 @@ use PHPStan\Symfony\ConsoleApplicationResolver;
 use PHPStan\Testing\RuleTestCase;
 use PHPStan\Type\Symfony\OptionTypeSpecifyingExtension;
 
+/**
+ * @extends RuleTestCase<UndefinedOptionRule>
+ */
 final class UndefinedOptionRuleTest extends RuleTestCase
 {
 

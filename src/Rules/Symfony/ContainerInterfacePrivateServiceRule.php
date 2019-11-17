@@ -11,6 +11,9 @@ use PHPStan\Symfony\ServiceMap;
 use PHPStan\Type\ObjectType;
 use function sprintf;
 
+/**
+ * @implements Rule<MethodCall>
+ */
 final class ContainerInterfacePrivateServiceRule implements Rule
 {
 

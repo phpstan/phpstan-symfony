@@ -7,6 +7,9 @@ use PHPStan\Testing\RuleTestCase;
 use PHPStan\Type\MethodTypeSpecifyingExtension;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
+/**
+ * @extends RuleTestCase<VariableTypeReportingRule>
+ */
 final class RequestTypeSpecifyingExtensionTest extends RuleTestCase
 {
 
