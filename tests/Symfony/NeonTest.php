@@ -19,11 +19,11 @@ final class NeonTest extends TestCase
 
 		], []);
 		$parameters = $container->getParameters();
-		$this->assertArrayHasKey('rootDir', $parameters);
-		$this->assertSame(realpath(__DIR__ . '/../../vendor/phpstan/phpstan'), $parameters['rootDir']);
+		self::assertArrayHasKey('rootDir', $parameters);
+		self::assertSame(realpath(__DIR__ . '/../../vendor/phpstan/phpstan'), $parameters['rootDir']);
 
-		$this->assertArrayHasKey('symfony', $parameters);
-		$this->assertSame([
+		self::assertArrayHasKey('symfony', $parameters);
+		self::assertSame([
 			'container_xml_path' => __DIR__ . '/container.xml',
 			'constant_hassers' => true,
 			'console_application_loader' => null,
