@@ -20,14 +20,14 @@ final class NeonTest extends TestCase
 		], []);
 		$parameters = $container->getParameters();
 		$this->assertArrayHasKey('rootDir', $parameters);
-		$this->assertSame(realpath(__DIR__  . '/../../vendor/phpstan/phpstan'), $parameters['rootDir']);
+		$this->assertSame(realpath(__DIR__ . '/../../vendor/phpstan/phpstan'), $parameters['rootDir']);
 
 		$this->assertArrayHasKey('symfony', $parameters);
 		$this->assertSame([
 			'container_xml_path' => __DIR__ . '/container.xml',
 			'constant_hassers' => true,
 			'console_application_loader' => null,
-		] , $parameters['symfony']);
+		], $parameters['symfony']);
 
 		self::assertCount(6, $container->getServicesByTag('phpstan.rules.rule'));
 		self::assertCount(15, $container->getServicesByTag('phpstan.broker.dynamicMethodReturnTypeExtension'));
