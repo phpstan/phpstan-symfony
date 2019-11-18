@@ -24,7 +24,7 @@ final class NeonTest extends TestCase
 
 		self::assertArrayHasKey('symfony', $parameters);
 		self::assertSame([
-			'container_xml_path' => __DIR__ . '/container.xml',
+			'container_xml_path' => __DIR__ . DIRECTORY_SEPARATOR . 'container.xml',
 			'constant_hassers' => true,
 			'console_application_loader' => null,
 		], $parameters['symfony']);
