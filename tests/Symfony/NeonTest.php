@@ -30,8 +30,8 @@ final class NeonTest extends TestCase
 		], $parameters['symfony']);
 
 		self::assertCount(6, $container->getServicesByTag('phpstan.rules.rule'));
-		self::assertCount(15, $container->getServicesByTag('phpstan.broker.dynamicMethodReturnTypeExtension'));
-		self::assertCount(6, $container->getServicesByTag('phpstan.typeSpecifier.methodTypeSpecifyingExtension'));
+		self::assertCount(16, $container->getServicesByTag('phpstan.broker.dynamicMethodReturnTypeExtension'));
+		self::assertCount(7, $container->getServicesByTag('phpstan.typeSpecifier.methodTypeSpecifyingExtension'));
 		self::assertInstanceOf(ServiceMap::class, $container->getByType(ServiceMap::class));
 	}
 
