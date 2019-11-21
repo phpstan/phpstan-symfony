@@ -7,6 +7,7 @@ use PHPStan\Rules\Rule;
 use PHPStan\Symfony\XmlServiceMapFactory;
 use PHPStan\Testing\RuleTestCase;
 use PHPStan\Type\Symfony\ServiceTypeSpecifyingExtension;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
@@ -27,6 +28,7 @@ final class ContainerInterfaceUnknownServiceRuleTest extends RuleTestCase
 	{
 		return [
 			new ServiceTypeSpecifyingExtension(Controller::class, new Standard()),
+			new ServiceTypeSpecifyingExtension(AbstractController::class, new Standard()),
 		];
 	}
 
@@ -35,6 +37,21 @@ final class ContainerInterfaceUnknownServiceRuleTest extends RuleTestCase
 		$this->analyse(
 			[
 				__DIR__ . '/ExampleController.php',
+			],
+			[
+				[
+					'Service "unknown" is not registered in the container.',
+					24,
+				],
+			]
+		);
+	}
+
+	public function testGetPrivateServiceInAbstractController(): void
+	{
+		$this->analyse(
+			[
+				__DIR__ . '/ExampleAbstractController.php',
 			],
 			[
 				[
