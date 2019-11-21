@@ -26,12 +26,12 @@ final class XmlServiceMapFactory implements ServiceMapFactory
 
 		$fileContents = file_get_contents($this->containerXml);
 		if ($fileContents === false) {
-			throw new XmlContainerNotExistsException(sprintf('Container %s does not exist or cannot be parsed', $this->containerXml));
+			throw new XmlContainerNotExistsException(sprintf('Container %s does not exist', $this->containerXml));
 		}
 
 		$xml = @simplexml_load_string($fileContents);
 		if ($xml === false) {
-			throw new XmlContainerNotExistsException(sprintf('Container %s does not exist or cannot be parsed', $this->containerXml));
+			throw new XmlContainerNotExistsException(sprintf('Container %s cannot be parsed', $this->containerXml));
 		}
 
 		/** @var \PHPStan\Symfony\Service[] $services */
