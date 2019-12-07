@@ -3,6 +3,11 @@ parameters:
 		container_xml_path: null
 		constant_hassers: true
 		console_application_loader: null
+	stubFiles:
+		- stubs/FormBuilderInterface.php
+		- stubs/FormInterface.php
+		- stubs/HeaderBag.php
+		- stubs/Session.php
 
 parametersSchema:
 	symfony: structure([
