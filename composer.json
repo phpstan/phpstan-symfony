@@ -38,6 +38,9 @@
     "symfony/messenger": "^4.2",
     "symfony/serializer": "^4.0"
   },
+  "config": {
+    "sort-packages": true
+  },
   "extra": {
     "branch-alias": {
       "dev-master": "0.12-dev"
