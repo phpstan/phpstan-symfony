@@ -2,7 +2,9 @@
   "name": "phpstan/phpstan-symfony",
   "type": "phpstan-extension",
   "description": "Symfony Framework extensions and rules for PHPStan",
-  "license": ["MIT"],
+  "license": [
+    "MIT"
+  ],
   "authors": [
     {
       "name": "Lukáš Unger",
@@ -10,8 +12,32 @@
       "homepage": "https://lookyman.net"
     }
   ],
-  "minimum-stability": "dev",
-  "prefer-stable": true,
+  "require": {
+    "php": "^7.1",
+    "ext-simplexml": "*",
+    "nikic/php-parser": "^4.0",
+    "phpstan/phpstan": "^0.12"
+  },
+  "conflict": {
+    "symfony/framework-bundle": "<3.0"
+  },
+  "require-dev": {
+    "consistence/coding-standard": "^3.0.1",
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.4.4",
+    "ergebnis/composer-normalize": "^2.0.2",
+    "jakub-onderka/php-parallel-lint": "^1.0",
+    "phing/phing": "^2.16.0",
+    "phpstan/phpstan-phpunit": "^0.12",
+    "phpstan/phpstan-strict-rules": "^0.12",
+    "phpunit/phpunit": "^7.0",
+    "slevomat/coding-standard": "^4.5.2",
+    "squizlabs/php_codesniffer": "^3.3.2",
+    "symfony/console": "^4.0",
+    "symfony/framework-bundle": "^4.0",
+    "symfony/http-foundation": "^4.0",
+    "symfony/messenger": "^4.2",
+    "symfony/serializer": "^4.0"
+  },
   "extra": {
     "branch-alias": {
       "dev-master": "0.12-dev"
@@ -23,38 +49,16 @@
       ]
     }
   },
-  "require": {
-    "php": "^7.1",
-    "ext-simplexml": "*",
-    "phpstan/phpstan": "^0.12",
-    "nikic/php-parser": "^4.0"
-  },
-  "require-dev": {
-    "consistence/coding-standard": "^3.0.1",
-    "jakub-onderka/php-parallel-lint": "^1.0",
-    "dealerdirect/phpcodesniffer-composer-installer": "^0.4.4",
-    "phpunit/phpunit": "^7.0",
-    "phing/phing": "^2.16.0",
-    "phpstan/phpstan-strict-rules": "^0.12",
-    "slevomat/coding-standard": "^4.5.2",
-    "phpstan/phpstan-phpunit": "^0.12",
-    "symfony/framework-bundle": "^4.0",
-    "squizlabs/php_codesniffer": "^3.3.2",
-    "symfony/serializer": "^4.0",
-    "symfony/messenger": "^4.2",
-    "symfony/console": "^4.0",
-    "symfony/http-foundation": "^4.0",
-    "ergebnis/composer-normalize": "^2.0.2"
-  },
-  "conflict": {
-    "symfony/framework-bundle": "<3.0"
-  },
   "autoload": {
     "psr-4": {
       "PHPStan\\": "src/"
     }
   },
   "autoload-dev": {
-    "classmap": ["tests/"]
-  }
+    "classmap": [
+      "tests/"
+    ]
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }
