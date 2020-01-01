@@ -15,7 +15,6 @@
   "require": {
     "php": "^7.1",
     "ext-simplexml": "*",
-    "nikic/php-parser": "^4.0",
     "phpstan/phpstan": "^0.12"
   },
   "conflict": {
