@@ -13,7 +13,6 @@ use PHPStan\File\FileHelper;
 use PHPStan\Node\VirtualNode;
 use PHPStan\PhpDoc\PhpDocNodeResolver;
 use PHPStan\PhpDoc\PhpDocStringResolver;
-use PHPStan\PhpDoc\TypeNodeResolver;
 use PHPStan\Testing\TestCase;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\FileTypeMapper;
@@ -36,8 +35,6 @@ abstract class ExtensionTestCase extends TestCase
 		$typeSpecifier = $this->createTypeSpecifier(new Standard(), $broker);
 		/** @var \PHPStan\PhpDoc\PhpDocStringResolver $phpDocStringResolver */
 		$phpDocStringResolver = self::getContainer()->getByType(PhpDocStringResolver::class);
-		/** @var \PHPStan\PhpDoc\TypeNodeResolver $typeNodeResolver */
-		$typeNodeResolver = self::getContainer()->getByType(TypeNodeResolver::class);
 		$resolver = new NodeScopeResolver(
 			$broker,
 			$parser,
