@@ -16,3 +16,4 @@ parameters:
 		- tests/*/request_get_content.php
 		- tests/*/request_get_session.php
 		- tests/*/serializer.php
+		- tests/*/denormalizer.php
