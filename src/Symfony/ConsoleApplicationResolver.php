@@ -5,6 +5,7 @@ namespace PHPStan\Symfony;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\ShouldNotHappenException;
 use PHPStan\Type\ObjectType;
+use Symfony\Component\Console\Application;
 use function file_exists;
 use function get_class;
 use function is_readable;
@@ -12,15 +13,15 @@ use function is_readable;
 final class ConsoleApplicationResolver
 {
 
-	/** @var \Symfony\Component\Console\Application|null */
+	/** @var string|null */
+	private $consoleApplicationLoader;
+
+	/** @var \Symfony\Component\Console\Application|false|null */
 	private $consoleApplication;
 
 	public function __construct(?string $consoleApplicationLoader)
 	{
-		if ($consoleApplicationLoader === null) {
-			return;
-		}
-		$this->consoleApplication = $this->loadConsoleApplication($consoleApplicationLoader);
+		$this->consoleApplicationLoader = $consoleApplicationLoader;
 	}
 
 	/**
@@ -38,12 +39,34 @@ final class ConsoleApplicationResolver
 		return require $consoleApplicationLoader;
 	}
 
+	public function getConsoleApplication(): ?Application
+	{
+		if ($this->consoleApplication === false) {
+			return null;
+		}
+
+		if ($this->consoleApplication !== null) {
+			return $this->consoleApplication;
+		}
+
+		if ($this->consoleApplicationLoader === null) {
+			$this->consoleApplication = false;
+
+			return null;
+		}
+
+		$this->consoleApplication = $this->loadConsoleApplication($this->consoleApplicationLoader);
+
+		return $this->consoleApplication;
+	}
+
 	/**
 	 * @return \Symfony\Component\Console\Command\Command[]
 	 */
 	public function findCommands(ClassReflection $classReflection): array
 	{
-		if ($this->consoleApplication === null) {
+		$consoleApplication = $this->getConsoleApplication();
+		if ($consoleApplication === null) {
 			return [];
 		}
 
@@ -53,7 +76,7 @@ final class ConsoleApplicationResolver
 		}
 
 		$commands = [];
-		foreach ($this->consoleApplication->all() as $name => $command) {
+		foreach ($consoleApplication->all() as $name => $command) {
 			if (!$classType->isSuperTypeOf(new ObjectType(get_class($command)))->yes()) {
 				continue;
 			}
