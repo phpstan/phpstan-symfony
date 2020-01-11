@@ -4,10 +4,10 @@ parameters:
 		constant_hassers: true
 		console_application_loader: null
 	stubFiles:
-		- stubs/FormBuilderInterface.php
-		- stubs/FormInterface.php
-		- stubs/HeaderBag.php
-		- stubs/Session.php
+		- stubs/FormBuilderInterface.stub
+		- stubs/FormInterface.stub
+		- stubs/HeaderBag.stub
+		- stubs/Session.stub
 
 parametersSchema:
 	symfony: structure([
