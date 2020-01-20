@@ -1,0 +1,14 @@
+<?php
+
+namespace Symfony\Component\Form;
+
+use ArrayAccess;
+use IteratorAggregate;
+
+/**
+ * @implements IteratorAggregate<string, self>
+ * @implements ArrayAccess<string, self>
+ */
+class FormView implements ArrayAccess, IteratorAggregate
+{
+}

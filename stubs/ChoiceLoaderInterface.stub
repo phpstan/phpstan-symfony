@@ -1,0 +1,22 @@
+<?php
+
+namespace Symfony\Component\Form\ChoiceList\Loader;
+
+interface ChoiceLoaderInterface
+{
+    /**
+     * @param array<string> $values
+     * @param callable|null $value
+     *
+     * @return array<mixed>
+     */
+    public function loadChoicesForValues(array $values, $value = null);
+
+    /**
+     * @param array<mixed> $choices
+     * @param callable|null $value
+     *
+     * @return array<string>
+     */
+    public function loadValuesForChoices(array $choices, $value = null);
+}

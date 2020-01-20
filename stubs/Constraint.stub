@@ -1,0 +1,16 @@
+<?php
+
+namespace Symfony\Component\Validator;
+
+class Constraint
+{
+    /**
+     * @return array<mixed>
+     */
+    public function getRequiredOptions();
+
+    /**
+     * @return string|array<string>
+     */
+    public function getTargets();
+}
