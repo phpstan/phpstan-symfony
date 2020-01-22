@@ -4,8 +4,15 @@ parameters:
 		constant_hassers: true
 		console_application_loader: null
 	stubFiles:
+		- stubs/ChoiceLoaderInterface.stub
+		- stubs/Constraint.stub
+		- stubs/ContainerBuilder.stub
+		- stubs/EventSubscriberInterface.stub
+		- stubs/ExtensionInterface.stub
 		- stubs/FormBuilderInterface.stub
 		- stubs/FormInterface.stub
+		- stubs/FormTypeInterface.stub
+		- stubs/FormView.stub
 		- stubs/HeaderBag.stub
 		- stubs/Session.stub
 

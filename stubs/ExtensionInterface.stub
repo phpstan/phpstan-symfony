@@ -1,0 +1,13 @@
+<?php
+
+namespace Symfony\Component\DependencyInjection\Extension;
+
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+
+interface ExtensionInterface
+{
+    /**
+     * @param array<mixed> $configs
+     */
+    public function load(array $configs, ContainerBuilder $container): void;
+}
