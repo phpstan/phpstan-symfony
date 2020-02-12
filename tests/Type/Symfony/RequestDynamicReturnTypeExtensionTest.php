@@ -20,6 +20,9 @@ final class RequestDynamicReturnTypeExtensionTest extends ExtensionTestCase
 		);
 	}
 
+	/**
+	 * @return Iterator<int, array{string, string}>
+	 */
 	public function getContentProvider(): Iterator
 	{
 		yield ['$content1', 'string'];

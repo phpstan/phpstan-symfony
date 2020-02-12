@@ -20,6 +20,9 @@ final class KernelInterfaceDynamicReturnTypeExtensionTest extends ExtensionTestC
 		);
 	}
 
+	/**
+	 * @return Iterator<int, array{string, string}>
+	 */
 	public function getProvider(): Iterator
 	{
 		yield ['$foo', 'string'];

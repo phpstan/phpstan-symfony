@@ -39,6 +39,9 @@ final class SerializerDynamicReturnTypeExtensionTest extends ExtensionTestCase
 		);
 	}
 
+	/**
+	 * @return Iterator<int, array{string, string}>
+	 */
 	public function getContentProvider(): Iterator
 	{
 		yield ['$first', 'Bar'];

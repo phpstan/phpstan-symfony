@@ -22,6 +22,9 @@ final class ServiceDynamicReturnTypeExtensionTest extends ExtensionTestCase
 		);
 	}
 
+	/**
+	 * @return Iterator<int, array{string, string, string|null}>
+	 */
 	public function servicesProvider(): Iterator
 	{
 		yield ['$service1', 'Foo', __DIR__ . '/container.xml'];
@@ -56,6 +59,9 @@ final class ServiceDynamicReturnTypeExtensionTest extends ExtensionTestCase
 		);
 	}
 
+	/**
+	 * @return Iterator<int, array{string, string, string|null}>
+	 */
 	public function constantHassersOffProvider(): Iterator
 	{
 		yield ['$has1', 'bool', __DIR__ . '/container.xml'];
