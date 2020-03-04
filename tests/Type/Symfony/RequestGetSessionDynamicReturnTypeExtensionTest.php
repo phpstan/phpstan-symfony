@@ -2,24 +2,28 @@
 
 namespace PHPStan\Type\Symfony;
 
+use Iterator;
 use PhpParser\PrettyPrinter\Standard;
-use PHPStan\Rules\Rule;
-use PHPStan\Testing\RuleTestCase;
 use PHPStan\Type\MethodTypeSpecifyingExtension;
 use ReflectionMethod;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use function strpos;
 
-/**
- * @extends RuleTestCase<VariableTypeReportingRule>
- */
-final class RequestTypeSpecifyingExtensionTest extends RuleTestCase
+final class RequestGetSessionDynamicReturnTypeExtensionTest extends ExtensionTestCase
 {
 
-	protected function getRule(): Rule
+	/**
+	 * @dataProvider getContentProvider
+	 */
+	public function testGetContent(string $expression, string $type): void
 	{
-		return new VariableTypeReportingRule();
+		$this->processFile(
+			__DIR__ . '/request_get_session.php',
+			$expression,
+			$type,
+			new RequestGetSessionDynamicReturnTypeExtension(new Standard())
+		);
 	}
 
 	/** @return MethodTypeSpecifyingExtension[] */
@@ -30,7 +34,10 @@ final class RequestTypeSpecifyingExtensionTest extends RuleTestCase
 		];
 	}
 
-	public function testGetSession(): void
+	/**
+	 * @return Iterator<int, array{string, string}>
+	 */
+	public function getContentProvider(): Iterator
 	{
 		$ref = new ReflectionMethod(Request::class, 'getSession');
 		$doc = (string) $ref->getDocComment();
@@ -40,16 +47,8 @@ final class RequestTypeSpecifyingExtensionTest extends RuleTestCase
 			$checkedTypeString .= '|null';
 		}
 
-		$this->analyse([__DIR__ . '/request_get_session.php'], [
-			[
-				'Variable $session1 is: ' . $checkedTypeString,
-				7,
-			],
-			[
-				'Variable $session2 is: ' . SessionInterface::class,
-				11,
-			],
-		]);
+		yield ['$session1', $checkedTypeString];
+		yield ['$session2', SessionInterface::class];
 	}
 
 }

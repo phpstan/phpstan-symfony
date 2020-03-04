@@ -69,10 +69,13 @@ services:
 		factory: PHPStan\Type\Symfony\RequestDynamicReturnTypeExtension
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
 
-	# Request::getSession() type specification
+	# Request::getSession() type specification and return type
 	-
 		factory: PHPStan\Type\Symfony\RequestTypeSpecifyingExtension
 		tags: [phpstan.typeSpecifier.methodTypeSpecifyingExtension]
+	-
+		factory: PHPStan\Type\Symfony\RequestGetSessionDynamicReturnTypeExtension
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
 
 	# HeaderBag::get() return type
 	-
