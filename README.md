@@ -1,6 +1,6 @@
 # PHPStan Symfony Framework extensions and rules
 
-[![Build Status](https://travis-ci.org/phpstan/phpstan-symfony.svg)](https://travis-ci.org/phpstan/phpstan-symfony)
+[![Build Status](https://travis-ci.com/phpstan/phpstan-symfony.svg?branch=master)](https://travis-ci.com/phpstan/phpstan-symfony)
 [![Latest Stable Version](https://poser.pugx.org/phpstan/phpstan-symfony/v/stable)](https://packagist.org/packages/phpstan/phpstan-symfony)
 [![License](https://poser.pugx.org/phpstan/phpstan-symfony/license)](https://packagist.org/packages/phpstan/phpstan-symfony)
 
