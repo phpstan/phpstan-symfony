@@ -1,0 +1,11 @@
+<?php
+
+namespace Symfony\Component\Process;
+
+/**
+ * @implements \IteratorAggregate<string, string>
+ */
+class Process implements \IteratorAggregate
+{
+
+}
