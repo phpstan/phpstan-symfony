@@ -1,0 +1,21 @@
+<?php
+
+namespace Symfony\Component\Form;
+
+interface FormTypeExtensionInterface
+{
+    /**
+     * @param array<mixed> $options
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options): void;
+
+    /**
+     * @param array<mixed> $options
+     */
+    public function buildView(FormView $view, FormInterface $form, array $options): void;
+
+    /**
+     * @param array<mixed> $options
+     */
+    public function finishView(FormView $view, FormInterface $form, array $options): void;
+}

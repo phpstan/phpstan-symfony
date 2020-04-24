@@ -7,13 +7,18 @@ parameters:
 		- stubs/ChoiceLoaderInterface.stub
 		- stubs/Constraint.stub
 		- stubs/ContainerBuilder.stub
+		- stubs/DataMapperInterface.stub
 		- stubs/EventSubscriberInterface.stub
 		- stubs/ExtensionInterface.stub
 		- stubs/FormBuilderInterface.stub
 		- stubs/FormInterface.stub
+		- stubs/FormTypeExtensionInterface.stub
 		- stubs/FormTypeInterface.stub
 		- stubs/FormView.stub
 		- stubs/HeaderBag.stub
+		- stubs/Node.stub
+		- stubs/NormalizerInterface.stub
+		- stubs/ParameterBag.stub
 		- stubs/Process.stub
 		- stubs/Session.stub
 

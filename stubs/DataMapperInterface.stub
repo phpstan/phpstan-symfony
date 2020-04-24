@@ -1,0 +1,18 @@
+<?php
+
+namespace Symfony\Component\Form;
+
+interface DataMapperInterface
+{
+    /**
+     * @param mixed $viewData
+     * @param \Traversable<\Symfony\Component\Form\FormInterface> $forms
+     */
+    public function mapDataToForms($viewData, $forms): void;
+
+    /**
+     * @param \Traversable<\Symfony\Component\Form\FormInterface> $forms
+     * @param mixed $viewData
+     */
+    public function mapFormsToData($forms, &$viewData): void;
+}
