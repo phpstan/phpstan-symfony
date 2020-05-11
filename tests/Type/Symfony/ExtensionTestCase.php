@@ -14,6 +14,7 @@ use PHPStan\Node\VirtualNode;
 use PHPStan\PhpDoc\PhpDocInheritanceResolver;
 use PHPStan\PhpDoc\PhpDocNodeResolver;
 use PHPStan\PhpDoc\PhpDocStringResolver;
+use PHPStan\Reflection\ReflectionProvider\DirectReflectionProviderProvider;
 use PHPStan\Testing\TestCase;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\FileTypeMapper;
@@ -37,6 +38,7 @@ abstract class ExtensionTestCase extends TestCase
 		/** @var \PHPStan\PhpDoc\PhpDocStringResolver $phpDocStringResolver */
 		$phpDocStringResolver = self::getContainer()->getByType(PhpDocStringResolver::class);
 		$fileTypeMapper = new FileTypeMapper(
+			new DirectReflectionProviderProvider($broker),
 			$parser,
 			$phpDocStringResolver,
 			self::getContainer()->getByType(PhpDocNodeResolver::class),
