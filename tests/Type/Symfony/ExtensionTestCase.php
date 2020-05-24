@@ -47,6 +47,8 @@ abstract class ExtensionTestCase extends TestCase
 		);
 		$resolver = new NodeScopeResolver(
 			$broker,
+			self::getReflectors()[0],
+			$this->getClassReflectionExtensionRegistryProvider(),
 			$parser,
 			$fileTypeMapper,
 			new PhpDocInheritanceResolver($fileTypeMapper),
