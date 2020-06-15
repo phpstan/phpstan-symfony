@@ -14,6 +14,7 @@ parameters:
 		- stubs/FormTypeInterface.stub
 		- stubs/FormView.stub
 		- stubs/HeaderBag.stub
+		- stubs/KernelTestCase.stub
 		- stubs/Process.stub
 		- stubs/Session.stub
 

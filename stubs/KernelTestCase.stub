@@ -1,0 +1,12 @@
+<?php
+
+namespace Symfony\Bundle\FrameworkBundle\Test;
+
+abstract class KernelTestCase {
+    /**
+     * @var TestContainer
+     */
+    protected static $container;
+}
+
+class TestContainer {}
