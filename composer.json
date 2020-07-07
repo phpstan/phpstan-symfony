@@ -22,7 +22,7 @@
   },
   "require-dev": {
     "consistence/coding-standard": "^3.0.1",
-    "dealerdirect/phpcodesniffer-composer-installer": "^0.4.4",
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
     "ergebnis/composer-normalize": "^2.0.2",
     "jakub-onderka/php-parallel-lint": "^1.0",
     "phing/phing": "^2.16.0",
