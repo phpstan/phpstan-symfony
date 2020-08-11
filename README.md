@@ -57,7 +57,7 @@ parameters:
         # or with Symfony 4.2+
         container_xml_path: '%rootDir%/../../../var/cache/dev/srcApp_KernelDevDebugContainer.xml'
         # or with Symfony 5+
-        container_xml_path: '%rootDir%/../../../var/cache/dev/App_KernelDevDebugContainer.xml'
+        container_xml_path: '%kernel.cache_dir%/App_KernelDevDebugContainer.xml'
 ```
 
 ## Constant hassers
