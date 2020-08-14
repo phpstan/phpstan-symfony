@@ -50,11 +50,12 @@
                 passthru="true"
                 checkreturn="true"
         >
-            <arg value="--extensions=php"/>
+            <arg value="--extensions=php,stub"/>
             <arg value="--encoding=utf-8"/>
             <arg value="--tab-width=4"/>
             <arg value="-sp"/>
             <arg path="src"/>
+            <arg path="stubs"/>
             <arg path="tests"/>
         </exec>
     </target>

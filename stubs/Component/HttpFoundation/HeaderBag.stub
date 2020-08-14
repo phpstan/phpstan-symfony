@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Symfony\Component\HttpFoundation;
 
@@ -11,6 +11,8 @@ class HeaderBag implements \IteratorAggregate
 	/**
 	 * @phpstan-return \Traversable<string, string|string[]>
 	 */
-	public function getIterator() {}
+	public function getIterator()
+	{
+	}
 
 }

@@ -4,6 +4,7 @@ namespace Symfony\Component\Form;
 
 interface FormTypeExtensionInterface
 {
+
     /**
      * @param array<string, mixed> $options
      */
@@ -18,4 +19,5 @@ interface FormTypeExtensionInterface
      * @param array<string, mixed> $options
      */
     public function finishView(FormView $view, FormInterface $form, array $options): void;
+
 }

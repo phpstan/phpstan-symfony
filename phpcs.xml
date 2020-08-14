@@ -21,6 +21,7 @@
         </properties>
     </rule>
     <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint">
+        <exclude-pattern>stubs</exclude-pattern>
         <properties>
             <property name="usefulAnnotations" type="array" value="
                 @dataProvider,
@@ -44,13 +45,16 @@
     <rule ref="SlevomatCodingStandard.Operators.DisallowEqualOperators"/>
     <rule ref="SlevomatCodingStandard.ControlStructures.EarlyExit"/>
     <rule ref="SlevomatCodingStandard.Classes.SuperfluousAbstractClassNaming"/>
-    <rule ref="SlevomatCodingStandard.Classes.SuperfluousInterfaceNaming"/>
+    <rule ref="SlevomatCodingStandard.Classes.SuperfluousInterfaceNaming">
+        <exclude-pattern>stubs</exclude-pattern>
+    </rule>
     <!-- <rule ref="SlevomatCodingStandard.ControlStructures.DisallowShortTernaryOperator"/>-->
     <!-- <rule ref="SlevomatCodingStandard.Namespaces.RequireOneNamespaceInFile"/> -->
     <!-- <rule ref="SlevomatCodingStandard.PHP.ShortList"/> -->
     <rule ref="SlevomatCodingStandard.Files.TypeNameMatchesFileName">
         <properties>
-            <property name="rootNamespaces" type="array" value="src=>PHPStan,tests=>PHPStan"/>
+            <property name="rootNamespaces" type="array" value="src=>PHPStan,stubs=>Symfony,tests=>PHPStan"/>
+            <property name="extensions" type="array" value="php,stub"/>
         </properties>
     </rule>
     <exclude-pattern>tests/tmp</exclude-pattern>

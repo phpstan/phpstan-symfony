@@ -1,0 +1,18 @@
+<?php declare(strict_types = 1);
+
+namespace Symfony\Component\Security\Acl\Model;
+
+interface MutableAclProviderInterface extends AclProviderInterface
+{
+
+	/**
+	 * @phpstan-return MutableAclInterface
+	 */
+	public function findAcl(ObjectIdentityInterface $oid, array $sids = []);
+
+	/**
+	 * @phpstan-return \SplObjectStorage<ObjectIdentityInterface, MutableAclInterface>
+	 */
+	public function findAcls(array $oids, array $sids = []);
+
+}

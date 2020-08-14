@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Symfony\Component\DependencyInjection\Extension;
 
@@ -6,8 +6,10 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 interface ExtensionInterface
 {
-    /**
-     * @param array<mixed> $configs
-     */
-    public function load(array $configs, ContainerBuilder $container): void;
+
+	/**
+	 * @param array<mixed> $configs
+	 */
+	public function load(array $configs, ContainerBuilder $container): void;
+
 }

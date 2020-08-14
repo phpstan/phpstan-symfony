@@ -4,29 +4,29 @@ parameters:
 		constant_hassers: true
 		console_application_loader: null
 	stubFiles:
-		- stubs/ChoiceLoaderInterface.stub
-		- stubs/Constraint.stub
-		- stubs/ContainerBuilder.stub
-		- stubs/ContextAwareDecoderInterface.stub
-		- stubs/ContextAwareDenormalizerInterface.stub
-		- stubs/ContextAwareNormalizerInterface.stub
-		- stubs/DecoderInterface.stub
-		- stubs/DenormalizableInterface.stub
-		- stubs/DenormalizerInterface.stub
-		- stubs/EncoderInterface.stub
-		- stubs/EventSubscriberInterface.stub
-		- stubs/ExtensionInterface.stub
-		- stubs/FormBuilderInterface.stub
-		- stubs/FormInterface.stub
-		- stubs/FormTypeExtensionInterface.stub
-		- stubs/FormTypeInterface.stub
-		- stubs/FormView.stub
-		- stubs/HeaderBag.stub
-		- stubs/MutableAclProviderInterface.stub
-		- stubs/NormalizableInterface.stub
-		- stubs/NormalizerInterface.stub
-		- stubs/Process.stub
-		- stubs/Session.stub
+		- stubs/Component/DependencyInjection/Extension/ExtensionInterface.stub
+		- stubs/Component/DependencyInjection/ContainerBuilder.stub
+		- stubs/Component/EventDispatcher/EventSubscriberInterface.stub
+		- stubs/Component/Form/ChoiceList/Loader/ChoiceLoaderInterface.stub
+		- stubs/Component/Form/FormBuilderInterface.stub
+		- stubs/Component/Form/FormInterface.stub
+		- stubs/Component/Form/FormTypeExtensionInterface.stub
+		- stubs/Component/Form/FormTypeInterface.stub
+		- stubs/Component/Form/FormView.stub
+		- stubs/Component/HttpFoundation/Session/Session.stub
+		- stubs/Component/HttpFoundation/HeaderBag.stub
+		- stubs/Component/Process/Process.stub
+		- stubs/Component/Security/Acl/Model/MutableAclProviderInterface.stub
+		- stubs/Component/Serializer/Encoder/ContextAwareDecoderInterface.stub
+		- stubs/Component/Serializer/Encoder/DecoderInterface.stub
+		- stubs/Component/Serializer/Encoder/EncoderInterface.stub
+		- stubs/Component/Serializer/Normalizer/ContextAwareDenormalizerInterface.stub
+		- stubs/Component/Serializer/Normalizer/ContextAwareNormalizerInterface.stub
+		- stubs/Component/Serializer/Normalizer/DenormalizableInterface.stub
+		- stubs/Component/Serializer/Normalizer/DenormalizerInterface.stub
+		- stubs/Component/Serializer/Normalizer/NormalizableInterface.stub
+		- stubs/Component/Serializer/Normalizer/NormalizerInterface.stub
+		- stubs/Component/Validator/Constraint.stub
 
 parametersSchema:
 	symfony: structure([

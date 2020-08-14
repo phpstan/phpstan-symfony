@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Symfony\Component\HttpFoundation\Session;
 
@@ -11,6 +11,8 @@ class Session implements \IteratorAggregate
 	/**
 	 * @phpstan-return \Traversable<string, mixed>
 	 */
-	public function getIterator() {}
+	public function getIterator()
+	{
+	}
 
 }
