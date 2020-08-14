@@ -75,6 +75,11 @@ services:
 		factory: PHPStan\Type\Symfony\RequestTypeSpecifyingExtension
 		tags: [phpstan.typeSpecifier.methodTypeSpecifyingExtension]
 
+	# InputBag::get() return type
+	-
+		factory: PHPStan\Type\Symfony\InputBagDynamicReturnTypeExtension
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
 	# HeaderBag::get() return type
 	-
 		factory: PHPStan\Type\Symfony\HeaderBagDynamicReturnTypeExtension

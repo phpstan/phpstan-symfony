@@ -6,8 +6,8 @@ use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\ParametersAcceptorSelector;
-use PHPStan\Type\Constant\ConstantStringType;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
+use PHPStan\Type\NullType;
 use PHPStan\Type\StringType;
 use PHPStan\Type\Type;
 
@@ -29,8 +29,14 @@ final class InputBagDynamicReturnTypeExtension implements DynamicMethodReturnTyp
 		Scope $scope
 	): Type
 	{
-		if (isset($methodCall->args[1]) && $scope->getType($methodCall->args[1]->value) instanceof ConstantStringType) {
-			return new StringType();
+		if (isset($methodCall->args[1])) {
+			$argType = $scope->getType($methodCall->args[1]->value);
+			$isNull = (new NullType())->isSuperTypeOf($argType);
+			$isString = (new StringType())->isSuperTypeOf($argType);
+			$compare = $isNull->compareTo($isString);
+			if ($compare === $isString) {
+				return new StringType();
+			}
 		}
 
 		return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
