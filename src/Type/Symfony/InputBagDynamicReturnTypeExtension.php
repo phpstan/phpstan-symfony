@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace PHPStan\Type\Symfony;
 
@@ -13,6 +13,7 @@ use PHPStan\Type\Type;
 
 final class InputBagDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
+
 	public function getClass(): string
 	{
 		return 'Symfony\Component\HttpFoundation\InputBag';
@@ -41,4 +42,5 @@ final class InputBagDynamicReturnTypeExtension implements DynamicMethodReturnTyp
 
 		return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
 	}
+
 }
