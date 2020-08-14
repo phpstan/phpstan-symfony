@@ -16,7 +16,11 @@ parameters:
 		- stubs/Component/HttpFoundation/Session/Session.stub
 		- stubs/Component/HttpFoundation/HeaderBag.stub
 		- stubs/Component/Process/Process.stub
+		- stubs/Component/Security/Acl/Model/AclInterface.stub
+		- stubs/Component/Security/Acl/Model/AclProviderInterface.stub
+		- stubs/Component/Security/Acl/Model/MutableAclInterface.stub
 		- stubs/Component/Security/Acl/Model/MutableAclProviderInterface.stub
+		- stubs/Component/Security/Acl/Model/ObjectIdentityInterface.stub
 		- stubs/Component/Serializer/Encoder/ContextAwareDecoderInterface.stub
 		- stubs/Component/Serializer/Encoder/DecoderInterface.stub
 		- stubs/Component/Serializer/Encoder/EncoderInterface.stub
