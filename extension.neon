@@ -4,7 +4,6 @@ parameters:
 		constant_hassers: true
 		console_application_loader: null
 	stubFiles:
-		- stubs/AclProviderInterface.stub
 		- stubs/ChoiceLoaderInterface.stub
 		- stubs/Constraint.stub
 		- stubs/ContainerBuilder.stub
