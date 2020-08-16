@@ -6,12 +6,18 @@ interface MutableAclProviderInterface extends AclProviderInterface
 {
 
 	/**
-	 * @phpstan-return MutableAclInterface
+	 * @param ObjectIdentityInterface $oid
+	 * @param array<mixed> $sids
+	 *
+	 * @return MutableAclInterface
 	 */
 	public function findAcl(ObjectIdentityInterface $oid, array $sids = []);
 
 	/**
-	 * @phpstan-return \SplObjectStorage<ObjectIdentityInterface, MutableAclInterface>
+	 * @param array<mixed> $oids
+	 * @param array<mixed> $sids
+	 *
+	 * @return \SplObjectStorage<ObjectIdentityInterface, MutableAclInterface>
 	 */
 	public function findAcls(array $oids, array $sids = []);
 
