@@ -93,7 +93,7 @@ parameters:
 For example, in a Symfony project, `console-application.php` would look something like this:
 
 ```php
-require dirname(__DIR__).'/../config/bootstrap.php';
+require __DIR__.'/../config/bootstrap.php';
 $kernel = new \App\Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
 return new \Symfony\Bundle\FrameworkBundle\Console\Application($kernel);
 ```
