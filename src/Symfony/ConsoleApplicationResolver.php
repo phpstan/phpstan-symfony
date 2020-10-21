@@ -25,7 +25,7 @@ final class ConsoleApplicationResolver
 
 	/**
 	 * @return \Symfony\Component\Console\Application|null
-	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
+	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
 	 */
 	private function loadConsoleApplication(string $consoleApplicationLoader)
 	{
