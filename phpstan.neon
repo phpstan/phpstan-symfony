@@ -13,6 +13,7 @@ parameters:
 		- tests/*/console_application_loader.php
 		- tests/*/envelope_all.php
 		- tests/*/header_bag_get.php
+		- tests/*/input_bag_get.php
 		- tests/*/kernel_interface.php
 		- tests/*/request_get_content.php
 		- tests/*/request_get_session.php
