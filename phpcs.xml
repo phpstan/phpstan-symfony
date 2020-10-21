@@ -6,7 +6,7 @@
         <exclude name="SlevomatCodingStandard.Namespaces.FullyQualifiedClassNameInAnnotation"/>
         <exclude name="SlevomatCodingStandard.Namespaces.FullyQualifiedExceptions"/>
         <exclude name="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly"/>
-        <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingTraversableReturnTypeHintSpecification"/>
+        <exclude name="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingTraversableTypeHintSpecification"/>
         <exclude name="Consistence.Exceptions.ExceptionDeclaration"/>
         <exclude name="Squiz.Commenting.FunctionComment.MissingParamTag"/>
     </rule>
@@ -20,7 +20,7 @@
             <property name="newlinesCountBetweenOpenTagAndDeclare" value="0"/>
         </properties>
     </rule>
-    <rule ref="SlevomatCodingStandard.TypeHints.TypeHintDeclaration">
+    <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint">
         <properties>
             <property name="usefulAnnotations" type="array" value="
                 @dataProvider,
@@ -28,8 +28,20 @@
             "/>
         </properties>
     </rule>
+    <rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint">
+        <properties>
+            <property name="enableNativeTypeHint" value="false"/>
+        </properties>
+        <exclude name="SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingTraversableTypeHintSpecification"/>
+    </rule>
+    <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint">
+        <properties>
+            <property name="enableObjectTypeHint" value="false"/>
+        </properties>
+        <exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification"/>
+    </rule>
     <rule ref="SlevomatCodingStandard.ControlStructures.AssignmentInCondition"/>
-    <rule ref="SlevomatCodingStandard.ControlStructures.DisallowEqualOperators"/>
+    <rule ref="SlevomatCodingStandard.Operators.DisallowEqualOperators"/>
     <rule ref="SlevomatCodingStandard.ControlStructures.EarlyExit"/>
     <rule ref="SlevomatCodingStandard.Classes.SuperfluousAbstractClassNaming"/>
     <rule ref="SlevomatCodingStandard.Classes.SuperfluousInterfaceNaming"/>
