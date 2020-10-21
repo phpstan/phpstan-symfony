@@ -29,9 +29,6 @@ final class InputBagDynamicReturnTypeExtensionTest extends ExtensionTestCase
 		yield ['$test2', 'string|null'];
 		yield ['$test3', 'string'];
 		yield ['$test4', 'string'];
-		yield ['$test5', 'string|null'];
-		yield ['$test6', 'string|null'];
-		yield ['$test7', 'string|null'];
 	}
 
 }
