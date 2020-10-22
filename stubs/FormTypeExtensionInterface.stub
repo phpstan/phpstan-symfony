@@ -2,7 +2,7 @@
 
 namespace Symfony\Component\Form;
 
-interface FormTypeInterface
+interface FormTypeExtensionInterface
 {
     /**
      * @param array<string, mixed> $options
