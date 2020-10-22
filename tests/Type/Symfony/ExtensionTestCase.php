@@ -11,6 +11,7 @@ use PHPStan\Broker\AnonymousClassNameHelper;
 use PHPStan\Cache\Cache;
 use PHPStan\File\FileHelper;
 use PHPStan\Node\VirtualNode;
+use PHPStan\Php\PhpVersion;
 use PHPStan\PhpDoc\PhpDocInheritanceResolver;
 use PHPStan\PhpDoc\PhpDocNodeResolver;
 use PHPStan\PhpDoc\PhpDocStringResolver;
@@ -51,6 +52,7 @@ abstract class ExtensionTestCase extends TestCase
 			$this->getClassReflectionExtensionRegistryProvider(),
 			$parser,
 			$fileTypeMapper,
+			new PhpVersion(PHP_VERSION_ID),
 			new PhpDocInheritanceResolver($fileTypeMapper),
 			$fileHelper,
 			$typeSpecifier,
