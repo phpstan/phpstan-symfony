@@ -11,6 +11,7 @@ parameters:
 		- stubs/ExtensionInterface.stub
 		- stubs/FormBuilderInterface.stub
 		- stubs/FormInterface.stub
+		- stubs/FormTypeExtensionInterface.stub
 		- stubs/FormTypeInterface.stub
 		- stubs/FormView.stub
 		- stubs/HeaderBag.stub
