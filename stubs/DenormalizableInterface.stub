@@ -1,0 +1,16 @@
+<?php
+
+namespace Symfony\Component\Serializer\Normalizer;
+
+interface DenormalizableInterface
+{
+    /**
+     * @param DenormalizerInterface $denormalizer
+     * @param array<mixed>|string|int|float|bool $data
+     * @param string|null $format
+     * @param array<mixed> $context
+     *
+     * @return object|object[]
+     */
+    public function denormalize(DenormalizerInterface $denormalizer, $data, $format = null, array $context = []);
+}

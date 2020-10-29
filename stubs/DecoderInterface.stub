@@ -1,0 +1,22 @@
+<?php
+
+namespace Symfony\Component\Serializer\Encoder;
+
+use Symfony\Component\Serializer\Exception\UnexpectedValueException;
+
+interface DecoderInterface
+{
+    /**
+     * @param string $data
+     * @param string $format
+     * @param array<mixed> $context
+     * @return mixed
+     */
+    public function decode($data, $format, array $context = []);
+
+    /**
+     * @param string $format Format name
+     * @return bool
+     */
+    public function supportsDecoding($format);
+}

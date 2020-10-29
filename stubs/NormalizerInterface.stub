@@ -1,0 +1,14 @@
+<?php
+
+namespace Symfony\Component\Serializer\Normalizer;
+
+interface NormalizerInterface
+{
+    /**
+     * @param mixed $object
+     * @param string $format
+     * @param array<mixed> $context
+     * @return array<mixed>|string|int|float|bool|null
+     */
+    public function normalize($object, $format = null, array $context = []);
+}

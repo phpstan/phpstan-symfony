@@ -7,6 +7,12 @@ parameters:
 		- stubs/ChoiceLoaderInterface.stub
 		- stubs/Constraint.stub
 		- stubs/ContainerBuilder.stub
+		- stubs/ContextAwareDecoderInterface.stub
+		- stubs/ContextAwareDenormalizerInterface.stub
+		- stubs/ContextAwareNormalizerInterface.stub
+		- stubs/DecoderInterface.stub
+		- stubs/DenormalizableInterface.stub
+		- stubs/EncoderInterface.stub
 		- stubs/EventSubscriberInterface.stub
 		- stubs/ExtensionInterface.stub
 		- stubs/FormBuilderInterface.stub
@@ -15,6 +21,8 @@ parameters:
 		- stubs/FormTypeInterface.stub
 		- stubs/FormView.stub
 		- stubs/HeaderBag.stub
+		- stubs/NormalizableInterface.stub
+		- stubs/NormalizerInterface.stub
 		- stubs/Process.stub
 		- stubs/Session.stub
 
