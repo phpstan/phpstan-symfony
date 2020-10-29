@@ -12,6 +12,7 @@ parameters:
 		- stubs/ContextAwareNormalizerInterface.stub
 		- stubs/DecoderInterface.stub
 		- stubs/DenormalizableInterface.stub
+		- stubs/DenormalizerInterface.stub
 		- stubs/EncoderInterface.stub
 		- stubs/EventSubscriberInterface.stub
 		- stubs/ExtensionInterface.stub
