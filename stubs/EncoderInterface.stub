@@ -1,0 +1,20 @@
+<?php
+
+namespace Symfony\Component\Serializer\Encoder;
+
+interface EncoderInterface
+{
+    /**
+     * @param mixed $data
+     * @param string $format
+     * @param array<mixed> $context
+     * @return string|int|float|bool
+     */
+    public function encode($data, $format, array $context = []);
+
+    /**
+     * @param string $format Format name
+     * @return bool
+     */
+    public function supportsEncoding($format);
+}

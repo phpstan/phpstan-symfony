@@ -1,0 +1,13 @@
+<?php
+
+namespace Symfony\Component\Serializer\Encoder;
+
+interface ContextAwareDecoderInterface extends DecoderInterface
+{
+    /**
+     * @param string $format
+     * @param array<mixed> $context
+     * @return bool
+     */
+    public function supportsDecoding($format, array $context = []);
+}

@@ -1,0 +1,14 @@
+<?php
+
+namespace Symfony\Component\Serializer\Normalizer;
+
+interface ContextAwareNormalizerInterface extends NormalizerInterface
+{
+    /**
+     * @param mixed $data
+     * @param string $format
+     * @param array<mixed> $context
+     * @return bool
+     */
+    public function supportsNormalization($data, $format = null, array $context = []);
+}
