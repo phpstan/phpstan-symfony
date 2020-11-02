@@ -82,7 +82,7 @@ Be aware that it may hide genuine errors in your application.
 
 ## Console command analysis
 
-You can opt in for more advanced analysis by providing the console application from your own application. This will allow the correct argument and option types to be inferred when accessing $input->getArgument() or $input->getOption().
+You can opt in for more advanced analysis by providing the console application from your own application. This will allow the correct argument and option types to be inferred when accessing `$input->getArgument()` or `$input->getOption()`.
 
 ```
 parameters:
