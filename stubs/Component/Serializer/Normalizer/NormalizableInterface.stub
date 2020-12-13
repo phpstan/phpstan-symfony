@@ -1,14 +1,17 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Symfony\Component\Serializer\Normalizer;
 
 interface NormalizableInterface
 {
-    /**
-     * @param NormalizerInterface $normalizer
-     * @param string|null $format
-     * @param array<mixed> $context
-     * @return array<mixed>|string|int|float|bool
-     */
-    public function normalize(NormalizerInterface $normalizer, $format = null, array $context = []);
+
+	/**
+	 * @param NormalizerInterface $normalizer
+	 * @param string|null $format
+	 * @param array<mixed> $context
+	 *
+	 * @return array<mixed>|string|int|float|bool
+	 */
+	public function normalize(NormalizerInterface $normalizer, $format = null, array $context = []);
+
 }

@@ -30,12 +30,14 @@
         </properties>
     </rule>
     <rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint">
+        <exclude-pattern>stubs</exclude-pattern>
         <properties>
             <property name="enableNativeTypeHint" value="false"/>
         </properties>
         <exclude name="SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingTraversableTypeHintSpecification"/>
     </rule>
     <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint">
+        <exclude-pattern>stubs</exclude-pattern>
         <properties>
             <property name="enableObjectTypeHint" value="false"/>
         </properties>

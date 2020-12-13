@@ -6,16 +6,21 @@ interface FormTypeInterface
 {
 
 	/**
+	 * @param FormBuilderInterface $builder
 	 * @param array<string, mixed> $options
 	 */
 	public function buildForm(FormBuilderInterface $builder, array $options): void;
 
 	/**
+	 * @param FormView $view
+	 * @param FormInterface $form
 	 * @param array<string, mixed> $options
 	 */
 	public function buildView(FormView $view, FormInterface $form, array $options): void;
 
 	/**
+	 * @param FormView $view
+	 * @param FormInterface $form
 	 * @param array<string, mixed> $options
 	 */
 	public function finishView(FormView $view, FormInterface $form, array $options): void;

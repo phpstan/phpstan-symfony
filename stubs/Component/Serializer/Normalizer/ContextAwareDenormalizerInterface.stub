@@ -1,14 +1,18 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Symfony\Component\Serializer\Normalizer;
 
 interface ContextAwareDenormalizerInterface extends DenormalizerInterface
 {
-    /**
-     * @param mixed $data
-     * @param string $format
-     * @param array<mixed> $context
-     * @return bool
-     */
-    public function supportsDenormalization($data, $type, $format = null, array $context = []);
+
+	/**
+	 * @param mixed $data
+	 * @param string $type
+	 * @param string $format
+	 * @param array<mixed> $context
+	 *
+	 * @return bool
+	 */
+	public function supportsDenormalization($data, $type, $format = null, array $context = []);
+
 }
