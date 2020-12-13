@@ -5,7 +5,6 @@
         composer,
         lint,
         cs,
-        composer-normalize-check,
         tests,
         phpstan
     "/>
@@ -18,19 +17,6 @@
                 checkreturn="true"
         >
             <arg value="install"/>
-        </exec>
-    </target>
-
-    <target name="composer-normalize-check">
-        <exec
-                executable="composer"
-                logoutput="true"
-                passthru="true"
-                checkreturn="true"
-        >
-            <arg value="normalize"/>
-            <arg value="--ansi"/>
-            <arg value="--dry-run"/>
         </exec>
     </target>
 
@@ -47,8 +33,19 @@
     </target>
 
     <target name="cs">
+		<exec
+				executable="composer"
+				logoutput="true"
+				passthru="true"
+				checkreturn="true"
+		>
+			<arg value="install"/>
+			<arg value="--working-dir"/>
+			<arg path="build-cs"/>
+			<arg value="--ansi"/>
+		</exec>
         <exec
-                executable="vendor/bin/phpcs"
+                executable="build-cs/vendor/bin/phpcs"
                 logoutput="true"
                 passthru="true"
                 checkreturn="true"
@@ -64,7 +61,7 @@
 
     <target name="cs-fix">
         <exec
-                executable="vendor/bin/phpcbf"
+                executable="build-cs/vendor/bin/phpcbf"
                 logoutput="true"
                 passthru="true"
                 checkreturn="true"

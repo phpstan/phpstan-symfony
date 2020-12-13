@@ -21,16 +21,11 @@
     "symfony/framework-bundle": "<3.0"
   },
   "require-dev": {
-    "consistence/coding-standard": "^3.10",
-    "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
-    "ergebnis/composer-normalize": "^2.0.2",
-    "phing/phing": "^2.16.2",
+    "phing/phing": "^2.16.3",
     "php-parallel-lint/php-parallel-lint": "^1.2",
-    "phpstan/phpstan-phpunit": "^0.12.8",
-    "phpstan/phpstan-strict-rules": "^0.12.2",
+    "phpstan/phpstan-phpunit": "^0.12.16",
+    "phpstan/phpstan-strict-rules": "^0.12.5",
     "phpunit/phpunit": "^7.5.20",
-    "slevomat/coding-standard": "^6.4",
-    "squizlabs/php_codesniffer": "^3.5.6",
     "symfony/console": "^4.0",
     "symfony/framework-bundle": "^4.0",
     "symfony/http-foundation": "^4.0",
@@ -38,6 +33,9 @@
     "symfony/serializer": "^4.0"
   },
   "config": {
+    "platform": {
+	  "php": "7.4.6"
+	},
     "sort-packages": true
   },
   "extra": {
