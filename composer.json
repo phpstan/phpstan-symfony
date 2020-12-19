@@ -28,7 +28,7 @@
     "phpunit/phpunit": "^7.5.20",
     "symfony/console": "^4.0",
     "symfony/framework-bundle": "^4.0",
-    "symfony/http-foundation": "^4.0",
+    "symfony/http-foundation": "^5.2",
     "symfony/messenger": "^5.2",
     "symfony/serializer": "^4.0"
   },
