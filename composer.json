@@ -29,7 +29,7 @@
     "symfony/console": "^4.0",
     "symfony/framework-bundle": "^4.0",
     "symfony/http-foundation": "^4.0",
-    "symfony/messenger": "^4.2",
+    "symfony/messenger": "^5.2",
     "symfony/serializer": "^4.0"
   },
   "config": {
