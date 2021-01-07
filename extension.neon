@@ -6,6 +6,8 @@ parameters:
 	stubFiles:
 		- stubs/ChoiceLoaderInterface.stub
 		- stubs/Constraint.stub
+		- stubs/ConstraintViolationInterface.stub
+		- stubs/ConstraintViolationListInterface.stub
 		- stubs/ContainerBuilder.stub
 		- stubs/ContextAwareDecoderInterface.stub
 		- stubs/ContextAwareDenormalizerInterface.stub
