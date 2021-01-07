@@ -1,0 +1,10 @@
+<?php
+
+namespace Symfony\Component\Validator;
+
+/**
+ * @extends \Traversable<int, ConstraintViolationInterface>
+ */
+interface ConstraintViolationListInterface extends \Traversable
+{
+}
