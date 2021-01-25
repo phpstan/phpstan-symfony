@@ -12,6 +12,7 @@ parameters:
 		- stubs/ContextAwareDecoderInterface.stub
 		- stubs/ContextAwareDenormalizerInterface.stub
 		- stubs/ContextAwareNormalizerInterface.stub
+		- stubs/Cookie.stub
 		- stubs/DecoderInterface.stub
 		- stubs/DenormalizableInterface.stub
 		- stubs/DenormalizerInterface.stub
