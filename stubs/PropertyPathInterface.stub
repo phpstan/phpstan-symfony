@@ -1,0 +1,10 @@
+<?php
+
+namespace Symfony\Component\PropertyAccess;
+
+/**
+ * @extends \Traversable<int, string>
+ */
+interface PropertyPathInterface extends \Traversable
+{
+}
