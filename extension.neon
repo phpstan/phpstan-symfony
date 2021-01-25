@@ -29,6 +29,7 @@ parameters:
 		- stubs/NormalizerInterface.stub
 		- stubs/ParameterBag.stub
 		- stubs/Process.stub
+		- stubs/PropertyPathInterface.stub
 		- stubs/Session.stub
 
 parametersSchema:
