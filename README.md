@@ -97,3 +97,22 @@ require __DIR__.'/../config/bootstrap.php';
 $kernel = new \App\Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
 return new \Symfony\Bundle\FrameworkBundle\Console\Application($kernel);
 ```
+
+You may then encounter an error with PhpParser:
+
+```bash
+Compile Error: Cannot Declare interface PhpParser\NodeVisitor, because the name is already in use
+```
+
+If this is the case, you should create a new environment for your application that will disable inlining. In `config/packages/phpstan_env/parameters.yaml`:
+
+```yaml
+parameters:
+    container.dumper.inline_class_loader: false
+```
+
+Call the new env in your `console-application.php`:
+
+```php
+$kernel = new \App\Kernel('phpstan_env', (bool) $_SERVER['APP_DEBUG']);
+```
