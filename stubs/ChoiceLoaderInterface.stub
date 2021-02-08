@@ -6,7 +6,7 @@ interface ChoiceLoaderInterface
 {
     /**
      * @param array<string> $values
-     * @param callable|null $value
+     * @param callable(mixed): void|null $value
      *
      * @return array<mixed>
      */
@@ -14,7 +14,7 @@ interface ChoiceLoaderInterface
 
     /**
      * @param array<mixed> $choices
-     * @param callable|null $value
+     * @param callable(mixed): void|null $value
      *
      * @return array<string>
      */
