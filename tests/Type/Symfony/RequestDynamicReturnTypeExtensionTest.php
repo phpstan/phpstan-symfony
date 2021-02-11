@@ -16,7 +16,7 @@ final class RequestDynamicReturnTypeExtensionTest extends ExtensionTestCase
 			__DIR__ . '/request_get_content.php',
 			$expression,
 			$type,
-			new RequestDynamicReturnTypeExtension()
+			[new RequestDynamicReturnTypeExtension()]
 		);
 	}
 

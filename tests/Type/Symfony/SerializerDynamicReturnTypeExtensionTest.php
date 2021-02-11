@@ -16,10 +16,10 @@ final class SerializerDynamicReturnTypeExtensionTest extends ExtensionTestCase
 			__DIR__ . '/serializer.php',
 			$expression,
 			$type,
-			new SerializerDynamicReturnTypeExtension(
+			[new SerializerDynamicReturnTypeExtension(
 				'Symfony\Component\Serializer\SerializerInterface',
 				'deserialize'
-			)
+			)]
 		);
 	}
 
@@ -32,10 +32,10 @@ final class SerializerDynamicReturnTypeExtensionTest extends ExtensionTestCase
 			__DIR__ . '/denormalizer.php',
 			$expression,
 			$type,
-			new SerializerDynamicReturnTypeExtension(
+			[new SerializerDynamicReturnTypeExtension(
 				'Symfony\Component\Serializer\Normalizer\DenormalizerInterface',
 				'denormalize'
-			)
+			)]
 		);
 	}
 

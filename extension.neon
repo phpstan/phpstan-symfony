@@ -145,3 +145,13 @@ services:
 	-
 		factory: PHPStan\Type\Symfony\InputInterfaceHasOptionDynamicReturnTypeExtension
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
+	# new TreeBuilder() return type
+	-
+		factory: PHPStan\Type\Symfony\TreeBuilderDynamicReturnTypeExtension
+		tags: [phpstan.broker.dynamicStaticMethodReturnTypeExtension]
+
+	# TreeBuilder::getRootNode() return type
+	-
+		factory: PHPStan\Type\Symfony\TreeBuilderGetRootNodeDynamicReturnTypeExtension
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]

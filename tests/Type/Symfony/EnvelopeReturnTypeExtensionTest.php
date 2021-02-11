@@ -18,7 +18,7 @@ final class EnvelopeReturnTypeExtensionTest extends ExtensionTestCase
 			__DIR__ . '/envelope_all.php',
 			$expression,
 			$type,
-			new EnvelopeReturnTypeExtension()
+			[new EnvelopeReturnTypeExtension()]
 		);
 	}
 

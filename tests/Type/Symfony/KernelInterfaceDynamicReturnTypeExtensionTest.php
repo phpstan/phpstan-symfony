@@ -16,7 +16,7 @@ final class KernelInterfaceDynamicReturnTypeExtensionTest extends ExtensionTestC
 			__DIR__ . '/kernel_interface.php',
 			$expression,
 			$type,
-			new KernelInterfaceDynamicReturnTypeExtension()
+			[new KernelInterfaceDynamicReturnTypeExtension()]
 		);
 	}
 

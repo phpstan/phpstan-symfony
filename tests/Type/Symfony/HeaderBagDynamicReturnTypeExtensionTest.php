@@ -16,7 +16,7 @@ final class HeaderBagDynamicReturnTypeExtensionTest extends ExtensionTestCase
 			__DIR__ . '/header_bag_get.php',
 			$expression,
 			$type,
-			new HeaderBagDynamicReturnTypeExtension()
+			[new HeaderBagDynamicReturnTypeExtension()]
 		);
 	}
 
