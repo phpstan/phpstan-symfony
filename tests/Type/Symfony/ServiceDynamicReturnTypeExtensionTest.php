@@ -18,7 +18,7 @@ final class ServiceDynamicReturnTypeExtensionTest extends ExtensionTestCase
 			__DIR__ . '/ExampleController.php',
 			$expression,
 			$type,
-			new ServiceDynamicReturnTypeExtension(Controller::class, true, (new XmlServiceMapFactory($container))->create())
+			[new ServiceDynamicReturnTypeExtension(Controller::class, true, (new XmlServiceMapFactory($container))->create())]
 		);
 	}
 
@@ -55,7 +55,7 @@ final class ServiceDynamicReturnTypeExtensionTest extends ExtensionTestCase
 			__DIR__ . '/ExampleController.php',
 			$expression,
 			$type,
-			new ServiceDynamicReturnTypeExtension(Controller::class, false, (new XmlServiceMapFactory($container))->create())
+			[new ServiceDynamicReturnTypeExtension(Controller::class, false, (new XmlServiceMapFactory($container))->create())]
 		);
 	}
 

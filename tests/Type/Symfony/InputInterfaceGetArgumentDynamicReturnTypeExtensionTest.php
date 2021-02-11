@@ -17,7 +17,7 @@ final class InputInterfaceGetArgumentDynamicReturnTypeExtensionTest extends Exte
 			__DIR__ . '/ExampleBaseCommand.php',
 			$expression,
 			$type,
-			new InputInterfaceGetArgumentDynamicReturnTypeExtension(new ConsoleApplicationResolver(__DiR__ . '/console_application_loader.php'))
+			[new InputInterfaceGetArgumentDynamicReturnTypeExtension(new ConsoleApplicationResolver(__DiR__ . '/console_application_loader.php'))]
 		);
 	}
 

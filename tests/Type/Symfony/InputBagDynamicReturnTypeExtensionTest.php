@@ -20,7 +20,7 @@ final class InputBagDynamicReturnTypeExtensionTest extends ExtensionTestCase
 			__DIR__ . '/input_bag_get.php',
 			$expression,
 			$type,
-			new InputBagDynamicReturnTypeExtension()
+			[new InputBagDynamicReturnTypeExtension()]
 		);
 	}
 

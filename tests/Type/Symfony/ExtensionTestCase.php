@@ -17,21 +17,28 @@ use PHPStan\PhpDoc\PhpDocNodeResolver;
 use PHPStan\PhpDoc\PhpDocStringResolver;
 use PHPStan\Reflection\ReflectionProvider\DirectReflectionProviderProvider;
 use PHPStan\Testing\TestCase;
-use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\FileTypeMapper;
 use PHPStan\Type\VerbosityLevel;
 
 abstract class ExtensionTestCase extends TestCase
 {
 
+	/**
+	 * @param string $file
+	 * @param string $expression
+	 * @param string $type
+	 * @param \PHPStan\Type\DynamicMethodReturnTypeExtension[] $dynamicMethodReturnTypeExtensions
+	 * @param \PHPStan\Type\DynamicStaticMethodReturnTypeExtension[] $dynamicStaticMethodReturnTypeExtensions
+	 */
 	protected function processFile(
 		string $file,
 		string $expression,
 		string $type,
-		DynamicMethodReturnTypeExtension $extension
+		array $dynamicMethodReturnTypeExtensions = [],
+		array $dynamicStaticMethodReturnTypeExtensions = []
 	): void
 	{
-		$broker = $this->createBroker([$extension]);
+		$broker = $this->createBroker($dynamicMethodReturnTypeExtensions, $dynamicStaticMethodReturnTypeExtensions);
 		$parser = $this->getParser();
 		$currentWorkingDirectory = $this->getCurrentWorkingDirectory();
 		$fileHelper = new FileHelper($currentWorkingDirectory);
