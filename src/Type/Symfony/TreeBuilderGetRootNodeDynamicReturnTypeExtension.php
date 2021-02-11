@@ -6,6 +6,7 @@ use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
+use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 
 final class TreeBuilderGetRootNodeDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
@@ -29,12 +30,10 @@ final class TreeBuilderGetRootNodeDynamicReturnTypeExtension implements DynamicM
 	{
 		$calledOnType = $scope->getType($methodCall->var);
 		if ($calledOnType instanceof TreeBuilderType) {
-			$nodeDefinition = $calledOnType->getNodeDefinition();
-
-			return new \PHPStan\Type\ObjectType(get_class($nodeDefinition));
+			return new ObjectType($calledOnType->getRootNodeClassName());
 		}
 
-		return new \PHPStan\Type\ObjectType('Symfony\Component\Config\Definition\Builder\NodeDefinition');
+		return $methodReflection->getVariants()[0]->getReturnType();
 	}
 
 }

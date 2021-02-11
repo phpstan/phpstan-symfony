@@ -5,24 +5,30 @@ namespace PHPStan\Type\Symfony;
 use PhpParser\Node\Expr\StaticCall;
 use PhpParser\Node\Name;
 use PHPStan\Analyser\Scope;
-use PHPStan\Broker\Broker;
-use PHPStan\Reflection\BrokerAwareExtension;
 use PHPStan\Reflection\MethodReflection;
-use PHPStan\Reflection\ParametersAcceptorSelector;
-use PHPStan\Type\ConstantScalarType;
 use PHPStan\Type\DynamicStaticMethodReturnTypeExtension;
 use PHPStan\Type\Type;
+use PHPStan\Type\TypeUtils;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Symfony\Component\Config\Definition\Builder\BooleanNodeDefinition;
+use Symfony\Component\Config\Definition\Builder\EnumNodeDefinition;
+use Symfony\Component\Config\Definition\Builder\FloatNodeDefinition;
+use Symfony\Component\Config\Definition\Builder\IntegerNodeDefinition;
+use Symfony\Component\Config\Definition\Builder\ScalarNodeDefinition;
+use Symfony\Component\Config\Definition\Builder\VariableNodeDefinition;
 
-final class TreeBuilderDynamicReturnTypeExtension implements DynamicStaticMethodReturnTypeExtension, BrokerAwareExtension
+final class TreeBuilderDynamicReturnTypeExtension implements DynamicStaticMethodReturnTypeExtension
 {
 
-	/** @var Broker */
-	private $broker;
-
-	public function setBroker(Broker $broker): void
-	{
-		$this->broker = $broker;
-	}
+	private const MAPPING = [
+		'variable' => VariableNodeDefinition::class,
+		'scalar' => ScalarNodeDefinition::class,
+		'boolean' => BooleanNodeDefinition::class,
+		'integer' => IntegerNodeDefinition::class,
+		'float' => FloatNodeDefinition::class,
+		'array' => ArrayNodeDefinition::class,
+		'enum' => EnumNodeDefinition::class,
+	];
 
 	public function getClass(): string
 	{
@@ -41,28 +47,17 @@ final class TreeBuilderDynamicReturnTypeExtension implements DynamicStaticMethod
 		}
 
 		$className = $scope->resolveName($methodCall->class);
-		if (!$this->broker->hasClass($className)) {
-			return ParametersAcceptorSelector::selectSingle(
-				$methodReflection->getVariants()
-			)->getReturnType();
-		}
 
-		$args = [];
-		foreach ($methodCall->args as $arg) {
-			$value = $scope->getType($arg->value);
+		$type = 'array';
 
-			if (!$value instanceof ConstantScalarType) {
-				throw new \LogicException();
+		if (isset($methodCall->args[1])) {
+			$argStrings = TypeUtils::getConstantStrings($scope->getType($methodCall->args[1]->value));
+			if (count($argStrings) === 1 && isset(self::MAPPING[$argStrings[0]->getValue()])) {
+				$type = $argStrings[0]->getValue();
 			}
-
-			$args[] = $value->getValue();
 		}
 
-		$treeBuilder = new $className(
-			...$args
-		);
-
-		return new TreeBuilderType($className, $treeBuilder->getRootNode());
+		return new TreeBuilderType($className, self::MAPPING[$type]);
 	}
 
 }

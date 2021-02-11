@@ -3,24 +3,23 @@
 namespace PHPStan\Type\Symfony;
 
 use PHPStan\Type\ObjectType;
-use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 
 class TreeBuilderType extends ObjectType
 {
 
-	/** @var NodeDefinition */
-	private $nodeDefinition;
+	/** @var string */
+	private $rootNodeClassName;
 
-	public function __construct(string $className, NodeDefinition $nodeDefinition)
+	public function __construct(string $className, string $rootNodeClassName)
 	{
 		parent::__construct($className);
 
-		$this->nodeDefinition = $nodeDefinition;
+		$this->rootNodeClassName = $rootNodeClassName;
 	}
 
-	public function getNodeDefinition(): NodeDefinition
+	public function getRootNodeClassName(): string
 	{
-		return $this->nodeDefinition;
+		return $this->rootNodeClassName;
 	}
 
 }
