@@ -9,25 +9,18 @@ use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\DynamicStaticMethodReturnTypeExtension;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeUtils;
-use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
-use Symfony\Component\Config\Definition\Builder\BooleanNodeDefinition;
-use Symfony\Component\Config\Definition\Builder\EnumNodeDefinition;
-use Symfony\Component\Config\Definition\Builder\FloatNodeDefinition;
-use Symfony\Component\Config\Definition\Builder\IntegerNodeDefinition;
-use Symfony\Component\Config\Definition\Builder\ScalarNodeDefinition;
-use Symfony\Component\Config\Definition\Builder\VariableNodeDefinition;
 
 final class TreeBuilderDynamicReturnTypeExtension implements DynamicStaticMethodReturnTypeExtension
 {
 
 	private const MAPPING = [
-		'variable' => VariableNodeDefinition::class,
-		'scalar' => ScalarNodeDefinition::class,
-		'boolean' => BooleanNodeDefinition::class,
-		'integer' => IntegerNodeDefinition::class,
-		'float' => FloatNodeDefinition::class,
-		'array' => ArrayNodeDefinition::class,
-		'enum' => EnumNodeDefinition::class,
+		'variable' => 'Symfony\Component\Config\Definition\Builder\VariableNodeDefinition',
+		'scalar' => 'Symfony\Component\Config\Definition\Builder\ScalarNodeDefinition',
+		'boolean' => 'Symfony\Component\Config\Definition\Builder\BooleanNodeDefinition',
+		'integer' => 'Symfony\Component\Config\Definition\Builder\IntegerNodeDefinition',
+		'float' => 'Symfony\Component\Config\Definition\Builder\FloatNodeDefinition',
+		'array' => 'Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition',
+		'enum' => 'Symfony\Component\Config\Definition\Builder\EnumNodeDefinition',
 	];
 
 	public function getClass(): string
