@@ -44,7 +44,8 @@ services:
 	# console resolver
 	-
 		factory: PHPStan\Symfony\ConsoleApplicationResolver
-		arguments: [%symfony.console_application_loader%]
+		arguments:
+		    consoleApplicationLoader: %symfony.console_application_loader%
 
 	# service map
 	symfony.serviceMapFactory:
@@ -154,32 +155,42 @@ services:
 	# ExprBuilder::end() return type
 	-
 		factory: PHPStan\Type\Symfony\Config\ReturnParentDynamicReturnTypeExtension
-		arguments: ['Symfony\Component\Config\Definition\Builder\ExprBuilder', ['end']]
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+		arguments:
+		    className: Symfony\Component\Config\Definition\Builder\ExprBuilder
+		    methods: [end]
 
 	# NodeBuilder::*node() return type
 	-
 		factory: PHPStan\Type\Symfony\Config\PassParentObjectDynamicReturnTypeExtension
-		arguments: ['Symfony\Component\Config\Definition\Builder\NodeBuilder', ['arrayNode', 'scalarNode', 'booleanNode', 'integerNode', 'floatNode', 'enumNode', 'variableNode']]
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+		arguments:
+		    className: Symfony\Component\Config\Definition\Builder\NodeBuilder
+		    methods: [arrayNode, scalarNode, booleanNode, integerNode, floatNode, enumNode, variableNode]
 
 	# NodeBuilder::end() return type
 	-
 		factory: PHPStan\Type\Symfony\Config\ReturnParentDynamicReturnTypeExtension
-		arguments: ['Symfony\Component\Config\Definition\Builder\NodeBuilder', ['end']]
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+		arguments:
+		    className: Symfony\Component\Config\Definition\Builder\NodeBuilder
+		    methods: [end]
 
 	# NodeDefinition::children() return type
 	-
 		factory: PHPStan\Type\Symfony\Config\PassParentObjectDynamicReturnTypeExtension
-		arguments: ['Symfony\Component\Config\Definition\Builder\NodeDefinition', ['children', 'validate']]
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+		arguments:
+		    className: Symfony\Component\Config\Definition\Builder\NodeDefinition
+		    methods: [children, validate]
 
 	# NodeDefinition::end() return type
 	-
 		factory: PHPStan\Type\Symfony\Config\ReturnParentDynamicReturnTypeExtension
-		arguments: ['Symfony\Component\Config\Definition\Builder\NodeDefinition', ['end']]
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+		arguments:
+		    className: Symfony\Component\Config\Definition\Builder\NodeDefinition
+		    methods: [end]
 
 	# new TreeBuilder() return type
 	-
