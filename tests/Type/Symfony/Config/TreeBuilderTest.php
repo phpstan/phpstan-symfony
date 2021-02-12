@@ -34,12 +34,11 @@ final class TreeBuilderTest extends ExtensionTestCase
 			$type,
 			[
 				new ArrayNodeDefinitionPrototypeDynamicReturnTypeExtension(),
-				new EndDynamicReturnTypeExtension('Symfony\Component\Config\Definition\Builder\ExprBuilder'),
-				new EndDynamicReturnTypeExtension('Symfony\Component\Config\Definition\Builder\NodeBuilder'),
-				new EndDynamicReturnTypeExtension('Symfony\Component\Config\Definition\Builder\NodeDefinition'),
-				new NodeBuilderCreateNodeDynamicReturnTypeExtension(),
-				new NodeDefinitionChildrenDynamicReturnTypeExtension(),
-				new NodeDefinitionValidateDynamicReturnTypeExtension(),
+				new ReturnParentDynamicReturnTypeExtension('Symfony\Component\Config\Definition\Builder\ExprBuilder', ['end']),
+				new ReturnParentDynamicReturnTypeExtension('Symfony\Component\Config\Definition\Builder\NodeBuilder', ['end']),
+				new ReturnParentDynamicReturnTypeExtension('Symfony\Component\Config\Definition\Builder\NodeDefinition', ['end']),
+				new PassParentObjectDynamicReturnTypeExtension('Symfony\Component\Config\Definition\Builder\NodeBuilder', ['arrayNode', 'scalarNode', 'booleanNode', 'integerNode', 'floatNode', 'enumNode', 'variableNode']),
+				new PassParentObjectDynamicReturnTypeExtension('Symfony\Component\Config\Definition\Builder\NodeDefinition', ['children', 'validate']),
 				new TreeBuilderGetRootNodeDynamicReturnTypeExtension(),
 			],
 			[new TreeBuilderDynamicReturnTypeExtension()]

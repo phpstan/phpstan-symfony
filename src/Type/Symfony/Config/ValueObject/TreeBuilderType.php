@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace PHPStan\Type\Symfony\Config;
+namespace PHPStan\Type\Symfony\Config\ValueObject;
 
 use PHPStan\Type\ObjectType;
 

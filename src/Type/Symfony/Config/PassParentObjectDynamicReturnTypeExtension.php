@@ -7,17 +7,27 @@ use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
+use PHPStan\Type\Symfony\Config\ValueObject\ParentObjectType;
 use PHPStan\Type\Type;
+use PHPStan\Type\VerbosityLevel;
 
-final class EndDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
+final class PassParentObjectDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
 
 	/** @var string */
 	private $className;
 
-	public function __construct(string $className)
+	/** @var string[] */
+	private $methods;
+
+	/**
+	 * @param string $className
+	 * @param string[] $methods
+	 */
+	public function __construct(string $className, array $methods)
 	{
 		$this->className = $className;
+		$this->methods = $methods;
 	}
 
 	public function getClass(): string
@@ -27,7 +37,7 @@ final class EndDynamicReturnTypeExtension implements DynamicMethodReturnTypeExte
 
 	public function isMethodSupported(MethodReflection $methodReflection): bool
 	{
-		return $methodReflection->getName() === 'end';
+		return in_array($methodReflection->getName(), $this->methods, true);
 	}
 
 	public function getTypeFromMethodCall(
@@ -37,11 +47,10 @@ final class EndDynamicReturnTypeExtension implements DynamicMethodReturnTypeExte
 	): Type
 	{
 		$calledOnType = $scope->getType($methodCall->var);
-		if ($calledOnType instanceof ParentObjectType) {
-			return $calledOnType->getParent();
-		}
 
-		return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
+		$defaultType = ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
+
+		return new ParentObjectType($defaultType->describe(VerbosityLevel::typeOnly()), $calledOnType);
 	}
 
 }
