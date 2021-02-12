@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace PHPStan\Type\Symfony;
+namespace PHPStan\Type\Symfony\Config;
 
 use PhpParser\Node\Expr\StaticCall;
 use PhpParser\Node\Name;

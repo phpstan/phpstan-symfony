@@ -148,10 +148,15 @@ services:
 
 	# new TreeBuilder() return type
 	-
-		factory: PHPStan\Type\Symfony\TreeBuilderDynamicReturnTypeExtension
+		factory: PHPStan\Type\Symfony\Config\TreeBuilderDynamicReturnTypeExtension
 		tags: [phpstan.broker.dynamicStaticMethodReturnTypeExtension]
 
 	# TreeBuilder::getRootNode() return type
 	-
-		factory: PHPStan\Type\Symfony\TreeBuilderGetRootNodeDynamicReturnTypeExtension
+		factory: PHPStan\Type\Symfony\Config\TreeBuilderGetRootNodeDynamicReturnTypeExtension
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
+	# NodeDefinition::end() return type
+	-
+		factory: PHPStan\Type\Symfony\Config\NodeDefinitionEndDynamicReturnTypeExtension
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]

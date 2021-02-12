@@ -1,10 +1,11 @@
 <?php declare(strict_types = 1);
 
-namespace PHPStan\Type\Symfony;
+namespace PHPStan\Type\Symfony\Config;
 
 use Iterator;
+use PHPStan\Type\Symfony\ExtensionTestCase;
 
-final class TreeBuilderDynamicReturnTypeExtensionTest extends ExtensionTestCase
+final class TreeBuilderTest extends ExtensionTestCase
 {
 
 	/**
@@ -16,7 +17,10 @@ final class TreeBuilderDynamicReturnTypeExtensionTest extends ExtensionTestCase
 			__DIR__ . '/tree_builder.php',
 			$expression,
 			$type,
-			[new TreeBuilderGetRootNodeDynamicReturnTypeExtension()],
+			[
+				new TreeBuilderGetRootNodeDynamicReturnTypeExtension(),
+				new NodeDefinitionEndDynamicReturnTypeExtension()
+			],
 			[new TreeBuilderDynamicReturnTypeExtension()]
 		);
 	}
@@ -27,12 +31,12 @@ final class TreeBuilderDynamicReturnTypeExtensionTest extends ExtensionTestCase
 	public function getProvider(): Iterator
 	{
 		yield ['$treeRootNode', 'Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition'];
+		yield ['$arrayRootNode', 'Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition'];
 		yield ['$variableRootNode', 'Symfony\Component\Config\Definition\Builder\VariableNodeDefinition'];
 		yield ['$scalarRootNode', 'Symfony\Component\Config\Definition\Builder\ScalarNodeDefinition'];
 		yield ['$booleanRootNode', 'Symfony\Component\Config\Definition\Builder\BooleanNodeDefinition'];
 		yield ['$integerRootNode', 'Symfony\Component\Config\Definition\Builder\IntegerNodeDefinition'];
 		yield ['$floatRootNode', 'Symfony\Component\Config\Definition\Builder\FloatNodeDefinition'];
-		yield ['$arrayRootNode', 'Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition'];
 		yield ['$enumRootNode', 'Symfony\Component\Config\Definition\Builder\EnumNodeDefinition'];
 	}
 
