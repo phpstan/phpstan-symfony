@@ -9,12 +9,20 @@ use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\Type;
 
-final class ExprBuilderEndDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
+final class EndDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
+
+	/** @var string */
+	private $className;
+
+	public function __construct(string $className)
+	{
+		$this->className = $className;
+	}
 
 	public function getClass(): string
 	{
-		return 'Symfony\Component\Config\Definition\Builder\ExprBuilder';
+		return $this->className;
 	}
 
 	public function isMethodSupported(MethodReflection $methodReflection): bool
