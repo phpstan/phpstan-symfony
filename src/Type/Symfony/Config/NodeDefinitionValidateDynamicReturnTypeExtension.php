@@ -5,21 +5,20 @@ namespace PHPStan\Type\Symfony\Config;
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
-use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\Type;
 
-final class TreeBuilderGetRootNodeDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
+final class NodeDefinitionValidateDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
 
 	public function getClass(): string
 	{
-		return 'Symfony\Component\Config\Definition\Builder\TreeBuilder';
+		return 'Symfony\Component\Config\Definition\Builder\NodeDefinition';
 	}
 
 	public function isMethodSupported(MethodReflection $methodReflection): bool
 	{
-		return $methodReflection->getName() === 'getRootNode';
+		return $methodReflection->getName() === 'validate';
 	}
 
 	public function getTypeFromMethodCall(
@@ -30,16 +29,7 @@ final class TreeBuilderGetRootNodeDynamicReturnTypeExtension implements DynamicM
 	{
 		$calledOnType = $scope->getType($methodCall->var);
 
-		$defaultType = ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
-
-		if ($calledOnType instanceof TreeBuilderType) {
-			return new ParentObjectType(
-				$calledOnType->getRootNodeClassName(),
-				$calledOnType
-			);
-		}
-
-		return $defaultType;
+		return new ParentObjectType('Symfony\Component\Config\Definition\Builder\ExprBuilder', $calledOnType);
 	}
 
 }

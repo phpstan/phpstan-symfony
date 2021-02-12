@@ -146,6 +146,41 @@ services:
 		factory: PHPStan\Type\Symfony\InputInterfaceHasOptionDynamicReturnTypeExtension
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
 
+	# ArrayNodeDefinition::*prototype() return type
+	-
+		factory: PHPStan\Type\Symfony\Config\ArrayNodeDefinitionPrototypeDynamicReturnTypeExtension
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
+	# ExprBuilder::end() return type
+	-
+		factory: PHPStan\Type\Symfony\Config\ExprBuilderEndDynamicReturnTypeExtension
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
+	# NodeBuilder::*node() return type
+	-
+		factory: PHPStan\Type\Symfony\Config\NodeBuilderCreateNodeDynamicReturnTypeExtension
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
+	# NodeBuilder::end() return type
+	-
+		factory: PHPStan\Type\Symfony\Config\NodeBuilderEndDynamicReturnTypeExtension
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
+	# NodeDefinition::children() return type
+	-
+		factory: PHPStan\Type\Symfony\Config\NodeDefinitionChildrenDynamicReturnTypeExtension
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
+	# NodeDefinition::end() return type
+	-
+		factory: PHPStan\Type\Symfony\Config\NodeDefinitionEndDynamicReturnTypeExtension
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
+	# NodeDefinition::validate() return type
+	-
+		factory: PHPStan\Type\Symfony\Config\NodeDefinitionValidateDynamicReturnTypeExtension
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
 	# new TreeBuilder() return type
 	-
 		factory: PHPStan\Type\Symfony\Config\TreeBuilderDynamicReturnTypeExtension
@@ -154,9 +189,4 @@ services:
 	# TreeBuilder::getRootNode() return type
 	-
 		factory: PHPStan\Type\Symfony\Config\TreeBuilderGetRootNodeDynamicReturnTypeExtension
-		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
-
-	# NodeDefinition::end() return type
-	-
-		factory: PHPStan\Type\Symfony\Config\NodeDefinitionEndDynamicReturnTypeExtension
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]

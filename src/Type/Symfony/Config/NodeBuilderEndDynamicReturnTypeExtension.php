@@ -9,17 +9,17 @@ use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\Type;
 
-final class TreeBuilderGetRootNodeDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
+final class NodeBuilderEndDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
 
 	public function getClass(): string
 	{
-		return 'Symfony\Component\Config\Definition\Builder\TreeBuilder';
+		return 'Symfony\Component\Config\Definition\Builder\NodeBuilder';
 	}
 
 	public function isMethodSupported(MethodReflection $methodReflection): bool
 	{
-		return $methodReflection->getName() === 'getRootNode';
+		return $methodReflection->getName() === 'end';
 	}
 
 	public function getTypeFromMethodCall(
@@ -29,17 +29,11 @@ final class TreeBuilderGetRootNodeDynamicReturnTypeExtension implements DynamicM
 	): Type
 	{
 		$calledOnType = $scope->getType($methodCall->var);
-
-		$defaultType = ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
-
-		if ($calledOnType instanceof TreeBuilderType) {
-			return new ParentObjectType(
-				$calledOnType->getRootNodeClassName(),
-				$calledOnType
-			);
+		if ($calledOnType instanceof ParentObjectType) {
+			return $calledOnType->getParent();
 		}
 
-		return $defaultType;
+		return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
 	}
 
 }
