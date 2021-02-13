@@ -84,7 +84,7 @@ abstract class ExtensionTestCase extends TestCase
 				}
 				/** @var \PhpParser\Node\Stmt\Expression $expNode */
 				$expNode = $this->getParser()->parseString(sprintf('<?php %s;', $expression))[0];
-				self::assertSame($type, $scope->getType($expNode->expr)->describe(VerbosityLevel::typeOnly()));
+				self::assertSame($type, $scope->getType($expNode->expr)->describe(VerbosityLevel::typeOnly()), sprintf('Expression "%s"', $expression));
 				$run = true;
 			}
 		);

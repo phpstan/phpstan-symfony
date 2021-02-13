@@ -5,6 +5,9 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 $treeBuilder = new TreeBuilder('my_tree');
 $treeRootNode = $treeBuilder->getRootNode();
 
+$arrayTreeBuilder = new TreeBuilder('my_tree', 'array');
+$arrayRootNode = $arrayTreeBuilder->getRootNode();
+
 $variableTreeBuilder = new TreeBuilder('my_tree', 'variable');
 $variableRootNode = $variableTreeBuilder->getRootNode();
 
@@ -19,9 +22,6 @@ $integerRootNode = $integerTreeBuilder->getRootNode();
 
 $floatTreeBuilder = new TreeBuilder('my_tree', 'float');
 $floatRootNode = $floatTreeBuilder->getRootNode();
-
-$arrayTreeBuilder = new TreeBuilder('my_tree', 'array');
-$arrayRootNode = $arrayTreeBuilder->getRootNode();
 
 $enumTreeBuilder = new TreeBuilder('my_tree', 'enum');
 $enumRootNode = $enumTreeBuilder->getRootNode();

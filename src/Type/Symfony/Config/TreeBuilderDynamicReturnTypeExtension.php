@@ -1,12 +1,13 @@
 <?php declare(strict_types = 1);
 
-namespace PHPStan\Type\Symfony;
+namespace PHPStan\Type\Symfony\Config;
 
 use PhpParser\Node\Expr\StaticCall;
 use PhpParser\Node\Name;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\DynamicStaticMethodReturnTypeExtension;
+use PHPStan\Type\Symfony\Config\ValueObject\TreeBuilderType;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeUtils;
 
