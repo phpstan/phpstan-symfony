@@ -138,50 +138,50 @@ final class TreeBuilderTest extends ExtensionTestCase
 		yield ['
 		$arrayRootNode
 			->children()
-                ->arrayNode("methods")
-                    ->prototype("scalar")
-                        ->defaultNull()
-                    ->end()
-                ->end()
-            ->end()
+				->arrayNode("methods")
+					->prototype("scalar")
+						->defaultNull()
+					->end()
+				->end()
+			->end()
 		', 'Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition'];
 		yield ['
 		$arrayRootNode
 			->children()
-                ->arrayNode("methods")
-                    ->scalarPrototype()
-                        ->defaultNull()
-                    ->end()
-                ->end()
-            ->end()
+				->arrayNode("methods")
+					->scalarPrototype()
+						->defaultNull()
+					->end()
+				->end()
+			->end()
 		', 'Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition'];
 		yield ['
 		$arrayRootNode
 			->children()
-                ->arrayNode("methods")
-                    ->prototype("scalar")
-                        ->validate()
-                            ->ifNotInArray(["one", "two"])
-                            ->thenInvalid("%s is not a valid method.")
-                        ->end()
-                    ->end()
-                ->end()
-            ->end()
+				->arrayNode("methods")
+					->prototype("scalar")
+						->validate()
+							->ifNotInArray(["one", "two"])
+							->thenInvalid("%s is not a valid method.")
+						->end()
+					->end()
+				->end()
+			->end()
 		', 'Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition'];
 		yield ['
 		$arrayRootNode
 			->children()
-                ->arrayNode("methods")
-                    ->prototype("array")
-                        ->beforeNormalization()
-                            ->ifString()
-                            ->then(static function ($v) {
+				->arrayNode("methods")
+					->prototype("array")
+						->beforeNormalization()
+							->ifString()
+							->then(static function ($v) {
 								return [$v];
 							})
-                        ->end()
-                    ->end()
-                ->end()
-            ->end()
+						->end()
+					->end()
+				->end()
+			->end()
 		', 'Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition'];
 
 		yield ['$variableRootNode', 'Symfony\Component\Config\Definition\Builder\VariableNodeDefinition'];
