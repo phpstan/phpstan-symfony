@@ -182,7 +182,7 @@ services:
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
 		arguments:
 		    className: Symfony\Component\Config\Definition\Builder\NodeDefinition
-		    methods: [children, validate]
+		    methods: [children, validate, beforeNormalization]
 
 	# NodeDefinition::end() return type
 	-
