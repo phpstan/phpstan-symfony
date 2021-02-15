@@ -4,7 +4,6 @@ namespace PHPStan\Type\Symfony\Config;
 
 use Iterator;
 use PHPStan\Type\Symfony\ExtensionTestCase;
-use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 
 final class TreeBuilderTest extends ExtensionTestCase
 {
