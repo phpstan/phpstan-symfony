@@ -4,7 +4,6 @@ namespace PHPStan\Type\Symfony\Config;
 
 use Iterator;
 use PHPStan\Type\Symfony\ExtensionTestCase;
-use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 
 final class TreeBuilderTest extends ExtensionTestCase
 {
@@ -14,20 +13,6 @@ final class TreeBuilderTest extends ExtensionTestCase
 	 */
 	public function testGet(string $expression, string $type): void
 	{
-		$arrayTreeBuilder = new TreeBuilder('my_tree', 'array');
-		$arrayRootNode = $arrayTreeBuilder->getRootNode();
-		$r = $arrayRootNode
-			->children()
-			->arrayNode('methods')
-			->prototype('scalar')
-			->validate()
-			->ifNotInArray(['one', 'two'])
-			->thenInvalid('%s is not a valid method.')
-			->end()
-			->end()
-			->end()
-			->end();
-
 		$this->processFile(
 			__DIR__ . '/tree_builder.php',
 			$expression,
@@ -38,7 +23,7 @@ final class TreeBuilderTest extends ExtensionTestCase
 				new ReturnParentDynamicReturnTypeExtension('Symfony\Component\Config\Definition\Builder\NodeBuilder', ['end']),
 				new ReturnParentDynamicReturnTypeExtension('Symfony\Component\Config\Definition\Builder\NodeDefinition', ['end']),
 				new PassParentObjectDynamicReturnTypeExtension('Symfony\Component\Config\Definition\Builder\NodeBuilder', ['arrayNode', 'scalarNode', 'booleanNode', 'integerNode', 'floatNode', 'enumNode', 'variableNode']),
-				new PassParentObjectDynamicReturnTypeExtension('Symfony\Component\Config\Definition\Builder\NodeDefinition', ['children', 'validate']),
+				new PassParentObjectDynamicReturnTypeExtension('Symfony\Component\Config\Definition\Builder\NodeDefinition', ['children', 'validate', 'beforeNormalization']),
 				new TreeBuilderGetRootNodeDynamicReturnTypeExtension(),
 			],
 			[new TreeBuilderDynamicReturnTypeExtension()]
@@ -153,35 +138,50 @@ final class TreeBuilderTest extends ExtensionTestCase
 		yield ['
 		$arrayRootNode
 			->children()
-                ->arrayNode("methods")
-                    ->prototype("scalar")
-                        ->defaultNull()
-                    ->end()
-                ->end()
-            ->end()
+				->arrayNode("methods")
+					->prototype("scalar")
+						->defaultNull()
+					->end()
+				->end()
+			->end()
 		', 'Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition'];
 		yield ['
 		$arrayRootNode
 			->children()
-                ->arrayNode("methods")
-                    ->scalarPrototype()
-                        ->defaultNull()
-                    ->end()
-                ->end()
-            ->end()
+				->arrayNode("methods")
+					->scalarPrototype()
+						->defaultNull()
+					->end()
+				->end()
+			->end()
 		', 'Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition'];
 		yield ['
 		$arrayRootNode
 			->children()
-                ->arrayNode("methods")
-                    ->prototype("scalar")
-                        ->validate()
-                            ->ifNotInArray(["one", "two"])
-                            ->thenInvalid("%s is not a valid method.")
-                        ->end()
-                    ->end()
-                ->end()
-            ->end()
+				->arrayNode("methods")
+					->prototype("scalar")
+						->validate()
+							->ifNotInArray(["one", "two"])
+							->thenInvalid("%s is not a valid method.")
+						->end()
+					->end()
+				->end()
+			->end()
+		', 'Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition'];
+		yield ['
+		$arrayRootNode
+			->children()
+				->arrayNode("methods")
+					->prototype("array")
+						->beforeNormalization()
+							->ifString()
+							->then(static function ($v) {
+								return [$v];
+							})
+						->end()
+					->end()
+				->end()
+			->end()
 		', 'Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition'];
 
 		yield ['$variableRootNode', 'Symfony\Component\Config\Definition\Builder\VariableNodeDefinition'];
