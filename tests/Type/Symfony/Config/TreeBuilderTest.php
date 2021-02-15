@@ -24,7 +24,7 @@ final class TreeBuilderTest extends ExtensionTestCase
 				new ReturnParentDynamicReturnTypeExtension('Symfony\Component\Config\Definition\Builder\NodeBuilder', ['end']),
 				new ReturnParentDynamicReturnTypeExtension('Symfony\Component\Config\Definition\Builder\NodeDefinition', ['end']),
 				new PassParentObjectDynamicReturnTypeExtension('Symfony\Component\Config\Definition\Builder\NodeBuilder', ['arrayNode', 'scalarNode', 'booleanNode', 'integerNode', 'floatNode', 'enumNode', 'variableNode']),
-				new PassParentObjectDynamicReturnTypeExtension('Symfony\Component\Config\Definition\Builder\NodeDefinition', ['children', 'validate']),
+				new PassParentObjectDynamicReturnTypeExtension('Symfony\Component\Config\Definition\Builder\NodeDefinition', ['children', 'validate', 'beforeNormalization']),
 				new TreeBuilderGetRootNodeDynamicReturnTypeExtension(),
 			],
 			[new TreeBuilderDynamicReturnTypeExtension()]
@@ -164,6 +164,21 @@ final class TreeBuilderTest extends ExtensionTestCase
                         ->validate()
                             ->ifNotInArray(["one", "two"])
                             ->thenInvalid("%s is not a valid method.")
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+		', 'Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition'];
+		yield ['
+		$arrayRootNode
+			->children()
+                ->arrayNode("methods")
+                    ->prototype("array")
+                        ->beforeNormalization()
+                            ->ifString()
+                            ->then(static function ($v) {
+								return [$v];
+							})
                         ->end()
                     ->end()
                 ->end()
