@@ -14,20 +14,6 @@ final class TreeBuilderTest extends ExtensionTestCase
 	 */
 	public function testGet(string $expression, string $type): void
 	{
-		$arrayTreeBuilder = new TreeBuilder('my_tree', 'array');
-		$arrayRootNode = $arrayTreeBuilder->getRootNode();
-		$r = $arrayRootNode
-			->children()
-			->arrayNode('methods')
-			->prototype('scalar')
-			->validate()
-			->ifNotInArray(['one', 'two'])
-			->thenInvalid('%s is not a valid method.')
-			->end()
-			->end()
-			->end()
-			->end();
-
 		$this->processFile(
 			__DIR__ . '/tree_builder.php',
 			$expression,
