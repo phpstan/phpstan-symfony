@@ -24,6 +24,7 @@ parameters:
 		- stubs/FormTypeExtensionInterface.stub
 		- stubs/FormTypeInterface.stub
 		- stubs/FormView.stub
+		- stubs/GenericEvent.stub
 		- stubs/HeaderBag.stub
 		- stubs/Node.stub
 		- stubs/NormalizableInterface.stub
