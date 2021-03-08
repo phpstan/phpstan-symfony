@@ -1,4 +1,6 @@
 parameters:
+	dynamicConstantNames:
+		- Symfony\Component\HttpKernel\Kernel::VERSION_ID
 	symfony:
 		container_xml_path: null
 		constant_hassers: true
