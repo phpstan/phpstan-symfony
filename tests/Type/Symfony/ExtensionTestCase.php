@@ -67,7 +67,9 @@ abstract class ExtensionTestCase extends TestCase
 			true,
 			true,
 			[],
-			[]
+			[],
+			false,
+			true
 		);
 		$resolver->setAnalysedFiles([$fileHelper->normalizePath($file)]);
 
