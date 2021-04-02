@@ -22,4 +22,9 @@ class TreeBuilderType extends ObjectType
 		return $this->rootNodeClassName;
 	}
 
+	protected function describeAdditionalCacheKey(): string
+	{
+		return $this->getRootNodeClassName();
+	}
+
 }

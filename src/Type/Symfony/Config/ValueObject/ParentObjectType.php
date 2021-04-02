@@ -4,6 +4,7 @@ namespace PHPStan\Type\Symfony\Config\ValueObject;
 
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
+use PHPStan\Type\VerbosityLevel;
 
 class ParentObjectType extends ObjectType
 {
@@ -21,6 +22,11 @@ class ParentObjectType extends ObjectType
 	public function getParent(): Type
 	{
 		return $this->parent;
+	}
+
+	protected function describeAdditionalCacheKey(): string
+	{
+		return $this->parent->describe(VerbosityLevel::cache());
 	}
 
 }
