@@ -8,7 +8,7 @@ interface EncoderInterface
      * @param mixed $data
      * @param string $format
      * @param array<mixed> $context
-     * @return string|int|float|bool
+     * @return string
      */
     public function encode($data, $format, array $context = []);
 

@@ -6,7 +6,7 @@ interface NormalizerInterface
 {
     /**
      * @param mixed $object
-     * @param string $format
+     * @param string|null $format
      * @param array<mixed> $context
      * @return array<mixed>|string|int|float|bool|null
      */

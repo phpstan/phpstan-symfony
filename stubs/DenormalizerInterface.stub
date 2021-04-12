@@ -7,7 +7,7 @@ interface DenormalizerInterface
     /**
      * @param mixed $data
      * @param string $type
-     * @param string $format
+     * @param string|null $format
      * @param array<mixed> $context
      * @return object|array<mixed>
      */
@@ -16,7 +16,7 @@ interface DenormalizerInterface
     /**
      * @param mixed $data
      * @param string $type
-     * @param string $format
+     * @param string|null $format
      * @return bool
      */
     public function supportsDenormalization($data, $type, $format = null);
