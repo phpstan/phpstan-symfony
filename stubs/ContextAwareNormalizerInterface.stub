@@ -6,7 +6,7 @@ interface ContextAwareNormalizerInterface extends NormalizerInterface
 {
     /**
      * @param mixed $data
-     * @param string $format
+     * @param string|null $format
      * @param array<mixed> $context
      * @return bool
      */
