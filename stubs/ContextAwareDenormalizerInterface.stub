@@ -6,6 +6,7 @@ interface ContextAwareDenormalizerInterface extends DenormalizerInterface
 {
     /**
      * @param mixed $data
+     * @param string $type
      * @param string|null $format
      * @param array<mixed> $context
      * @return bool
