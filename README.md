@@ -13,6 +13,8 @@ This extension provides following features:
 * Provides correct return type for `Request::getContent()` method based on the `$asResource` parameter.
 * Provides correct return type for `HeaderBag::get()` method based on the `$first` parameter.
 * Provides correct return type for `Envelope::all()` method based on the `$stampFqcn` parameter.
+* Provides correct return type for `InputBag::get()` method based on the `$default` parameter.
+* Provides correct return type for `InputBag::all()` method based on the `$key` parameter.
 * Provides correct return types for `TreeBuilder` and `NodeDefinition` objects.
 * Notifies you when you try to get an unregistered service from the container.
 * Notifies you when you try to get a private service from the container.

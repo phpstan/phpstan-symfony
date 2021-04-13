@@ -8,16 +8,16 @@ final class InputBagDynamicReturnTypeExtensionTest extends ExtensionTestCase
 {
 
 	/**
-	 * @dataProvider getProvider
+	 * @dataProvider inputBagProvider
 	 */
-	public function testGet(string $expression, string $type): void
+	public function testInputBag(string $expression, string $type): void
 	{
 		if (!class_exists('Symfony\\Component\\HttpFoundation\\InputBag')) {
 			self::markTestSkipped('The test needs Symfony\Component\HttpFoundation\InputBag class.');
 		}
 
 		$this->processFile(
-			__DIR__ . '/input_bag_get.php',
+			__DIR__ . '/input_bag.php',
 			$expression,
 			$type,
 			[new InputBagDynamicReturnTypeExtension()]
@@ -27,12 +27,14 @@ final class InputBagDynamicReturnTypeExtensionTest extends ExtensionTestCase
 	/**
 	 * @return \Iterator<array{string, string}>
 	 */
-	public function getProvider(): Iterator
+	public function inputBagProvider(): Iterator
 	{
 		yield ['$test1', 'string|null'];
 		yield ['$test2', 'string|null'];
 		yield ['$test3', 'string'];
 		yield ['$test4', 'string'];
+		yield ['$test5', 'array<string, array<string>|string>'];
+		yield ['$test6', 'array<string>'];
 	}
 
 }
