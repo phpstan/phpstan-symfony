@@ -3,6 +3,7 @@
 namespace PHPStan\Type\Symfony;
 
 use PhpParser\Node\Expr\MethodCall;
+use PhpParser\PrettyPrinter\Standard;
 use PHPStan\Analyser\Scope;
 use PHPStan\Analyser\SpecifiedTypes;
 use PHPStan\Analyser\TypeSpecifier;
@@ -11,6 +12,7 @@ use PHPStan\Analyser\TypeSpecifierContext;
 use PHPStan\Broker\Broker;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\ParametersAcceptorSelector;
+use PHPStan\Type\BooleanType;
 use PHPStan\Type\MethodTypeSpecifyingExtension;
 use PHPStan\Type\TypeCombinator;
 
@@ -18,7 +20,6 @@ final class RequestTypeSpecifyingExtension implements MethodTypeSpecifyingExtens
 {
 
 	private const REQUEST_CLASS = 'Symfony\Component\HttpFoundation\Request';
-	private const HAS_METHOD_NAME = 'hasSession';
 	private const GET_METHOD_NAME = 'getSession';
 
 	/** @var Broker */
@@ -27,9 +28,13 @@ final class RequestTypeSpecifyingExtension implements MethodTypeSpecifyingExtens
 	/** @var TypeSpecifier */
 	private $typeSpecifier;
 
-	public function __construct(Broker $broker)
+	/** @var \PhpParser\PrettyPrinter\Standard */
+	private $printer;
+
+	public function __construct(Broker $broker, Standard $printer)
 	{
 		$this->broker = $broker;
+		$this->printer = $printer;
 	}
 
 	public function getClass(): string
@@ -39,7 +44,7 @@ final class RequestTypeSpecifyingExtension implements MethodTypeSpecifyingExtens
 
 	public function isMethodSupported(MethodReflection $methodReflection, MethodCall $node, TypeSpecifierContext $context): bool
 	{
-		return $methodReflection->getName() === self::HAS_METHOD_NAME && !$context->null();
+		return $methodReflection->getName() === 'hasSession' && !$context->null();
 	}
 
 	public function specifyTypes(MethodReflection $methodReflection, MethodCall $node, Scope $scope, TypeSpecifierContext $context): SpecifiedTypes
@@ -48,8 +53,12 @@ final class RequestTypeSpecifyingExtension implements MethodTypeSpecifyingExtens
 		$methodVariants = $classReflection->getNativeMethod(self::GET_METHOD_NAME)->getVariants();
 
 		return $this->typeSpecifier->create(
-			new MethodCall($node->var, self::GET_METHOD_NAME),
-			TypeCombinator::removeNull(ParametersAcceptorSelector::selectSingle($methodVariants)->getReturnType()),
+			Helper::createMarkerNode(
+				new MethodCall($node->var, self::GET_METHOD_NAME),
+				TypeCombinator::removeNull(ParametersAcceptorSelector::selectSingle($methodVariants)->getReturnType()),
+				$this->printer
+			),
+			new BooleanType(),
 			$context
 		);
 	}

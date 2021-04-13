@@ -10,3 +10,5 @@ if ($request->hasSession()) {
 	$session2 = $request->getSession();
 	$session2;
 }
+
+die;
