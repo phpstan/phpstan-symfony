@@ -11,4 +11,11 @@ interface NormalizerInterface
      * @return array<mixed>|string|int|float|bool|null
      */
     public function normalize($object, $format = null, array $context = []);
+
+    /**
+     * @param mixed $data
+     * @param string|null $format
+     * @return bool
+     */
+    public function supportsNormalization($data, $format = null);
 }
