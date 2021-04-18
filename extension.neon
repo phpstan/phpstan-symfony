@@ -6,35 +6,35 @@ parameters:
 		constant_hassers: true
 		console_application_loader: null
 	stubFiles:
-		- stubs/ChoiceLoaderInterface.stub
-		- stubs/Constraint.stub
-		- stubs/ConstraintViolationInterface.stub
-		- stubs/ConstraintViolationListInterface.stub
-		- stubs/ContainerBuilder.stub
-		- stubs/ContextAwareDecoderInterface.stub
-		- stubs/ContextAwareDenormalizerInterface.stub
-		- stubs/ContextAwareNormalizerInterface.stub
-		- stubs/Cookie.stub
-		- stubs/DecoderInterface.stub
-		- stubs/DenormalizableInterface.stub
-		- stubs/DenormalizerInterface.stub
-		- stubs/EncoderInterface.stub
-		- stubs/EventSubscriberInterface.stub
-		- stubs/ExtensionInterface.stub
-		- stubs/FormBuilderInterface.stub
-		- stubs/FormInterface.stub
-		- stubs/FormTypeExtensionInterface.stub
-		- stubs/FormTypeInterface.stub
-		- stubs/FormView.stub
-		- stubs/GenericEvent.stub
-		- stubs/HeaderBag.stub
-		- stubs/Node.stub
-		- stubs/NormalizableInterface.stub
-		- stubs/NormalizerInterface.stub
-		- stubs/ParameterBag.stub
-		- stubs/Process.stub
-		- stubs/PropertyPathInterface.stub
-		- stubs/Session.stub
+		- stubs/Symfony/Component/Form/ChoiceList/Loader/ChoiceLoaderInterface.stub
+		- stubs/Symfony/Component/DependencyInjection/ContainerBuilder.stub
+		- stubs/Symfony/Component/DependencyInjection/Extension/ExtensionInterface.stub
+		- stubs/Symfony/Component/EventDispatcher/EventSubscriberInterface.stub
+		- stubs/Symfony/Component/EventDispatcher/GenericEvent.stub
+		- stubs/Symfony/Component/Form/FormBuilderInterface.stub
+		- stubs/Symfony/Component/Form/FormInterface.stub
+		- stubs/Symfony/Component/Form/FormTypeExtensionInterface.stub
+		- stubs/Symfony/Component/Form/FormTypeInterface.stub
+		- stubs/Symfony/Component/Form/FormView.stub
+		- stubs/Symfony/Component/HttpFoundation/Cookie.stub
+		- stubs/Symfony/Component/HttpFoundation/HeaderBag.stub
+		- stubs/Symfony/Component/HttpFoundation/ParameterBag.stub
+		- stubs/Symfony/Component/HttpFoundation/Session.stub
+		- stubs/Symfony/Component/Process/Process.stub
+		- stubs/Symfony/Component/PropertyAccess/PropertyPathInterface.stub
+		- stubs/Symfony/Component/Serializer/Encoder/ContextAwareDecoderInterface.stub
+		- stubs/Symfony/Component/Serializer/Encoder/DecoderInterface.stub
+		- stubs/Symfony/Component/Serializer/Encoder/EncoderInterface.stub
+		- stubs/Symfony/Component/Serializer/Normalizer/ContextAwareDenormalizerInterface.stub
+		- stubs/Symfony/Component/Serializer/Normalizer/ContextAwareNormalizerInterface.stub
+		- stubs/Symfony/Component/Serializer/Normalizer/DenormalizableInterface.stub
+		- stubs/Symfony/Component/Serializer/Normalizer/DenormalizerInterface.stub
+		- stubs/Symfony/Component/Serializer/Normalizer/NormalizableInterface.stub
+		- stubs/Symfony/Component/Serializer/Normalizer/NormalizerInterface.stub
+		- stubs/Symfony/Component/Validator/Constraint.stub
+		- stubs/Symfony/Component/Validator/ConstraintViolationInterface.stub
+		- stubs/Symfony/Component/Validator/ConstraintViolationListInterface.stub
+		- stubs/Twig/Node/Node.stub
 
 parametersSchema:
 	symfony: structure([
