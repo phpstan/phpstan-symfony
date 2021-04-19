@@ -1,0 +1,19 @@
+<?php
+
+namespace Symfony\Component\Security\Acl\Model;
+
+interface AclProviderInterface
+{
+    /**
+     * @phpstan-param array<SecurityIdentityInterface> $sids
+     * @phpstan-return AclInterface
+     */
+    public function findAcl(ObjectIdentityInterface $oid, array $sids = []);
+
+    /**
+     * @phpstan-param array<ObjectIdentityInterface> $oids
+     * @phpstan-param array<SecurityIdentityInterface> $sids
+     * @phpstan-return \SplObjectStorage<ObjectIdentityInterface, AclInterface>
+     */
+    public function findAcls(array $oids, array $sids = []);
+}
