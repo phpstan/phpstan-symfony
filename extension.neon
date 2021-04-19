@@ -22,6 +22,12 @@ parameters:
 		- stubs/Symfony/Component/HttpFoundation/Session.stub
 		- stubs/Symfony/Component/Process/Process.stub
 		- stubs/Symfony/Component/PropertyAccess/PropertyPathInterface.stub
+		- stubs/Symfony/Component/Security/Acl/Model/AclInterface.stub
+		- stubs/Symfony/Component/Security/Acl/Model/AclProviderInterface.stub
+		- stubs/Symfony/Component/Security/Acl/Model/MutableAclInterface.stub
+		- stubs/Symfony/Component/Security/Acl/Model/MutableAclProviderInterface.stub
+		- stubs/Symfony/Component/Security/Acl/Model/ObjectIdentityInterface.stub
+		- stubs/Symfony/Component/Security/Acl/Model/SecurityIdentityInterface.stub
 		- stubs/Symfony/Component/Serializer/Encoder/ContextAwareDecoderInterface.stub
 		- stubs/Symfony/Component/Serializer/Encoder/DecoderInterface.stub
 		- stubs/Symfony/Component/Serializer/Encoder/EncoderInterface.stub
