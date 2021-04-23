@@ -83,29 +83,50 @@ parameters:
 
 Be aware that it may hide genuine errors in your application.
 
-## Console command analysis
+## Analysis of Symfony Console Commands
 
-You can opt in for more advanced analysis by providing the console application from your own application. This will allow the correct argument and option types to be inferred when accessing `$input->getArgument()` or `$input->getOption()`.
+You can opt in for more advanced analysis of [Symfony Console Commands](https://symfony.com/doc/current/console.html)
+by providing the console application from your own application. This will allow the correct argument and option types to be inferred when accessing `$input->getArgument()` or `$input->getOption()`.
 
-```
+```neon
 parameters:
 	symfony:
 		console_application_loader: tests/console-application.php
 ```
 
-For example, in a Symfony project, `console-application.php` would look something like this:
+Symfony 4:
 
 ```php
-require __DIR__.'/../config/bootstrap.php';
-$kernel = new \App\Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
-return new \Symfony\Bundle\FrameworkBundle\Console\Application($kernel);
+// tests/console-application.php
+
+use App\Kernel;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+
+require __DIR__ . '/../config/bootstrap.php';
+$kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
+return new Application($kernel);
+```
+
+Symfony 5:
+
+```php
+// tests/console-application.php
+
+use App\Kernel;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Dotenv\Dotenv;
+
+require __DIR__ . '/../vendor/autoload.php';
+
+(new Dotenv())->bootEnv(__DIR__ . '/../.env');
+
+$kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
+return new Application($kernel);
 ```
 
 You may then encounter an error with PhpParser:
 
-```bash
-Compile Error: Cannot Declare interface PhpParser\NodeVisitor, because the name is already in use
-```
+> Compile Error: Cannot Declare interface PhpParser\NodeVisitor, because the name is already in use
 
 If this is the case, you should create a new environment for your application that will disable inlining. In `config/packages/phpstan_env/parameters.yaml`:
 
