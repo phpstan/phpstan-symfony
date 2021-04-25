@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <ruleset name="PHPStan PHPUnit extensions and rules">
-    <rule ref="build-cs/vendor/consistence/coding-standard/Consistence/ruleset.xml">
+    <rule ref="build-cs/vendor/consistence-community/coding-standard/Consistence/ruleset.xml">
         <exclude name="Squiz.Functions.GlobalFunction.Found"/>
         <exclude name="SlevomatCodingStandard.Namespaces.FullyQualifiedClassNameAfterKeyword"/>
         <exclude name="SlevomatCodingStandard.Namespaces.FullyQualifiedClassNameInAnnotation"/>
