@@ -210,3 +210,8 @@ services:
 	-
 		factory: PHPStan\Type\Symfony\Config\TreeBuilderGetRootNodeDynamicReturnTypeExtension
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
+	# KernelInterface::locateResource() return type
+	-
+		class: PHPStan\Type\Symfony\KernelInterfaceDynamicReturnTypeExtension
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
