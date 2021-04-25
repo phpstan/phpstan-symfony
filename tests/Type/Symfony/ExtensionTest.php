@@ -9,36 +9,36 @@ use Symfony\Component\HttpFoundation\Request;
 class ExtensionTest extends TypeInferenceTestCase
 {
 
+	/** @return mixed[] */
 	public function dataFileAsserts(): iterable
 	{
-		yield from $this->gatherAssertTypes(__DIR__ . '/envelope_all.php');
-		yield from $this->gatherAssertTypes(__DIR__ . '/header_bag_get.php');
+		yield from $this->gatherAssertTypes(__DIR__ . '/data/envelope_all.php');
+		yield from $this->gatherAssertTypes(__DIR__ . '/data/header_bag_get.php');
 
 		if (class_exists('Symfony\Component\HttpFoundation\InputBag')) {
-			yield from $this->gatherAssertTypes(__DIR__ . '/input_bag.php');
+			yield from $this->gatherAssertTypes(__DIR__ . '/data/input_bag.php');
 		}
 
-		yield from $this->gatherAssertTypes(__DIR__ . '/Config/tree_builder.php');
-		yield from $this->gatherAssertTypes(__DIR__ . '/ExampleBaseCommand.php');
-		yield from $this->gatherAssertTypes(__DIR__ . '/ExampleOptionCommand.php');
-		yield from $this->gatherAssertTypes(__DIR__ . '/kernel_interface.php');
-		yield from $this->gatherAssertTypes(__DIR__ . '/request_get_content.php');
-
+		yield from $this->gatherAssertTypes(__DIR__ . '/data/tree_builder.php');
+		yield from $this->gatherAssertTypes(__DIR__ . '/data/ExampleBaseCommand.php');
+		yield from $this->gatherAssertTypes(__DIR__ . '/data/ExampleOptionCommand.php');
+		yield from $this->gatherAssertTypes(__DIR__ . '/data/kernel_interface.php');
+		yield from $this->gatherAssertTypes(__DIR__ . '/data/request_get_content.php');
 
 		$ref = new ReflectionMethod(Request::class, 'getSession');
 		$doc = (string) $ref->getDocComment();
 		if (strpos($doc, '@return SessionInterface|null') !== false) {
-			yield from $this->gatherAssertTypes(__DIR__ . '/request_get_session_null.php');
+			yield from $this->gatherAssertTypes(__DIR__ . '/data/request_get_session_null.php');
 		} else {
-			yield from $this->gatherAssertTypes(__DIR__ . '/request_get_session.php');
+			yield from $this->gatherAssertTypes(__DIR__ . '/data/request_get_session.php');
 		}
-
-		yield from $this->gatherAssertTypes(__DIR__ . '/serializer.php');
-		yield from $this->gatherAssertTypes(__DIR__ . '/denormalizer.php');
 
 		if (class_exists('Symfony\Bundle\FrameworkBundle\Controller\Controller')) {
-			yield from $this->gatherAssertTypes(__DIR__ . '/ExampleController.php');
+			yield from $this->gatherAssertTypes(__DIR__ . '/data/ExampleController.php');
 		}
+
+		yield from $this->gatherAssertTypes(__DIR__ . '/data/serializer.php');
+		yield from $this->gatherAssertTypes(__DIR__ . '/data/denormalizer.php');
 	}
 
 	/**
@@ -63,6 +63,5 @@ class ExtensionTest extends TypeInferenceTestCase
 			__DIR__ . '/extension-test.neon',
 		];
 	}
-
 
 }

@@ -54,5 +54,5 @@
         </properties>
     </rule>
     <exclude-pattern>tests/tmp</exclude-pattern>
-    <exclude-pattern>tests/Symfony/ExampleContainer.php</exclude-pattern>
+	<exclude-pattern>tests/*/data</exclude-pattern>
 </ruleset>

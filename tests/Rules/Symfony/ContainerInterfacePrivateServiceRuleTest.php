@@ -19,6 +19,9 @@ final class ContainerInterfacePrivateServiceRuleTest extends RuleTestCase
 
 	public function testGetPrivateService(): void
 	{
+		if (!class_exists('Symfony\Bundle\FrameworkBundle\Controller\Controller')) {
+			self::markTestSkipped();
+		}
 		$this->analyse(
 			[
 				__DIR__ . '/ExampleController.php',
@@ -38,6 +41,10 @@ final class ContainerInterfacePrivateServiceRuleTest extends RuleTestCase
 			self::markTestSkipped('The test needs Symfony\Component\DependencyInjection\ServiceSubscriberInterface class.');
 		}
 
+		if (!class_exists('Symfony\Bundle\FrameworkBundle\Controller\Controller')) {
+			self::markTestSkipped();
+		}
+
 		$this->analyse(
 			[
 				__DIR__ . '/ExampleLegacyServiceSubscriber.php',
@@ -52,6 +59,10 @@ final class ContainerInterfacePrivateServiceRuleTest extends RuleTestCase
 	{
 		if (!interface_exists('Symfony\Contracts\Service\ServiceSubscriberInterface')) {
 			self::markTestSkipped('The test needs Symfony\Contracts\Service\ServiceSubscriberInterface class.');
+		}
+
+		if (!class_exists('Symfony\Bundle\FrameworkBundle\Controller\Controller')) {
+			self::markTestSkipped();
 		}
 
 		$this->analyse(

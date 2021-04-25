@@ -7,9 +7,10 @@ use PHPStan\Testing\TypeInferenceTestCase;
 class ExtensionTestWithoutContainer extends TypeInferenceTestCase
 {
 
+	/** @return mixed[] */
 	public function dataFileAsserts(): iterable
 	{
-		yield from $this->gatherAssertTypes(__DIR__ . '/ExampleControllerWithoutContainer.php');
+		yield from $this->gatherAssertTypes(__DIR__ . '/data/ExampleControllerWithoutContainer.php');
 	}
 
 	/**
@@ -25,7 +26,7 @@ class ExtensionTestWithoutContainer extends TypeInferenceTestCase
 	): void
 	{
 		if (!class_exists('Symfony\Bundle\FrameworkBundle\Controller\Controller')) {
-			$this->markTestSkipped('Needs class Symfony\Bundle\FrameworkBundle\Controller\Controller');
+			self::markTestSkipped('Needs class Symfony\Bundle\FrameworkBundle\Controller\Controller');
 		}
 		$this->assertFileAsserts($assertType, $file, ...$args);
 	}
@@ -36,4 +37,5 @@ class ExtensionTestWithoutContainer extends TypeInferenceTestCase
 			__DIR__ . '/../../../extension.neon',
 		];
 	}
+
 }

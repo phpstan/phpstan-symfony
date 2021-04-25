@@ -11,11 +11,4 @@ parameters:
 		- tests/tmp/*
 		- tests/*/Example*.php
 		- tests/*/console_application_loader.php
-		- tests/*/envelope_all.php
-		- tests/*/header_bag_get.php
-		- tests/*/input_bag.php
-		- tests/*/kernel_interface.php
-		- tests/*/request_get_content.php
-		- tests/*/request_get_session.php
-		- tests/*/serializer.php
-		- tests/*/denormalizer.php
+		- tests/*/data/*

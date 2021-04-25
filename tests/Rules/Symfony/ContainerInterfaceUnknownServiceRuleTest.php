@@ -8,7 +8,6 @@ use PHPStan\Symfony\XmlServiceMapFactory;
 use PHPStan\Testing\RuleTestCase;
 use PHPStan\Type\Symfony\ServiceTypeSpecifyingExtension;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
  * @extends RuleTestCase<ContainerInterfaceUnknownServiceRule>
@@ -27,13 +26,16 @@ final class ContainerInterfaceUnknownServiceRuleTest extends RuleTestCase
 	protected function getMethodTypeSpecifyingExtensions(): array
 	{
 		return [
-			new ServiceTypeSpecifyingExtension(Controller::class, new Standard()),
+			new ServiceTypeSpecifyingExtension('Symfony\Bundle\FrameworkBundle\Controller\Controller', new Standard()),
 			new ServiceTypeSpecifyingExtension(AbstractController::class, new Standard()),
 		];
 	}
 
 	public function testGetPrivateService(): void
 	{
+		if (!class_exists('Symfony\Bundle\FrameworkBundle\Controller\Controller')) {
+			self::markTestSkipped();
+		}
 		$this->analyse(
 			[
 				__DIR__ . '/ExampleController.php',
@@ -49,6 +51,10 @@ final class ContainerInterfaceUnknownServiceRuleTest extends RuleTestCase
 
 	public function testGetPrivateServiceInAbstractController(): void
 	{
+		if (!class_exists('Symfony\Bundle\FrameworkBundle\Controller\Controller')) {
+			self::markTestSkipped();
+		}
+
 		$this->analyse(
 			[
 				__DIR__ . '/ExampleAbstractController.php',
