@@ -7,7 +7,7 @@ use function PHPStan\Testing\assertType;
 $request = doRequest();
 
 $session1 = $request->getSession();
-assertType(SessionInterface::class, $request->getSession());
+assertType(SessionInterface::class . '|null', $request->getSession());
 
 if ($request->hasSession()) {
 	assertType(SessionInterface::class, $request->getSession());

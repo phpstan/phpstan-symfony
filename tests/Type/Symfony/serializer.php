@@ -1,10 +1,10 @@
 <?php declare(strict_types = 1);
 
+use function PHPStan\Testing\assertType;
+
 $serializer = new \Symfony\Component\Serializer\Serializer();
 
-$first = $serializer->deserialize('bar', 'Bar', 'format');
-$second = $serializer->deserialize('bar', 'Bar[]', 'format');
-$third = $serializer->deserialize('bar', 'Bar[][]', 'format');
-$fourth = $serializer->deserialize('bar');
-
-die;
+assertType('Bar', $serializer->deserialize('bar', 'Bar', 'format'));
+assertType('array<Bar>', $serializer->deserialize('bar', 'Bar[]', 'format'));
+assertType('array<array<Bar>>', $serializer->deserialize('bar', 'Bar[][]', 'format'));
+assertType('mixed', $serializer->deserialize('bar'));

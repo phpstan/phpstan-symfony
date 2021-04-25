@@ -1,5 +1,7 @@
 <?php declare(strict_types = 1);
 
+use function PHPStan\Testing\assertType;
+
 $kernel = new class ('dev', true) extends \Symfony\Component\HttpKernel\Kernel {
 
 	public function registerBundles(): void
@@ -12,8 +14,6 @@ $kernel = new class ('dev', true) extends \Symfony\Component\HttpKernel\Kernel {
 
 };
 
-$foo = $kernel->locateResource('');
-$bar = $kernel->locateResource('', null, true);
-$baz = $kernel->locateResource('', null, false);
-
-die;
+assertType('string', $kernel->locateResource(''));
+assertType('string', $kernel->locateResource('', null, true));
+assertType('array<int, string>', $kernel->locateResource('', null, false));

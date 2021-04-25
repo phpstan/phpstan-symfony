@@ -1,9 +1,9 @@
 <?php declare(strict_types = 1);
 
+use function PHPStan\Testing\assertType;
+
 $envelope = new \Symfony\Component\Messenger\Envelope(new stdClass());
 
-$test1 = $envelope->all(\Symfony\Component\Messenger\Stamp\ReceivedStamp::class);
-$test2 = $envelope->all(random_bytes(1));
-$test3 = $envelope->all();
-
-die;
+assertType('array<Symfony\Component\Messenger\Stamp\ReceivedStamp>', $envelope->all(\Symfony\Component\Messenger\Stamp\ReceivedStamp::class));
+assertType('array<Symfony\Component\Messenger\Stamp\StampInterface>', $envelope->all(random_bytes(1)));
+assertType('array<array<Symfony\Component\Messenger\Stamp\StampInterface>>', $envelope->all());

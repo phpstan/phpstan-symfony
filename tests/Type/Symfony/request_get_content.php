@@ -1,11 +1,11 @@
 <?php declare(strict_types = 1);
 
+use function PHPStan\Testing\assertType;
+
 /** @var \Symfony\Component\HttpFoundation\Request $request */
 $request = doFoo();
 
-$content1 = $request->getContent();
-$content2 = $request->getContent(false);
-$content3 = $request->getContent(true);
-$content4 = $request->getContent(doBar());
-
-die;
+assertType('string', $request->getContent());
+assertType('string', $request->getContent(false));
+assertType('resource', $request->getContent(true));
+assertType('resource|string', $request->getContent(doBar()));

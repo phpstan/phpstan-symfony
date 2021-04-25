@@ -6,6 +6,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use function PHPStan\Testing\assertType;
 
 final class ExampleOptionCommand extends Command
 {
@@ -29,18 +30,16 @@ final class ExampleOptionCommand extends Command
 
 	protected function execute(InputInterface $input, OutputInterface $output): int
 	{
-		$a = $input->getOption('a');
-		$b = $input->getOption('b');
-		$c = $input->getOption('c');
-		$d = $input->getOption('d');
-		$e = $input->getOption('e');
+		assertType('bool', $input->getOption('a'));
+		assertType('string|null', $input->getOption('b'));
+		assertType('string|null', $input->getOption('c'));
+		assertType('array<int, string|null>', $input->getOption('d'));
+		assertType('array<int, string>', $input->getOption('e'));
 
-		$bb = $input->getOption('bb');
-		$cc = $input->getOption('cc');
-		$dd = $input->getOption('dd');
-		$ee = $input->getOption('ee');
-
-		die;
+		assertType('1|string|null', $input->getOption('bb'));
+		assertType('1|string', $input->getOption('cc'));
+		assertType('array<int, 1|string|null>', $input->getOption('dd'));
+		assertType('array<int, 1|string>', $input->getOption('ee'));
 	}
 
 }
