@@ -3,5 +3,10 @@
     <services>
         <service id="private" class="Foo" public="false"></service>
         <service id="public" class="Foo"></service>
+        <service id="service_locator" class="Symfony\Component\DependencyInjection\ServiceLocator" public="true">
+            <argument type="collection">
+                <argument key="private" type="service" id="private"/>
+            </argument>
+        </service>
     </services>
 </container>

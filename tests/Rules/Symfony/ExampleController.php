@@ -39,4 +39,9 @@ final class ExampleController extends Controller
 		$this->get('unknown');
 	}
 
+	public function privateServiceFromServiceLocator(): void
+	{
+		$this->get('service_locator')->get('private');
+	}
+
 }
