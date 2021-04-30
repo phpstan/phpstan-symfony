@@ -1,6 +1,9 @@
 parameters:
 	dynamicConstantNames:
 		- Symfony\Component\HttpKernel\Kernel::VERSION_ID
+	exceptions:
+		uncheckedExceptionClasses:
+			- 'Symfony\Component\Console\Exception\InvalidArgumentException'
 	symfony:
 		container_xml_path: null
 		constant_hassers: true
