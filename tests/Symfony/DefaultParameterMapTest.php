@@ -109,7 +109,6 @@ final class DefaultParameterMapTest extends TestCase
 					['name' => 'the name', 'value' => 'the value'],
 					['name' => 'another name', 'value' => 'another value'],
 				], $parameter->getValue());
-
 			},
 		];
 		yield [

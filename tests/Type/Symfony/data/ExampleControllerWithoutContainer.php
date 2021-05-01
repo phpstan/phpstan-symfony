@@ -3,6 +3,7 @@
 namespace PHPStan\Type\Symfony;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 final class ExampleControllerWithoutContainer extends Controller
@@ -21,7 +22,7 @@ final class ExampleControllerWithoutContainer extends Controller
 		assertType('bool', $this->has());
 	}
 
-	public function parameters(ParameterBagInterface $parameterBag): void
+	public function parameters(ContainerInterface $container, ParameterBagInterface $parameterBag): void
 	{
 		assertType('array|bool|float|int|string|null', $container->getParameter('unknown'));
 		assertType('array|bool|float|int|string|null', $parameterBag->get('unknown'));

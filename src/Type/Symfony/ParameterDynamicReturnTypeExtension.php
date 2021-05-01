@@ -9,9 +9,7 @@ use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\ShouldNotHappenException;
 use PHPStan\Symfony\ParameterMap;
 use PHPStan\Type\Constant\ConstantBooleanType;
-use PHPStan\Type\ConstantTypeHelper;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
-use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 use function in_array;
 
@@ -33,7 +31,6 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 	/** @var \PHPStan\Symfony\ParameterMap */
 	private $parameterMap;
 
-
 	public function __construct(string $className, ?string $methodGet, ?string $methodHas, bool $constantHassers, ParameterMap $symfonyParameterMap)
 	{
 		$this->className = $className;
@@ -50,7 +47,7 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 
 	public function isMethodSupported(MethodReflection $methodReflection): bool
 	{
-		$methods = array_filter([$this->methodGet, $this->methodHas], function(?string $method): bool {
+		$methods = array_filter([$this->methodGet, $this->methodHas], function (?string $method): bool {
 			return $method !== null;
 		});
 

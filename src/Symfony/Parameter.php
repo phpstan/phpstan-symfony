@@ -7,10 +7,12 @@ final class Parameter implements ParameterDefinition
 
 	/** @var string */
 	private $key;
+
 	/** @var array<mixed>|bool|float|int|string */
 	private $value;
 
 	/**
+	 * @param string $key
 	 * @param array<mixed>|bool|float|int|string $value
 	 */
 	public function __construct(
@@ -27,6 +29,9 @@ final class Parameter implements ParameterDefinition
 		return $this->key;
 	}
 
+	/**
+	 * @return array<mixed>|bool|float|int|string
+	 */
 	public function getValue()
 	{
 		return $this->value;

@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace PHPStan\Symfony;
 
@@ -61,7 +61,7 @@ final class XmlParameterMapFactory implements ParameterMapFactory
 			case 'collection':
 				$value = [];
 				foreach ($def->children() as $child) {
-					/** @var \SimpleXMLElement $attrs */
+					/** @var \SimpleXMLElement $childAttrs */
 					$childAttrs = $child->attributes();
 
 					if (isset($childAttrs->key)) {
@@ -77,8 +77,9 @@ final class XmlParameterMapFactory implements ParameterMapFactory
 				break;
 
 			case 'binary':
-				if (false === $value = base64_decode((string) $def, true)) {
-					throw new \InvalidArgumentException(sprintf('Tag "<%s>" with type="binary" is not a valid base64 encoded string.', (string) $attrs->key));
+				$value = base64_decode((string) $def, true);
+				if ($value === false) {
+					throw new \InvalidArgumentException(sprintf('Parameter "%s" of binary type is not valid base64 encoded string.', (string) $attrs->key));
 				}
 
 				break;
@@ -87,18 +88,19 @@ final class XmlParameterMapFactory implements ParameterMapFactory
 				$value = (string) $def;
 
 				if (is_numeric($value)) {
-					if (false !== strpos($value, '.')) {
+					if (strpos($value, '.') !== false) {
 						$value = (float) $value;
 					} else {
 						$value = (int) $value;
 					}
-				} else if ($value === 'true') {
+				} elseif ($value === 'true') {
 					$value = true;
-				} else if ($value === 'false') {
+				} elseif ($value === 'false') {
 					$value = false;
 				}
 		}
 
 		return $value;
 	}
+
 }
