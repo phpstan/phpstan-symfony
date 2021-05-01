@@ -11,6 +11,7 @@ This extension provides following features:
 * Provides correct return type for `ContainerInterface::get()` and `::has()` methods.
 * Provides correct return type for `Controller::get()` and `::has()` methods.
 * Provides correct return type for `AbstractController::get()` and `::has()` methods.
+* Provides correct return type for `ContainerInterface::getParameter()` and `::hasParameter()` methods.
 * Provides correct return type for `ParameterBagInterface::get()` and `::has()` methods.
 * Provides correct return type for `Controller::getParameter()` method.
 * Provides correct return type for `AbstractController::getParameter()` method.
