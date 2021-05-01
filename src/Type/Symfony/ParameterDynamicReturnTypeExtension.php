@@ -8,9 +8,17 @@ use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\ShouldNotHappenException;
 use PHPStan\Symfony\ParameterMap;
+use PHPStan\Type\ArrayType;
+use PHPStan\Type\BooleanType;
 use PHPStan\Type\Constant\ConstantBooleanType;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
+use PHPStan\Type\FloatType;
+use PHPStan\Type\IntegerType;
+use PHPStan\Type\MixedType;
+use PHPStan\Type\NullType;
+use PHPStan\Type\StringType;
 use PHPStan\Type\Type;
+use PHPStan\Type\UnionType;
 use function in_array;
 
 final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
@@ -71,7 +79,16 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 		Scope $scope
 	): Type
 	{
-		$returnType = ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
+		// We don't use the method's return type because this won't work properly with lowest and
+		// highest versions of Symfony ("mixed" for lowest, "array|bool|float|integer|string|null" for highest).
+		$returnType = new UnionType([
+			new ArrayType(new MixedType(), new MixedType()),
+			new BooleanType(),
+			new FloatType(),
+			new IntegerType(),
+			new StringType(),
+			new NullType(),
+		]);
 		if (!isset($methodCall->args[0])) {
 			return $returnType;
 		}

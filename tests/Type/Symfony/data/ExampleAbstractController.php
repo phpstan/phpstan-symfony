@@ -26,7 +26,7 @@ final class ExampleAbstractController extends AbstractController
 	public function parameters(ContainerInterface $container, ParameterBagInterface $parameterBag): void
 	{
 		assertType('array|bool|float|int|string|null', $container->getParameter('unknown'));
-		assertType('mixed', $parameterBag->get('unknown'));
+		assertType('array|bool|float|int|string|null', $parameterBag->get('unknown'));
 		assertType('array|bool|float|int|string|null', $this->getParameter('unknown'));
 		assertType("'abcdef'", $container->getParameter('app.string'));
 		assertType("'abcdef'", $parameterBag->get('app.string'));
