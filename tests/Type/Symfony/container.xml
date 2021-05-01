@@ -1,5 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <parameters>
+        <parameter key="app.string">abcdef</parameter>
+        <parameter key="app.int">123</parameter>
+        <parameter key="app.int_as_string" type="string">123</parameter>
+        <parameter key="app.float">123.45</parameter>
+        <parameter key="app.float_as_string" type="string">123.45</parameter>
+        <parameter key="app.boolean">true</parameter>
+        <parameter key="app.boolean_as_string" type="string">true</parameter>
+        <parameter key="app.list" type="collection">
+            <parameter>en</parameter>
+            <parameter>es</parameter>
+            <parameter>fr</parameter>
+        </parameter>
+        <parameter key="app.list_of_list" type="collection">
+            <parameter type="collection">
+                <parameter key="name">the name</parameter>
+                <parameter key="value">the value</parameter>
+            </parameter>
+            <parameter type="collection">
+                <parameter key="name">another name</parameter>
+                <parameter key="value">another value</parameter>
+            </parameter>
+        </parameter>
+        <parameter key="app.map" type="collection">
+            <parameter key="a">value of a</parameter>
+            <parameter key="b">value of b</parameter>
+            <parameter key="c">value of c</parameter>
+        </parameter>
+        <parameter key="app.binary" type="binary">VGhpcyBpcyBhIEJlbGwgY2hhciAH</parameter>
+        <parameter key="app.constant">Y-m-d\TH:i:sP</parameter>
+    </parameters>
+
     <services>
         <service id="foo" class="Foo"></service>
     </services>

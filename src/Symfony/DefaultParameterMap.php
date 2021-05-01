@@ -34,4 +34,10 @@ final class DefaultParameterMap implements ParameterMap
 		return $this->parameters[$key] ?? null;
 	}
 
+	public static function getParameterKeyFromNode(Expr $node, Scope $scope): ?string
+	{
+		$strings = TypeUtils::getConstantStrings($scope->getType($node));
+		return count($strings) === 1 ? $strings[0]->getValue() : null;
+	}
+
 }

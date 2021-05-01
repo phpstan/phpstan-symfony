@@ -81,7 +81,7 @@ final class DefaultParameterMapTest extends TestCase
 			function (?Parameter $parameter): void {
 				self::assertNotNull($parameter);
 				self::assertSame('app.boolean', $parameter->getKey());
-				self::assertSame(true, $parameter->getValue());
+				self::assertTrue($parameter->getValue());
 			},
 		];
 		yield [

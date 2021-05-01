@@ -2,11 +2,11 @@
 
 namespace PHPStan\Type\Symfony;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use function PHPStan\Testing\assertType;
 
-final class ExampleController extends Controller
+final class ExampleAbstractController extends AbstractController
 {
 
 	public function services(): void
@@ -46,8 +46,8 @@ final class ExampleController extends Controller
 		//assertType("array(array('name' => 'the name', 'value' => 'the value'), array('name' => 'another name', 'value' => 'another value'))", $this->getParameter('app.list_of_list'));
 		assertType("array('a' => 'value of a', 'b' => 'value of b', 'c' => 'value of c')", $parameterBag->get('app.map'));
 		//assertType("array('a' => 'value of a', 'b' => 'value of b', 'c' => 'value of c')", $this->getParameter('app.map'));
-		assertType('This is a Bell char ', $parameterBag->get('app.binary'));
-		//assertType('This is a Bell char ', $this->getParameter('app.binary'));
+		assertType("'This is a Bell char '", $parameterBag->get('app.binary'));
+		//assertType("'This is a Bell char '", $this->getParameter('app.binary'));
 		assertType("'Y-m-d\\\\TH:i:sP'", $parameterBag->get('app.constant'));
 		//assertType("'Y-m-d\\\\TH:i:sP'", $this->getParameter('app.constant'));
 

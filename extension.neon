@@ -225,3 +225,16 @@ services:
 	-
 		class: PHPStan\Type\Symfony\KernelInterfaceDynamicReturnTypeExtension
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
+	# ParameterBagInterface::get()/has() return type
+	-
+		factory: PHPStan\Type\Symfony\ParameterDynamicReturnTypeExtension(Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface, 'get', 'has', %symfony.constant_hassers%)
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
+	# (Abstract)Controller::getParameter() return type
+	-
+		factory: PHPStan\Type\Symfony\ParameterDynamicReturnTypeExtension(Symfony\Bundle\FrameworkBundle\Controller\AbstractController, 'getParameter', null, %symfony.constant_hassers%)
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+	-
+		factory: PHPStan\Type\Symfony\ParameterDynamicReturnTypeExtension(Symfony\Bundle\FrameworkBundle\Controller\Controller, 'getParameter', null, %symfony.constant_hassers%)
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
