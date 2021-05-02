@@ -63,6 +63,13 @@ services:
 	-
 		factory: @symfony.serviceMapFactory::create()
 
+	# parameter map
+	symfony.parameterMapFactory:
+		class: PHPStan\Symfony\ParameterMapFactory
+		factory: PHPStan\Symfony\XmlParameterMapFactory(%symfony.container_xml_path%)
+	-
+		factory: @symfony.parameterMapFactory::create()
+
 	# ControllerTrait::get()/has() return type
 	-
 		factory: PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension(Symfony\Component\DependencyInjection\ContainerInterface, %symfony.constant_hassers%)
@@ -214,4 +221,22 @@ services:
 	# KernelInterface::locateResource() return type
 	-
 		class: PHPStan\Type\Symfony\KernelInterfaceDynamicReturnTypeExtension
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
+	# ParameterBagInterface::get()/has() return type
+	-
+		factory: PHPStan\Type\Symfony\ParameterDynamicReturnTypeExtension(Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface, 'get', 'has', %symfony.constant_hassers%)
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
+	# ContainerInterface::getParameter()/hasParameter() return type
+	-
+		factory: PHPStan\Type\Symfony\ParameterDynamicReturnTypeExtension(Symfony\Component\DependencyInjection\ContainerInterface, 'getParameter', 'hasParameter', %symfony.constant_hassers%)
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
+	# (Abstract)Controller::getParameter() return type
+	-
+		factory: PHPStan\Type\Symfony\ParameterDynamicReturnTypeExtension(Symfony\Bundle\FrameworkBundle\Controller\AbstractController, 'getParameter', null, %symfony.constant_hassers%)
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+	-
+		factory: PHPStan\Type\Symfony\ParameterDynamicReturnTypeExtension(Symfony\Bundle\FrameworkBundle\Controller\Controller, 'getParameter', null, %symfony.constant_hassers%)
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
