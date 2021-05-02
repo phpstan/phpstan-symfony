@@ -2,12 +2,12 @@
 
 namespace PHPStan\Type\Symfony;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use function PHPStan\Testing\assertType;
 
-final class ExampleController extends Controller
+final class ExampleAbstractController extends AbstractController
 {
 
 	public function services(): void

@@ -10,6 +10,11 @@ This extension provides following features:
 
 * Provides correct return type for `ContainerInterface::get()` and `::has()` methods.
 * Provides correct return type for `Controller::get()` and `::has()` methods.
+* Provides correct return type for `AbstractController::get()` and `::has()` methods.
+* Provides correct return type for `ContainerInterface::getParameter()` and `::hasParameter()` methods.
+* Provides correct return type for `ParameterBagInterface::get()` and `::has()` methods.
+* Provides correct return type for `Controller::getParameter()` method.
+* Provides correct return type for `AbstractController::getParameter()` method.
 * Provides correct return type for `Request::getContent()` method based on the `$asResource` parameter.
 * Provides correct return type for `HeaderBag::get()` method based on the `$first` parameter.
 * Provides correct return type for `Envelope::all()` method based on the `$stampFqcn` parameter.
@@ -57,7 +62,7 @@ You have to provide a path to `srcDevDebugProjectContainer.xml` or similar XML f
 parameters:
     symfony:
         container_xml_path: var/cache/dev/srcDevDebugProjectContainer.xml
-        # or with Symfony 4.2+
+        # or with Symfony 4.2+
         container_xml_path: var/cache/dev/srcApp_KernelDevDebugContainer.xml
         # or with Symfony 5+
         container_xml_path: var/cache/dev/App_KernelDevDebugContainer.xml

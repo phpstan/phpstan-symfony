@@ -2,11 +2,11 @@
 
 namespace PHPStan\Type\Symfony;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
-final class ExampleControllerWithoutContainer extends Controller
+final class ExampleAbstractControllerWithoutContainer extends AbstractController
 {
 
 	public function services(): void

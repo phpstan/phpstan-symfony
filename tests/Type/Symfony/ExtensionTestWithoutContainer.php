@@ -8,13 +8,28 @@ class ExtensionTestWithoutContainer extends TypeInferenceTestCase
 {
 
 	/** @return mixed[] */
-	public function dataFileAsserts(): iterable
+	public function dataExampleController(): iterable
 	{
-		yield from $this->gatherAssertTypes(__DIR__ . '/data/ExampleControllerWithoutContainer.php');
+		if (!class_exists('Symfony\Bundle\FrameworkBundle\Controller\Controller')) {
+			return;
+		}
+
+		yield from $this->gatherAssertTypes(__DIR__ . '/data/ExampleController.php');
+	}
+
+	/** @return mixed[] */
+	public function dataAbstractController(): iterable
+	{
+		if (!class_exists('Symfony\Bundle\FrameworkBundle\Controller\AbstractController')) {
+			return;
+		}
+
+		yield from $this->gatherAssertTypes(__DIR__ . '/data/ExampleAbstractController.php');
 	}
 
 	/**
-	 * @dataProvider dataFileAsserts
+	 * @dataProvider dataExampleController
+	 * @dataProvider dataAbstractController
 	 * @param string $assertType
 	 * @param string $file
 	 * @param mixed ...$args
@@ -25,9 +40,6 @@ class ExtensionTestWithoutContainer extends TypeInferenceTestCase
 		...$args
 	): void
 	{
-		if (!class_exists('Symfony\Bundle\FrameworkBundle\Controller\Controller')) {
-			self::markTestSkipped('Needs class Symfony\Bundle\FrameworkBundle\Controller\Controller');
-		}
 		$this->assertFileAsserts($assertType, $file, ...$args);
 	}
 
