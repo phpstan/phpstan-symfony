@@ -18,6 +18,7 @@ use PHPStan\Type\MixedType;
 use PHPStan\Type\NullType;
 use PHPStan\Type\StringType;
 use PHPStan\Type\Type;
+use PHPStan\Type\TypeUtils;
 use PHPStan\Type\UnionType;
 use function in_array;
 
@@ -97,7 +98,7 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 		if ($parameterKey !== null) {
 			$parameter = $this->parameterMap->getParameter($parameterKey);
 			if ($parameter !== null) {
-				return $scope->getTypeFromValue($parameter->getValue());
+				return TypeUtils::generalizeType($scope->getTypeFromValue($parameter->getValue()));
 			}
 		}
 
