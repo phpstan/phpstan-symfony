@@ -68,7 +68,7 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 		$serviceId = $this->serviceMap::getServiceIdFromNode($methodCall->args[0]->value, $scope);
 		if ($serviceId !== null) {
 			$service = $this->serviceMap->getService($serviceId);
-			if ($service !== null && !$service->isSynthetic()) {
+			if ($service !== null && (!$service->isSynthetic() || $service->getClass() !== null)) {
 				return new ObjectType($service->getClass() ?? $serviceId);
 			}
 		}
