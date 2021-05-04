@@ -49,15 +49,15 @@ final class ExampleAbstractController extends AbstractController
 		assertType("string", $container->getParameter('app.boolean_as_string'));
 		assertType("string", $parameterBag->get('app.boolean_as_string'));
 		assertType("string", $this->getParameter('app.boolean_as_string'));
-		assertType("array<int, string>&nonEmpty", $container->getParameter('app.list'));
-		assertType("array<int, string>&nonEmpty", $parameterBag->get('app.list'));
-		assertType("array<int, string>&nonEmpty", $this->getParameter('app.list'));
-		assertType("array<int, array<string, string>&nonEmpty>&nonEmpty", $container->getParameter('app.list_of_list'));
-		assertType("array<int, array<string, string>&nonEmpty>&nonEmpty", $parameterBag->get('app.list_of_list'));
-		assertType("array<int, array<string, string>&nonEmpty>&nonEmpty", $this->getParameter('app.list_of_list'));
-		assertType("array<string, string>&nonEmpty", $container->getParameter('app.map'));
-		assertType("array<string, string>&nonEmpty", $parameterBag->get('app.map'));
-		assertType("array<string, string>&nonEmpty", $this->getParameter('app.map'));
+		assertType("array<int, string>", $container->getParameter('app.list'));
+		assertType("array<int, string>", $parameterBag->get('app.list'));
+		assertType("array<int, string>", $this->getParameter('app.list'));
+		assertType("array<int, array<string, string>>", $container->getParameter('app.list_of_list'));
+		assertType("array<int, array<string, string>>", $parameterBag->get('app.list_of_list'));
+		assertType("array<int, array<string, string>>", $this->getParameter('app.list_of_list'));
+		assertType("array<string, string>", $container->getParameter('app.map'));
+		assertType("array<string, string>", $parameterBag->get('app.map'));
+		assertType("array<string, string>", $this->getParameter('app.map'));
 		assertType("string", $container->getParameter('app.binary'));
 		assertType("string", $parameterBag->get('app.binary'));
 		assertType("string", $this->getParameter('app.binary'));
@@ -65,6 +65,7 @@ final class ExampleAbstractController extends AbstractController
 		assertType("string", $parameterBag->get('app.constant'));
 		assertType("string", $this->getParameter('app.constant'));
 		assertType("array", $this->getParameter('test_collection'));
+		assertType("array<int, string>", $this->getParameter('non_empty_collection'));
 
 		assertType('false', $container->hasParameter('unknown'));
 		assertType('false', $parameterBag->has('unknown'));
