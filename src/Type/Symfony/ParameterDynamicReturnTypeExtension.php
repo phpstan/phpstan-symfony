@@ -10,6 +10,7 @@ use PHPStan\ShouldNotHappenException;
 use PHPStan\Symfony\ParameterMap;
 use PHPStan\Type\ArrayType;
 use PHPStan\Type\BooleanType;
+use PHPStan\Type\Constant\ConstantArrayType;
 use PHPStan\Type\Constant\ConstantBooleanType;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\FloatType;
@@ -18,7 +19,7 @@ use PHPStan\Type\MixedType;
 use PHPStan\Type\NullType;
 use PHPStan\Type\StringType;
 use PHPStan\Type\Type;
-use PHPStan\Type\TypeUtils;
+use PHPStan\Type\TypeTraverser;
 use PHPStan\Type\UnionType;
 use function in_array;
 
@@ -98,7 +99,21 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 		if ($parameterKey !== null) {
 			$parameter = $this->parameterMap->getParameter($parameterKey);
 			if ($parameter !== null) {
-				return TypeUtils::generalizeType($scope->getTypeFromValue($parameter->getValue()));
+				return TypeTraverser::map($scope->getTypeFromValue($parameter->getValue()), static function (\PHPStan\Type\Type $type, callable $traverse): Type {
+					if ($type instanceof \PHPStan\Type\ConstantType) {
+						$generalized = $type->generalize();
+						if ($generalized instanceof ConstantArrayType) {
+							if (count($generalized->getValueTypes()) !== 0) {
+								throw new \PHPStan\ShouldNotHappenException();
+							}
+
+							return new ArrayType(new MixedType(), new MixedType());
+						}
+
+						return $generalized;
+					}
+					return $traverse($type);
+				});
 			}
 		}
 
