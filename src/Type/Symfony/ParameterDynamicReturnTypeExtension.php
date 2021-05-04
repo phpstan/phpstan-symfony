@@ -12,6 +12,7 @@ use PHPStan\Type\ArrayType;
 use PHPStan\Type\BooleanType;
 use PHPStan\Type\Constant\ConstantArrayType;
 use PHPStan\Type\Constant\ConstantBooleanType;
+use PHPStan\Type\ConstantType;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\FloatType;
 use PHPStan\Type\IntegerType;
@@ -99,25 +100,27 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 		if ($parameterKey !== null) {
 			$parameter = $this->parameterMap->getParameter($parameterKey);
 			if ($parameter !== null) {
-				return TypeTraverser::map($scope->getTypeFromValue($parameter->getValue()), static function (\PHPStan\Type\Type $type, callable $traverse): Type {
-					if ($type instanceof \PHPStan\Type\ConstantType) {
-						$generalized = $type->generalize();
-						if ($generalized instanceof ConstantArrayType) {
-							if (count($generalized->getValueTypes()) !== 0) {
-								throw new \PHPStan\ShouldNotHappenException();
-							}
-
-							return new ArrayType(new MixedType(), new MixedType());
-						}
-
-						return $generalized;
-					}
-					return $traverse($type);
-				});
+				return $this->generalizeType($scope->getTypeFromValue($parameter->getValue()));
 			}
 		}
 
 		return $returnType;
+	}
+
+	private function generalizeType(Type $type): Type
+	{
+		return TypeTraverser::map($type, function (Type $type, callable $traverse): Type {
+			if ($type instanceof ConstantArrayType) {
+				if (count($type->getValueTypes()) === 0) {
+					return new ArrayType(new MixedType(), new MixedType());
+				}
+				return new ArrayType($this->generalizeType($type->getKeyType()), $this->generalizeType($type->getItemType()));
+			}
+			if ($type instanceof ConstantType) {
+				return $type->generalize();
+			}
+			return $traverse($type);
+		});
 	}
 
 	private function getHasTypeFromMethodCall(

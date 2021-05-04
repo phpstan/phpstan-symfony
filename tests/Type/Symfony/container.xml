@@ -31,6 +31,9 @@
         <parameter key="app.binary" type="binary">VGhpcyBpcyBhIEJlbGwgY2hhciAH</parameter>
         <parameter key="app.constant">Y-m-d\TH:i:sP</parameter>
 		<parameter key="test_collection" type="collection"/>
+		<parameter key="non_empty_collection" type="collection">
+			<parameter>value</parameter>
+		</parameter>
     </parameters>
 
     <services>
