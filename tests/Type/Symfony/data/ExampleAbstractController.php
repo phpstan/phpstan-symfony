@@ -64,6 +64,7 @@ final class ExampleAbstractController extends AbstractController
 		assertType("string", $container->getParameter('app.constant'));
 		assertType("string", $parameterBag->get('app.constant'));
 		assertType("string", $this->getParameter('app.constant'));
+		assertType("array", $this->getParameter('test_collection'));
 
 		assertType('false', $container->hasParameter('unknown'));
 		assertType('false', $parameterBag->has('unknown'));

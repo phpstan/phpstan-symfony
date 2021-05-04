@@ -30,6 +30,7 @@
         </parameter>
         <parameter key="app.binary" type="binary">VGhpcyBpcyBhIEJlbGwgY2hhciAH</parameter>
         <parameter key="app.constant">Y-m-d\TH:i:sP</parameter>
+		<parameter key="test_collection" type="collection"/>
     </parameters>
 
     <services>
