@@ -15,6 +15,11 @@
             <directory suffix=".php">../src</directory>
         </whitelist>
     </filter>
+    <testsuites>
+        <testsuite name="PHPStan Symfony Integration">
+        <directory>.</directory>
+        </testsuite>
+  </testsuites>
     <logging>
         <log
                 type="coverage-text"
