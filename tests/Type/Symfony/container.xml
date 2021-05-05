@@ -34,5 +34,6 @@
 
     <services>
         <service id="foo" class="Foo"></service>
+        <service id="synthetic" class="Synthetic" synthetic="true" />
     </services>
 </container>
