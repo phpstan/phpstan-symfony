@@ -4,6 +4,7 @@
     <arg name="extensions" value="php"/>
     <arg name="encoding" value="utf-8"/>
     <arg name="tab-width" value="4"/>
+    <arg name="cache" value="tmp/cache/phpcs"/>
     <arg value="sp"/>
     <file>src</file>
     <file>tests</file>
