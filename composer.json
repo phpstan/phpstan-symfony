@@ -21,7 +21,6 @@
     "symfony/framework-bundle": "<3.0"
   },
   "require-dev": {
-    "phing/phing": "^2.16.3",
     "php-parallel-lint/php-parallel-lint": "^1.2",
     "phpstan/phpstan-phpunit": "^0.12.16",
     "phpstan/phpstan-strict-rules": "^0.12.5",
@@ -35,8 +34,8 @@
   },
   "config": {
     "platform": {
-	  "php": "7.4.6"
-	},
+      "php": "7.4.6"
+    },
     "sort-packages": true
   },
   "extra": {
