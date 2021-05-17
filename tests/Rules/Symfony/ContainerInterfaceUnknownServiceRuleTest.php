@@ -4,6 +4,7 @@ namespace PHPStan\Rules\Symfony;
 
 use PhpParser\PrettyPrinter\Standard;
 use PHPStan\Rules\Rule;
+use PHPStan\Symfony\XmlContainerResolver;
 use PHPStan\Symfony\XmlServiceMapFactory;
 use PHPStan\Testing\RuleTestCase;
 use PHPStan\Type\Symfony\ServiceTypeSpecifyingExtension;
@@ -17,7 +18,7 @@ final class ContainerInterfaceUnknownServiceRuleTest extends RuleTestCase
 
 	protected function getRule(): Rule
 	{
-		return new ContainerInterfaceUnknownServiceRule((new XmlServiceMapFactory(__DIR__ . '/container.xml'))->create(), new Standard());
+		return new ContainerInterfaceUnknownServiceRule((new XmlServiceMapFactory(new XmlContainerResolver(__DIR__ . '/container.xml')))->create(), new Standard());
 	}
 
 	/**

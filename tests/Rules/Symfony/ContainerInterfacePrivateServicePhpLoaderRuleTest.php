@@ -10,12 +10,12 @@ use PHPStan\Testing\RuleTestCase;
 /**
  * @extends RuleTestCase<ContainerInterfacePrivateServiceRule>
  */
-final class ContainerInterfacePrivateServiceRuleTest extends RuleTestCase
+final class ContainerInterfacePrivateServicePhpLoaderRuleTest extends RuleTestCase
 {
 
 	protected function getRule(): Rule
 	{
-		return new ContainerInterfacePrivateServiceRule((new XmlServiceMapFactory(new XmlContainerResolver(__DIR__ . '/container.xml')))->create());
+		return new ContainerInterfacePrivateServiceRule((new XmlServiceMapFactory(new XmlContainerResolver(__DIR__ . '/container_loader.php')))->create());
 	}
 
 	public function testGetPrivateService(): void

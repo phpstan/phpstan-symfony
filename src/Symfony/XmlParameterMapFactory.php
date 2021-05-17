@@ -7,33 +7,25 @@ use function sprintf;
 final class XmlParameterMapFactory implements ParameterMapFactory
 {
 
-	/** @var string|null */
-	private $containerXml;
+	/** @var XmlContainerResolver */
+	private $containerResolver;
 
-	public function __construct(?string $containerXml)
+	public function __construct(XmlContainerResolver $containerResolver)
 	{
-		$this->containerXml = $containerXml;
+		$this->containerResolver = $containerResolver;
 	}
 
 	public function create(): ParameterMap
 	{
-		if ($this->containerXml === null) {
+		$container = $this->containerResolver->getContainer();
+
+		if ($container === null) {
 			return new FakeParameterMap();
-		}
-
-		$fileContents = file_get_contents($this->containerXml);
-		if ($fileContents === false) {
-			throw new XmlContainerNotExistsException(sprintf('Container %s does not exist', $this->containerXml));
-		}
-
-		$xml = @simplexml_load_string($fileContents);
-		if ($xml === false) {
-			throw new XmlContainerNotExistsException(sprintf('Container %s cannot be parsed', $this->containerXml));
 		}
 
 		/** @var \PHPStan\Symfony\Parameter[] $parameters */
 		$parameters = [];
-		foreach ($xml->parameters->parameter as $def) {
+		foreach ($container->parameters->parameter as $def) {
 			/** @var \SimpleXMLElement $attrs */
 			$attrs = $def->attributes();
 

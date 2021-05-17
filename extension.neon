@@ -59,17 +59,23 @@ services:
 		arguments:
 		    consoleApplicationLoader: %symfony.console_application_loader%
 
+	# xml container resolver
+	-
+		factory: PHPStan\Symfony\XmlContainerResolver
+		arguments:
+		    containerXmlPath: %symfony.container_xml_path%
+
 	# service map
 	symfony.serviceMapFactory:
 		class: PHPStan\Symfony\ServiceMapFactory
-		factory: PHPStan\Symfony\XmlServiceMapFactory(%symfony.container_xml_path%)
+		factory: PHPStan\Symfony\XmlServiceMapFactory
 	-
 		factory: @symfony.serviceMapFactory::create()
 
 	# parameter map
 	symfony.parameterMapFactory:
 		class: PHPStan\Symfony\ParameterMapFactory
-		factory: PHPStan\Symfony\XmlParameterMapFactory(%symfony.container_xml_path%)
+		factory: PHPStan\Symfony\XmlParameterMapFactory
 	-
 		factory: @symfony.parameterMapFactory::create()
 
