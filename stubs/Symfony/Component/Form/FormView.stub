@@ -11,4 +11,12 @@ use IteratorAggregate;
  */
 class FormView implements ArrayAccess, IteratorAggregate
 {
+
+    /**
+     * Returns an iterator to iterate over children (implements \IteratorAggregate).
+     *
+     * @return \ArrayIterator<string, FormView> The iterator
+     */
+    public function getIterator();
+
 }
