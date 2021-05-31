@@ -8,11 +8,15 @@ use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\ShouldNotHappenException;
 use PHPStan\Type\ArrayType;
+use PHPStan\Type\BooleanType;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
+use PHPStan\Type\FloatType;
+use PHPStan\Type\IntegerType;
 use PHPStan\Type\MixedType;
 use PHPStan\Type\NullType;
 use PHPStan\Type\StringType;
 use PHPStan\Type\Type;
+use PHPStan\Type\TypeCombinator;
 use PHPStan\Type\UnionType;
 
 final class InputBagDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
@@ -54,10 +58,8 @@ final class InputBagDynamicReturnTypeExtension implements DynamicMethodReturnTyp
 		if (isset($methodCall->args[1])) {
 			$argType = $scope->getType($methodCall->args[1]->value);
 			$isNull = (new NullType())->isSuperTypeOf($argType);
-			$isString = (new StringType())->isSuperTypeOf($argType);
-			$compare = $isNull->compareTo($isString);
-			if ($compare === $isString) {
-				return new StringType();
+			if ($isNull->no()) {
+				return TypeCombinator::removeNull(ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType());
 			}
 		}
 
@@ -68,11 +70,18 @@ final class InputBagDynamicReturnTypeExtension implements DynamicMethodReturnTyp
 		MethodCall $methodCall
 	): Type
 	{
+		$types = [
+			new BooleanType(),
+			new FloatType(),
+			new IntegerType(),
+			new StringType(),
+		];
+		$oneParameterType = new UnionType($types);
 		if (isset($methodCall->args[0])) {
-			return new ArrayType(new MixedType(), new StringType());
+			return new ArrayType(new MixedType(), $oneParameterType);
 		}
 
-		return new ArrayType(new StringType(), new UnionType([new StringType(), new ArrayType(new MixedType(), new StringType())]));
+		return new ArrayType(new StringType(), new UnionType([new ArrayType(new MixedType(), $oneParameterType), new BooleanType(), new FloatType(), new IntegerType(), new StringType()]));
 	}
 
 }
