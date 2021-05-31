@@ -27,6 +27,7 @@ parameters:
 		- stubs/Symfony/Component/PropertyAccess/PropertyPathInterface.stub
 		- stubs/Symfony/Component/Security/Acl/Model/AclInterface.stub
 		- stubs/Symfony/Component/Security/Acl/Model/AclProviderInterface.stub
+		- stubs/Symfony/Component/Security/Acl/Model/EntryInterface.stub
 		- stubs/Symfony/Component/Security/Acl/Model/MutableAclInterface.stub
 		- stubs/Symfony/Component/Security/Acl/Model/MutableAclProviderInterface.stub
 		- stubs/Symfony/Component/Security/Acl/Model/ObjectIdentityInterface.stub
