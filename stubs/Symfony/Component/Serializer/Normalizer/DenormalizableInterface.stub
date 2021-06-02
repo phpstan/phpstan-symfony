@@ -10,7 +10,7 @@ interface DenormalizableInterface
      * @param string|null $format
      * @param array<mixed> $context
      *
-     * @return object|object[]
+     * @return void
      */
     public function denormalize($denormalizer, $data, $format = null, array $context = []);
 }
