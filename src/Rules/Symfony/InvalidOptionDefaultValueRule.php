@@ -8,14 +8,13 @@ use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
 use PHPStan\ShouldNotHappenException;
 use PHPStan\Type\ArrayType;
-use PHPStan\Type\Constant\ConstantBooleanType;
 use PHPStan\Type\Constant\ConstantIntegerType;
+use PHPStan\Type\BooleanType;
 use PHPStan\Type\IntegerType;
 use PHPStan\Type\MixedType;
 use PHPStan\Type\NullType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\StringType;
-use PHPStan\Type\TypeCombinator;
 use PHPStan\Type\TypeUtils;
 use PHPStan\Type\UnionType;
 use PHPStan\Type\VerbosityLevel;
@@ -70,10 +69,7 @@ final class InvalidOptionDefaultValueRule implements Rule
 
 		// not an array
 		if (($mode & 8) !== 8) {
-			$checkType = new UnionType([new StringType(), new IntegerType(), new NullType()]);
-			if (($mode & 4) === 4) { // https://symfony.com/doc/current/console/input.html#options-with-optional-arguments
-				$checkType = TypeCombinator::union($checkType, new ConstantBooleanType(false));
-			}
+			$checkType = new UnionType([new StringType(), new IntegerType(), new NullType(), new BooleanType()]);
 			if (!$checkType->isSuperTypeOf($defaultType)->yes()) {
 				return [sprintf('Parameter #5 $default of method Symfony\Component\Console\Command\Command::addOption() expects %s, %s given.', $checkType->describe(VerbosityLevel::typeOnly()), $defaultType->describe(VerbosityLevel::typeOnly()))];
 			}
