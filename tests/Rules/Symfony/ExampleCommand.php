@@ -29,6 +29,7 @@ final class ExampleCommand extends Command
 		$this->addOption('b', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL, '', [1]);
 		$this->addOption('c', null, InputOption::VALUE_OPTIONAL, '', 1);
 		$this->addOption('d', null, InputOption::VALUE_OPTIONAL, '', false);
+		$this->addOption('f', null, InputOption::VALUE_REQUIRED, '', true);
 
 		/** @var string[] $defaults */
 		$defaults = [];
