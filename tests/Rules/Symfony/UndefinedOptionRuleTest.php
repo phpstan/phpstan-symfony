@@ -38,7 +38,7 @@ final class UndefinedOptionRuleTest extends RuleTestCase
 			[
 				[
 					'Command "example-rule" does not define option "bbb".',
-					48,
+					49,
 				],
 			]
 		);
