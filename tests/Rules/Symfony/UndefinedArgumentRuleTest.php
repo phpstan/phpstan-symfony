@@ -38,7 +38,7 @@ final class UndefinedArgumentRuleTest extends RuleTestCase
 			[
 				[
 					'Command "example-rule" does not define argument "undefined".',
-					41,
+					42,
 				],
 			]
 		);
