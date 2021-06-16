@@ -12,6 +12,7 @@ parameters:
 		- stubs/Symfony/Component/Form/ChoiceList/Loader/ChoiceLoaderInterface.stub
 		- stubs/Symfony/Component/DependencyInjection/ContainerBuilder.stub
 		- stubs/Symfony/Component/DependencyInjection/Extension/ExtensionInterface.stub
+		- stubs/Symfony/Component/EventDispatcher/EventDispatcherInterface.stub
 		- stubs/Symfony/Component/EventDispatcher/EventSubscriberInterface.stub
 		- stubs/Symfony/Component/EventDispatcher/GenericEvent.stub
 		- stubs/Symfony/Component/Form/FormBuilderInterface.stub

@@ -1,0 +1,14 @@
+<?php
+
+namespace Symfony\Contracts\EventDispatcher;
+
+interface EventDispatcherInterface
+{
+    /**
+     * @template TEvent of object
+     * @param TEvent $event
+     *
+     * @return TEvent
+     */
+    public function dispatch(object $event, string $eventName = null): object;
+}
