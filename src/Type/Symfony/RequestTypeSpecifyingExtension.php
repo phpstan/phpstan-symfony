@@ -46,10 +46,15 @@ final class RequestTypeSpecifyingExtension implements MethodTypeSpecifyingExtens
 	{
 		$classReflection = $this->broker->getClass(self::REQUEST_CLASS);
 		$methodVariants = $classReflection->getNativeMethod(self::GET_METHOD_NAME)->getVariants();
+		$returnType = ParametersAcceptorSelector::selectSingle($methodVariants)->getReturnType();
+
+		if (!TypeCombinator::containsNull($returnType)) {
+			return new SpecifiedTypes();
+		}
 
 		return $this->typeSpecifier->create(
 			new MethodCall($node->var, self::GET_METHOD_NAME),
-			TypeCombinator::removeNull(ParametersAcceptorSelector::selectSingle($methodVariants)->getReturnType()),
+			TypeCombinator::removeNull($returnType),
 			$context
 		);
 	}
