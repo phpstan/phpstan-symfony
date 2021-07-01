@@ -21,6 +21,11 @@ class ImpossibleCheckTypeMethodCallRuleTest extends \PHPStan\Testing\RuleTestCas
 		$this->analyse([__DIR__ . '/data/request_get_session.php'], []);
 	}
 
+	public function testBug178(): void
+	{
+		$this->analyse([__DIR__ . '/data/bug-178.php'], []);
+	}
+
 	public static function getAdditionalConfigFiles(): array
 	{
 		return [

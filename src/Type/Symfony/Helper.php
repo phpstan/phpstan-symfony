@@ -17,7 +17,7 @@ final class Helper
 		return new Expr\Variable(md5(sprintf(
 			'%s::%s',
 			$printer->prettyPrintExpr($expr),
-			$type->describe(VerbosityLevel::value())
+			$type->describe(VerbosityLevel::precise())
 		)));
 	}
 
