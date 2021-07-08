@@ -2,18 +2,22 @@
 
 namespace Symfony\Component\Security\Acl\Model;
 
+/**
+ * @template TAcl of MutableAclInterface
+ * @extends AclProviderInterface<TAcl>
+ */
 interface MutableAclProviderInterface extends AclProviderInterface
 {
     /**
      * @phpstan-param array<SecurityIdentityInterface> $sids
-     * @phpstan-return MutableAclInterface
+     * @phpstan-return TAcl
      */
     public function findAcl(ObjectIdentityInterface $oid, array $sids = []);
 
     /**
      * @phpstan-param array<ObjectIdentityInterface> $oids
      * @phpstan-param array<SecurityIdentityInterface> $sids
-     * @phpstan-return \SplObjectStorage<ObjectIdentityInterface, MutableAclInterface>
+     * @phpstan-return \SplObjectStorage<ObjectIdentityInterface, TAcl>
      */
     public function findAcls(array $oids, array $sids = []);
 }

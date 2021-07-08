@@ -1,0 +1,14 @@
+<?php
+
+namespace Symfony\Component\Security\Acl\Dbal;
+
+use Symfony\Component\Security\Acl\Model\AclInterface;
+use Symfony\Component\Security\Acl\Model\AclProviderInterface;
+
+/**
+ * @implements AclProviderInterface<AclInterface>
+ */
+class AclProvider implements AclProviderInterface
+{
+
+}
