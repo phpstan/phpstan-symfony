@@ -68,6 +68,32 @@ parameters:
         container_xml_path: var/cache/dev/App_KernelDevDebugContainer.xml
 ```
 
+The XML file should exist prior to running PHPStan.
+
+If you want this file to be created automatically and resolved based on `APP_ENV` you can use this:
+
+```yaml
+parameters:
+    symfony:
+        container_xml_path: tests/container-loader.php
+```
+
+```php
+//tests/container-loader.php
+
+use App\Kernel;
+use Symfony\Component\Dotenv\Dotenv;
+
+require __DIR__ . '/../vendor/autoload.php';
+
+(new Dotenv())->bootEnv(__DIR__ . '/../.env');
+
+$kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
+$kernel->boot();
+
+return file_get_contents($kernel->getContainer()->getParameter('debug.container.dump'));
+```
+
 ## Constant hassers
 
 Sometimes, when you are dealing with optional dependencies, the `::has()` methods can cause problems. For example, the following construct would complain that the condition is always either on or off, depending on whether you have the dependency for `service` installed:
