@@ -1,8 +1,0 @@
-<?php
-
-namespace Symfony\Component\Security\Acl\Model;
-
-interface MutableAclInterface extends AclInterface
-{
-
-}
