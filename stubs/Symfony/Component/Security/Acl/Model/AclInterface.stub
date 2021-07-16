@@ -1,0 +1,40 @@
+<?php
+
+namespace Symfony\Component\Security\Acl\Model;
+
+interface AclInterface
+{
+
+    /**
+     * Returns all class-based ACEs associated with this ACL.
+     *
+     * @return array<int, EntryInterface>
+     */
+    public function getClassAces();
+
+    /**
+     * Returns all class-field-based ACEs associated with this ACL.
+     *
+     * @param string $field
+     *
+     * @return array<int, EntryInterface>
+     */
+    public function getClassFieldAces($field);
+
+    /**
+     * Returns all object-based ACEs associated with this ACL.
+     *
+     * @return array<int, EntryInterface>
+     */
+    public function getObjectAces();
+
+    /**
+     * Returns all object-field-based ACEs associated with this ACL.
+     *
+     * @param string $field
+     *
+     * @return array<int, EntryInterface>
+     */
+    public function getObjectFieldAces($field);
+
+}
