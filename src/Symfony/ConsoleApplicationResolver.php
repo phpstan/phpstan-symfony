@@ -54,9 +54,17 @@ final class ConsoleApplicationResolver
 
 		$commands = [];
 		foreach ($this->consoleApplication->all() as $name => $command) {
-			if (!$classType->isSuperTypeOf(new ObjectType(get_class($command)))->yes()) {
+			$commandClass = new ObjectType(get_class($command));
+			$isLazyCommand = (new ObjectType('Symfony\Component\Console\Command\LazyCommand'))->isSuperTypeOf($commandClass)->yes();
+
+			if ($isLazyCommand && method_exists($command, 'getCommand') && !$classType->isSuperTypeOf(new ObjectType(get_class($command->getCommand())))->yes()) {
 				continue;
 			}
+
+			if (!$isLazyCommand && !$classType->isSuperTypeOf($commandClass)->yes()) {
+				continue;
+			}
+
 			$commands[$name] = $command;
 		}
 
