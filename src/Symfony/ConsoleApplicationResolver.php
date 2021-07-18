@@ -57,9 +57,11 @@ final class ConsoleApplicationResolver
 			$commandClass = new ObjectType(get_class($command));
 			$isLazyCommand = (new ObjectType('Symfony\Component\Console\Command\LazyCommand'))->isSuperTypeOf($commandClass)->yes();
 
-			if ($isLazyCommand && !$classType->isSuperTypeOf(new ObjectType(get_class($command->getCommand())))->yes()) {
+			if ($isLazyCommand && method_exists($command, 'getCommand') && !$classType->isSuperTypeOf(new ObjectType(get_class($command->getCommand())))->yes()) {
 				continue;
-			} else if (!$isLazyCommand && !$classType->isSuperTypeOf($commandClass)->yes()) {
+			}
+
+			if (!$isLazyCommand && !$classType->isSuperTypeOf($commandClass)->yes()) {
 				continue;
 			}
 

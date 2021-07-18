@@ -13,9 +13,13 @@ $application = new Application();
 $application->add(new ExampleACommand());
 $application->add(new ExampleBCommand());
 $application->add(new ExampleOptionCommand());
-$application->add(new LazyCommand(
-	'lazy-example-option', [], '', false, function() {
+
+if (class_exists(LazyCommand::class)) {
+	$application->add(new LazyCommand('lazy-example-option', [], '', false, function () {
 		return new ExampleOptionLazyCommand();
-	}
-));
+	}));
+} else {
+	$application->add(new ExampleOptionLazyCommand());
+}
+
 return $application;
