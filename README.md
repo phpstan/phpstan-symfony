@@ -68,7 +68,7 @@ parameters:
         container_xml_path: var/cache/dev/App_KernelDevDebugContainer.xml
     # If you're using PHP config files for Symfony 5.3+, you also need this for auto-loading of `Symfony\Config`:
     scanDirectories:
-        - %currentWorkingDirectory%/var/cache/dev/Symfony/Config
+        - var/cache/dev/Symfony/Config
 ```
 
 ## Constant hassers
