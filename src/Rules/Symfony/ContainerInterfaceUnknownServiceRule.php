@@ -55,6 +55,11 @@ final class ContainerInterfaceUnknownServiceRule implements Rule
 		}
 
 		$argType = $scope->getType($node->var);
+		$isContainerBagType = (new ObjectType('Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface'))->isSuperTypeOf($argType);
+		if ($isContainerBagType->yes()) {
+			return [];
+		}
+
 		$isControllerType = (new ObjectType('Symfony\Bundle\FrameworkBundle\Controller\Controller'))->isSuperTypeOf($argType);
 		$isAbstractControllerType = (new ObjectType('Symfony\Bundle\FrameworkBundle\Controller\AbstractController'))->isSuperTypeOf($argType);
 		$isContainerType = (new ObjectType('Symfony\Component\DependencyInjection\ContainerInterface'))->isSuperTypeOf($argType);

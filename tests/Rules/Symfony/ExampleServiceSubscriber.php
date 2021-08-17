@@ -12,6 +12,13 @@ final class ExampleServiceSubscriber implements ServiceSubscriberInterface
 		$this->get('private');
 	}
 
+	public function containerParameter(): void
+	{
+		/** @var \Symfony\Component\DependencyInjection\ParameterBag\ContainerBag $containerBag */
+		$containerBag = doFoo();
+		$containerBag->get('parameter_name');
+	}
+
 	/**
 	 * @return string[]
 	 */

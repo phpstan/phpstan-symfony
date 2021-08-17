@@ -68,4 +68,18 @@ final class ContainerInterfaceUnknownServiceRuleTest extends RuleTestCase
 		);
 	}
 
+	public function testGetPrivateServiceInLegacyServiceSubscriber(): void
+	{
+		if (!interface_exists('Symfony\Contracts\Service\ServiceSubscriberInterface')) {
+			self::markTestSkipped('The test needs Symfony\Contracts\Service\ServiceSubscriberInterface class.');
+		}
+
+		$this->analyse(
+			[
+				__DIR__ . '/ExampleServiceSubscriber.php',
+			],
+			[]
+		);
+	}
+
 }
