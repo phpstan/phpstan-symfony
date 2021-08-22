@@ -1,0 +1,29 @@
+<?php
+
+namespace Symfony\Component\HttpFoundation;
+
+class Request
+{
+
+	/**
+	 * Request body parameters ($_POST).
+	 *
+	 * @var InputBag<string|int|float|bool>
+	 */
+	public $request;
+
+	/**
+	 * Query string parameters ($_GET).
+	 *
+	 * @var InputBag<string>
+	 */
+	public $query;
+
+	/**
+	 * Cookies ($_COOKIE).
+	 *
+	 * @var InputBag<string>
+	 */
+	public $cookies;
+
+}

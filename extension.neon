@@ -4,6 +4,9 @@ parameters:
 	exceptions:
 		uncheckedExceptionClasses:
 			- 'Symfony\Component\Console\Exception\InvalidArgumentException'
+	featureToggles:
+		skipCheckGenericClasses:
+			- Symfony\Component\HttpFoundation\InputBag
 	symfony:
 		container_xml_path: null
 		constant_hassers: true
@@ -22,7 +25,9 @@ parameters:
 		- stubs/Symfony/Component/Form/FormView.stub
 		- stubs/Symfony/Component/HttpFoundation/Cookie.stub
 		- stubs/Symfony/Component/HttpFoundation/HeaderBag.stub
+		- stubs/Symfony/Component/HttpFoundation/InputBag.stub
 		- stubs/Symfony/Component/HttpFoundation/ParameterBag.stub
+		- stubs/Symfony/Component/HttpFoundation/Request.stub
 		- stubs/Symfony/Component/HttpFoundation/Session.stub
 		- stubs/Symfony/Component/Process/Process.stub
 		- stubs/Symfony/Component/PropertyAccess/PropertyPathInterface.stub
