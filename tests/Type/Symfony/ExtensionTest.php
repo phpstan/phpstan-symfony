@@ -43,8 +43,12 @@ class ExtensionTest extends TypeInferenceTestCase
 		}
 
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/serializer.php');
+
+		if (class_exists('Symfony\Component\HttpFoundation\InputBag')) {
+			yield from $this->gatherAssertTypes(__DIR__ . '/data/input_bag_from_request.php');
+		}
+
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/denormalizer.php');
-		yield from $this->gatherAssertTypes(__DIR__ . '/data/input_bag_from_request.php');
 	}
 
 	/**
