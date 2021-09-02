@@ -25,9 +25,7 @@ parameters:
 		- stubs/Symfony/Component/Form/FormView.stub
 		- stubs/Symfony/Component/HttpFoundation/Cookie.stub
 		- stubs/Symfony/Component/HttpFoundation/HeaderBag.stub
-		- stubs/Symfony/Component/HttpFoundation/InputBag.stub
 		- stubs/Symfony/Component/HttpFoundation/ParameterBag.stub
-		- stubs/Symfony/Component/HttpFoundation/Request.stub
 		- stubs/Symfony/Component/HttpFoundation/Session.stub
 		- stubs/Symfony/Component/Process/Process.stub
 		- stubs/Symfony/Component/PropertyAccess/PropertyPathInterface.stub
@@ -245,3 +243,7 @@ services:
 	-
 		factory: PHPStan\Type\Symfony\ParameterDynamicReturnTypeExtension(Symfony\Bundle\FrameworkBundle\Controller\Controller, 'getParameter', null, %symfony.constant_hassers%)
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+	-
+		class: PHPStan\Symfony\InputBagStubFilesExtension
+		tags:
+			- phpstan.stubFilesExtension
