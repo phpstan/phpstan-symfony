@@ -15,15 +15,15 @@
   "require": {
     "php": "^7.1 || ^8.0",
     "ext-simplexml": "*",
-    "phpstan/phpstan": "^0.12.98"
+    "phpstan/phpstan": "^1.0"
   },
   "conflict": {
     "symfony/framework-bundle": "<3.0"
   },
   "require-dev": {
     "php-parallel-lint/php-parallel-lint": "^1.2",
-    "phpstan/phpstan-phpunit": "^0.12.16",
-    "phpstan/phpstan-strict-rules": "^0.12.5",
+    "phpstan/phpstan-phpunit": "^1.0",
+    "phpstan/phpstan-strict-rules": "^1.0",
     "phpunit/phpunit": "^9.5",
     "symfony/config": "^4.2 || ^5.0",
     "symfony/console": "^4.0 || ^5.0",
@@ -40,7 +40,7 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-master": "0.12-dev"
+      "dev-master": "1.0-dev"
     },
     "phpstan": {
       "includes": [
