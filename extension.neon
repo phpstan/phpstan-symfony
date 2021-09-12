@@ -4,9 +4,6 @@ parameters:
 	exceptions:
 		uncheckedExceptionClasses:
 			- 'Symfony\Component\Console\Exception\InvalidArgumentException'
-	featureToggles:
-		skipCheckGenericClasses:
-			- Symfony\Component\HttpFoundation\InputBag
 	symfony:
 		container_xml_path: null
 		constant_hassers: true
