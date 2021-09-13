@@ -5,6 +5,7 @@ namespace PHPStan\Symfony;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\ShouldNotHappenException;
 use PHPStan\Type\ObjectType;
+use Symfony\Component\Console\Command\Command;
 use function file_exists;
 use function get_class;
 use function is_readable;
@@ -57,8 +58,12 @@ final class ConsoleApplicationResolver
 			$commandClass = new ObjectType(get_class($command));
 			$isLazyCommand = (new ObjectType('Symfony\Component\Console\Command\LazyCommand'))->isSuperTypeOf($commandClass)->yes();
 
-			if ($isLazyCommand && method_exists($command, 'getCommand') && !$classType->isSuperTypeOf(new ObjectType(get_class($command->getCommand())))->yes()) {
-				continue;
+			if ($isLazyCommand && method_exists($command, 'getCommand')) {
+				/** @var Command $wrappedCommand */
+				$wrappedCommand = $command->getCommand();
+				if (!$classType->isSuperTypeOf(new ObjectType(get_class($wrappedCommand)))->yes()) {
+					continue;
+				}
 			}
 
 			if (!$isLazyCommand && !$classType->isSuperTypeOf($commandClass)->yes()) {
