@@ -6,7 +6,6 @@ use PhpParser\PrettyPrinter\Standard;
 use PHPStan\Rules\Rule;
 use PHPStan\Symfony\ConsoleApplicationResolver;
 use PHPStan\Testing\RuleTestCase;
-use PHPStan\Type\Symfony\OptionTypeSpecifyingExtension;
 
 /**
  * @extends RuleTestCase<UndefinedOptionRule>
@@ -17,16 +16,6 @@ final class UndefinedOptionRuleTest extends RuleTestCase
 	protected function getRule(): Rule
 	{
 		return new UndefinedOptionRule(new ConsoleApplicationResolver(__DIR__ . '/console_application_loader.php'), new Standard());
-	}
-
-	/**
-	 * @return \PHPStan\Type\MethodTypeSpecifyingExtension[]
-	 */
-	protected function getMethodTypeSpecifyingExtensions(): array
-	{
-		return [
-			new OptionTypeSpecifyingExtension(new Standard()),
-		];
 	}
 
 	public function testGetArgument(): void
@@ -42,6 +31,13 @@ final class UndefinedOptionRuleTest extends RuleTestCase
 				],
 			]
 		);
+	}
+
+	public static function getAdditionalConfigFiles(): array
+	{
+		return [
+			__DIR__ . '/option.neon',
+		];
 	}
 
 }

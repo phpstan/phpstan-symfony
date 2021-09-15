@@ -1,0 +1,5 @@
+services:
+	-
+		class: PHPStan\Type\Symfony\OptionTypeSpecifyingExtension
+		tags:
+			- phpstan.typeSpecifier.methodTypeSpecifyingExtension

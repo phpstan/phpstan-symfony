@@ -7,7 +7,7 @@ includes:
 	- phar://phpstan.phar/conf/bleedingEdge.neon
 
 parameters:
-	excludes_analyse:
+	excludePaths:
 		- tests/tmp/*
 		- tests/*/Example*.php
 		- tests/*/console_application_loader.php
