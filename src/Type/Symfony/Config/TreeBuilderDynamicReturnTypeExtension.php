@@ -44,8 +44,8 @@ final class TreeBuilderDynamicReturnTypeExtension implements DynamicStaticMethod
 
 		$type = 'array';
 
-		if (isset($methodCall->args[1])) {
-			$argStrings = TypeUtils::getConstantStrings($scope->getType($methodCall->args[1]->value));
+		if (isset($methodCall->getArgs()[1])) {
+			$argStrings = TypeUtils::getConstantStrings($scope->getType($methodCall->getArgs()[1]->value));
 			if (count($argStrings) === 1 && isset(self::MAPPING[$argStrings[0]->getValue()])) {
 				$type = $argStrings[0]->getValue();
 			}

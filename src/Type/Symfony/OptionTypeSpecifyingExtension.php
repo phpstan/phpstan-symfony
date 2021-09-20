@@ -38,10 +38,10 @@ final class OptionTypeSpecifyingExtension implements MethodTypeSpecifyingExtensi
 
 	public function specifyTypes(MethodReflection $methodReflection, MethodCall $node, Scope $scope, TypeSpecifierContext $context): SpecifiedTypes
 	{
-		if (!isset($node->args[0])) {
+		if (!isset($node->getArgs()[0])) {
 			return new SpecifiedTypes();
 		}
-		$argType = $scope->getType($node->args[0]->value);
+		$argType = $scope->getType($node->getArgs()[0]->value);
 		return $this->typeSpecifier->create(
 			Helper::createMarkerNode($node->var, $argType, $this->printer),
 			$argType,

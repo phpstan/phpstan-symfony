@@ -31,11 +31,11 @@ final class EnvelopeReturnTypeExtension implements DynamicMethodReturnTypeExtens
 		Scope $scope
 	): Type
 	{
-		if (count($methodCall->args) === 0) {
+		if (count($methodCall->getArgs()) === 0) {
 			return new ArrayType(new MixedType(), new ArrayType(new MixedType(), new ObjectType('Symfony\Component\Messenger\Stamp\StampInterface')));
 		}
 
-		$argType = $scope->getType($methodCall->args[0]->value);
+		$argType = $scope->getType($methodCall->getArgs()[0]->value);
 		if (!$argType instanceof ConstantStringType) {
 			return new ArrayType(new MixedType(), new ObjectType('Symfony\Component\Messenger\Stamp\StampInterface'));
 		}

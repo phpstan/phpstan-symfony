@@ -55,8 +55,8 @@ final class InputBagDynamicReturnTypeExtension implements DynamicMethodReturnTyp
 		Scope $scope
 	): Type
 	{
-		if (isset($methodCall->args[1])) {
-			$argType = $scope->getType($methodCall->args[1]->value);
+		if (isset($methodCall->getArgs()[1])) {
+			$argType = $scope->getType($methodCall->getArgs()[1]->value);
 			$isNull = (new NullType())->isSuperTypeOf($argType);
 			if ($isNull->no()) {
 				return TypeCombinator::removeNull(ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType());
@@ -77,7 +77,7 @@ final class InputBagDynamicReturnTypeExtension implements DynamicMethodReturnTyp
 			new StringType(),
 		];
 		$oneParameterType = new UnionType($types);
-		if (isset($methodCall->args[0])) {
+		if (isset($methodCall->getArgs()[0])) {
 			return new ArrayType(new MixedType(), $oneParameterType);
 		}
 

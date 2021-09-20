@@ -61,11 +61,11 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 	): Type
 	{
 		$returnType = ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
-		if (!isset($methodCall->args[0])) {
+		if (!isset($methodCall->getArgs()[0])) {
 			return $returnType;
 		}
 
-		$serviceId = $this->serviceMap::getServiceIdFromNode($methodCall->args[0]->value, $scope);
+		$serviceId = $this->serviceMap::getServiceIdFromNode($methodCall->getArgs()[0]->value, $scope);
 		if ($serviceId !== null) {
 			$service = $this->serviceMap->getService($serviceId);
 			if ($service !== null && (!$service->isSynthetic() || $service->getClass() !== null)) {
@@ -83,11 +83,11 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 	): Type
 	{
 		$returnType = ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
-		if (!isset($methodCall->args[0]) || !$this->constantHassers) {
+		if (!isset($methodCall->getArgs()[0]) || !$this->constantHassers) {
 			return $returnType;
 		}
 
-		$serviceId = $this->serviceMap::getServiceIdFromNode($methodCall->args[0]->value, $scope);
+		$serviceId = $this->serviceMap::getServiceIdFromNode($methodCall->getArgs()[0]->value, $scope);
 		if ($serviceId !== null) {
 			$service = $this->serviceMap->getService($serviceId);
 			return new ConstantBooleanType($service !== null && $service->isPublic());

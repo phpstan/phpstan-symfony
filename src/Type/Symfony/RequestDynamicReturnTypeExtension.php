@@ -31,11 +31,11 @@ final class RequestDynamicReturnTypeExtension implements DynamicMethodReturnType
 		Scope $scope
 	): Type
 	{
-		if (!isset($methodCall->args[0])) {
+		if (!isset($methodCall->getArgs()[0])) {
 			return new StringType();
 		}
 
-		$argType = $scope->getType($methodCall->args[0]->value);
+		$argType = $scope->getType($methodCall->getArgs()[0]->value);
 		$isTrueType = (new ConstantBooleanType(true))->isSuperTypeOf($argType);
 		$isFalseType = (new ConstantBooleanType(false))->isSuperTypeOf($argType);
 		$compareTypes = $isTrueType->compareTo($isFalseType);

@@ -40,9 +40,9 @@ final class InputInterfaceGetArgumentDynamicReturnTypeExtension implements Dynam
 
 	public function getTypeFromMethodCall(MethodReflection $methodReflection, MethodCall $methodCall, Scope $scope): Type
 	{
-		$defaultReturnType = ParametersAcceptorSelector::selectFromArgs($scope, $methodCall->args, $methodReflection->getVariants())->getReturnType();
+		$defaultReturnType = ParametersAcceptorSelector::selectFromArgs($scope, $methodCall->getArgs(), $methodReflection->getVariants())->getReturnType();
 
-		if (!isset($methodCall->args[0])) {
+		if (!isset($methodCall->getArgs()[0])) {
 			return $defaultReturnType;
 		}
 
@@ -51,7 +51,7 @@ final class InputInterfaceGetArgumentDynamicReturnTypeExtension implements Dynam
 			return $defaultReturnType;
 		}
 
-		$argStrings = TypeUtils::getConstantStrings($scope->getType($methodCall->args[0]->value));
+		$argStrings = TypeUtils::getConstantStrings($scope->getType($methodCall->getArgs()[0]->value));
 		if (count($argStrings) !== 1) {
 			return $defaultReturnType;
 		}

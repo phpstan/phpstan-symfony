@@ -64,11 +64,11 @@ final class UndefinedArgumentRule implements Rule
 		if (!$node->name instanceof Node\Identifier || $node->name->name !== 'getArgument') {
 			return [];
 		}
-		if (!isset($node->args[0])) {
+		if (!isset($node->getArgs()[0])) {
 			return [];
 		}
 
-		$argType = $scope->getType($node->args[0]->value);
+		$argType = $scope->getType($node->getArgs()[0]->value);
 		$argStrings = TypeUtils::getConstantStrings($argType);
 		if (count($argStrings) !== 1) {
 			return [];

@@ -46,11 +46,11 @@ final class InvalidArgumentDefaultValueRule implements Rule
 		if (!$node->name instanceof Node\Identifier || $node->name->name !== 'addArgument') {
 			return [];
 		}
-		if (!isset($node->args[3])) {
+		if (!isset($node->getArgs()[3])) {
 			return [];
 		}
 
-		$modeType = isset($node->args[1]) ? $scope->getType($node->args[1]->value) : new NullType();
+		$modeType = isset($node->getArgs()[1]) ? $scope->getType($node->getArgs()[1]->value) : new NullType();
 		if ($modeType instanceof NullType) {
 			$modeType = new ConstantIntegerType(2); // InputArgument::OPTIONAL
 		}
@@ -63,7 +63,7 @@ final class InvalidArgumentDefaultValueRule implements Rule
 		}
 		$mode = $modeTypes[0]->getValue();
 
-		$defaultType = $scope->getType($node->args[3]->value);
+		$defaultType = $scope->getType($node->getArgs()[3]->value);
 
 		// not an array
 		if (($mode & 4) !== 4 && !(new UnionType([new StringType(), new NullType()]))->isSuperTypeOf($defaultType)->yes()) {

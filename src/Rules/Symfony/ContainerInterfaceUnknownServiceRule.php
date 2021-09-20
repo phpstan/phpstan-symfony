@@ -50,7 +50,7 @@ final class ContainerInterfaceUnknownServiceRule implements Rule
 			return [];
 		}
 
-		if ($node->name->name !== 'get' || !isset($node->args[0])) {
+		if ($node->name->name !== 'get' || !isset($node->getArgs()[0])) {
 			return [];
 		}
 
@@ -73,10 +73,10 @@ final class ContainerInterfaceUnknownServiceRule implements Rule
 			return [];
 		}
 
-		$serviceId = $this->serviceMap::getServiceIdFromNode($node->args[0]->value, $scope);
+		$serviceId = $this->serviceMap::getServiceIdFromNode($node->getArgs()[0]->value, $scope);
 		if ($serviceId !== null) {
 			$service = $this->serviceMap->getService($serviceId);
-			$serviceIdType = $scope->getType($node->args[0]->value);
+			$serviceIdType = $scope->getType($node->getArgs()[0]->value);
 			if ($service === null && !$scope->getType(Helper::createMarkerNode($node->var, $serviceIdType, $this->printer))->equals($serviceIdType)) {
 				return [sprintf('Service "%s" is not registered in the container.', $serviceId)];
 			}

@@ -64,11 +64,11 @@ final class UndefinedOptionRule implements Rule
 		if (!$node->name instanceof Node\Identifier || $node->name->name !== 'getOption') {
 			return [];
 		}
-		if (!isset($node->args[0])) {
+		if (!isset($node->getArgs()[0])) {
 			return [];
 		}
 
-		$optType = $scope->getType($node->args[0]->value);
+		$optType = $scope->getType($node->getArgs()[0]->value);
 		$optStrings = TypeUtils::getConstantStrings($optType);
 		if (count($optStrings) !== 1) {
 			return [];

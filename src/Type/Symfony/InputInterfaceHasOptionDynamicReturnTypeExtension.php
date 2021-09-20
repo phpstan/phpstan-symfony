@@ -40,7 +40,7 @@ final class InputInterfaceHasOptionDynamicReturnTypeExtension implements Dynamic
 	{
 		$defaultReturnType = new BooleanType();
 
-		if (!isset($methodCall->args[0])) {
+		if (!isset($methodCall->getArgs()[0])) {
 			return $defaultReturnType;
 		}
 
@@ -49,7 +49,7 @@ final class InputInterfaceHasOptionDynamicReturnTypeExtension implements Dynamic
 			return $defaultReturnType;
 		}
 
-		$optStrings = TypeUtils::getConstantStrings($scope->getType($methodCall->args[0]->value));
+		$optStrings = TypeUtils::getConstantStrings($scope->getType($methodCall->getArgs()[0]->value));
 		if (count($optStrings) !== 1) {
 			return $defaultReturnType;
 		}

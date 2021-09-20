@@ -48,11 +48,11 @@ final class InvalidOptionDefaultValueRule implements Rule
 		if (!$node->name instanceof Node\Identifier || $node->name->name !== 'addOption') {
 			return [];
 		}
-		if (!isset($node->args[4])) {
+		if (!isset($node->getArgs()[4])) {
 			return [];
 		}
 
-		$modeType = isset($node->args[2]) ? $scope->getType($node->args[2]->value) : new NullType();
+		$modeType = isset($node->getArgs()[2]) ? $scope->getType($node->getArgs()[2]->value) : new NullType();
 		if ($modeType instanceof NullType) {
 			$modeType = new ConstantIntegerType(1); // InputOption::VALUE_NONE
 		}
@@ -65,7 +65,7 @@ final class InvalidOptionDefaultValueRule implements Rule
 		}
 		$mode = $modeTypes[0]->getValue();
 
-		$defaultType = $scope->getType($node->args[4]->value);
+		$defaultType = $scope->getType($node->getArgs()[4]->value);
 
 		// not an array
 		if (($mode & 8) !== 8) {

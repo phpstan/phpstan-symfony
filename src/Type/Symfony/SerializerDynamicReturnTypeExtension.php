@@ -39,11 +39,11 @@ class SerializerDynamicReturnTypeExtension implements DynamicMethodReturnTypeExt
 
 	public function getTypeFromMethodCall(MethodReflection $methodReflection, MethodCall $methodCall, Scope $scope): Type
 	{
-		if (!isset($methodCall->args[1])) {
+		if (!isset($methodCall->getArgs()[1])) {
 			return new MixedType();
 		}
 
-		$argType = $scope->getType($methodCall->args[1]->value);
+		$argType = $scope->getType($methodCall->getArgs()[1]->value);
 		if (!$argType instanceof ConstantStringType) {
 			return new MixedType();
 		}

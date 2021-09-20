@@ -92,11 +92,11 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 			new StringType(),
 			new NullType(),
 		]);
-		if (!isset($methodCall->args[0])) {
+		if (!isset($methodCall->getArgs()[0])) {
 			return $returnType;
 		}
 
-		$parameterKey = $this->parameterMap::getParameterKeyFromNode($methodCall->args[0]->value, $scope);
+		$parameterKey = $this->parameterMap::getParameterKeyFromNode($methodCall->getArgs()[0]->value, $scope);
 		if ($parameterKey !== null) {
 			$parameter = $this->parameterMap->getParameter($parameterKey);
 			if ($parameter !== null) {
@@ -130,11 +130,11 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 	): Type
 	{
 		$returnType = ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
-		if (!isset($methodCall->args[0]) || !$this->constantHassers) {
+		if (!isset($methodCall->getArgs()[0]) || !$this->constantHassers) {
 			return $returnType;
 		}
 
-		$parameterKey = $this->parameterMap::getParameterKeyFromNode($methodCall->args[0]->value, $scope);
+		$parameterKey = $this->parameterMap::getParameterKeyFromNode($methodCall->getArgs()[0]->value, $scope);
 		if ($parameterKey !== null) {
 			$parameter = $this->parameterMap->getParameter($parameterKey);
 			return new ConstantBooleanType($parameter !== null);

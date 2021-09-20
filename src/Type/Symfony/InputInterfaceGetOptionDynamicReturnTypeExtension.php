@@ -42,9 +42,9 @@ final class InputInterfaceGetOptionDynamicReturnTypeExtension implements Dynamic
 
 	public function getTypeFromMethodCall(MethodReflection $methodReflection, MethodCall $methodCall, Scope $scope): Type
 	{
-		$defaultReturnType = ParametersAcceptorSelector::selectFromArgs($scope, $methodCall->args, $methodReflection->getVariants())->getReturnType();
+		$defaultReturnType = ParametersAcceptorSelector::selectFromArgs($scope, $methodCall->getArgs(), $methodReflection->getVariants())->getReturnType();
 
-		if (!isset($methodCall->args[0])) {
+		if (!isset($methodCall->getArgs()[0])) {
 			return $defaultReturnType;
 		}
 
@@ -53,7 +53,7 @@ final class InputInterfaceGetOptionDynamicReturnTypeExtension implements Dynamic
 			return $defaultReturnType;
 		}
 
-		$optStrings = TypeUtils::getConstantStrings($scope->getType($methodCall->args[0]->value));
+		$optStrings = TypeUtils::getConstantStrings($scope->getType($methodCall->getArgs()[0]->value));
 		if (count($optStrings) !== 1) {
 			return $defaultReturnType;
 		}

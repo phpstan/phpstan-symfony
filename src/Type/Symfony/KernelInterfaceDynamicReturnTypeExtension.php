@@ -32,7 +32,7 @@ final class KernelInterfaceDynamicReturnTypeExtension implements DynamicMethodRe
 		Scope $scope
 	): Type
 	{
-		$firstArgType = isset($methodCall->args[2]) ? $scope->getType($methodCall->args[2]->value) : new ConstantBooleanType(true);
+		$firstArgType = isset($methodCall->getArgs()[2]) ? $scope->getType($methodCall->getArgs()[2]->value) : new ConstantBooleanType(true);
 		$isTrueType = (new ConstantBooleanType(true))->isSuperTypeOf($firstArgType);
 		$isFalseType = (new ConstantBooleanType(false))->isSuperTypeOf($firstArgType);
 		$compareTypes = $isTrueType->compareTo($isFalseType);

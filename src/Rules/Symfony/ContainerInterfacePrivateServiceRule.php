@@ -45,7 +45,7 @@ final class ContainerInterfacePrivateServiceRule implements Rule
 			return [];
 		}
 
-		if ($node->name->name !== 'get' || !isset($node->args[0])) {
+		if ($node->name->name !== 'get' || !isset($node->getArgs()[0])) {
 			return [];
 		}
 
@@ -72,7 +72,7 @@ final class ContainerInterfacePrivateServiceRule implements Rule
 			return [];
 		}
 
-		$serviceId = $this->serviceMap::getServiceIdFromNode($node->args[0]->value, $scope);
+		$serviceId = $this->serviceMap::getServiceIdFromNode($node->getArgs()[0]->value, $scope);
 		if ($serviceId !== null) {
 			$service = $this->serviceMap->getService($serviceId);
 			if ($service !== null && !$service->isPublic()) {

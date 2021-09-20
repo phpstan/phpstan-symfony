@@ -34,13 +34,13 @@ final class HeaderBagDynamicReturnTypeExtension implements DynamicMethodReturnTy
 		Scope $scope
 	): Type
 	{
-		$firstArgType = isset($methodCall->args[2]) ? $scope->getType($methodCall->args[2]->value) : new ConstantBooleanType(true);
+		$firstArgType = isset($methodCall->getArgs()[2]) ? $scope->getType($methodCall->getArgs()[2]->value) : new ConstantBooleanType(true);
 		$isTrueType = (new ConstantBooleanType(true))->isSuperTypeOf($firstArgType);
 		$isFalseType = (new ConstantBooleanType(false))->isSuperTypeOf($firstArgType);
 		$compareTypes = $isTrueType->compareTo($isFalseType);
 
 		if ($compareTypes === $isTrueType) {
-			$defaultArgType = isset($methodCall->args[1]) ? $scope->getType($methodCall->args[1]->value) : new NullType();
+			$defaultArgType = isset($methodCall->getArgs()[1]) ? $scope->getType($methodCall->getArgs()[1]->value) : new NullType();
 
 			return TypeCombinator::union($defaultArgType, new StringType());
 		}
