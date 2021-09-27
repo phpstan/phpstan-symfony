@@ -24,6 +24,8 @@ parameters:
 		- stubs/Symfony/Component/HttpFoundation/HeaderBag.stub
 		- stubs/Symfony/Component/HttpFoundation/ParameterBag.stub
 		- stubs/Symfony/Component/HttpFoundation/Session.stub
+		- stubs/Symfony/Component/Messenger/StampInterface.stub
+		- stubs/Symfony/Component/Messenger/Envelope.stub
 		- stubs/Symfony/Component/Process/Process.stub
 		- stubs/Symfony/Component/PropertyAccess/PropertyPathInterface.stub
 		- stubs/Symfony/Component/Security/Acl/Model/AclInterface.stub

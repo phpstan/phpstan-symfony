@@ -1,0 +1,17 @@
+<?php
+
+namespace Symfony\Component\Messenger;
+
+use Symfony\Component\Messenger\Stamp\StampInterface;
+
+final class Envelope
+{
+    /**
+     * @template T of \Symfony\Component\Messenger\Stamp\StampInterface
+     * @phpstan-param class-string<T> $stampFqcn
+     * @phpstan-return T|null
+     */
+    public function last(string $stampFqcn): ?StampInterface
+    {
+    }
+}
