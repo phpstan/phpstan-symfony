@@ -22,6 +22,7 @@ use PHPStan\Type\MixedType;
 use PHPStan\Type\NullType;
 use PHPStan\Type\StringType;
 use PHPStan\Type\Type;
+use PHPStan\Type\TypeCombinator;
 use PHPStan\Type\TypeTraverser;
 use PHPStan\Type\UnionType;
 use function in_array;
@@ -102,11 +103,63 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 		if ($parameterKey !== null) {
 			$parameter = $this->parameterMap->getParameter($parameterKey);
 			if ($parameter !== null) {
-				return $this->generalizeType($scope->getTypeFromValue($parameter->getValue()));
+				return $this->generalizeTypeFromValue($scope, $parameter->getValue());
 			}
 		}
 
 		return $returnType;
+	}
+
+	private function generalizeTypeFromValue(Scope $scope, $value): Type
+	{
+		if (is_array($value) && $value !== []) {
+			return $this->generalizeType(
+				new ArrayType(
+					TypeCombinator::union(...array_map(function ($item) use ($scope): Type {
+						return $this->generalizeTypeFromValue($scope, $item);
+					}, array_keys($value))),
+					TypeCombinator::union(...array_map(function ($item) use ($scope): Type {
+						return $this->generalizeTypeFromValue($scope, $item);
+					}, array_values($value)))
+				)
+			);
+		}
+
+		if (
+			is_string($value)
+			&& preg_match('/%env\((.*)\:.*\)%/U', $value, $matches) === 1
+			&& strlen($matches[0]) === strlen($value)
+		) {
+			switch ($matches[1]) {
+				case 'base64':
+				case 'file':
+				case 'resolve':
+				case 'string':
+				case 'trim':
+					return new StringType();
+				case 'bool':
+					return new BooleanType();
+				case 'int':
+					return new IntegerType();
+				case 'float':
+					return new FloatType();
+				case 'csv':
+				case 'json':
+				case 'url':
+				case 'query_string':
+					return new ArrayType(new MixedType(), new MixedType());
+				default:
+					return new UnionType([
+						new ArrayType(new MixedType(), new MixedType()),
+						new BooleanType(),
+						new FloatType(),
+						new IntegerType(),
+						new StringType(),
+					]);
+			}
+		}
+
+		return $this->generalizeType($scope->getTypeFromValue($value));
 	}
 
 	private function generalizeType(Type $type): Type

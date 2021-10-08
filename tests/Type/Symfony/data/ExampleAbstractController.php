@@ -39,6 +39,9 @@ final class ExampleAbstractController extends AbstractController
 		assertType("string", $container->getParameter('app.int_as_string'));
 		assertType("string", $parameterBag->get('app.int_as_string'));
 		assertType("string", $this->getParameter('app.int_as_string'));
+		assertType('int', $container->getParameter('app.int_as_processor'));
+		assertType('int', $parameterBag->get('app.int_as_processor'));
+		assertType('int', $this->getParameter('app.int_as_processor'));
 		assertType('float', $container->getParameter('app.float'));
 		assertType('float', $parameterBag->get('app.float'));
 		assertType('float', $this->getParameter('app.float'));
@@ -54,6 +57,12 @@ final class ExampleAbstractController extends AbstractController
 		assertType("array<int, string>", $container->getParameter('app.list'));
 		assertType("array<int, string>", $parameterBag->get('app.list'));
 		assertType("array<int, string>", $this->getParameter('app.list'));
+		assertType("array<int, int>", $container->getParameter('app.list_of_int'));
+		assertType("array<int, int>", $parameterBag->get('app.list_of_int'));
+		assertType("array<int, int>", $this->getParameter('app.list_of_int'));
+		assertType("array<int, int>", $container->getParameter('app.list_of_int_as_processor'));
+		assertType("array<int, int>", $parameterBag->get('app.list_of_int_as_processor'));
+		assertType("array<int, int>", $this->getParameter('app.list_of_int_as_processor'));
 		assertType("array<int, array<string, string>>", $container->getParameter('app.list_of_list'));
 		assertType("array<int, array<string, string>>", $parameterBag->get('app.list_of_list'));
 		assertType("array<int, array<string, string>>", $this->getParameter('app.list_of_list'));
@@ -77,6 +86,8 @@ final class ExampleAbstractController extends AbstractController
 		assertType('true', $parameterBag->has('app.int'));
 		assertType('true', $container->hasParameter('app.int_as_string'));
 		assertType('true', $parameterBag->has('app.int_as_string'));
+		assertType('true', $container->hasParameter('app.int_as_processor'));
+		assertType('true', $parameterBag->has('app.int_as_processor'));
 		assertType('true', $container->hasParameter('app.float'));
 		assertType('true', $parameterBag->has('app.float'));
 		assertType('true', $container->hasParameter('app.float_as_string'));
