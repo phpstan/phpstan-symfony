@@ -110,6 +110,10 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 		return $returnType;
 	}
 
+	/**
+	 * @param Scope								 $scope
+	 * @param array<mixed>|bool|float|int|string $value
+	 */
 	private function generalizeTypeFromValue(Scope $scope, $value): Type
 	{
 		if (is_array($value) && $value !== []) {
