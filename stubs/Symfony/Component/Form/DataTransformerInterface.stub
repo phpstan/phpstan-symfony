@@ -1,0 +1,26 @@
+<?php
+
+namespace Symfony\Component\Form;
+
+use Symfony\Component\Form\Exception\TransformationFailedException;
+
+/**
+ * @phpstan-template T
+ * @phpstan-template R
+ */
+interface DataTransformerInterface
+{
+    /**
+     * @phpstan-param T|null $value The value in the original representation
+     *
+     * @phpstan-return R|null The value in the transformed representation
+     */
+    public function transform($value);
+
+    /**
+     * @phpstan-param R|null $value The value in the transformed representation
+     *
+     * @phpstan-return T|null The value in the original representation
+     */
+    public function reverseTransform($value);
+}
