@@ -71,10 +71,10 @@ final class InputBagDynamicReturnTypeExtension implements DynamicMethodReturnTyp
 	): Type
 	{
 		if (isset($methodCall->getArgs()[0])) {
-			return new ArrayType(new MixedType(), new MixedType());
+			return new ArrayType(new MixedType(), new MixedType(true));
 		}
 
-		return new ArrayType(new StringType(), new UnionType([new ArrayType(new MixedType(), new MixedType()), new BooleanType(), new FloatType(), new IntegerType(), new StringType()]));
+		return new ArrayType(new StringType(), new UnionType([new ArrayType(new MixedType(), new MixedType(true)), new BooleanType(), new FloatType(), new IntegerType(), new StringType()]));
 	}
 
 }
