@@ -8,5 +8,5 @@ assertType('bool|float|int|string|null', $bag->get('foo'));
 assertType('bool|float|int|string|null', $bag->get('foo', null));
 assertType('bool|float|int|string', $bag->get('foo', ''));
 assertType('bool|float|int|string', $bag->get('foo', 'baz'));
-assertType('array<string, array<bool|float|int|string>|bool|float|int|string>', $bag->all());
-assertType('array<bool|float|int|string>', $bag->all('bar'));
+assertType('array<string, array|bool|float|int|string>', $bag->all());
+assertType('array', $bag->all('bar'));
