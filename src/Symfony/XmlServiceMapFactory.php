@@ -48,7 +48,7 @@ final class XmlServiceMapFactory implements ServiceMapFactory
 			$service = new Service(
 				strpos((string) $attrs->id, '.') === 0 ? substr((string) $attrs->id, 1) : (string) $attrs->id,
 				isset($attrs->class) ? (string) $attrs->class : null,
-				!isset($attrs->public) || (string) $attrs->public !== 'false',
+				isset($attrs->public) && (string) $attrs->public === 'true',
 				isset($attrs->synthetic) && (string) $attrs->synthetic === 'true',
 				isset($attrs->alias) ? (string) $attrs->alias : null
 			);

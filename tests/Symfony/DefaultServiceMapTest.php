@@ -42,7 +42,7 @@ final class DefaultServiceMapTest extends TestCase
 				self::assertNotNull($service);
 				self::assertSame('withoutClass', $service->getId());
 				self::assertNull($service->getClass());
-				self::assertTrue($service->isPublic());
+				self::assertFalse($service->isPublic());
 				self::assertFalse($service->isSynthetic());
 				self::assertNull($service->getAlias());
 			},
@@ -53,7 +53,7 @@ final class DefaultServiceMapTest extends TestCase
 				self::assertNotNull($service);
 				self::assertSame('withClass', $service->getId());
 				self::assertSame('Foo', $service->getClass());
-				self::assertTrue($service->isPublic());
+				self::assertFalse($service->isPublic());
 				self::assertFalse($service->isSynthetic());
 				self::assertNull($service->getAlias());
 			},
@@ -64,29 +64,29 @@ final class DefaultServiceMapTest extends TestCase
 				self::assertNotNull($service);
 				self::assertSame('withoutPublic', $service->getId());
 				self::assertSame('Foo', $service->getClass());
-				self::assertTrue($service->isPublic());
+				self::assertFalse($service->isPublic());
 				self::assertFalse($service->isSynthetic());
 				self::assertNull($service->getAlias());
 			},
 		];
 		yield [
-			'publicNotFalse',
+			'publicNotTrue',
 			function (?Service $service): void {
 				self::assertNotNull($service);
-				self::assertSame('publicNotFalse', $service->getId());
-				self::assertSame('Foo', $service->getClass());
-				self::assertTrue($service->isPublic());
-				self::assertFalse($service->isSynthetic());
-				self::assertNull($service->getAlias());
-			},
-		];
-		yield [
-			'private',
-			function (?Service $service): void {
-				self::assertNotNull($service);
-				self::assertSame('private', $service->getId());
+				self::assertSame('publicNotTrue', $service->getId());
 				self::assertSame('Foo', $service->getClass());
 				self::assertFalse($service->isPublic());
+				self::assertFalse($service->isSynthetic());
+				self::assertNull($service->getAlias());
+			},
+		];
+		yield [
+			'public',
+			function (?Service $service): void {
+				self::assertNotNull($service);
+				self::assertSame('public', $service->getId());
+				self::assertSame('Foo', $service->getClass());
+				self::assertTrue($service->isPublic());
 				self::assertFalse($service->isSynthetic());
 				self::assertNull($service->getAlias());
 			},
@@ -97,7 +97,7 @@ final class DefaultServiceMapTest extends TestCase
 				self::assertNotNull($service);
 				self::assertSame('synthetic', $service->getId());
 				self::assertSame('Foo', $service->getClass());
-				self::assertTrue($service->isPublic());
+				self::assertFalse($service->isPublic());
 				self::assertTrue($service->isSynthetic());
 				self::assertNull($service->getAlias());
 			},
@@ -108,7 +108,7 @@ final class DefaultServiceMapTest extends TestCase
 				self::assertNotNull($service);
 				self::assertSame('alias', $service->getId());
 				self::assertSame('Foo', $service->getClass());
-				self::assertTrue($service->isPublic());
+				self::assertFalse($service->isPublic());
 				self::assertFalse($service->isSynthetic());
 				self::assertSame('withClass', $service->getAlias());
 			},

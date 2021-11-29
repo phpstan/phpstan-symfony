@@ -37,7 +37,7 @@
     </parameters>
 
     <services>
-        <service id="foo" class="Foo"></service>
-        <service id="synthetic" class="Synthetic" synthetic="true" />
+        <service id="foo" class="Foo" public="true"></service>
+        <service id="synthetic" class="Synthetic" public="true" synthetic="true" />
     </services>
 </container>
