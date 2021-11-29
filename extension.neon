@@ -9,6 +9,8 @@ parameters:
 		constant_hassers: true
 		console_application_loader: null
 	stubFiles:
+		- stubs/Symfony/Bundle/FrameworkBundle/Test/KernelTestCase.stub
+		- stubs/Symfony/Bundle/FrameworkBundle/Test/TestContainer.stub
 		- stubs/Symfony/Component/Form/ChoiceList/Loader/ChoiceLoaderInterface.stub
 		- stubs/Symfony/Component/DependencyInjection/ContainerBuilder.stub
 		- stubs/Symfony/Component/DependencyInjection/Extension/ExtensionInterface.stub
