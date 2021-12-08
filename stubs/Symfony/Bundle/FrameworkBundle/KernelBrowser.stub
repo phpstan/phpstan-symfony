@@ -1,0 +1,13 @@
+<?php
+
+namespace Symfony\Bundle\FrameworkBundle;
+
+use Symfony\Bundle\FrameworkBundle\Test\TestContainer;
+
+abstract class KernelBrowser
+{
+    /**
+     * @return TestContainer
+     */
+    abstract public function getContainer();
+}
