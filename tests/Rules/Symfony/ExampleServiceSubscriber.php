@@ -2,14 +2,24 @@
 
 namespace PHPStan\Rules\Symfony;
 
+use Psr\Container\ContainerInterface;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
 
 final class ExampleServiceSubscriber implements ServiceSubscriberInterface
 {
 
+	/** @var ContainerInterface */
+	private $locator;
+
+	public function __construct(ContainerInterface $locator)
+	{
+		$this->locator = $locator;
+	}
+
 	public function privateService(): void
 	{
 		$this->get('private');
+		$this->locator->get('private');
 	}
 
 	public function containerParameter(): void
