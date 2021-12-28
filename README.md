@@ -85,8 +85,8 @@ In that case, you can disable the `::has()` method return type resolving like th
 
 ```
 parameters:
-	symfony:
-		constant_hassers: false
+    symfony:
+        constant_hassers: false
 ```
 
 Be aware that it may hide genuine errors in your application.
@@ -98,8 +98,8 @@ by providing the console application from your own application. This will allow 
 
 ```neon
 parameters:
-	symfony:
-		console_application_loader: tests/console-application.php
+    symfony:
+        console_application_loader: tests/console-application.php
 ```
 
 Symfony 4:
