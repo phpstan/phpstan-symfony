@@ -6,8 +6,8 @@ use ArrayAccess;
 use IteratorAggregate;
 
 /**
- * @implements IteratorAggregate<string, self>
- * @implements ArrayAccess<string, self>
+ * @implements IteratorAggregate<int|string, self>
+ * @implements ArrayAccess<int|string, self>
  */
 class FormView implements ArrayAccess, IteratorAggregate
 {
@@ -15,7 +15,7 @@ class FormView implements ArrayAccess, IteratorAggregate
     /**
      * Returns an iterator to iterate over children (implements \IteratorAggregate).
      *
-     * @return \ArrayIterator<string, FormView> The iterator
+     * @return \ArrayIterator<int|string, FormView> The iterator
      */
     public function getIterator();
 
