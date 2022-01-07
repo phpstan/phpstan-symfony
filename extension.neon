@@ -249,3 +249,8 @@ services:
 		class: PHPStan\Symfony\InputBagStubFilesExtension
 		tags:
 			- phpstan.stubFilesExtension
+
+	# FormInterface::getErrors() return type
+	-
+		factory: PHPStan\Type\Symfony\Form\FormInterfaceDynamicReturnTypeExtension
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]

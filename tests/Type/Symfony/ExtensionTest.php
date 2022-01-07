@@ -49,6 +49,8 @@ class ExtensionTest extends TypeInferenceTestCase
 		}
 
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/denormalizer.php');
+
+		yield from $this->gatherAssertTypes(__DIR__ . '/data/FormInterface_getErrors.php');
 	}
 
 	/**
