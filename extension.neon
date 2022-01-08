@@ -11,6 +11,8 @@ parameters:
 	stubFiles:
 		- stubs/Symfony/Bundle/FrameworkBundle/Test/KernelTestCase.stub
 		- stubs/Symfony/Bundle/FrameworkBundle/Test/TestContainer.stub
+		- stubs/Symfony/Component/Console/Command.stub
+		- stubs/Symfony/Component/Console/Helper/HelperInterface.stub
 		- stubs/Symfony/Component/Form/ChoiceList/Loader/ChoiceLoaderInterface.stub
 		- stubs/Symfony/Component/DependencyInjection/ContainerBuilder.stub
 		- stubs/Symfony/Component/DependencyInjection/Extension/ExtensionInterface.stub
@@ -253,4 +255,9 @@ services:
 	# FormInterface::getErrors() return type
 	-
 		factory: PHPStan\Type\Symfony\Form\FormInterfaceDynamicReturnTypeExtension
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
+	# Command::getHelper() return type
+	-
+		factory: PHPStan\Type\Symfony\CommandGetHelperDynamicReturnTypeExtension
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]

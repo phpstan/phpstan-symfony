@@ -1,0 +1,11 @@
+<?php
+
+namespace Symfony\Component\Console\Command;
+
+class Command
+{
+    /**
+     * @return \Symfony\Component\Console\Helper\HelperInterface
+     */
+    public function getHelper(string $name);
+}

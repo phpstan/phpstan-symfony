@@ -25,6 +25,7 @@ abstract class ExampleBaseCommand extends Command
 		assertType('array<int, string>|string', $input->getArgument('diff'));
 		assertType('array<int, string>', $input->getArgument('arr'));
 		assertType('string|null', $input->getArgument('both'));
+		assertType('Symfony\Component\Console\Helper\QuestionHelper', $this->getHelper('question'));
 	}
 
 }
