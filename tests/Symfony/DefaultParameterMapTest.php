@@ -13,13 +13,13 @@ final class DefaultParameterMapTest extends TestCase
 	 */
 	public function testGetParameter(string $key, callable $validator): void
 	{
-		$factory = new XmlParameterMapFactory(__DIR__ . '/container.xml');
+		$factory = new XmlParameterMapFactory(new Configuration(['containerXmlPath' => __DIR__ . '/container.xml']));
 		$validator($factory->create()->getParameter($key));
 	}
 
 	public function testGetParameterEscapedPath(): void
 	{
-		$factory = new XmlParameterMapFactory(__DIR__ . '/containers/bugfix%2Fcontainer.xml');
+		$factory = new XmlParameterMapFactory(new Configuration(['containerXmlPath' => __DIR__ . '/containers/bugfix%2Fcontainer.xml']));
 		$serviceMap = $factory->create();
 
 		self::assertNotNull($serviceMap->getParameter('app.string'));

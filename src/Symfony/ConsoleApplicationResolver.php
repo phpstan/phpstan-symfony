@@ -16,8 +16,9 @@ final class ConsoleApplicationResolver
 	/** @var \Symfony\Component\Console\Application|null */
 	private $consoleApplication;
 
-	public function __construct(?string $consoleApplicationLoader)
+	public function __construct(Configuration $configuration)
 	{
+		$consoleApplicationLoader = $configuration->getConsoleApplicationLoader();
 		if ($consoleApplicationLoader === null) {
 			return;
 		}

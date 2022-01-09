@@ -13,13 +13,13 @@ final class DefaultServiceMapTest extends TestCase
 	 */
 	public function testGetService(string $id, callable $validator): void
 	{
-		$factory = new XmlServiceMapFactory(__DIR__ . '/container.xml');
+		$factory = new XmlServiceMapFactory(new Configuration(['containerXmlPath' => __DIR__ . '/container.xml']));
 		$validator($factory->create()->getService($id));
 	}
 
 	public function testGetContainerEscapedPath(): void
 	{
-		$factory = new XmlServiceMapFactory(__DIR__ . '/containers/bugfix%2Fcontainer.xml');
+		$factory = new XmlServiceMapFactory(new Configuration(['containerXmlPath' => __DIR__ . '/containers/bugfix%2Fcontainer.xml']));
 		$serviceMap = $factory->create();
 
 		self::assertNotNull($serviceMap->getService('withClass'));
