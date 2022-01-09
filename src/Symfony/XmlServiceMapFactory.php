@@ -13,9 +13,9 @@ final class XmlServiceMapFactory implements ServiceMapFactory
 	/** @var string|null */
 	private $containerXml;
 
-	public function __construct(?string $containerXml)
+	public function __construct(Configuration $configuration)
 	{
-		$this->containerXml = $containerXml;
+		$this->containerXml = $configuration->getContainerXmlPath();
 	}
 
 	public function create(): ServiceMap

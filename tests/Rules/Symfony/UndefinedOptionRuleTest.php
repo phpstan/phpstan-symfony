@@ -4,6 +4,7 @@ namespace PHPStan\Rules\Symfony;
 
 use PhpParser\PrettyPrinter\Standard;
 use PHPStan\Rules\Rule;
+use PHPStan\Symfony\Configuration;
 use PHPStan\Symfony\ConsoleApplicationResolver;
 use PHPStan\Testing\RuleTestCase;
 
@@ -15,7 +16,7 @@ final class UndefinedOptionRuleTest extends RuleTestCase
 
 	protected function getRule(): Rule
 	{
-		return new UndefinedOptionRule(new ConsoleApplicationResolver(__DIR__ . '/console_application_loader.php'), new Standard());
+		return new UndefinedOptionRule(new ConsoleApplicationResolver(new Configuration(['consoleApplicationLoader' => __DIR__ . '/console_application_loader.php'])), new Standard());
 	}
 
 	public function testGetArgument(): void

@@ -6,8 +6,11 @@ parameters:
 			- 'Symfony\Component\Console\Exception\InvalidArgumentException'
 	symfony:
 		container_xml_path: null
+		containerXmlPath: null
 		constant_hassers: true
+		constantHassers: true
 		console_application_loader: null
+		consoleApplicationLoader: null
 	stubFiles:
 		- stubs/Symfony/Bundle/FrameworkBundle/KernelBrowser.stub
 		- stubs/Symfony/Bundle/FrameworkBundle/Test/KernelTestCase.stub
@@ -53,43 +56,47 @@ parameters:
 parametersSchema:
 	symfony: structure([
 		container_xml_path: schema(string(), nullable())
+		containerXmlPath: schema(string(), nullable())
 		constant_hassers: bool()
+		constantHassers: bool()
 		console_application_loader: schema(string(), nullable())
+		consoleApplicationLoader: schema(string(), nullable())
 	])
 
 services:
+	-
+		factory: PHPStan\Symfony\Configuration(%symfony%)
+
 	# console resolver
 	-
 		factory: PHPStan\Symfony\ConsoleApplicationResolver
-		arguments:
-		    consoleApplicationLoader: %symfony.console_application_loader%
 
 	# service map
 	symfony.serviceMapFactory:
 		class: PHPStan\Symfony\ServiceMapFactory
-		factory: PHPStan\Symfony\XmlServiceMapFactory(%symfony.container_xml_path%)
+		factory: PHPStan\Symfony\XmlServiceMapFactory
 	-
 		factory: @symfony.serviceMapFactory::create()
 
 	# parameter map
 	symfony.parameterMapFactory:
 		class: PHPStan\Symfony\ParameterMapFactory
-		factory: PHPStan\Symfony\XmlParameterMapFactory(%symfony.container_xml_path%)
+		factory: PHPStan\Symfony\XmlParameterMapFactory
 	-
 		factory: @symfony.parameterMapFactory::create()
 
 	# ControllerTrait::get()/has() return type
 	-
-		factory: PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension(Symfony\Component\DependencyInjection\ContainerInterface, %symfony.constant_hassers%)
+		factory: PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension(Symfony\Component\DependencyInjection\ContainerInterface)
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
 	-
-		factory: PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension(Psr\Container\ContainerInterface, %symfony.constant_hassers%)
+		factory: PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension(Psr\Container\ContainerInterface)
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
 	-
-		factory: PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension(Symfony\Bundle\FrameworkBundle\Controller\Controller, %symfony.constant_hassers%)
+		factory: PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension(Symfony\Bundle\FrameworkBundle\Controller\Controller)
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
 	-
-		factory: PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension(Symfony\Bundle\FrameworkBundle\Controller\AbstractController, %symfony.constant_hassers%)
+		factory: PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension(Symfony\Bundle\FrameworkBundle\Controller\AbstractController)
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
 
 	# ControllerTrait::has() type specification
@@ -233,20 +240,20 @@ services:
 
 	# ParameterBagInterface::get()/has() return type
 	-
-		factory: PHPStan\Type\Symfony\ParameterDynamicReturnTypeExtension(Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface, 'get', 'has', %symfony.constant_hassers%)
+		factory: PHPStan\Type\Symfony\ParameterDynamicReturnTypeExtension(Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface, 'get', 'has')
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
 
 	# ContainerInterface::getParameter()/hasParameter() return type
 	-
-		factory: PHPStan\Type\Symfony\ParameterDynamicReturnTypeExtension(Symfony\Component\DependencyInjection\ContainerInterface, 'getParameter', 'hasParameter', %symfony.constant_hassers%)
+		factory: PHPStan\Type\Symfony\ParameterDynamicReturnTypeExtension(Symfony\Component\DependencyInjection\ContainerInterface, 'getParameter', 'hasParameter')
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
 
 	# (Abstract)Controller::getParameter() return type
 	-
-		factory: PHPStan\Type\Symfony\ParameterDynamicReturnTypeExtension(Symfony\Bundle\FrameworkBundle\Controller\AbstractController, 'getParameter', null, %symfony.constant_hassers%)
+		factory: PHPStan\Type\Symfony\ParameterDynamicReturnTypeExtension(Symfony\Bundle\FrameworkBundle\Controller\AbstractController, 'getParameter', null)
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
 	-
-		factory: PHPStan\Type\Symfony\ParameterDynamicReturnTypeExtension(Symfony\Bundle\FrameworkBundle\Controller\Controller, 'getParameter', null, %symfony.constant_hassers%)
+		factory: PHPStan\Type\Symfony\ParameterDynamicReturnTypeExtension(Symfony\Bundle\FrameworkBundle\Controller\Controller, 'getParameter', null)
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
 	-
 		class: PHPStan\Symfony\InputBagStubFilesExtension

@@ -61,11 +61,11 @@ You have to provide a path to `srcDevDebugProjectContainer.xml` or similar XML f
 ```yaml
 parameters:
     symfony:
-        container_xml_path: var/cache/dev/srcDevDebugProjectContainer.xml
+        containerXmlPath: var/cache/dev/srcDevDebugProjectContainer.xml
         # or with Symfony 4.2+
-        container_xml_path: var/cache/dev/srcApp_KernelDevDebugContainer.xml
+        containerXmlPath: var/cache/dev/srcApp_KernelDevDebugContainer.xml
         # or with Symfony 5+
-        container_xml_path: var/cache/dev/App_KernelDevDebugContainer.xml
+        containerXmlPath: var/cache/dev/App_KernelDevDebugContainer.xml
     # If you're using PHP config files for Symfony 5.3+, you also need this for auto-loading of `Symfony\Config`:
     scanDirectories:
         - var/cache/dev/Symfony/Config
@@ -86,7 +86,7 @@ In that case, you can disable the `::has()` method return type resolving like th
 ```
 parameters:
 	symfony:
-		constant_hassers: false
+		constantHassers: false
 ```
 
 Be aware that it may hide genuine errors in your application.
@@ -99,7 +99,7 @@ by providing the console application from your own application. This will allow 
 ```neon
 parameters:
 	symfony:
-		console_application_loader: tests/console-application.php
+		consoleApplicationLoader: tests/console-application.php
 ```
 
 Symfony 4:

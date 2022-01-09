@@ -7,6 +7,7 @@ use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\ShouldNotHappenException;
+use PHPStan\Symfony\Configuration;
 use PHPStan\Symfony\ParameterMap;
 use PHPStan\Type\ArrayType;
 use PHPStan\Type\BooleanType;
@@ -43,12 +44,12 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 	/** @var \PHPStan\Symfony\ParameterMap */
 	private $parameterMap;
 
-	public function __construct(string $className, ?string $methodGet, ?string $methodHas, bool $constantHassers, ParameterMap $symfonyParameterMap)
+	public function __construct(string $className, ?string $methodGet, ?string $methodHas, Configuration $configuration, ParameterMap $symfonyParameterMap)
 	{
 		$this->className = $className;
 		$this->methodGet = $methodGet;
 		$this->methodHas = $methodHas;
-		$this->constantHassers = $constantHassers;
+		$this->constantHassers = $configuration->hasConstantHassers();
 		$this->parameterMap = $symfonyParameterMap;
 	}
 
