@@ -9,6 +9,7 @@ use Symfony\Component\Console\Command\Command;
 use function file_exists;
 use function get_class;
 use function is_readable;
+use function sprintf;
 
 final class ConsoleApplicationResolver
 {
@@ -34,7 +35,7 @@ final class ConsoleApplicationResolver
 		if (!file_exists($consoleApplicationLoader)
 			|| !is_readable($consoleApplicationLoader)
 		) {
-			throw new ShouldNotHappenException();
+			throw new ShouldNotHappenException(sprintf('Cannot load console application. Check the parameters.symfony.consoleApplicationLoader setting in PHPStan\'s config. The offending value is "%s".', $consoleApplicationLoader));
 		}
 
 		return require $consoleApplicationLoader;
