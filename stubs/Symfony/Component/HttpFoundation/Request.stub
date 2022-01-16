@@ -8,7 +8,7 @@ class Request
 	/**
 	 * Request body parameters ($_POST).
 	 *
-	 * @var InputBag<string|int|float|bool>
+	 * @var InputBag<string>
 	 */
 	public $request;
 
