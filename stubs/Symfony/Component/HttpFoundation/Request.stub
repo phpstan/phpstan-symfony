@@ -26,4 +26,9 @@ class Request
 	 */
 	public $cookies;
 
+    /**
+     * @return \Symfony\Component\HttpFoundation\Session\Session
+     */
+    public function getSession(): SessionInterface;
+
 }
