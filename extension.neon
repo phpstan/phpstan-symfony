@@ -51,6 +51,7 @@ parameters:
 		- stubs/Symfony/Component/Validator/Constraint.stub
 		- stubs/Symfony/Component/Validator/ConstraintViolationInterface.stub
 		- stubs/Symfony/Component/Validator/ConstraintViolationListInterface.stub
+		- stubs/Symfony/Contracts/Cache/CacheInterface.stub
 		- stubs/Twig/Node/Node.stub
 
 parametersSchema:

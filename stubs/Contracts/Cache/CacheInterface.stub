@@ -1,0 +1,14 @@
+<?php
+
+namespace Symfony\Contracts\Cache;
+
+class CacheInterface
+{
+    /**
+     * @template T
+     *
+     * @param callable:T $callback
+     * @return T
+     */
+    public function get(string $key, callable $callback, float $beta = null, array &$metadata = null);
+}
