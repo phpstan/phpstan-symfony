@@ -2,12 +2,13 @@
 
 namespace Symfony\Contracts\Cache;
 
-class CacheInterface
+interface CacheInterface
 {
     /**
      * @template T
      *
-     * @param callable:T $callback
+     * @param \Symfony\Contracts\Cache\CallbackInterface<T>|callable(\Psr\Cache\CacheItemInterface): T $callback
+     * @param array<mixed> $metadata
      * @return T
      */
     public function get(string $key, callable $callback, float $beta = null, array &$metadata = null);

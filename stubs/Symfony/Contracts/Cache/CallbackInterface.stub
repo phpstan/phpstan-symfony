@@ -1,0 +1,16 @@
+<?php
+
+namespace Symfony\Contracts\Cache;
+
+use Psr\Cache\CacheItemInterface;
+
+/**
+ * @template T
+ */
+interface CallbackInterface
+{
+    /**
+     * @return T
+     */
+    public function __invoke(CacheItemInterface $item, bool &$save);
+}
