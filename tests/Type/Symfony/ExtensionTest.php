@@ -20,6 +20,11 @@ class ExtensionTest extends TypeInferenceTestCase
 		}
 
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/tree_builder.php');
+
+		if (interface_exists('\Symfony\Contracts\Cache\CacheInterface')) {
+			yield from $this->gatherAssertTypes(__DIR__ . '/data/ExampleCacheInterface.php');
+		}
+
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/ExampleBaseCommand.php');
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/ExampleOptionCommand.php');
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/ExampleOptionLazyCommand.php');
