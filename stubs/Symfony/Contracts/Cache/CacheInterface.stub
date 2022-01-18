@@ -1,0 +1,15 @@
+<?php
+
+namespace Symfony\Contracts\Cache;
+
+interface CacheInterface
+{
+    /**
+     * @template T
+     *
+     * @param \Symfony\Contracts\Cache\CallbackInterface<T>|callable(\Symfony\Contracts\Cache\ItemInterface): T $callback
+     * @param array<mixed> $metadata
+     * @return T
+     */
+    public function get(string $key, callable $callback, float $beta = null, array &$metadata = null);
+}

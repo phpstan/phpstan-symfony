@@ -12,6 +12,7 @@ parameters:
 		console_application_loader: null
 		consoleApplicationLoader: null
 	stubFiles:
+		- stubs/Psr/Cache/CacheItemInterface.stub
 		- stubs/Symfony/Bundle/FrameworkBundle/KernelBrowser.stub
 		- stubs/Symfony/Bundle/FrameworkBundle/Test/KernelTestCase.stub
 		- stubs/Symfony/Bundle/FrameworkBundle/Test/TestContainer.stub
@@ -51,6 +52,9 @@ parameters:
 		- stubs/Symfony/Component/Validator/Constraint.stub
 		- stubs/Symfony/Component/Validator/ConstraintViolationInterface.stub
 		- stubs/Symfony/Component/Validator/ConstraintViolationListInterface.stub
+		- stubs/Symfony/Contracts/Cache/CacheInterface.stub
+		- stubs/Symfony/Contracts/Cache/CallbackInterface.stub
+		- stubs/Symfony/Contracts/Cache/ItemInterface.stub
 		- stubs/Twig/Node/Node.stub
 
 parametersSchema:

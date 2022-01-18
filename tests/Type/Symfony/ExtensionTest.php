@@ -20,6 +20,7 @@ class ExtensionTest extends TypeInferenceTestCase
 		}
 
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/tree_builder.php');
+
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/ExampleBaseCommand.php');
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/ExampleOptionCommand.php');
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/ExampleOptionLazyCommand.php');
@@ -51,6 +52,7 @@ class ExtensionTest extends TypeInferenceTestCase
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/denormalizer.php');
 
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/FormInterface_getErrors.php');
+		yield from $this->gatherAssertTypes(__DIR__ . '/data/cache.php');
 	}
 
 	/**
