@@ -10,25 +10,51 @@ final class XmlParameterMapFactory implements ParameterMapFactory
 	/** @var string|null */
 	private $containerXml;
 
+	/** @var array<int, string> */
+	private $paths;
+
 	public function __construct(Configuration $configuration)
 	{
 		$this->containerXml = $configuration->getContainerXmlPath();
+		$this->paths = $configuration->getContainerXmlPaths();
 	}
 
 	public function create(): ParameterMap
 	{
-		if ($this->containerXml === null) {
+		$this->addSingleContainerToPaths();
+
+		if (count($this->paths) === 0) {
 			return new FakeParameterMap();
 		}
 
-		$fileContents = file_get_contents($this->containerXml);
+		foreach ($this->paths as $path) {
+			try {
+				return $this->loadContainer($path);
+			} catch (XmlContainerNotExistsException $e) {
+				continue;
+			}
+		}
+
+		throw new XmlContainerNotExistsException(
+			'Container not found. Attempted to load:' . PHP_EOL .
+			implode(PHP_EOL, $this->paths)
+		);
+	}
+
+	private function loadContainer(string $path): DefaultParameterMap
+	{
+		if (file_exists($path) === false) {
+			throw new XmlContainerNotExistsException(sprintf('Container %s does not exist', $path));
+		}
+
+		$fileContents = file_get_contents($path);
 		if ($fileContents === false) {
-			throw new XmlContainerNotExistsException(sprintf('Container %s does not exist', $this->containerXml));
+			throw new XmlContainerNotExistsException(sprintf('Container %s could not load the content', $path));
 		}
 
 		$xml = @simplexml_load_string($fileContents);
 		if ($xml === false) {
-			throw new XmlContainerNotExistsException(sprintf('Container %s cannot be parsed', $this->containerXml));
+			throw new XmlContainerNotExistsException(sprintf('Container %s cannot be parsed', $path));
 		}
 
 		/** @var \PHPStan\Symfony\Parameter[] $parameters */
@@ -101,6 +127,20 @@ final class XmlParameterMapFactory implements ParameterMapFactory
 		}
 
 		return $value;
+	}
+
+	private function addSingleContainerToPaths(): void
+	{
+		$containerXml = $this->containerXml;
+
+		if ($containerXml === null) {
+			return;
+		}
+
+		$this->paths = array_merge(
+			[$containerXml],
+			$this->paths
+		);
 	}
 
 }
