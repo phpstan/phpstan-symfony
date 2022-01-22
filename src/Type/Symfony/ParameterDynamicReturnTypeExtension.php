@@ -4,6 +4,7 @@ namespace PHPStan\Type\Symfony;
 
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
+use PHPStan\PhpDoc\TypeStringResolver;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\ShouldNotHappenException;
@@ -25,6 +26,7 @@ use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
 use PHPStan\Type\TypeTraverser;
 use PHPStan\Type\UnionType;
+use Symfony\Component\DependencyInjection\EnvVarProcessor;
 use function in_array;
 
 final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
@@ -45,13 +47,24 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 	/** @var \PHPStan\Symfony\ParameterMap */
 	private $parameterMap;
 
-	public function __construct(string $className, ?string $methodGet, ?string $methodHas, Configuration $configuration, ParameterMap $symfonyParameterMap)
+	/** @var \PHPStan\PhpDoc\TypeStringResolver */
+	private $typeStringResolver;
+
+	public function __construct(
+		string $className,
+		?string $methodGet,
+		?string $methodHas,
+		Configuration $configuration,
+		ParameterMap $symfonyParameterMap,
+		TypeStringResolver $typeStringResolver
+	)
 	{
 		$this->className = $className;
 		$this->methodGet = $methodGet;
 		$this->methodHas = $methodHas;
 		$this->constantHassers = $configuration->hasConstantHassers();
 		$this->parameterMap = $symfonyParameterMap;
+		$this->typeStringResolver = $typeStringResolver;
 	}
 
 	public function getClass(): string
@@ -134,33 +147,9 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 			&& preg_match('/%env\((.*)\:.*\)%/U', $value, $matches) === 1
 			&& strlen($matches[0]) === strlen($value)
 		) {
-			switch ($matches[1]) {
-				case 'base64':
-				case 'file':
-				case 'resolve':
-				case 'string':
-				case 'trim':
-					return new StringType();
-				case 'bool':
-					return new BooleanType();
-				case 'int':
-					return new IntegerType();
-				case 'float':
-					return new FloatType();
-				case 'csv':
-				case 'json':
-				case 'url':
-				case 'query_string':
-					return new ArrayType(new MixedType(), new MixedType());
-				default:
-					return new UnionType([
-						new ArrayType(new MixedType(), new MixedType()),
-						new BooleanType(),
-						new FloatType(),
-						new IntegerType(),
-						new StringType(),
-					]);
-			}
+			$providedTypes = EnvVarProcessor::getProvidedTypes();
+
+			return $this->typeStringResolver->resolve($providedTypes[$matches[1]] ?? 'bool|int|float|string|array');
 		}
 
 		return $this->generalizeType($scope->getTypeFromValue($value));
