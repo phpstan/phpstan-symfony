@@ -143,7 +143,8 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 		}
 
 		if (
-			is_string($value)
+			class_exists(EnvVarProcessor::class)
+			&& is_string($value)
 			&& preg_match('/%env\((.*)\:.*\)%/U', $value, $matches) === 1
 			&& strlen($matches[0]) === strlen($value)
 		) {
