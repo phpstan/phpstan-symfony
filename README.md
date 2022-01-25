@@ -23,6 +23,7 @@ This extension provides following features:
 * Provides correct return types for `TreeBuilder` and `NodeDefinition` objects.
 * Notifies you when you try to get an unregistered service from the container.
 * Notifies you when you try to get a private service from the container.
+* Notifies you when you try to generate a URL for a non-existing route name.
 * Optionally correct return types for `InputInterface::getArgument()`, `::getOption`, `::hasArgument`, and `::hasOption`.
 
 
@@ -147,4 +148,14 @@ Call the new env in your `console-application.php`:
 
 ```php
 $kernel = new \App\Kernel('phpstan_env', (bool) $_SERVER['APP_DEBUG']);
+```
+
+# Analysis of generating URLs
+
+You have to provide a path to `url_generating_routes.php` for the url generating analysis to work.
+
+```yaml
+parameters:
+    symfony:
+      urlGeneratingRulesFile: var/cache/dev/url_generating_routes.xml
 ```

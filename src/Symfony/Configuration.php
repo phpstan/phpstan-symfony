@@ -31,4 +31,9 @@ final class Configuration
 		return $this->parameters['consoleApplicationLoader'] ?? $this->parameters['console_application_loader'] ?? null;
 	}
 
+	public function getUrlGeneratingRoutesFile(): ?string
+	{
+		return $this->parameters['urlGeneratingRulesFile'] ?? $this->parameters['url_generating_rules_file'] ?? null;
+	}
+
 }

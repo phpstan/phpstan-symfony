@@ -11,6 +11,8 @@ parameters:
 		constantHassers: true
 		console_application_loader: null
 		consoleApplicationLoader: null
+		url_generating_rules_file: null
+		urlGeneratingRulesFile: null
 	stubFiles:
 		- stubs/Psr/Cache/CacheItemInterface.stub
 		- stubs/Symfony/Bundle/FrameworkBundle/KernelBrowser.stub
@@ -65,6 +67,8 @@ parametersSchema:
 		constantHassers: bool()
 		console_application_loader: schema(string(), nullable())
 		consoleApplicationLoader: schema(string(), nullable())
+		url_generating_rules_file: schema(string(), nullable())
+		urlGeneratingRulesFile: schema(string(), nullable())
 	])
 
 services:
@@ -88,6 +92,13 @@ services:
 		factory: PHPStan\Symfony\XmlParameterMapFactory
 	-
 		factory: @symfony.parameterMapFactory::create()
+
+	# url generating routes map
+	symfony.urlGeneratingRoutesMapFactory:
+		class: PHPStan\Symfony\UrlGeneratingRoutesMapFactory
+		factory: PHPStan\Symfony\PhpUrlGeneratingRoutesMapFactory
+	-
+		factory: @symfony.urlGeneratingRoutesMapFactory::create()
 
 	# ControllerTrait::get()/has() return type
 	-

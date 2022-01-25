@@ -5,4 +5,5 @@ rules:
 	- PHPStan\Rules\Symfony\InvalidArgumentDefaultValueRule
 	- PHPStan\Rules\Symfony\UndefinedOptionRule
 	- PHPStan\Rules\Symfony\InvalidOptionDefaultValueRule
+	- PHPStan\Rules\Symfony\UrlGeneratorInterfaceUnknownRouteRule
 

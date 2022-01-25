@@ -33,6 +33,7 @@
     "symfony/http-foundation": "^5.1",
     "symfony/messenger": "^4.2 || ^5.0",
     "symfony/polyfill-php80": "^1.24",
+    "symfony/routing": "^4.4 || ^5.0",
     "symfony/serializer": "^4.0 || ^5.0"
   },
   "config": {
