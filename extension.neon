@@ -273,3 +273,8 @@ services:
 	-
 		factory: PHPStan\Type\Symfony\CommandGetHelperDynamicReturnTypeExtension
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
+	# ResponseHeaderBag::getCookies() return type
+	-
+		factory: PHPStan\Type\Symfony\ResponseHeaderBagDynamicReturnTypeExtension
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
