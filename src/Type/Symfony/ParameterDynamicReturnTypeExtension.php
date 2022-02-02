@@ -27,7 +27,17 @@ use PHPStan\Type\TypeCombinator;
 use PHPStan\Type\TypeTraverser;
 use PHPStan\Type\UnionType;
 use Symfony\Component\DependencyInjection\EnvVarProcessor;
+use function array_filter;
+use function array_keys;
+use function array_map;
+use function array_values;
+use function class_exists;
+use function count;
 use function in_array;
+use function is_array;
+use function is_string;
+use function preg_match;
+use function strlen;
 
 final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
@@ -44,10 +54,10 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 	/** @var bool */
 	private $constantHassers;
 
-	/** @var \PHPStan\Symfony\ParameterMap */
+	/** @var ParameterMap */
 	private $parameterMap;
 
-	/** @var \PHPStan\PhpDoc\TypeStringResolver */
+	/** @var TypeStringResolver */
 	private $typeStringResolver;
 
 	public function __construct(
@@ -74,7 +84,7 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 
 	public function isMethodSupported(MethodReflection $methodReflection): bool
 	{
-		$methods = array_filter([$this->methodGet, $this->methodHas], function (?string $method): bool {
+		$methods = array_filter([$this->methodGet, $this->methodHas], static function (?string $method): bool {
 			return $method !== null;
 		});
 
@@ -124,7 +134,6 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 	}
 
 	/**
-	 * @param Scope								 $scope
 	 * @param array<mixed>|bool|float|int|string $value
 	 */
 	private function generalizeTypeFromValue(Scope $scope, $value): Type

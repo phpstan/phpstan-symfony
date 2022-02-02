@@ -3,6 +3,7 @@
 namespace PHPStan\Rules\Symfony;
 
 use Psr\Container\ContainerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBag;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
 
 final class ExampleServiceSubscriber implements ServiceSubscriberInterface
@@ -24,7 +25,7 @@ final class ExampleServiceSubscriber implements ServiceSubscriberInterface
 
 	public function containerParameter(): void
 	{
-		/** @var \Symfony\Component\DependencyInjection\ParameterBag\ContainerBag $containerBag */
+		/** @var ContainerBag $containerBag */
 		$containerBag = doFoo();
 		$containerBag->get('parameter_name');
 	}

@@ -1,4 +1,4 @@
 /tests/tmp
 /vendor
-composer.lock
+/composer.lock
 .phpunit.result.cache

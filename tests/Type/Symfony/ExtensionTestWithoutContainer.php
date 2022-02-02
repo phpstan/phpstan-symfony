@@ -3,6 +3,7 @@
 namespace PHPStan\Type\Symfony;
 
 use PHPStan\Testing\TypeInferenceTestCase;
+use function class_exists;
 
 class ExtensionTestWithoutContainer extends TypeInferenceTestCase
 {
@@ -30,8 +31,6 @@ class ExtensionTestWithoutContainer extends TypeInferenceTestCase
 	/**
 	 * @dataProvider dataExampleController
 	 * @dataProvider dataAbstractController
-	 * @param string $assertType
-	 * @param string $file
 	 * @param mixed ...$args
 	 */
 	public function testFileAsserts(

@@ -2,7 +2,14 @@
 
 namespace PHPStan\Symfony;
 
+use InvalidArgumentException;
+use SimpleXMLElement;
+use function base64_decode;
+use function file_get_contents;
+use function is_numeric;
+use function simplexml_load_string;
 use function sprintf;
+use function strpos;
 
 final class XmlParameterMapFactory implements ParameterMapFactory
 {
@@ -31,10 +38,10 @@ final class XmlParameterMapFactory implements ParameterMapFactory
 			throw new XmlContainerNotExistsException(sprintf('Container %s cannot be parsed', $this->containerXml));
 		}
 
-		/** @var \PHPStan\Symfony\Parameter[] $parameters */
+		/** @var Parameter[] $parameters */
 		$parameters = [];
 		foreach ($xml->parameters->parameter as $def) {
-			/** @var \SimpleXMLElement $attrs */
+			/** @var SimpleXMLElement $attrs */
 			$attrs = $def->attributes();
 
 			$parameter = new Parameter(
@@ -51,9 +58,9 @@ final class XmlParameterMapFactory implements ParameterMapFactory
 	/**
 	 * @return array<mixed>|bool|float|int|string
 	 */
-	private function getNodeValue(\SimpleXMLElement $def)
+	private function getNodeValue(SimpleXMLElement $def)
 	{
-		/** @var \SimpleXMLElement $attrs */
+		/** @var SimpleXMLElement $attrs */
 		$attrs = $def->attributes();
 
 		$value = null;
@@ -61,7 +68,7 @@ final class XmlParameterMapFactory implements ParameterMapFactory
 			case 'collection':
 				$value = [];
 				foreach ($def->children() as $child) {
-					/** @var \SimpleXMLElement $childAttrs */
+					/** @var SimpleXMLElement $childAttrs */
 					$childAttrs = $child->attributes();
 
 					if (isset($childAttrs->key)) {
@@ -79,7 +86,7 @@ final class XmlParameterMapFactory implements ParameterMapFactory
 			case 'binary':
 				$value = base64_decode((string) $def, true);
 				if ($value === false) {
-					throw new \InvalidArgumentException(sprintf('Parameter "%s" of binary type is not valid base64 encoded string.', (string) $attrs->key));
+					throw new InvalidArgumentException(sprintf('Parameter "%s" of binary type is not valid base64 encoded string.', (string) $attrs->key));
 				}
 
 				break;

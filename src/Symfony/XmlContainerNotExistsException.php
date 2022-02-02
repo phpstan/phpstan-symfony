@@ -2,7 +2,9 @@
 
 namespace PHPStan\Symfony;
 
-final class XmlContainerNotExistsException extends \InvalidArgumentException
+use InvalidArgumentException;
+
+final class XmlContainerNotExistsException extends InvalidArgumentException
 {
 
 }

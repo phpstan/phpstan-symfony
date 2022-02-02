@@ -9,7 +9,7 @@ final class FakeServiceMap implements ServiceMap
 {
 
 	/**
-	 * @return \PHPStan\Symfony\ServiceDefinition[]
+	 * @return ServiceDefinition[]
 	 */
 	public function getServices(): array
 	{

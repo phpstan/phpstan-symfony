@@ -18,6 +18,7 @@ use PHPStan\Type\StringType;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
 use PHPStan\Type\UnionType;
+use function in_array;
 
 final class InputBagDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {

@@ -10,11 +10,11 @@ use function count;
 final class DefaultParameterMap implements ParameterMap
 {
 
-	/** @var \PHPStan\Symfony\ParameterDefinition[] */
+	/** @var ParameterDefinition[] */
 	private $parameters;
 
 	/**
-	 * @param \PHPStan\Symfony\ParameterDefinition[] $parameters
+	 * @param ParameterDefinition[] $parameters
 	 */
 	public function __construct(array $parameters)
 	{
@@ -22,7 +22,7 @@ final class DefaultParameterMap implements ParameterMap
 	}
 
 	/**
-	 * @return \PHPStan\Symfony\ParameterDefinition[]
+	 * @return ParameterDefinition[]
 	 */
 	public function getParameters(): array
 	{

@@ -12,7 +12,6 @@ final class Parameter implements ParameterDefinition
 	private $value;
 
 	/**
-	 * @param string $key
 	 * @param array<mixed>|bool|float|int|string $value
 	 */
 	public function __construct(

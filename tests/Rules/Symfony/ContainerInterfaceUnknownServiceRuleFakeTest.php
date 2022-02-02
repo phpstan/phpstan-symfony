@@ -7,7 +7,9 @@ use PHPStan\Rules\Rule;
 use PHPStan\Symfony\Configuration;
 use PHPStan\Symfony\XmlServiceMapFactory;
 use PHPStan\Testing\RuleTestCase;
+use PHPStan\Type\MethodTypeSpecifyingExtension;
 use PHPStan\Type\Symfony\ServiceTypeSpecifyingExtension;
+use function class_exists;
 
 /**
  * @extends RuleTestCase<ContainerInterfaceUnknownServiceRule>
@@ -21,7 +23,7 @@ final class ContainerInterfaceUnknownServiceRuleFakeTest extends RuleTestCase
 	}
 
 	/**
-	 * @return \PHPStan\Type\MethodTypeSpecifyingExtension[]
+	 * @return MethodTypeSpecifyingExtension[]
 	 */
 	protected function getMethodTypeSpecifyingExtensions(): array
 	{

@@ -9,6 +9,7 @@ use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\Symfony\Config\ValueObject\ParentObjectType;
 use PHPStan\Type\Type;
+use function in_array;
 
 final class ReturnParentDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
@@ -20,7 +21,6 @@ final class ReturnParentDynamicReturnTypeExtension implements DynamicMethodRetur
 	private $methods;
 
 	/**
-	 * @param string $className
 	 * @param string[] $methods
 	 */
 	public function __construct(string $className, array $methods)

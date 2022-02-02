@@ -8,7 +8,7 @@ use PhpParser\Node\Expr\MethodCall;
 use PhpParser\PrettyPrinter\Standard;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
-use PHPStan\ShouldNotHappenException;
+use PHPStan\Rules\RuleError;
 use PHPStan\Symfony\ConsoleApplicationResolver;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Symfony\Helper;
@@ -22,10 +22,10 @@ use function sprintf;
 final class UndefinedArgumentRule implements Rule
 {
 
-	/** @var \PHPStan\Symfony\ConsoleApplicationResolver */
+	/** @var ConsoleApplicationResolver */
 	private $consoleApplicationResolver;
 
-	/** @var \PhpParser\PrettyPrinter\Standard */
+	/** @var Standard */
 	private $printer;
 
 	public function __construct(ConsoleApplicationResolver $consoleApplicationResolver, Standard $printer)
@@ -40,16 +40,10 @@ final class UndefinedArgumentRule implements Rule
 	}
 
 	/**
-	 * @param \PhpParser\Node $node
-	 * @param \PHPStan\Analyser\Scope $scope
-	 * @return (string|\PHPStan\Rules\RuleError)[] errors
+	 * @return (string|RuleError)[] errors
 	 */
 	public function processNode(Node $node, Scope $scope): array
 	{
-		if (!$node instanceof MethodCall) {
-			throw new ShouldNotHappenException();
-		};
-
 		$classReflection = $scope->getClassReflection();
 		if ($classReflection === null) {
 			return [];

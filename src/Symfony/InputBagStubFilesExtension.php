@@ -3,6 +3,7 @@
 namespace PHPStan\Symfony;
 
 use PHPStan\PhpDoc\StubFilesExtension;
+use function class_exists;
 
 class InputBagStubFilesExtension implements StubFilesExtension
 {

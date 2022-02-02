@@ -15,10 +15,10 @@ use PHPStan\Type\MethodTypeSpecifyingExtension;
 final class ArgumentTypeSpecifyingExtension implements MethodTypeSpecifyingExtension, TypeSpecifierAwareExtension
 {
 
-	/** @var \PhpParser\PrettyPrinter\Standard */
+	/** @var Standard */
 	private $printer;
 
-	/** @var \PHPStan\Analyser\TypeSpecifier */
+	/** @var TypeSpecifier */
 	private $typeSpecifier;
 
 	public function __construct(Standard $printer)

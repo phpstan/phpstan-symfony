@@ -9,7 +9,7 @@ interface ServiceMap
 {
 
 	/**
-	 * @return \PHPStan\Symfony\ServiceDefinition[]
+	 * @return ServiceDefinition[]
 	 */
 	public function getServices(): array;
 

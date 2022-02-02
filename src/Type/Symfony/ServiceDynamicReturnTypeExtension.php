@@ -24,7 +24,7 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 	/** @var bool */
 	private $constantHassers;
 
-	/** @var \PHPStan\Symfony\ServiceMap */
+	/** @var ServiceMap */
 	private $serviceMap;
 
 	public function __construct(string $className, Configuration $configuration, ServiceMap $symfonyServiceMap)

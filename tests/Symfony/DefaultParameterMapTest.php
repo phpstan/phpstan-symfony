@@ -26,19 +26,19 @@ final class DefaultParameterMapTest extends TestCase
 	}
 
 	/**
-	 * @return \Iterator<mixed>
+	 * @return Iterator<mixed>
 	 */
 	public function getParameterProvider(): Iterator
 	{
 		yield [
 			'unknown',
-			function (?Parameter $parameter): void {
+			static function (?Parameter $parameter): void {
 				self::assertNull($parameter);
 			},
 		];
 		yield [
 			'app.string',
-			function (?Parameter $parameter): void {
+			static function (?Parameter $parameter): void {
 				self::assertNotNull($parameter);
 				self::assertSame('app.string', $parameter->getKey());
 				self::assertSame('abcdef', $parameter->getValue());
@@ -46,7 +46,7 @@ final class DefaultParameterMapTest extends TestCase
 		];
 		yield [
 			'app.int',
-			function (?Parameter $parameter): void {
+			static function (?Parameter $parameter): void {
 				self::assertNotNull($parameter);
 				self::assertSame('app.int', $parameter->getKey());
 				self::assertSame(123, $parameter->getValue());
@@ -54,7 +54,7 @@ final class DefaultParameterMapTest extends TestCase
 		];
 		yield [
 			'app.int_as_string',
-			function (?Parameter $parameter): void {
+			static function (?Parameter $parameter): void {
 				self::assertNotNull($parameter);
 				self::assertSame('app.int_as_string', $parameter->getKey());
 				self::assertSame('123', $parameter->getValue());
@@ -62,7 +62,7 @@ final class DefaultParameterMapTest extends TestCase
 		];
 		yield [
 			'app.float',
-			function (?Parameter $parameter): void {
+			static function (?Parameter $parameter): void {
 				self::assertNotNull($parameter);
 				self::assertSame('app.float', $parameter->getKey());
 				self::assertSame(123.45, $parameter->getValue());
@@ -70,7 +70,7 @@ final class DefaultParameterMapTest extends TestCase
 		];
 		yield [
 			'app.float_as_string',
-			function (?Parameter $parameter): void {
+			static function (?Parameter $parameter): void {
 				self::assertNotNull($parameter);
 				self::assertSame('app.float_as_string', $parameter->getKey());
 				self::assertSame('123.45', $parameter->getValue());
@@ -78,7 +78,7 @@ final class DefaultParameterMapTest extends TestCase
 		];
 		yield [
 			'app.boolean',
-			function (?Parameter $parameter): void {
+			static function (?Parameter $parameter): void {
 				self::assertNotNull($parameter);
 				self::assertSame('app.boolean', $parameter->getKey());
 				self::assertTrue($parameter->getValue());
@@ -86,7 +86,7 @@ final class DefaultParameterMapTest extends TestCase
 		];
 		yield [
 			'app.boolean_as_string',
-			function (?Parameter $parameter): void {
+			static function (?Parameter $parameter): void {
 				self::assertNotNull($parameter);
 				self::assertSame('app.boolean_as_string', $parameter->getKey());
 				self::assertSame('true', $parameter->getValue());
@@ -94,7 +94,7 @@ final class DefaultParameterMapTest extends TestCase
 		];
 		yield [
 			'app.list',
-			function (?Parameter $parameter): void {
+			static function (?Parameter $parameter): void {
 				self::assertNotNull($parameter);
 				self::assertSame('app.list', $parameter->getKey());
 				self::assertEquals(['en', 'es', 'fr'], $parameter->getValue());
@@ -102,7 +102,7 @@ final class DefaultParameterMapTest extends TestCase
 		];
 		yield [
 			'app.list_of_list',
-			function (?Parameter $parameter): void {
+			static function (?Parameter $parameter): void {
 				self::assertNotNull($parameter);
 				self::assertSame('app.list_of_list', $parameter->getKey());
 				self::assertEquals([
@@ -113,7 +113,7 @@ final class DefaultParameterMapTest extends TestCase
 		];
 		yield [
 			'app.map',
-			function (?Parameter $parameter): void {
+			static function (?Parameter $parameter): void {
 				self::assertNotNull($parameter);
 				self::assertSame('app.map', $parameter->getKey());
 				self::assertEquals([
@@ -125,7 +125,7 @@ final class DefaultParameterMapTest extends TestCase
 		];
 		yield [
 			'app.binary',
-			function (?Parameter $parameter): void {
+			static function (?Parameter $parameter): void {
 				self::assertNotNull($parameter);
 				self::assertSame('app.binary', $parameter->getKey());
 				self::assertSame('This is a Bell char ', $parameter->getValue());
@@ -133,7 +133,7 @@ final class DefaultParameterMapTest extends TestCase
 		];
 		yield [
 			'app.constant',
-			function (?Parameter $parameter): void {
+			static function (?Parameter $parameter): void {
 				self::assertNotNull($parameter);
 				self::assertSame('app.constant', $parameter->getKey());
 				self::assertSame('Y-m-d\TH:i:sP', $parameter->getValue());

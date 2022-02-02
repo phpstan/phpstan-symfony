@@ -11,6 +11,7 @@ use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\MixedType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
+use function count;
 
 final class EnvelopeReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {

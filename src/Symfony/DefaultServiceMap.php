@@ -10,11 +10,11 @@ use function count;
 final class DefaultServiceMap implements ServiceMap
 {
 
-	/** @var \PHPStan\Symfony\ServiceDefinition[] */
+	/** @var ServiceDefinition[] */
 	private $services;
 
 	/**
-	 * @param \PHPStan\Symfony\ServiceDefinition[] $services
+	 * @param ServiceDefinition[] $services
 	 */
 	public function __construct(array $services)
 	{
@@ -22,7 +22,7 @@ final class DefaultServiceMap implements ServiceMap
 	}
 
 	/**
-	 * @return \PHPStan\Symfony\ServiceDefinition[]
+	 * @return ServiceDefinition[]
 	 */
 	public function getServices(): array
 	{

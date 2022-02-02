@@ -6,7 +6,7 @@ use PhpParser\Node;
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
-use PHPStan\ShouldNotHappenException;
+use PHPStan\Rules\RuleError;
 use PHPStan\Symfony\ServiceMap;
 use PHPStan\TrinaryLogic;
 use PHPStan\Type\ObjectType;
@@ -33,16 +33,10 @@ final class ContainerInterfacePrivateServiceRule implements Rule
 	}
 
 	/**
-	 * @param \PhpParser\Node $node
-	 * @param \PHPStan\Analyser\Scope $scope
-	 * @return (string|\PHPStan\Rules\RuleError)[] errors
+	 * @return (string|RuleError)[] errors
 	 */
 	public function processNode(Node $node, Scope $scope): array
 	{
-		if (!$node instanceof MethodCall) {
-			throw new ShouldNotHappenException();
-		}
-
 		if (!$node->name instanceof Node\Identifier) {
 			return [];
 		}

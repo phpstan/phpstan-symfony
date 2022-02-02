@@ -6,10 +6,12 @@ use PhpParser\Node\Expr\StaticCall;
 use PhpParser\Node\Name;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
+use PHPStan\ShouldNotHappenException;
 use PHPStan\Type\DynamicStaticMethodReturnTypeExtension;
 use PHPStan\Type\Symfony\Config\ValueObject\TreeBuilderType;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeUtils;
+use function count;
 
 final class TreeBuilderDynamicReturnTypeExtension implements DynamicStaticMethodReturnTypeExtension
 {
@@ -37,7 +39,7 @@ final class TreeBuilderDynamicReturnTypeExtension implements DynamicStaticMethod
 	public function getTypeFromStaticMethodCall(MethodReflection $methodReflection, StaticCall $methodCall, Scope $scope): Type
 	{
 		if (!$methodCall->class instanceof Name) {
-			throw new \PHPStan\ShouldNotHappenException();
+			throw new ShouldNotHappenException();
 		}
 
 		$className = $scope->resolveName($methodCall->class);
