@@ -5,16 +5,18 @@ namespace PHPStan\Symfony;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\ShouldNotHappenException;
 use PHPStan\Type\ObjectType;
+use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use function file_exists;
 use function get_class;
 use function is_readable;
+use function method_exists;
 use function sprintf;
 
 final class ConsoleApplicationResolver
 {
 
-	/** @var \Symfony\Component\Console\Application|null */
+	/** @var Application|null */
 	private $consoleApplication;
 
 	public function __construct(Configuration $configuration)
@@ -27,7 +29,7 @@ final class ConsoleApplicationResolver
 	}
 
 	/**
-	 * @return \Symfony\Component\Console\Application|null
+	 * @return Application|null
 	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
 	 */
 	private function loadConsoleApplication(string $consoleApplicationLoader)
@@ -42,7 +44,7 @@ final class ConsoleApplicationResolver
 	}
 
 	/**
-	 * @return \Symfony\Component\Console\Command\Command[]
+	 * @return Command[]
 	 */
 	public function findCommands(ClassReflection $classReflection): array
 	{

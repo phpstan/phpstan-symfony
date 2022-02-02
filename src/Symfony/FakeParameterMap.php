@@ -9,7 +9,7 @@ final class FakeParameterMap implements ParameterMap
 {
 
 	/**
-	 * @return \PHPStan\Symfony\ParameterDefinition[]
+	 * @return ParameterDefinition[]
 	 */
 	public function getParameters(): array
 	{

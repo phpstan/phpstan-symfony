@@ -11,7 +11,7 @@ use PHPStan\Testing\RuleTestCase;
 class NonexistentInputBagClassTest extends RuleTestCase
 {
 
-	protected function getRule(): \PHPStan\Rules\Rule
+	protected function getRule(): Rule
 	{
 		return self::getContainer()->getByType(CallMethodsRule::class);
 	}

@@ -18,10 +18,10 @@ final class ServiceTypeSpecifyingExtension implements MethodTypeSpecifyingExtens
 	/** @var string */
 	private $className;
 
-	/** @var \PhpParser\PrettyPrinter\Standard */
+	/** @var Standard */
 	private $printer;
 
-	/** @var \PHPStan\Analyser\TypeSpecifier */
+	/** @var TypeSpecifier */
 	private $typeSpecifier;
 
 	public function __construct(string $className, Standard $printer)

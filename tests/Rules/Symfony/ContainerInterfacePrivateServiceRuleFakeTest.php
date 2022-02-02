@@ -6,6 +6,8 @@ use PHPStan\Rules\Rule;
 use PHPStan\Symfony\Configuration;
 use PHPStan\Symfony\XmlServiceMapFactory;
 use PHPStan\Testing\RuleTestCase;
+use function class_exists;
+use function interface_exists;
 
 /**
  * @extends RuleTestCase<ContainerInterfacePrivateServiceRule>

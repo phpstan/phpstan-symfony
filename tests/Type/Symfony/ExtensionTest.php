@@ -5,6 +5,8 @@ namespace PHPStan\Type\Symfony;
 use PHPStan\Testing\TypeInferenceTestCase;
 use ReflectionMethod;
 use Symfony\Component\HttpFoundation\Request;
+use function class_exists;
+use function strpos;
 
 class ExtensionTest extends TypeInferenceTestCase
 {
@@ -58,8 +60,6 @@ class ExtensionTest extends TypeInferenceTestCase
 
 	/**
 	 * @dataProvider dataFileAsserts
-	 * @param string $assertType
-	 * @param string $file
 	 * @param mixed ...$args
 	 */
 	public function testFileAsserts(

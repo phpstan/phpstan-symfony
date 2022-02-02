@@ -4,11 +4,12 @@ namespace PHPStan\Type\Symfony;
 
 use PHPStan\Rules\Comparison\ImpossibleCheckTypeMethodCallRule;
 use PHPStan\Rules\Rule;
+use PHPStan\Testing\RuleTestCase;
 
 /**
- * @extends \PHPStan\Testing\RuleTestCase<ImpossibleCheckTypeMethodCallRule>
+ * @extends RuleTestCase<ImpossibleCheckTypeMethodCallRule>
  */
-class ImpossibleCheckTypeMethodCallRuleTest extends \PHPStan\Testing\RuleTestCase
+class ImpossibleCheckTypeMethodCallRuleTest extends RuleTestCase
 {
 
 	protected function getRule(): Rule

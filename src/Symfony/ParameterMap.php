@@ -9,7 +9,7 @@ interface ParameterMap
 {
 
 	/**
-	 * @return \PHPStan\Symfony\ParameterDefinition[]
+	 * @return ParameterDefinition[]
 	 */
 	public function getParameters(): array;
 

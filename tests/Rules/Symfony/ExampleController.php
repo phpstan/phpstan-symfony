@@ -3,6 +3,7 @@
 namespace PHPStan\Rules\Symfony;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Test\TestContainer;
 
 final class ExampleController extends Controller
 {
@@ -14,7 +15,7 @@ final class ExampleController extends Controller
 
 	public function privateServiceInTestContainer(): void
 	{
-		/** @var \Symfony\Bundle\FrameworkBundle\Test\TestContainer $container */
+		/** @var TestContainer $container */
 		$container = doFoo();
 		$container->get('private');
 	}

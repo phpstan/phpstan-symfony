@@ -20,7 +20,7 @@ use function count;
 final class InputInterfaceGetArgumentDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
 
-	/** @var \PHPStan\Symfony\ConsoleApplicationResolver */
+	/** @var ConsoleApplicationResolver */
 	private $consoleApplicationResolver;
 
 	public function __construct(ConsoleApplicationResolver $consoleApplicationResolver)

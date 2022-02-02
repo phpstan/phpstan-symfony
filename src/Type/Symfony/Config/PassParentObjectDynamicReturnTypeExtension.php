@@ -10,6 +10,7 @@ use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\Symfony\Config\ValueObject\ParentObjectType;
 use PHPStan\Type\Type;
 use PHPStan\Type\VerbosityLevel;
+use function in_array;
 
 final class PassParentObjectDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
@@ -21,7 +22,6 @@ final class PassParentObjectDynamicReturnTypeExtension implements DynamicMethodR
 	private $methods;
 
 	/**
-	 * @param string $className
 	 * @param string[] $methods
 	 */
 	public function __construct(string $className, array $methods)

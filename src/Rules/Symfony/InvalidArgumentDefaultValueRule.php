@@ -6,7 +6,7 @@ use PhpParser\Node;
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
-use PHPStan\ShouldNotHappenException;
+use PHPStan\Rules\RuleError;
 use PHPStan\Type\ArrayType;
 use PHPStan\Type\Constant\ConstantIntegerType;
 use PHPStan\Type\IntegerType;
@@ -16,6 +16,7 @@ use PHPStan\Type\StringType;
 use PHPStan\Type\TypeUtils;
 use PHPStan\Type\UnionType;
 use PHPStan\Type\VerbosityLevel;
+use function count;
 use function sprintf;
 
 /**
@@ -30,16 +31,10 @@ final class InvalidArgumentDefaultValueRule implements Rule
 	}
 
 	/**
-	 * @param \PhpParser\Node $node
-	 * @param \PHPStan\Analyser\Scope $scope
-	 * @return (string|\PHPStan\Rules\RuleError)[] errors
+	 * @return (string|RuleError)[] errors
 	 */
 	public function processNode(Node $node, Scope $scope): array
 	{
-		if (!$node instanceof MethodCall) {
-			throw new ShouldNotHappenException();
-		};
-
 		if (!(new ObjectType('Symfony\Component\Console\Command\Command'))->isSuperTypeOf($scope->getType($node->var))->yes()) {
 			return [];
 		}

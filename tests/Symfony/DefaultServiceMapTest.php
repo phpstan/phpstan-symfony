@@ -26,19 +26,19 @@ final class DefaultServiceMapTest extends TestCase
 	}
 
 	/**
-	 * @return \Iterator<mixed>
+	 * @return Iterator<mixed>
 	 */
 	public function getServiceProvider(): Iterator
 	{
 		yield [
 			'unknown',
-			function (?Service $service): void {
+			static function (?Service $service): void {
 				self::assertNull($service);
 			},
 		];
 		yield [
 			'withoutClass',
-			function (?Service $service): void {
+			static function (?Service $service): void {
 				self::assertNotNull($service);
 				self::assertSame('withoutClass', $service->getId());
 				self::assertNull($service->getClass());
@@ -49,7 +49,7 @@ final class DefaultServiceMapTest extends TestCase
 		];
 		yield [
 			'withClass',
-			function (?Service $service): void {
+			static function (?Service $service): void {
 				self::assertNotNull($service);
 				self::assertSame('withClass', $service->getId());
 				self::assertSame('Foo', $service->getClass());
@@ -60,7 +60,7 @@ final class DefaultServiceMapTest extends TestCase
 		];
 		yield [
 			'withoutPublic',
-			function (?Service $service): void {
+			static function (?Service $service): void {
 				self::assertNotNull($service);
 				self::assertSame('withoutPublic', $service->getId());
 				self::assertSame('Foo', $service->getClass());
@@ -71,7 +71,7 @@ final class DefaultServiceMapTest extends TestCase
 		];
 		yield [
 			'publicNotTrue',
-			function (?Service $service): void {
+			static function (?Service $service): void {
 				self::assertNotNull($service);
 				self::assertSame('publicNotTrue', $service->getId());
 				self::assertSame('Foo', $service->getClass());
@@ -82,7 +82,7 @@ final class DefaultServiceMapTest extends TestCase
 		];
 		yield [
 			'public',
-			function (?Service $service): void {
+			static function (?Service $service): void {
 				self::assertNotNull($service);
 				self::assertSame('public', $service->getId());
 				self::assertSame('Foo', $service->getClass());
@@ -93,7 +93,7 @@ final class DefaultServiceMapTest extends TestCase
 		];
 		yield [
 			'synthetic',
-			function (?Service $service): void {
+			static function (?Service $service): void {
 				self::assertNotNull($service);
 				self::assertSame('synthetic', $service->getId());
 				self::assertSame('Foo', $service->getClass());
@@ -104,7 +104,7 @@ final class DefaultServiceMapTest extends TestCase
 		];
 		yield [
 			'alias',
-			function (?Service $service): void {
+			static function (?Service $service): void {
 				self::assertNotNull($service);
 				self::assertSame('alias', $service->getId());
 				self::assertSame('Foo', $service->getClass());

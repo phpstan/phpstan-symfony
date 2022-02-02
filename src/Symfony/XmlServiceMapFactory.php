@@ -2,6 +2,8 @@
 
 namespace PHPStan\Symfony;
 
+use SimpleXMLElement;
+use function file_get_contents;
 use function simplexml_load_string;
 use function sprintf;
 use function strpos;
@@ -34,12 +36,12 @@ final class XmlServiceMapFactory implements ServiceMapFactory
 			throw new XmlContainerNotExistsException(sprintf('Container %s cannot be parsed', $this->containerXml));
 		}
 
-		/** @var \PHPStan\Symfony\Service[] $services */
+		/** @var Service[] $services */
 		$services = [];
-		/** @var \PHPStan\Symfony\Service[] $aliases */
+		/** @var Service[] $aliases */
 		$aliases = [];
 		foreach ($xml->services->service as $def) {
-			/** @var \SimpleXMLElement $attrs */
+			/** @var SimpleXMLElement $attrs */
 			$attrs = $def->attributes();
 			if (!isset($attrs->id)) {
 				continue;
