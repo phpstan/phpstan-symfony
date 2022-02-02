@@ -278,3 +278,8 @@ services:
 	-
 		factory: PHPStan\Type\Symfony\ResponseHeaderBagDynamicReturnTypeExtension
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
+	# InputBag::get() type specification
+	-
+		factory: PHPStan\Type\Symfony\InputBagTypeSpecifyingExtension
+		tags: [phpstan.typeSpecifier.methodTypeSpecifyingExtension]
