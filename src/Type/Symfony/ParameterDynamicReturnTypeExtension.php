@@ -4,6 +4,7 @@ namespace PHPStan\Type\Symfony;
 
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
+use PHPStan\PhpDoc\TypeStringResolver;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\ShouldNotHappenException;
@@ -22,8 +23,10 @@ use PHPStan\Type\MixedType;
 use PHPStan\Type\NullType;
 use PHPStan\Type\StringType;
 use PHPStan\Type\Type;
+use PHPStan\Type\TypeCombinator;
 use PHPStan\Type\TypeTraverser;
 use PHPStan\Type\UnionType;
+use Symfony\Component\DependencyInjection\EnvVarProcessor;
 use function in_array;
 
 final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
@@ -44,13 +47,24 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 	/** @var \PHPStan\Symfony\ParameterMap */
 	private $parameterMap;
 
-	public function __construct(string $className, ?string $methodGet, ?string $methodHas, Configuration $configuration, ParameterMap $symfonyParameterMap)
+	/** @var \PHPStan\PhpDoc\TypeStringResolver */
+	private $typeStringResolver;
+
+	public function __construct(
+		string $className,
+		?string $methodGet,
+		?string $methodHas,
+		Configuration $configuration,
+		ParameterMap $symfonyParameterMap,
+		TypeStringResolver $typeStringResolver
+	)
 	{
 		$this->className = $className;
 		$this->methodGet = $methodGet;
 		$this->methodHas = $methodHas;
 		$this->constantHassers = $configuration->hasConstantHassers();
 		$this->parameterMap = $symfonyParameterMap;
+		$this->typeStringResolver = $typeStringResolver;
 	}
 
 	public function getClass(): string
@@ -102,11 +116,44 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 		if ($parameterKey !== null) {
 			$parameter = $this->parameterMap->getParameter($parameterKey);
 			if ($parameter !== null) {
-				return $this->generalizeType($scope->getTypeFromValue($parameter->getValue()));
+				return $this->generalizeTypeFromValue($scope, $parameter->getValue());
 			}
 		}
 
 		return $returnType;
+	}
+
+	/**
+	 * @param Scope								 $scope
+	 * @param array<mixed>|bool|float|int|string $value
+	 */
+	private function generalizeTypeFromValue(Scope $scope, $value): Type
+	{
+		if (is_array($value) && $value !== []) {
+			return $this->generalizeType(
+				new ArrayType(
+					TypeCombinator::union(...array_map(function ($item) use ($scope): Type {
+						return $this->generalizeTypeFromValue($scope, $item);
+					}, array_keys($value))),
+					TypeCombinator::union(...array_map(function ($item) use ($scope): Type {
+						return $this->generalizeTypeFromValue($scope, $item);
+					}, array_values($value)))
+				)
+			);
+		}
+
+		if (
+			class_exists(EnvVarProcessor::class)
+			&& is_string($value)
+			&& preg_match('/%env\((.*)\:.*\)%/U', $value, $matches) === 1
+			&& strlen($matches[0]) === strlen($value)
+		) {
+			$providedTypes = EnvVarProcessor::getProvidedTypes();
+
+			return $this->typeStringResolver->resolve($providedTypes[$matches[1]] ?? 'bool|int|float|string|array');
+		}
+
+		return $this->generalizeType($scope->getTypeFromValue($value));
 	}
 
 	private function generalizeType(Type $type): Type

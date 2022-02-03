@@ -4,14 +4,27 @@
         <parameter key="app.string">abcdef</parameter>
         <parameter key="app.int">123</parameter>
         <parameter key="app.int_as_string" type="string">123</parameter>
+        <parameter key="app.int_as_processor">%env(int:APP_INT)%</parameter>
         <parameter key="app.float">123.45</parameter>
         <parameter key="app.float_as_string" type="string">123.45</parameter>
+        <parameter key="app.float_as_processor">%env(float:APP_FLOAT)%</parameter>
         <parameter key="app.boolean">true</parameter>
         <parameter key="app.boolean_as_string" type="string">true</parameter>
+        <parameter key="app.boolean_as_processor">%env(bool:APP_BOOL)%</parameter>
         <parameter key="app.list" type="collection">
             <parameter>en</parameter>
             <parameter>es</parameter>
             <parameter>fr</parameter>
+        </parameter>
+        <parameter key="app.list_of_int" type="collection">
+            <parameter>123</parameter>
+            <parameter>456</parameter>
+            <parameter>789</parameter>
+        </parameter>
+        <parameter key="app.list_of_int_as_processor" type="collection">
+            <parameter>%env(int:APP_INT)%</parameter>
+            <parameter>%env(int:APP_INT)%</parameter>
+            <parameter>%env(int:APP_INT)%</parameter>
         </parameter>
         <parameter key="app.list_of_list" type="collection">
             <parameter type="collection">
