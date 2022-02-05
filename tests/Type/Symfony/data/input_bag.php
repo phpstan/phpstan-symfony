@@ -9,6 +9,9 @@ assertType('bool|float|int|string|null', $bag->get('foo'));
 if ($bag->has('foo')) {
 	assertType('bool|float|int|string', $bag->get('foo'));
 	assertType('bool|float|int|string|null', $bag->get('bar'));
+} else {
+	assertType('null', $bag->get('foo'));
+	assertType('bool|float|int|string|null', $bag->get('bar'));
 }
 
 assertType('bool|float|int|string|null', $bag->get('foo', null));

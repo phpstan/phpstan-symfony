@@ -8,7 +8,6 @@ use PHPStan\Analyser\SpecifiedTypes;
 use PHPStan\Analyser\TypeSpecifier;
 use PHPStan\Analyser\TypeSpecifierAwareExtension;
 use PHPStan\Analyser\TypeSpecifierContext;
-use PHPStan\Broker\Broker;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Type\MethodTypeSpecifyingExtension;
@@ -21,16 +20,8 @@ final class RequestTypeSpecifyingExtension implements MethodTypeSpecifyingExtens
 	private const HAS_METHOD_NAME = 'hasSession';
 	private const GET_METHOD_NAME = 'getSession';
 
-	/** @var Broker */
-	private $broker;
-
 	/** @var TypeSpecifier */
 	private $typeSpecifier;
-
-	public function __construct(Broker $broker)
-	{
-		$this->broker = $broker;
-	}
 
 	public function getClass(): string
 	{
@@ -44,9 +35,8 @@ final class RequestTypeSpecifyingExtension implements MethodTypeSpecifyingExtens
 
 	public function specifyTypes(MethodReflection $methodReflection, MethodCall $node, Scope $scope, TypeSpecifierContext $context): SpecifiedTypes
 	{
-		$classReflection = $this->broker->getClass(self::REQUEST_CLASS);
-		$methodVariants = $classReflection->getNativeMethod(self::GET_METHOD_NAME)->getVariants();
-		$returnType = ParametersAcceptorSelector::selectSingle($methodVariants)->getReturnType();
+		$methodVariants = $methodReflection->getDeclaringClass()->getNativeMethod(self::GET_METHOD_NAME)->getVariants();
+		$returnType = ParametersAcceptorSelector::selectFromArgs($scope, $node->getArgs(), $methodVariants)->getReturnType();
 
 		if (!TypeCombinator::containsNull($returnType)) {
 			return new SpecifiedTypes();
