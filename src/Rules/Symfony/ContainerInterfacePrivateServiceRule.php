@@ -56,8 +56,16 @@ final class ContainerInterfacePrivateServiceRule implements Rule
 		$isTestContainerType = (new ObjectType('Symfony\Bundle\FrameworkBundle\Test\TestContainer'))->isSuperTypeOf($argType);
 		$isOldServiceSubscriber = (new ObjectType('Symfony\Component\DependencyInjection\ServiceSubscriberInterface'))->isSuperTypeOf($argType);
 		$isServiceSubscriber = $this->isServiceSubscriber($argType, $scope);
+		$isServiceProvider = $this->isServiceProvider($argType, $scope);
+		// ServiceLocator is an implementation of ServiceProviderInterface but let's keep explicit rule for it to keep full BC
 		$isServiceLocator = (new ObjectType('Symfony\Component\DependencyInjection\ServiceLocator'))->isSuperTypeOf($argType);
-		if ($isTestContainerType->yes() || $isOldServiceSubscriber->yes() || $isServiceSubscriber->yes() || $isServiceLocator->yes()) {
+		if (
+			$isTestContainerType->yes()
+			|| $isOldServiceSubscriber->yes()
+			|| $isServiceSubscriber->yes()
+			|| $isServiceProvider->yes()
+			|| $isServiceLocator->yes()
+		) {
 			return [];
 		}
 
@@ -87,14 +95,31 @@ final class ContainerInterfacePrivateServiceRule implements Rule
 
 	private function isServiceSubscriber(Type $containerType, Scope $scope): TrinaryLogic
 	{
-		$serviceSubscriberInterfaceType = new ObjectType('Symfony\Contracts\Service\ServiceSubscriberInterface');
-		$isContainerServiceSubscriber = $serviceSubscriberInterfaceType->isSuperTypeOf($containerType);
+		return $this->isInstanceOf(
+			new ObjectType('Symfony\Contracts\Service\ServiceSubscriberInterface'),
+			$containerType,
+			$scope
+		);
+	}
+
+	private function isServiceProvider(Type $containerType, Scope $scope): TrinaryLogic
+	{
+		return $this->isInstanceOf(
+			new ObjectType('Symfony\Contracts\Service\ServiceProviderInterface'),
+			$containerType,
+			$scope
+		);
+	}
+
+	private function isInstanceOf(ObjectType $interfaceType, Type $containerType, Scope $scope): TrinaryLogic
+	{
+		$isImplementation = $interfaceType->isSuperTypeOf($containerType);
 		$classReflection = $scope->getClassReflection();
 		if ($classReflection === null) {
-			return $isContainerServiceSubscriber;
+			return $isImplementation;
 		}
 		$containedClassType = new ObjectType($classReflection->getName());
-		return $isContainerServiceSubscriber->or($serviceSubscriberInterfaceType->isSuperTypeOf($containedClassType));
+		return $isImplementation->or($interfaceType->isSuperTypeOf($containedClassType));
 	}
 
 }
