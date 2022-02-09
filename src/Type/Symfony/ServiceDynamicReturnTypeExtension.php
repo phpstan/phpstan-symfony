@@ -8,12 +8,17 @@ use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\ShouldNotHappenException;
 use PHPStan\Symfony\Configuration;
+use PHPStan\Symfony\ParameterMap;
+use PHPStan\Symfony\ServiceDefinition;
 use PHPStan\Symfony\ServiceMap;
 use PHPStan\Type\Constant\ConstantBooleanType;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 use function in_array;
+use function is_scalar;
+use function strpos;
+use function trim;
 
 final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
@@ -27,11 +32,20 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 	/** @var ServiceMap */
 	private $serviceMap;
 
-	public function __construct(string $className, Configuration $configuration, ServiceMap $symfonyServiceMap)
+	/** @var ParameterMap */
+	private $parameterMap;
+
+	public function __construct(
+		string $className,
+		Configuration $configuration,
+		ServiceMap $symfonyServiceMap,
+		ParameterMap $symfonyParameterMap
+	)
 	{
 		$this->className = $className;
 		$this->constantHassers = $configuration->hasConstantHassers();
 		$this->serviceMap = $symfonyServiceMap;
+		$this->parameterMap = $symfonyParameterMap;
 	}
 
 	public function getClass(): string
@@ -70,7 +84,7 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 		if ($serviceId !== null) {
 			$service = $this->serviceMap->getService($serviceId);
 			if ($service !== null && (!$service->isSynthetic() || $service->getClass() !== null)) {
-				return new ObjectType($service->getClass() ?? $serviceId);
+				return new ObjectType($this->determineServiceClass($service) ?? $serviceId);
 			}
 		}
 
@@ -95,6 +109,21 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 		}
 
 		return $returnType;
+	}
+
+	private function determineServiceClass(ServiceDefinition $service): ?string
+	{
+		$class = $service->getClass();
+
+		if ($class !== null && strpos($class, '%') === 0) {
+			$param = $this->parameterMap->getParameter(trim($class, '%'));
+
+			if ($param !== null && is_scalar($param->getValue())) {
+				return (string) $param->getValue();
+			}
+		}
+
+		return $class;
 	}
 
 }

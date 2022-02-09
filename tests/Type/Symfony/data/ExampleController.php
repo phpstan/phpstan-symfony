@@ -13,6 +13,7 @@ final class ExampleController extends Controller
 	public function services(): void
 	{
 		assertType('Foo', $this->get('foo'));
+		assertType('Foo', $this->get('parameterised_foo'));
 		assertType('Synthetic', $this->get('synthetic'));
 		assertType('object', $this->get('bar'));
 		assertType('object', $this->get(doFoo()));
