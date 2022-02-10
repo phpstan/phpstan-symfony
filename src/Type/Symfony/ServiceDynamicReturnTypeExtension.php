@@ -15,10 +15,8 @@ use PHPStan\Type\Constant\ConstantBooleanType;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use function in_array;
-use function is_scalar;
-use function strpos;
-use function trim;
 
 final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
@@ -32,8 +30,8 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 	/** @var ServiceMap */
 	private $serviceMap;
 
-	/** @var ParameterMap */
-	private $parameterMap;
+	/** @var ParameterBag */
+	private $parameterBag;
 
 	public function __construct(
 		string $className,
@@ -45,7 +43,7 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 		$this->className = $className;
 		$this->constantHassers = $configuration->hasConstantHassers();
 		$this->serviceMap = $symfonyServiceMap;
-		$this->parameterMap = $symfonyParameterMap;
+		$this->parameterBag = $this->createParameterBag($symfonyParameterMap);
 	}
 
 	public function getClass(): string
@@ -113,17 +111,18 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 
 	private function determineServiceClass(ServiceDefinition $service): ?string
 	{
-		$class = $service->getClass();
+		return $this->parameterBag->resolveValue($service->getClass());
+	}
 
-		if ($class !== null && strpos($class, '%') === 0) {
-			$param = $this->parameterMap->getParameter(trim($class, '%'));
+	private function createParameterBag(ParameterMap $symfonyParameterMap): ParameterBag
+	{
+		$parameters = [];
 
-			if ($param !== null && is_scalar($param->getValue())) {
-				return (string) $param->getValue();
-			}
+		foreach ($symfonyParameterMap->getParameters() as $parameterDefinition) {
+			$parameters[$parameterDefinition->getKey()] = $parameterDefinition->getValue();
 		}
 
-		return $class;
+		return new ParameterBag($parameters);
 	}
 
 }

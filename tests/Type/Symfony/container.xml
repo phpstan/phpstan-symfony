@@ -53,6 +53,7 @@
     <services>
         <service id="foo" class="Foo" public="true"></service>
         <service id="parameterised_foo" class="%app.class%"></service>
+        <service id="parameterised_bar" class="%app.class%\Bar"></service>
         <service id="synthetic" class="Synthetic" public="true" synthetic="true" />
     </services>
 </container>
