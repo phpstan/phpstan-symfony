@@ -8,11 +8,14 @@ use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\ShouldNotHappenException;
 use PHPStan\Symfony\Configuration;
+use PHPStan\Symfony\ParameterMap;
+use PHPStan\Symfony\ServiceDefinition;
 use PHPStan\Symfony\ServiceMap;
 use PHPStan\Type\Constant\ConstantBooleanType;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use function in_array;
 
 final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
@@ -27,11 +30,20 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 	/** @var ServiceMap */
 	private $serviceMap;
 
-	public function __construct(string $className, Configuration $configuration, ServiceMap $symfonyServiceMap)
+	/** @var ParameterBag */
+	private $parameterBag;
+
+	public function __construct(
+		string $className,
+		Configuration $configuration,
+		ServiceMap $symfonyServiceMap,
+		ParameterMap $symfonyParameterMap
+	)
 	{
 		$this->className = $className;
 		$this->constantHassers = $configuration->hasConstantHassers();
 		$this->serviceMap = $symfonyServiceMap;
+		$this->parameterBag = $this->createParameterBag($symfonyParameterMap);
 	}
 
 	public function getClass(): string
@@ -70,7 +82,7 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 		if ($serviceId !== null) {
 			$service = $this->serviceMap->getService($serviceId);
 			if ($service !== null && (!$service->isSynthetic() || $service->getClass() !== null)) {
-				return new ObjectType($service->getClass() ?? $serviceId);
+				return new ObjectType($this->determineServiceClass($service) ?? $serviceId);
 			}
 		}
 
@@ -95,6 +107,22 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 		}
 
 		return $returnType;
+	}
+
+	private function determineServiceClass(ServiceDefinition $service): ?string
+	{
+		return $this->parameterBag->resolveValue($service->getClass());
+	}
+
+	private function createParameterBag(ParameterMap $symfonyParameterMap): ParameterBag
+	{
+		$parameters = [];
+
+		foreach ($symfonyParameterMap->getParameters() as $parameterDefinition) {
+			$parameters[$parameterDefinition->getKey()] = $parameterDefinition->getValue();
+		}
+
+		return new ParameterBag($parameters);
 	}
 
 }
