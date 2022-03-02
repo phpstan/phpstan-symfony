@@ -1,0 +1,27 @@
+<?php
+
+namespace Symfony\Component\Form;
+
+/**
+ * @template T of FormError|FormErrorIterator
+ * @phpstan-implements \ArrayAccess<int, T>
+ * @phpstan-implements \RecursiveIterator<int, T>
+ * @phpstan-implements \SeekableIterator<int, T>
+ */
+class FormErrorIterator implements \RecursiveIterator, \SeekableIterator, \ArrayAccess, \Countable
+{
+    /**
+     * @param array<T> $errors
+     */
+    public function __construct(FormInterface $form, array $errors);
+
+    /** @return T */
+    public function current();
+
+    /**
+     * @param mixed $position
+     *
+     * @return T
+     */
+    public function offsetGet($position);
+}

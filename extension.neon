@@ -26,6 +26,8 @@ parameters:
 		- stubs/Symfony/Component/EventDispatcher/GenericEvent.stub
 		- stubs/Symfony/Component/Form/DataTransformerInterface.stub
 		- stubs/Symfony/Component/Form/FormBuilderInterface.stub
+		- stubs/Symfony/Component/Form/FormError.stub
+		- stubs/Symfony/Component/Form/FormErrorIterator.stub
 		- stubs/Symfony/Component/Form/FormInterface.stub
 		- stubs/Symfony/Component/Form/FormTypeExtensionInterface.stub
 		- stubs/Symfony/Component/Form/FormTypeInterface.stub
