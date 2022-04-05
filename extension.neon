@@ -33,6 +33,7 @@ parameters:
 		- stubs/Symfony/Component/HttpFoundation/Cookie.stub
 		- stubs/Symfony/Component/HttpFoundation/HeaderBag.stub
 		- stubs/Symfony/Component/HttpFoundation/ParameterBag.stub
+		- stubs/Symfony/Component/HttpFoundation/Request.stub
 		- stubs/Symfony/Component/HttpFoundation/Session.stub
 		- stubs/Symfony/Component/Messenger/StampInterface.stub
 		- stubs/Symfony/Component/Messenger/Envelope.stub
