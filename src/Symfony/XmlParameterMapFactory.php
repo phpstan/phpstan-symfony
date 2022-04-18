@@ -3,6 +3,7 @@
 namespace PHPStan\Symfony;
 
 use InvalidArgumentException;
+use PHPStan\ShouldNotHappenException;
 use SimpleXMLElement;
 use function base64_decode;
 use function file_get_contents;
@@ -67,7 +68,11 @@ final class XmlParameterMapFactory implements ParameterMapFactory
 		switch ((string) $attrs->type) {
 			case 'collection':
 				$value = [];
-				foreach ($def->children() as $child) {
+				$children = $def->children();
+				if ($children === null) {
+					throw new ShouldNotHappenException();
+				}
+				foreach ($children as $child) {
 					/** @var SimpleXMLElement $childAttrs */
 					$childAttrs = $child->attributes();
 
