@@ -15,6 +15,9 @@ interface ParameterMap
 
 	public function getParameter(string $key): ?ParameterDefinition;
 
-	public static function getParameterKeyFromNode(Expr $node, Scope $scope): ?string;
+	/**
+	 * @return array<string>
+	 */
+	public static function getParameterKeysFromNode(Expr $node, Scope $scope): array;
 
 }

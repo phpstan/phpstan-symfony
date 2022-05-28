@@ -113,7 +113,7 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 	{
 		// We don't use the method's return type because this won't work properly with lowest and
 		// highest versions of Symfony ("mixed" for lowest, "array|bool|float|integer|string|null" for highest).
-		$returnType = new UnionType([
+		$defaultReturnType = new UnionType([
 			new ArrayType(new MixedType(), new MixedType()),
 			new BooleanType(),
 			new FloatType(),
@@ -122,18 +122,25 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 			new NullType(),
 		]);
 		if (!isset($methodCall->getArgs()[0])) {
-			return $returnType;
+			return $defaultReturnType;
 		}
 
-		$parameterKey = $this->parameterMap::getParameterKeyFromNode($methodCall->getArgs()[0]->value, $scope);
-		if ($parameterKey !== null) {
+		$parameterKeys = $this->parameterMap::getParameterKeysFromNode($methodCall->getArgs()[0]->value, $scope);
+		if ($parameterKeys === []) {
+			return $defaultReturnType;
+		}
+
+		$returnTypes = [];
+		foreach ($parameterKeys as $parameterKey) {
 			$parameter = $this->parameterMap->getParameter($parameterKey);
-			if ($parameter !== null) {
-				return $this->generalizeTypeFromValue($scope, $parameter->getValue());
+			if ($parameter === null) {
+				return $defaultReturnType;
 			}
+
+			$returnTypes[] = $this->generalizeTypeFromValue($scope, $parameter->getValue());
 		}
 
-		return $returnType;
+		return TypeCombinator::union(...$returnTypes);
 	}
 
 	/**
@@ -211,18 +218,31 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 		Scope $scope
 	): Type
 	{
-		$returnType = ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
+		$defaultReturnType = ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
 		if (!isset($methodCall->getArgs()[0]) || !$this->constantHassers) {
-			return $returnType;
+			return $defaultReturnType;
 		}
 
-		$parameterKey = $this->parameterMap::getParameterKeyFromNode($methodCall->getArgs()[0]->value, $scope);
-		if ($parameterKey !== null) {
+		$parameterKeys = $this->parameterMap::getParameterKeysFromNode($methodCall->getArgs()[0]->value, $scope);
+		if ($parameterKeys === []) {
+			return $defaultReturnType;
+		}
+
+		$has = null;
+		foreach ($parameterKeys as $parameterKey) {
 			$parameter = $this->parameterMap->getParameter($parameterKey);
-			return new ConstantBooleanType($parameter !== null);
+
+			if ($has === null) {
+				$has = $parameter !== null;
+			} elseif (
+				($has === true && $parameter === null)
+				|| ($has === false && $parameter !== null)
+			) {
+				return $defaultReturnType;
+			}
 		}
 
-		return $returnType;
+		return new ConstantBooleanType($has);
 	}
 
 }
