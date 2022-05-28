@@ -211,8 +211,8 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 			if ($has === null) {
 				$has = $parameter !== null;
 			} elseif (
-				$has === true && $parameter === null
-				|| $has === false && $parameter !== null
+				($has === true && $parameter === null)
+				|| ($has === false && $parameter !== null)
 			) {
 				return $defaultReturnType;
 			}
