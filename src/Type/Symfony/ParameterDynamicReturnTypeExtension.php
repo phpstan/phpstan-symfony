@@ -37,6 +37,7 @@ use function class_exists;
 use function count;
 use function in_array;
 use function is_array;
+use function is_int;
 use function is_string;
 use function preg_match;
 use function strlen;
@@ -141,30 +142,37 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 	private function generalizeTypeFromValue(Scope $scope, $value): Type
 	{
 		if (is_array($value) && $value !== []) {
-			if (array_is_list($value)) {
-				return $this->generalizeType(
-					new ArrayType(
-						TypeCombinator::union(...array_map(function ($item) use ($scope): Type {
-							return $this->generalizeTypeFromValue($scope, $item);
-						}, array_keys($value))),
-						TypeCombinator::union(...array_map(function ($item) use ($scope): Type {
-							return $this->generalizeTypeFromValue($scope, $item);
-						}, array_values($value)))
-					)
-				);
+			$hasOnlyStringKey = true;
+			foreach (array_keys($value) as $key) {
+				if (is_int($key)) {
+					$hasOnlyStringKey = false;
+					break;
+				}
 			}
 
-			$keyTypes = [];
-			$valueTypes = [];
-			foreach ($value as $key => $element) {
-				/** @var ConstantIntegerType|ConstantStringType $keyType */
-				$keyType = $scope->getTypeFromValue($key);
-				$keyTypes[] = $keyType;
-				$valueTypes[] = $this->generalizeTypeFromValue($scope, $element);
+			if ($hasOnlyStringKey) {
+				$keyTypes = [];
+				$valueTypes = [];
+				foreach ($value as $key => $element) {
+					/** @var ConstantIntegerType|ConstantStringType $keyType */
+					$keyType = $scope->getTypeFromValue($key);
+					$keyTypes[] = $keyType;
+					$valueTypes[] = $this->generalizeTypeFromValue($scope, $element);
+				}
+
+				return new ConstantArrayType($keyTypes, $valueTypes);
 			}
 
-			return new ConstantArrayType($keyTypes, $valueTypes);
-
+			return $this->generalizeType(
+				new ArrayType(
+					TypeCombinator::union(...array_map(function ($item) use ($scope): Type {
+						return $this->generalizeTypeFromValue($scope, $item);
+					}, array_keys($value))),
+					TypeCombinator::union(...array_map(function ($item) use ($scope): Type {
+						return $this->generalizeTypeFromValue($scope, $item);
+					}, array_values($value)))
+				)
+			);
 		}
 
 		if (
