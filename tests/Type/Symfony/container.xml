@@ -37,6 +37,36 @@
                 <parameter key="value">another value</parameter>
             </parameter>
         </parameter>
+        <parameter key="app.array_of_list" type="collection">
+            <parameter key="foo" type="collection">
+                <parameter key="name">the name</parameter>
+                <parameter key="value">the value</parameter>
+            </parameter>
+            <parameter type="collection">
+                <parameter key="name">another name</parameter>
+                <parameter key="value">another value</parameter>
+            </parameter>
+        </parameter>
+        <parameter key="app.list_of_things" type="collection">
+            <parameter key="url">%env(string:APP_STRING)%</parameter>
+            <parameter key="endpoint">%env(string:APP_STRING)%</parameter>
+            <parameter key="version">%env(string:APP_STRING)%</parameter>
+            <parameter key="payment" type="collection">
+                <parameter key="default" type="collection">
+                    <parameter key="username">%env(string:APP_STRING)%</parameter>
+                    <parameter key="password">%env(string:APP_STRING)%</parameter>
+                    <parameter key="signature">%env(string:APP_STRING)%</parameter>
+                </parameter>
+            </parameter>
+            <parameter key="api" type="collection">
+                <parameter key="mode">%env(string:APP_STRING)%</parameter>
+                <parameter key="default" type="collection">
+                    <parameter key="username">%env(string:APP_STRING)%</parameter>
+                    <parameter key="password">%env(string:APP_STRING)%</parameter>
+                    <parameter key="signature">%env(string:APP_STRING)%</parameter>
+                </parameter>
+            </parameter>
+        </parameter>
         <parameter key="app.map" type="collection">
             <parameter key="a">value of a</parameter>
             <parameter key="b">value of b</parameter>

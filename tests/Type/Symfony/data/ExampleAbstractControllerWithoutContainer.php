@@ -65,6 +65,9 @@ final class ExampleAbstractControllerWithoutContainer extends AbstractController
 		assertType('array|bool|float|int|string|null', $container->getParameter('app.list_of_list'));
 		assertType('array|bool|float|int|string|null', $parameterBag->get('app.list_of_list'));
 		assertType('array|bool|float|int|string|null', $this->getParameter('app.list_of_list'));
+		assertType('array|bool|float|int|string|null', $container->getParameter('app.array_of_list'));
+		assertType('array|bool|float|int|string|null', $parameterBag->get('app.array_of_list'));
+		assertType('array|bool|float|int|string|null', $this->getParameter('app.array_of_list'));
 		assertType('array|bool|float|int|string|null', $container->getParameter('app.map'));
 		assertType('array|bool|float|int|string|null', $parameterBag->get('app.map'));
 		assertType('array|bool|float|int|string|null', $this->getParameter('app.map'));

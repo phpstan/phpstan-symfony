@@ -68,9 +68,15 @@ final class ExampleController extends Controller
 		assertType("array<int, array<string, string>>", $container->getParameter('app.list_of_list'));
 		assertType("array<int, array<string, string>>", $parameterBag->get('app.list_of_list'));
 		assertType("array<int, array<string, string>>", $this->getParameter('app.list_of_list'));
-		assertType("array<string, string>", $container->getParameter('app.map'));
-		assertType("array<string, string>", $parameterBag->get('app.map'));
-		assertType("array<string, string>", $this->getParameter('app.map'));
+		assertType("array<int|string, array<string, string>>", $container->getParameter('app.array_of_list'));
+		assertType("array<int|string, array<string, string>>", $parameterBag->get('app.array_of_list'));
+		assertType("array<int|string, array<string, string>>", $this->getParameter('app.array_of_list'));
+		assertType("array{url: string, endpoint: string, version: string, payment: array{default: array{username: string, password: string, signature: string}}, api: array{mode: string, default: array{username: string, password: string, signature: string}}}", $container->getParameter('app.list_of_things'));
+		assertType("array{url: string, endpoint: string, version: string, payment: array{default: array{username: string, password: string, signature: string}}, api: array{mode: string, default: array{username: string, password: string, signature: string}}}", $parameterBag->get('app.list_of_things'));
+		assertType("array{url: string, endpoint: string, version: string, payment: array{default: array{username: string, password: string, signature: string}}, api: array{mode: string, default: array{username: string, password: string, signature: string}}}", $this->getParameter('app.list_of_things'));
+		assertType("array{a: string, b: string, c: string}", $container->getParameter('app.map'));
+		assertType("array{a: string, b: string, c: string}", $parameterBag->get('app.map'));
+		assertType("array{a: string, b: string, c: string}", $this->getParameter('app.map'));
 		assertType("string", $container->getParameter('app.binary'));
 		assertType("string", $parameterBag->get('app.binary'));
 		assertType("string", $this->getParameter('app.binary'));
