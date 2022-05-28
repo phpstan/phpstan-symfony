@@ -14,6 +14,8 @@ use PHPStan\Type\ArrayType;
 use PHPStan\Type\BooleanType;
 use PHPStan\Type\Constant\ConstantArrayType;
 use PHPStan\Type\Constant\ConstantBooleanType;
+use PHPStan\Type\Constant\ConstantIntegerType;
+use PHPStan\Type\Constant\ConstantStringType;
 use PHPStan\Type\ConstantType;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\FloatType;
@@ -139,16 +141,30 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 	private function generalizeTypeFromValue(Scope $scope, $value): Type
 	{
 		if (is_array($value) && $value !== []) {
-			return $this->generalizeType(
-				new ArrayType(
-					TypeCombinator::union(...array_map(function ($item) use ($scope): Type {
-						return $this->generalizeTypeFromValue($scope, $item);
-					}, array_keys($value))),
-					TypeCombinator::union(...array_map(function ($item) use ($scope): Type {
-						return $this->generalizeTypeFromValue($scope, $item);
-					}, array_values($value)))
-				)
-			);
+			if (array_is_list($value)) {
+				return $this->generalizeType(
+					new ArrayType(
+						TypeCombinator::union(...array_map(function ($item) use ($scope): Type {
+							return $this->generalizeTypeFromValue($scope, $item);
+						}, array_keys($value))),
+						TypeCombinator::union(...array_map(function ($item) use ($scope): Type {
+							return $this->generalizeTypeFromValue($scope, $item);
+						}, array_values($value)))
+					)
+				);
+			}
+
+			$keyTypes = [];
+			$valueTypes = [];
+			foreach ($value as $key => $element) {
+				/** @var ConstantIntegerType|ConstantStringType $keyType */
+				$keyType = $scope->getTypeFromValue($key);
+				$keyTypes[] = $keyType;
+				$valueTypes[] = $this->generalizeTypeFromValue($scope, $element);
+			}
+
+			return new ConstantArrayType($keyTypes, $valueTypes);
+
 		}
 
 		if (
