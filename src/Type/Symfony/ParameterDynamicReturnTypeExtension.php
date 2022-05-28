@@ -36,7 +36,6 @@ use function count;
 use function in_array;
 use function is_array;
 use function is_string;
-use function method_exists;
 use function preg_match;
 use function strlen;
 
@@ -123,13 +122,7 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 			return $defaultReturnType;
 		}
 
-		if (method_exists($this->parameterMap, 'getParameterKeysFromNode')) { // @phpstan-ignore-line
-			$parameterKeys = $this->parameterMap::getParameterKeysFromNode($methodCall->getArgs()[0]->value, $scope);
-		} else {
-			$parameterKey = $this->parameterMap::getParameterKeyFromNode($methodCall->getArgs()[0]->value, $scope);
-			$parameterKeys = $parameterKey !== null ? [$parameterKey] : [];
-		}
-
+		$parameterKeys = $this->parameterMap::getParameterKeysFromNode($methodCall->getArgs()[0]->value, $scope);
 		if ($parameterKeys === []) {
 			return $defaultReturnType;
 		}
@@ -206,13 +199,7 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 			return $defaultReturnType;
 		}
 
-		if (method_exists($this->parameterMap, 'getParameterKeysFromNode')) { // @phpstan-ignore-line
-			$parameterKeys = $this->parameterMap::getParameterKeysFromNode($methodCall->getArgs()[0]->value, $scope);
-		} else {
-			$parameterKey = $this->parameterMap::getParameterKeyFromNode($methodCall->getArgs()[0]->value, $scope);
-			$parameterKeys = $parameterKey !== null ? [$parameterKey] : [];
-		}
-
+		$parameterKeys = $this->parameterMap::getParameterKeysFromNode($methodCall->getArgs()[0]->value, $scope);
 		if ($parameterKeys === []) {
 			return $defaultReturnType;
 		}
