@@ -4,8 +4,9 @@ namespace PHPStan\Symfony;
 
 use PhpParser\Node\Expr;
 use PHPStan\Analyser\Scope;
+use PHPStan\Type\Type;
 use PHPStan\Type\TypeUtils;
-use function count;
+use function array_map;
 
 final class DefaultParameterMap implements ParameterMap
 {
@@ -34,10 +35,13 @@ final class DefaultParameterMap implements ParameterMap
 		return $this->parameters[$key] ?? null;
 	}
 
-	public static function getParameterKeyFromNode(Expr $node, Scope $scope): ?string
+	public static function getParameterKeysFromNode(Expr $node, Scope $scope): array
 	{
 		$strings = TypeUtils::getConstantStrings($scope->getType($node));
-		return count($strings) === 1 ? $strings[0]->getValue() : null;
+
+		return array_map(static function (Type $type) {
+			return $type->getValue();
+		}, $strings);
 	}
 
 }

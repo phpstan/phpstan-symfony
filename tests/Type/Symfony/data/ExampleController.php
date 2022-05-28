@@ -110,6 +110,27 @@ final class ExampleController extends Controller
 		assertType('true', $parameterBag->has('app.binary'));
 		assertType('true', $container->hasParameter('app.constant'));
 		assertType('true', $parameterBag->has('app.constant'));
+
+		$key = rand(0, 1) ? 'app.string' : 'app.int';
+		assertType("int|string", $container->getParameter($key));
+		assertType("int|string", $parameterBag->get($key));
+		assertType("int|string", $this->getParameter($key));
+		assertType('true', $container->hasParameter($key));
+		assertType('true', $parameterBag->has($key));
+
+		$key = rand(0, 1) ? 'app.string' : 'app.foo';
+		assertType("array|bool|float|int|string|null", $container->getParameter($key));
+		assertType("array|bool|float|int|string|null", $parameterBag->get($key));
+		assertType("array|bool|float|int|string|null", $this->getParameter($key));
+		assertType('bool', $container->hasParameter($key));
+		assertType('bool', $parameterBag->has($key));
+
+		$key = rand(0, 1) ? 'app.bar' : 'app.foo';
+		assertType("array|bool|float|int|string|null", $container->getParameter($key));
+		assertType("array|bool|float|int|string|null", $parameterBag->get($key));
+		assertType("array|bool|float|int|string|null", $this->getParameter($key));
+		assertType('false', $container->hasParameter($key));
+		assertType('false', $parameterBag->has($key));
 	}
 
 }

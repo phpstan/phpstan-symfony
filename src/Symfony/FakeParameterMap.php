@@ -21,9 +21,9 @@ final class FakeParameterMap implements ParameterMap
 		return null;
 	}
 
-	public static function getParameterKeyFromNode(Expr $node, Scope $scope): ?string
+	public static function getParameterKeysFromNode(Expr $node, Scope $scope): array
 	{
-		return null;
+		return [];
 	}
 
 }
