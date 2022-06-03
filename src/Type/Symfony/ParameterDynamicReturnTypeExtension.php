@@ -37,7 +37,6 @@ use function class_exists;
 use function count;
 use function in_array;
 use function is_array;
-use function is_int;
 use function is_string;
 use function preg_match;
 use function strlen;
@@ -149,15 +148,18 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 	private function generalizeTypeFromValue(Scope $scope, $value): Type
 	{
 		if (is_array($value) && $value !== []) {
-			$hasOnlyStringKey = true;
+			$isList = true;
+			$expectedKey = 0;
 			foreach (array_keys($value) as $key) {
-				if (is_int($key)) {
-					$hasOnlyStringKey = false;
+				if ($key !== $expectedKey) {
+					$isList = false;
 					break;
 				}
+
+				$expectedKey++;
 			}
 
-			if ($hasOnlyStringKey) {
+			if (!$isList) {
 				$keyTypes = [];
 				$valueTypes = [];
 				foreach ($value as $key => $element) {
@@ -170,15 +172,13 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 				return new ConstantArrayType($keyTypes, $valueTypes);
 			}
 
-			return $this->generalizeType(
-				new ArrayType(
-					TypeCombinator::union(...array_map(function ($item) use ($scope): Type {
-						return $this->generalizeTypeFromValue($scope, $item);
-					}, array_keys($value))),
-					TypeCombinator::union(...array_map(function ($item) use ($scope): Type {
-						return $this->generalizeTypeFromValue($scope, $item);
-					}, array_values($value)))
-				)
+			return new ArrayType(
+				TypeCombinator::union(...array_map(function ($item) use ($scope): Type {
+					return $this->generalizeTypeFromValue($scope, $item);
+				}, array_keys($value))),
+				TypeCombinator::union(...array_map(function ($item) use ($scope): Type {
+					return $this->generalizeTypeFromValue($scope, $item);
+				}, array_values($value)))
 			);
 		}
 

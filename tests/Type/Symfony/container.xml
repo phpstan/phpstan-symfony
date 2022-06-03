@@ -37,6 +37,16 @@
                 <parameter key="value">another value</parameter>
             </parameter>
         </parameter>
+        <parameter key="app.list_of_different_list" type="collection">
+            <parameter type="collection">
+                <parameter key="name">the name</parameter>
+                <parameter key="value">the value</parameter>
+            </parameter>
+            <parameter type="collection">
+                <parameter key="age">12</parameter>
+                <parameter key="size">32</parameter>
+            </parameter>
+        </parameter>
         <parameter key="app.array_of_list" type="collection">
             <parameter key="foo" type="collection">
                 <parameter key="name">the name</parameter>
