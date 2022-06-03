@@ -29,6 +29,6 @@ class Request
     /**
      * @return \Symfony\Component\HttpFoundation\Session\Session
      */
-    public function getSession(): SessionInterface;
+    public function getSession();
 
 }
