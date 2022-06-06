@@ -71,9 +71,9 @@ final class ExampleAbstractController extends AbstractController
 		assertType("array<int, array{age: int, size: int}|array{name: string, value: string}>", $container->getParameter('app.list_of_different_list'));
 		assertType("array<int, array{age: int, size: int}|array{name: string, value: string}>", $parameterBag->get('app.list_of_different_list'));
 		assertType("array<int, array{age: int, size: int}|array{name: string, value: string}>", $this->getParameter('app.list_of_different_list'));
-		assertType("array{foo: array{name: string, value: string}, 0: array{name: string, value: string}}", $container->getParameter('app.array_of_list'));
-		assertType("array{foo: array{name: string, value: string}, 0: array{name: string, value: string}}", $parameterBag->get('app.array_of_list'));
-		assertType("array{foo: array{name: string, value: string}, 0: array{name: string, value: string}}", $this->getParameter('app.array_of_list'));
+		assertType("array<int|string, array{name: string, value: string}>", $container->getParameter('app.array_of_list'));
+		assertType("array<int|string, array{name: string, value: string}>", $parameterBag->get('app.array_of_list'));
+		assertType("array<int|string, array{name: string, value: string}>", $this->getParameter('app.array_of_list'));
 		assertType("array{url: string, endpoint: string, version: string, payment: array{default: array{username: string, password: string, signature: string}}, api: array{mode: string, default: array{username: string, password: string, signature: string}}}", $container->getParameter('app.list_of_things'));
 		assertType("array{url: string, endpoint: string, version: string, payment: array{default: array{username: string, password: string, signature: string}}, api: array{mode: string, default: array{username: string, password: string, signature: string}}}", $parameterBag->get('app.list_of_things'));
 		assertType("array{url: string, endpoint: string, version: string, payment: array{default: array{username: string, password: string, signature: string}}, api: array{mode: string, default: array{username: string, password: string, signature: string}}}", $this->getParameter('app.list_of_things'));

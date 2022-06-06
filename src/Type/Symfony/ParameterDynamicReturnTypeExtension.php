@@ -14,7 +14,6 @@ use PHPStan\Type\ArrayType;
 use PHPStan\Type\BooleanType;
 use PHPStan\Type\Constant\ConstantArrayType;
 use PHPStan\Type\Constant\ConstantBooleanType;
-use PHPStan\Type\Constant\ConstantIntegerType;
 use PHPStan\Type\Constant\ConstantStringType;
 use PHPStan\Type\ConstantType;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
@@ -37,6 +36,7 @@ use function class_exists;
 use function count;
 use function in_array;
 use function is_array;
+use function is_int;
 use function is_string;
 use function preg_match;
 use function strlen;
@@ -148,22 +148,19 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 	private function generalizeTypeFromValue(Scope $scope, $value): Type
 	{
 		if (is_array($value) && $value !== []) {
-			$isList = true;
-			$expectedKey = 0;
+			$hasOnlyStringKey = true;
 			foreach (array_keys($value) as $key) {
-				if ($key !== $expectedKey) {
-					$isList = false;
+				if (is_int($key)) {
+					$hasOnlyStringKey = false;
 					break;
 				}
-
-				$expectedKey++;
 			}
 
-			if (!$isList) {
+			if ($hasOnlyStringKey) {
 				$keyTypes = [];
 				$valueTypes = [];
 				foreach ($value as $key => $element) {
-					/** @var ConstantIntegerType|ConstantStringType $keyType */
+					/** @var ConstantStringType $keyType */
 					$keyType = $scope->getTypeFromValue($key);
 					$keyTypes[] = $keyType;
 					$valueTypes[] = $this->generalizeTypeFromValue($scope, $element);
