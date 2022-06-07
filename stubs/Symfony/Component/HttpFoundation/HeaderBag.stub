@@ -12,5 +12,10 @@ class HeaderBag implements \IteratorAggregate
 	 * @phpstan-return \Traversable<string, string|string[]>
 	 */
 	public function getIterator() {}
+	
+	/**
+	 * @return ($key is null ? array<string, array<int, string|null>> : array<int, string|null>)
+	 */
+	public function all(string $key = null) {}
 
 }
