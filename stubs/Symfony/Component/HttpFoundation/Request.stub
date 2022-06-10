@@ -31,4 +31,47 @@ class Request
      */
     public function getSession();
 
+    /**
+     * @return string[]
+     */
+    public static function getTrustedProxies(): array;
+
+    /**
+     * @return string[]
+     */
+    public static function getTrustedHosts(): array;
+
+    /**
+     * @param string $format
+     *
+     * @return string[]
+     */
+    public static function getMimeTypes($format): array;
+
+    /**
+     * @param string|null     $format
+     * @param string|string[] $mimeTypes
+     */
+    public function setFormat($format, $mimeTypes): void;
+
+    /**
+     * @return string[]
+     */
+    public function getLanguages(): array;
+
+    /**
+     * @return string[]
+     */
+    public function getCharsets(): array;
+
+    /**
+     * @return string[]
+     */
+    public function getEncodings(): array;
+
+    /**
+     * @return string[]
+     */
+    public function getAcceptableContentTypes(): array;
+
 }
