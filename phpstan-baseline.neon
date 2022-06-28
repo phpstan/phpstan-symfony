@@ -1,0 +1,11 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Accessing PHPStan\\\\Rules\\\\Methods\\\\CallMethodsRule\\:\\:class is not covered by backward compatibility promise\\. The class might change in a minor PHPStan version\\.$#"
+			count: 1
+			path: tests/Rules/NonexistentInputBagClassTest.php
+
+		-
+			message: "#^Accessing PHPStan\\\\Rules\\\\Comparison\\\\ImpossibleCheckTypeMethodCallRule\\:\\:class is not covered by backward compatibility promise\\. The class might change in a minor PHPStan version\\.$#"
+			count: 1
+			path: tests/Type/Symfony/ImpossibleCheckTypeMethodCallRuleTest.php
