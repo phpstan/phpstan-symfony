@@ -10,6 +10,8 @@ use Psr\Cache\CacheItemInterface;
 interface CallbackInterface
 {
     /**
+     * @param CacheItemInterface<T> $item
+     *
      * @return T
      */
     public function __invoke(CacheItemInterface $item, bool &$save);

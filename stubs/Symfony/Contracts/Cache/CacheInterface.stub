@@ -7,7 +7,7 @@ interface CacheInterface
     /**
      * @template T
      *
-     * @param \Symfony\Contracts\Cache\CallbackInterface<T>|callable(\Symfony\Contracts\Cache\ItemInterface, bool): T $callback
+     * @param \Symfony\Contracts\Cache\CallbackInterface<T>|callable(\Symfony\Contracts\Cache\ItemInterface<T>, bool): T $callback
      * @param array<mixed> $metadata
      * @return T
      */

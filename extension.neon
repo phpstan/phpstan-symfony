@@ -13,6 +13,7 @@ parameters:
 		consoleApplicationLoader: null
 	stubFiles:
 		- stubs/Psr/Cache/CacheItemInterface.stub
+		- stubs/Psr/Cache/CacheItemPoolInterface.stub
 		- stubs/Symfony/Bundle/FrameworkBundle/KernelBrowser.stub
 		- stubs/Symfony/Bundle/FrameworkBundle/Test/KernelTestCase.stub
 		- stubs/Symfony/Bundle/FrameworkBundle/Test/TestContainer.stub
