@@ -7,6 +7,7 @@ use PHPStan\ShouldNotHappenException;
 use PHPStan\Type\ObjectType;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\SingleCommandApplication;
 use function file_exists;
 use function get_class;
 use function is_readable;
@@ -40,7 +41,15 @@ final class ConsoleApplicationResolver
 			throw new ShouldNotHappenException(sprintf('Cannot load console application. Check the parameters.symfony.consoleApplicationLoader setting in PHPStan\'s config. The offending value is "%s".', $consoleApplicationLoader));
 		}
 
-		return require $consoleApplicationLoader;
+		$application = require $consoleApplicationLoader;
+		
+		if ($application instanceof SingleCommandApplication) {
+			$command = $application;
+			$application = new Application();
+			$application->add($command);
+		}
+		
+		return $application;
 	}
 
 	/**
