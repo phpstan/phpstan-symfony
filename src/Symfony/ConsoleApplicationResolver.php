@@ -42,13 +42,13 @@ final class ConsoleApplicationResolver
 		}
 
 		$application = require $consoleApplicationLoader;
-		
+
 		if ($application instanceof SingleCommandApplication) {
 			$command = $application;
 			$application = new Application();
 			$application->add($command);
 		}
-		
+
 		return $application;
 	}
 
