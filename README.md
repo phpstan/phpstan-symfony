@@ -132,6 +132,22 @@ $kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
 return new Application($kernel);
 ```
 
+[Single Command Application](https://symfony.com/doc/current/components/console/single_command_tool.html):
+
+```php
+// tests/console-application.php
+
+use App\Application; // where Application extends Symfony\Component\Console\SingleCommandApplication
+use Symfony\Component\Console;
+
+require __DIR__ . '/../vendor/autoload.php';
+
+$application = new Console\Application();
+$application->add(new Application());
+
+return $application;
+```
+
 You may then encounter an error with PhpParser:
 
 > Compile Error: Cannot Declare interface PhpParser\NodeVisitor, because the name is already in use
