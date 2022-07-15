@@ -40,6 +40,8 @@ parameters:
 		- stubs/Symfony/Component/PropertyAccess/PropertyPathInterface.stub
 		- stubs/Symfony/Component/Security/Acl/Model/AclInterface.stub
 		- stubs/Symfony/Component/Security/Acl/Model/EntryInterface.stub
+		- stubs/Symfony/Component/Security/Core/Authentication/Token/TokenInterface.stub
+		- stubs/Symfony/Component/Security/Core/Authorization/Voter/VoterInterface.stub
 		- stubs/Symfony/Component/Serializer/Encoder/ContextAwareDecoderInterface.stub
 		- stubs/Symfony/Component/Serializer/Encoder/DecoderInterface.stub
 		- stubs/Symfony/Component/Serializer/Encoder/EncoderInterface.stub
