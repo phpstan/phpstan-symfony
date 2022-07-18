@@ -1,0 +1,30 @@
+<?php
+
+namespace Symfony\Component\Console\Output;
+
+use Stringable;
+
+interface OutputInterface
+{
+    public const VERBOSITY_QUIET = 16;
+    public const VERBOSITY_NORMAL = 32;
+    public const VERBOSITY_VERBOSE = 64;
+    public const VERBOSITY_VERY_VERBOSE = 128;
+    public const VERBOSITY_DEBUG = 256;
+
+    public const OUTPUT_NORMAL = 1;
+    public const OUTPUT_RAW = 2;
+    public const OUTPUT_PLAIN = 4;
+
+    /**
+     * @param string|Stringable|iterable<string|Stringable> $messages
+     * @param int-mask-of<self::VERBOSITY_*|self::OUTPUT_*> $options
+     */
+    public function write($messages, bool $newline = false, int $options = 0): void;
+
+    /**
+     * @param string|Stringable|iterable<string|Stringable> $messages
+     * @param int-mask-of<self::VERBOSITY_*|self::OUTPUT_*> $options
+     */
+    public function writeln($messages, int $options = 0): void;
+}
