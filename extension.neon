@@ -18,6 +18,7 @@ parameters:
 		- stubs/Symfony/Bundle/FrameworkBundle/Test/TestContainer.stub
 		- stubs/Symfony/Component/Console/Command.stub
 		- stubs/Symfony/Component/Console/Helper/HelperInterface.stub
+		- stubs/Symfony/Component/Console/Output/OutputInterface.stub
 		- stubs/Symfony/Component/Form/ChoiceList/Loader/ChoiceLoaderInterface.stub
 		- stubs/Symfony/Component/DependencyInjection/ContainerBuilder.stub
 		- stubs/Symfony/Component/DependencyInjection/Extension/ExtensionInterface.stub

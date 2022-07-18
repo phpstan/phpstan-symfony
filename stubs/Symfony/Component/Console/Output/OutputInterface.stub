@@ -1,0 +1,18 @@
+<?php
+
+namespace Symfony\Component\Console\Output;
+
+interface OutputInterface
+{
+    /**
+     * @param string|\Stringable|iterable<string|\Stringable> $messages
+     * @param int-mask-of<self::VERBOSITY_*|self::OUTPUT_*> $options
+     */
+    public function write($messages, bool $newline = false, int $options = 0);
+
+    /**
+     * @param string|\Stringable|iterable<string|\Stringable> $messages
+     * @param int-mask-of<self::VERBOSITY_*|self::OUTPUT_*> $options
+     */
+    public function writeln($messages, int $options = 0);
+}
