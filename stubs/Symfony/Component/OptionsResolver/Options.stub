@@ -1,0 +1,41 @@
+<?php
+
+namespace Symfony\Component\OptionsResolver;
+
+/**
+ * @template TArray of array
+ * @extends \ArrayAccess<key-of<TArray>, value-of<TArray>>
+ */
+interface Options extends \ArrayAccess, \Countable
+{
+	/**
+	 * @param key-of<TArray> $offset
+	 *
+	 * @return bool
+	 */
+	public function offsetExists($offset);
+
+	/**
+	 * @template TOffset of key-of<TArray>
+	 * @param TOffset $offset
+	 * @return TArray[TOffset]
+	 */
+	public function offsetGet($offset);
+
+	/**
+	 * @template TOffset of key-of<TArray>
+	 * @param TOffset|null $offset
+	 * @param TArray[TOffset] $value
+	 *
+	 * @return void
+	 */
+	public function offsetSet($offset, $value);
+
+	/**
+	 * @template TOffset of key-of<TArray>
+	 * @param TOffset $offset
+	 *
+	 * @return void
+	 */
+	public function offsetUnset($offset);
+}
