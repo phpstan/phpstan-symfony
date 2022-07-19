@@ -24,7 +24,7 @@ interface Options extends \ArrayAccess, \Countable
 
 	/**
 	 * @template TOffset of key-of<TArray>
-	 * @param TOffset $offset
+	 * @param TOffset|null $offset
 	 * @param TArray[TOffset] $value
 	 *
 	 * @return void
