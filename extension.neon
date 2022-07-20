@@ -15,7 +15,6 @@ parameters:
 		skipCheckGenericClasses:
 			- Symfony\Component\OptionsResolver\Options
 	stubFiles:
-		- stubs/Php/Stringable.stub
 		- stubs/Psr/Cache/CacheItemInterface.stub
 		- stubs/Symfony/Bundle/FrameworkBundle/KernelBrowser.stub
 		- stubs/Symfony/Bundle/FrameworkBundle/Test/KernelTestCase.stub
