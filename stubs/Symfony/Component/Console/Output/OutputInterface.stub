@@ -2,8 +2,6 @@
 
 namespace Symfony\Component\Console\Output;
 
-use Stringable;
-
 interface OutputInterface
 {
     public const VERBOSITY_QUIET = 16;
