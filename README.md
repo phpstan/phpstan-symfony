@@ -73,7 +73,7 @@ parameters:
 
 ## Ignore container service checks for tests
 
-Inside tests maybe inlined or private container services are accessed. To disable the ruleset for test directory follwoig can be added to the `phpstan.neon` file:
+Inside tests maybe inlined or private container services are accessed. To disable the ruleset for `tests` directory following can be added to the `phpstan.neon` file:
 
 ```neon
 parameters:
