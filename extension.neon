@@ -22,12 +22,15 @@ parameters:
 		- stubs/Symfony/Component/Console/Command.stub
 		- stubs/Symfony/Component/Console/Helper/HelperInterface.stub
 		- stubs/Symfony/Component/Console/Output/OutputInterface.stub
-		- stubs/Symfony/Component/Form/ChoiceList/Loader/ChoiceLoaderInterface.stub
 		- stubs/Symfony/Component/DependencyInjection/ContainerBuilder.stub
 		- stubs/Symfony/Component/DependencyInjection/Extension/ExtensionInterface.stub
 		- stubs/Symfony/Component/EventDispatcher/EventDispatcherInterface.stub
 		- stubs/Symfony/Component/EventDispatcher/EventSubscriberInterface.stub
 		- stubs/Symfony/Component/EventDispatcher/GenericEvent.stub
+		- stubs/Symfony/Component/Form/ChoiceList/Loader/ChoiceLoaderInterface.stub
+		- stubs/Symfony/Component/Form/Exception/ExceptionInterface.stub
+		- stubs/Symfony/Component/Form/Exception/RuntimeException.stub
+		- stubs/Symfony/Component/Form/Exception/TransformationFailedException.stub
 		- stubs/Symfony/Component/Form/DataTransformerInterface.stub
 		- stubs/Symfony/Component/Form/FormBuilderInterface.stub
 		- stubs/Symfony/Component/Form/FormInterface.stub

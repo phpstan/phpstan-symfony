@@ -14,6 +14,8 @@ interface DataTransformerInterface
      * @phpstan-param T|null $value The value in the original representation
      *
      * @phpstan-return R|null The value in the transformed representation
+     *
+     * @throws TransformationFailedException
      */
     public function transform($value);
 
@@ -21,6 +23,8 @@ interface DataTransformerInterface
      * @phpstan-param R|null $value The value in the transformed representation
      *
      * @phpstan-return T|null The value in the original representation
+     *
+     * @throws TransformationFailedException
      */
     public function reverseTransform($value);
 }
