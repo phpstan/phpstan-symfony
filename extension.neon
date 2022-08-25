@@ -176,7 +176,14 @@ services:
 
 	# InputInterface::getOption() return type
 	-
+		factory: PHPStan\Type\Symfony\GetOptionTypeHelper
+	-
 		factory: PHPStan\Type\Symfony\InputInterfaceGetOptionDynamicReturnTypeExtension
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
+	# InputInterface::getOptions() return type
+	-
+		factory: PHPStan\Type\Symfony\InputInterfaceGetOptionsDynamicReturnTypeExtension
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
 
 	# InputInterface::hasOption() type specification

@@ -8,13 +8,14 @@ use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Symfony\ConsoleApplicationResolver;
+use PHPStan\Type\Constant\ConstantArrayTypeBuilder;
+use PHPStan\Type\Constant\ConstantStringType;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
-use PHPStan\Type\TypeUtils;
 use function count;
 
-final class InputInterfaceGetOptionDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
+final class InputInterfaceGetOptionsDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
 
 	/** @var ConsoleApplicationResolver */
@@ -36,34 +37,29 @@ final class InputInterfaceGetOptionDynamicReturnTypeExtension implements Dynamic
 
 	public function isMethodSupported(MethodReflection $methodReflection): bool
 	{
-		return $methodReflection->getName() === 'getOption';
+		return $methodReflection->getName() === 'getOptions';
 	}
 
 	public function getTypeFromMethodCall(MethodReflection $methodReflection, MethodCall $methodCall, Scope $scope): Type
 	{
 		$defaultReturnType = ParametersAcceptorSelector::selectFromArgs($scope, $methodCall->getArgs(), $methodReflection->getVariants())->getReturnType();
-
-		if (!isset($methodCall->getArgs()[0])) {
-			return $defaultReturnType;
-		}
-
 		$classReflection = $scope->getClassReflection();
 		if ($classReflection === null) {
 			return $defaultReturnType;
 		}
 
-		$optStrings = TypeUtils::getConstantStrings($scope->getType($methodCall->getArgs()[0]->value));
-		if (count($optStrings) !== 1) {
-			return $defaultReturnType;
-		}
-		$optName = $optStrings[0]->getValue();
-
 		$optTypes = [];
 		foreach ($this->consoleApplicationResolver->findCommands($classReflection) as $command) {
 			try {
 				$command->mergeApplicationDefinition();
-				$option = $command->getDefinition()->getOption($optName);
-				$optTypes[] = $this->getOptionTypeHelper->getOptionType($scope, $option);
+				$options = $command->getDefinition()->getOptions();
+				$builder = ConstantArrayTypeBuilder::createEmpty();
+				foreach ($options as $name => $option) {
+					$optionType = $this->getOptionTypeHelper->getOptionType($scope, $option);
+					$builder->setOffsetValueType(new ConstantStringType($name), $optionType);
+				}
+
+				$optTypes[] = $builder->getArray();
 			} catch (InvalidArgumentException $e) {
 				// noop
 			}
