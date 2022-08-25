@@ -21,6 +21,7 @@ final class ExampleOptionCommand extends Command
 		$this->addOption('c', null, InputOption::VALUE_REQUIRED);
 		$this->addOption('d', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL);
 		$this->addOption('e', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED);
+		$this->addOption('f', null, InputOption::VALUE_NEGATABLE);
 
 		$this->addOption('bb', null, InputOption::VALUE_OPTIONAL, '', 1);
 		$this->addOption('cc', null, InputOption::VALUE_REQUIRED, '', 1);
@@ -35,13 +36,14 @@ final class ExampleOptionCommand extends Command
 		assertType('string|null', $input->getOption('c'));
 		assertType('array<int, string|null>', $input->getOption('d'));
 		assertType('array<int, string>', $input->getOption('e'));
+		assertType('bool|null', $input->getOption('f'));
 
 		assertType('1|string|null', $input->getOption('bb'));
 		assertType('1|string', $input->getOption('cc'));
 		assertType('array<int, 1|string|null>', $input->getOption('dd'));
 		assertType('array<int, 1|string>', $input->getOption('ee'));
 
-		assertType('array{a: bool, b: string|null, c: string|null, d: array<int, string|null>, e: array<int, string>, bb: 1|string|null, cc: 1|string, dd: array<int, 1|string|null>, ee: array<int, 1|string>, help: bool, quiet: bool, verbose: bool, version: bool, ansi: bool, no-interaction: bool}', $input->getOptions());
+		assertType('array{a: bool, b: string|null, c: string|null, d: array<int, string|null>, e: array<int, string>, f: bool|null, bb: 1|string|null, cc: 1|string, dd: array<int, 1|string|null>, ee: array<int, 1|string>, help: bool, quiet: bool, verbose: bool, version: bool, ansi: bool|null, no-interaction: bool}', $input->getOptions());
 	}
 
 }
