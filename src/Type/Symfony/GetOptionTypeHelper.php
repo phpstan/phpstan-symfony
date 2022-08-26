@@ -12,6 +12,7 @@ use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
 use PHPStan\Type\UnionType;
 use Symfony\Component\Console\Input\InputOption;
+use function method_exists;
 
 class GetOptionTypeHelper
 {
@@ -19,7 +20,7 @@ class GetOptionTypeHelper
 	public function getOptionType(Scope $scope, InputOption $option): Type
 	{
 		if (!$option->acceptValue()) {
-			if ($option->isNegatable()) {
+			if (method_exists($option, 'isNegatable') && $option->isNegatable()) {
 				return new UnionType([new BooleanType(), new NullType()]);
 			}
 
