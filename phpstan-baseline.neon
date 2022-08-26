@@ -1,6 +1,11 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Call to function method_exists\\(\\) with Symfony\\\\Component\\\\Console\\\\Input\\\\InputOption and 'isNegatable' will always evaluate to true\\.$#"
+			count: 1
+			path: src/Type/Symfony/GetOptionTypeHelper.php
+
+		-
 			message: "#^Accessing PHPStan\\\\Rules\\\\Methods\\\\CallMethodsRule\\:\\:class is not covered by backward compatibility promise\\. The class might change in a minor PHPStan version\\.$#"
 			count: 1
 			path: tests/Rules/NonexistentInputBagClassTest.php
