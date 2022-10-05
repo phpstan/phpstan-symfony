@@ -27,11 +27,7 @@ final class ConsoleApplicationResolver
 		$this->consoleApplicationLoader = $configuration->getConsoleApplicationLoader();
 	}
 
-	/**
-	 * @return Application|null
-	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
-	 */
-	private function getConsoleApplication()
+	private function getConsoleApplication(): ?Application
 	{
 		if ($this->consoleApplicationLoader === null) {
 			return null;
