@@ -14,4 +14,11 @@ final class Envelope
     public function last(string $stampFqcn): ?StampInterface
     {
     }
+    
+    /**
+     * @return ($stampFqcn is null ? array<string, list<StampInterface>> : list<StampInterface>)
+     */
+    public function all(?string $stampFqcn = null): array
+    {
+    }
 }
