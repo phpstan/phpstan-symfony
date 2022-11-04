@@ -76,6 +76,7 @@ class ExtensionTest extends TypeInferenceTestCase
 		return [
 			__DIR__ . '/../../../extension.neon',
 			__DIR__ . '/extension-test.neon',
+			'phar://' . __DIR__ . '/../../../vendor/phpstan/phpstan/phpstan.phar/conf/bleedingEdge.neon',
 		];
 	}
 
