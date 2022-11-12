@@ -11,6 +11,7 @@ use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
 use PHPStan\Type\TypeUtils;
+use Symfony\Component\Console\Application;
 use Throwable;
 use function count;
 use function get_class;
@@ -55,8 +56,19 @@ final class CommandGetHelperDynamicReturnTypeExtension implements DynamicMethodR
 		}
 		$argName = $argStrings[0]->getValue();
 
+		$commands = $this->consoleApplicationResolver->findCommands($classReflection);
+		if (count($commands) === 0) {
+			$consoleApplication = new Application();
+
+			if ($consoleApplication->getHelperSet()->has($argName) === false) {
+				return $defaultReturnType;
+			}
+
+			return new ObjectType(get_class($consoleApplication->getHelperSet()->get($argName)));
+		}
+
 		$returnTypes = [];
-		foreach ($this->consoleApplicationResolver->findCommands($classReflection) as $command) {
+		foreach ($commands as $command) {
 			try {
 				$command->mergeApplicationDefinition();
 				$returnTypes[] = new ObjectType(get_class($command->getHelper($argName)));
