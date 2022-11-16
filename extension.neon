@@ -300,3 +300,8 @@ services:
 	-
 		factory: PHPStan\Type\Symfony\InputBagTypeSpecifyingExtension
 		tags: [phpstan.typeSpecifier.methodTypeSpecifyingExtension]
+
+	# HeaderBag::get() type specification
+	-
+		factory: PHPStan\Type\Symfony\HeaderBagTypeSpecifyingExtension
+		tags: [phpstan.typeSpecifier.methodTypeSpecifyingExtension]
