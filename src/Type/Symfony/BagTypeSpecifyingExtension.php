@@ -11,21 +11,30 @@ use PHPStan\Analyser\TypeSpecifierContext;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\MethodTypeSpecifyingExtension;
 use PHPStan\Type\NullType;
-use Symfony\Component\HttpFoundation\HeaderBag;
 
-final class HeaderBagTypeSpecifyingExtension implements MethodTypeSpecifyingExtension, TypeSpecifierAwareExtension
+final class BagTypeSpecifyingExtension implements MethodTypeSpecifyingExtension, TypeSpecifierAwareExtension
 {
 
-	private const HEADER_BAG_CLASS = HeaderBag::class;
 	private const HAS_METHOD_NAME = 'has';
 	private const GET_METHOD_NAME = 'get';
 
 	/** @var TypeSpecifier */
 	private $typeSpecifier;
 
+	/** @var class-string */
+	private $className;
+
+	/**
+	 * @param class-string $className
+	 */
+	public function __construct(string $className)
+	{
+		$this->className = $className;
+	}
+
 	public function getClass(): string
 	{
-		return self::HEADER_BAG_CLASS;
+		return $this->className;
 	}
 
 	public function isMethodSupported(MethodReflection $methodReflection, MethodCall $node, TypeSpecifierContext $context): bool

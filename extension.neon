@@ -298,10 +298,14 @@ services:
 
 	# InputBag::get() type specification
 	-
-		factory: PHPStan\Type\Symfony\InputBagTypeSpecifyingExtension
+		factory: PHPStan\Type\Symfony\BagTypeSpecifyingExtension
 		tags: [phpstan.typeSpecifier.methodTypeSpecifyingExtension]
+		arguments:
+		    className: Symfony\Component\HttpFoundation\InputBag
 
 	# HeaderBag::get() type specification
 	-
-		factory: PHPStan\Type\Symfony\HeaderBagTypeSpecifyingExtension
+		factory: PHPStan\Type\Symfony\BagTypeSpecifyingExtension
 		tags: [phpstan.typeSpecifier.methodTypeSpecifyingExtension]
+		arguments:
+		    className: Symfony\Component\HttpFoundation\HeaderBag
