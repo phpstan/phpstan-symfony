@@ -16,41 +16,44 @@ final class XmlParameterMapFactory implements ParameterMapFactory
 {
 
 	/** @var string|null */
-	private $containerXml;
+	private $containersXml;
 
 	public function __construct(Configuration $configuration)
 	{
-		$this->containerXml = $configuration->getContainerXmlPath();
+		$this->containersXml = $configuration->getContainerXmlPaths();
 	}
 
 	public function create(): ParameterMap
 	{
-		if ($this->containerXml === null) {
+		if ($this->containersXml === null) {
 			return new FakeParameterMap();
-		}
-
-		$fileContents = file_get_contents($this->containerXml);
-		if ($fileContents === false) {
-			throw new XmlContainerNotExistsException(sprintf('Container %s does not exist', $this->containerXml));
-		}
-
-		$xml = @simplexml_load_string($fileContents);
-		if ($xml === false) {
-			throw new XmlContainerNotExistsException(sprintf('Container %s cannot be parsed', $this->containerXml));
 		}
 
 		/** @var Parameter[] $parameters */
 		$parameters = [];
-		foreach ($xml->parameters->parameter as $def) {
-			/** @var SimpleXMLElement $attrs */
-			$attrs = $def->attributes();
 
-			$parameter = new Parameter(
-				(string) $attrs->key,
-				$this->getNodeValue($def)
-			);
+		foreach ($this->containersXml as $containerXml) {
+			$fileContents = file_get_contents($containerXml);
+			if ($fileContents === false) {
+				throw new XmlContainerNotExistsException(sprintf('Container %s does not exist', $containerXml));
+			}
 
-			$parameters[$parameter->getKey()] = $parameter;
+			$xml = @simplexml_load_string($fileContents);
+			if ($xml === false) {
+				throw new XmlContainerNotExistsException(sprintf('Container %s cannot be parsed', $containerXml));
+			}
+
+			foreach ($xml->parameters->parameter as $def) {
+				/** @var SimpleXMLElement $attrs */
+				$attrs = $def->attributes();
+
+				$parameter = new Parameter(
+					(string) $attrs->key,
+					$this->getNodeValue($def)
+				);
+
+				$parameters[$parameter->getKey()] = $parameter;
+			}
 		}
 
 		return new DefaultParameterMap($parameters);

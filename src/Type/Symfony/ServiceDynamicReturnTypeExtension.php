@@ -18,7 +18,6 @@ use PHPStan\Type\Type;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use function class_exists;
 use function in_array;
-use function is_string;
 
 final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
@@ -145,17 +144,7 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 
 	private function determineServiceClass(ParameterBag $parameterBag, ServiceDefinition $service): ?string
 	{
-		$class = $service->getClass();
-		if ($class === null) {
-			return null;
-		}
-
-		$value = $parameterBag->resolveValue($class);
-		if (!is_string($value)) {
-			return null;
-		}
-
-		return $value;
+		return $parameterBag->resolveValue($service->getClass());
 	}
 
 }

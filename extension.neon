@@ -71,6 +71,7 @@ parametersSchema:
 	symfony: structure([
 		container_xml_path: schema(string(), nullable())
 		containerXmlPath: schema(string(), nullable())
+		containerXmlPaths: schema(array(), nullable())
 		constant_hassers: bool()
 		constantHassers: bool()
 		console_application_loader: schema(string(), nullable())

@@ -16,9 +16,21 @@ final class Configuration
 		$this->parameters = $parameters;
 	}
 
-	public function getContainerXmlPath(): ?string
+	public function getContainerXmlPaths(): ?array
 	{
-		return $this->parameters['containerXmlPath'] ?? $this->parameters['container_xml_path'] ?? null;
+		if (isset($this->parameters['containerXmlPaths'])) {
+			return $this->parameters['containerXmlPaths'];
+		}
+
+		if (isset($this->parameters['containerXmlPath'])) {
+			return $this->parameters['containerXmlPath'];
+		}
+
+		if (isset($this->parameters['container_xml_path'])) {
+			return $this->parameters['container_xml_path'];
+		}
+
+		return null;
 	}
 
 	public function hasConstantHassers(): bool
