@@ -11,30 +11,21 @@ use PHPStan\Analyser\TypeSpecifierContext;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\MethodTypeSpecifyingExtension;
 use PHPStan\Type\NullType;
+use Symfony\Component\HttpFoundation\InputBag;
 
-final class BagTypeSpecifyingExtension implements MethodTypeSpecifyingExtension, TypeSpecifierAwareExtension
+final class InputBagTypeSpecifyingExtension implements MethodTypeSpecifyingExtension, TypeSpecifierAwareExtension
 {
 
+	private const INPUT_BAG_CLASS = InputBag::class;
 	private const HAS_METHOD_NAME = 'has';
 	private const GET_METHOD_NAME = 'get';
 
 	/** @var TypeSpecifier */
 	private $typeSpecifier;
 
-	/** @var class-string */
-	private $className;
-
-	/**
-	 * @param class-string $className
-	 */
-	public function __construct(string $className)
-	{
-		$this->className = $className;
-	}
-
 	public function getClass(): string
 	{
-		return $this->className;
+		return self::INPUT_BAG_CLASS;
 	}
 
 	public function isMethodSupported(MethodReflection $methodReflection, MethodCall $node, TypeSpecifierContext $context): bool
