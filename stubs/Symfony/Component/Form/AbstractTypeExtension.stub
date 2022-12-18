@@ -1,0 +1,11 @@
+<?php
+
+namespace Symfony\Component\Form;
+
+/**
+ * @template T
+ * @implements FormTypeExtensionInterface<T>
+ */
+abstract class AbstractTypeExtension implements FormTypeExtensionInterface
+{
+}

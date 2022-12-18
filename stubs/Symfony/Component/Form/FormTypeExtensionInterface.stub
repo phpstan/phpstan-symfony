@@ -2,19 +2,27 @@
 
 namespace Symfony\Component\Form;
 
+/**
+ * @template T
+ */
 interface FormTypeExtensionInterface
 {
     /**
+     * @param FormBuilderInterface<T> $builder
      * @param array<string, mixed> $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void;
 
     /**
+     * @param FormView<T> $view
+     * @param FormInterface<T> $form
      * @param array<string, mixed> $options
      */
     public function buildView(FormView $view, FormInterface $form, array $options): void;
 
     /**
+     * @param FormView<T> $view
+     * @param FormInterface<T> $form
      * @param array<string, mixed> $options
      */
     public function finishView(FormView $view, FormInterface $form, array $options): void;

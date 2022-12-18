@@ -13,6 +13,10 @@ parameters:
 		consoleApplicationLoader: null
 	featureToggles:
 		skipCheckGenericClasses:
+			- Symfony\Component\Form\AbstractType
+			- Symfony\Component\Form\AbstractTypeExtension
+			- Symfony\Component\Form\FormTypeExtensionInterface
+			- Symfony\Component\Form\FormTypeInterface
 			- Symfony\Component\OptionsResolver\Options
 	stubFiles:
 		- stubs/Psr/Cache/CacheItemInterface.stub
@@ -31,6 +35,8 @@ parameters:
 		- stubs/Symfony/Component/Form/Exception/ExceptionInterface.stub
 		- stubs/Symfony/Component/Form/Exception/RuntimeException.stub
 		- stubs/Symfony/Component/Form/Exception/TransformationFailedException.stub
+		- stubs/Symfony/Component/Form/AbstractType.stub
+		- stubs/Symfony/Component/Form/AbstractTypeExtension.stub
 		- stubs/Symfony/Component/Form/DataTransformerInterface.stub
 		- stubs/Symfony/Component/Form/FormBuilderInterface.stub
 		- stubs/Symfony/Component/Form/FormInterface.stub
