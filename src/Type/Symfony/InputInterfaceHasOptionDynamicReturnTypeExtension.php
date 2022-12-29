@@ -7,7 +7,6 @@ use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Symfony\ConsoleApplicationResolver;
-use PHPStan\Type\BooleanType;
 use PHPStan\Type\Constant\ConstantBooleanType;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\Type;
@@ -36,22 +35,20 @@ final class InputInterfaceHasOptionDynamicReturnTypeExtension implements Dynamic
 		return $methodReflection->getName() === 'hasOption';
 	}
 
-	public function getTypeFromMethodCall(MethodReflection $methodReflection, MethodCall $methodCall, Scope $scope): Type
+	public function getTypeFromMethodCall(MethodReflection $methodReflection, MethodCall $methodCall, Scope $scope): ?Type
 	{
-		$defaultReturnType = new BooleanType();
-
 		if (!isset($methodCall->getArgs()[0])) {
-			return $defaultReturnType;
+			return null;
 		}
 
 		$classReflection = $scope->getClassReflection();
 		if ($classReflection === null) {
-			return $defaultReturnType;
+			return null;
 		}
 
 		$optStrings = TypeUtils::getConstantStrings($scope->getType($methodCall->getArgs()[0]->value));
 		if (count($optStrings) !== 1) {
-			return $defaultReturnType;
+			return null;
 		}
 		$optName = $optStrings[0]->getValue();
 
@@ -67,11 +64,11 @@ final class InputInterfaceHasOptionDynamicReturnTypeExtension implements Dynamic
 		}
 
 		if (count($returnTypes) === 0) {
-			return $defaultReturnType;
+			return null;
 		}
 
 		$returnTypes = array_unique($returnTypes);
-		return count($returnTypes) === 1 ? new ConstantBooleanType($returnTypes[0]) : $defaultReturnType;
+		return count($returnTypes) === 1 ? new ConstantBooleanType($returnTypes[0]) : null;
 	}
 
 }

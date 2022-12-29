@@ -36,22 +36,20 @@ final class CommandGetHelperDynamicReturnTypeExtension implements DynamicMethodR
 		return $methodReflection->getName() === 'getHelper';
 	}
 
-	public function getTypeFromMethodCall(MethodReflection $methodReflection, MethodCall $methodCall, Scope $scope): Type
+	public function getTypeFromMethodCall(MethodReflection $methodReflection, MethodCall $methodCall, Scope $scope): ?Type
 	{
-		$defaultReturnType = new ObjectType('Symfony\Component\Console\Helper\HelperInterface');
-
 		if (!isset($methodCall->getArgs()[0])) {
-			return $defaultReturnType;
+			return null;
 		}
 
 		$classReflection = $scope->getClassReflection();
 		if ($classReflection === null) {
-			return $defaultReturnType;
+			return null;
 		}
 
 		$argStrings = TypeUtils::getConstantStrings($scope->getType($methodCall->getArgs()[0]->value));
 		if (count($argStrings) !== 1) {
-			return $defaultReturnType;
+			return null;
 		}
 		$argName = $argStrings[0]->getValue();
 
@@ -65,7 +63,7 @@ final class CommandGetHelperDynamicReturnTypeExtension implements DynamicMethodR
 			}
 		}
 
-		return count($returnTypes) > 0 ? TypeCombinator::union(...$returnTypes) : $defaultReturnType;
+		return count($returnTypes) > 0 ? TypeCombinator::union(...$returnTypes) : null;
 	}
 
 }

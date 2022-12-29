@@ -6,7 +6,6 @@ use InvalidArgumentException;
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
-use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Symfony\ConsoleApplicationResolver;
 use PHPStan\Type\Constant\ConstantArrayTypeBuilder;
 use PHPStan\Type\Constant\ConstantStringType;
@@ -40,12 +39,11 @@ final class InputInterfaceGetOptionsDynamicReturnTypeExtension implements Dynami
 		return $methodReflection->getName() === 'getOptions';
 	}
 
-	public function getTypeFromMethodCall(MethodReflection $methodReflection, MethodCall $methodCall, Scope $scope): Type
+	public function getTypeFromMethodCall(MethodReflection $methodReflection, MethodCall $methodCall, Scope $scope): ?Type
 	{
-		$defaultReturnType = ParametersAcceptorSelector::selectFromArgs($scope, $methodCall->getArgs(), $methodReflection->getVariants())->getReturnType();
 		$classReflection = $scope->getClassReflection();
 		if ($classReflection === null) {
-			return $defaultReturnType;
+			return null;
 		}
 
 		$optTypes = [];
@@ -65,7 +63,7 @@ final class InputInterfaceGetOptionsDynamicReturnTypeExtension implements Dynami
 			}
 		}
 
-		return count($optTypes) > 0 ? TypeCombinator::union(...$optTypes) : $defaultReturnType;
+		return count($optTypes) > 0 ? TypeCombinator::union(...$optTypes) : null;
 	}
 
 }

@@ -6,7 +6,6 @@ use InvalidArgumentException;
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
-use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Symfony\ConsoleApplicationResolver;
 use PHPStan\Type\ArrayType;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
@@ -38,22 +37,20 @@ final class InputInterfaceGetArgumentDynamicReturnTypeExtension implements Dynam
 		return $methodReflection->getName() === 'getArgument';
 	}
 
-	public function getTypeFromMethodCall(MethodReflection $methodReflection, MethodCall $methodCall, Scope $scope): Type
+	public function getTypeFromMethodCall(MethodReflection $methodReflection, MethodCall $methodCall, Scope $scope): ?Type
 	{
-		$defaultReturnType = ParametersAcceptorSelector::selectFromArgs($scope, $methodCall->getArgs(), $methodReflection->getVariants())->getReturnType();
-
 		if (!isset($methodCall->getArgs()[0])) {
-			return $defaultReturnType;
+			return null;
 		}
 
 		$classReflection = $scope->getClassReflection();
 		if ($classReflection === null) {
-			return $defaultReturnType;
+			return null;
 		}
 
 		$argStrings = TypeUtils::getConstantStrings($scope->getType($methodCall->getArgs()[0]->value));
 		if (count($argStrings) !== 1) {
-			return $defaultReturnType;
+			return null;
 		}
 		$argName = $argStrings[0]->getValue();
 
@@ -79,7 +76,7 @@ final class InputInterfaceGetArgumentDynamicReturnTypeExtension implements Dynam
 			}
 		}
 
-		return count($argTypes) > 0 ? TypeCombinator::union(...$argTypes) : $defaultReturnType;
+		return count($argTypes) > 0 ? TypeCombinator::union(...$argTypes) : null;
 	}
 
 }
