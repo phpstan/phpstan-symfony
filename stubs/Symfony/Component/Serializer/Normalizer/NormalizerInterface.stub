@@ -3,6 +3,10 @@
 namespace Symfony\Component\Serializer\Normalizer;
 
 use ArrayObject;
+use Symfony\Component\Serializer\Exception\CircularReferenceException;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
+use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Symfony\Component\Serializer\Exception\LogicException;
 
 interface NormalizerInterface
 {
@@ -12,6 +16,11 @@ interface NormalizerInterface
      * @param array<mixed> $context
      *
      * @return array<mixed>|ArrayObject<array-key, mixed>|string|int|float|bool|null
+     *
+     * @throws InvalidArgumentException
+     * @throws CircularReferenceException
+     * @throws LogicException
+     * @throws ExceptionInterface
      */
     public function normalize($object, $format = null, array $context = []);
 
