@@ -2,13 +2,16 @@
 
 namespace Symfony\Component\Serializer\Normalizer;
 
+use ArrayObject;
+
 interface NormalizerInterface
 {
     /**
      * @param mixed $object
      * @param string|null $format
      * @param array<mixed> $context
-     * @return array<mixed>|string|int|float|bool|null
+     *
+     * @return array<mixed>|ArrayObject<array-key, mixed>|string|int|float|bool|null
      */
     public function normalize($object, $format = null, array $context = []);
 
