@@ -6,11 +6,12 @@ use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\ArrayType;
-use PHPStan\Type\Constant\ConstantStringType;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\MixedType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
+use PHPStan\Type\TypeCombinator;
+use function count;
 use function substr;
 
 class SerializerDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
@@ -45,13 +46,16 @@ class SerializerDynamicReturnTypeExtension implements DynamicMethodReturnTypeExt
 		}
 
 		$argType = $scope->getType($methodCall->getArgs()[1]->value);
-		if (!$argType instanceof ConstantStringType) {
+		if (count($argType->getConstantStrings()) === 0) {
 			return new MixedType();
 		}
 
-		$objectName = $argType->getValue();
+		$types = [];
+		foreach ($argType->getConstantStrings() as $constantString) {
+			$types[] = $this->getType($constantString->getValue());
+		}
 
-		return $this->getType($objectName);
+		return TypeCombinator::union(...$types);
 	}
 
 	private function getType(string $objectName): Type

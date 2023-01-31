@@ -46,7 +46,7 @@ final class InvalidArgumentDefaultValueRule implements Rule
 		}
 
 		$modeType = isset($node->getArgs()[1]) ? $scope->getType($node->getArgs()[1]->value) : new NullType();
-		if ($modeType instanceof NullType) {
+		if ($modeType->isNull()->yes()) {
 			$modeType = new ConstantIntegerType(2); // InputArgument::OPTIONAL
 		}
 		$modeTypes = TypeUtils::getConstantScalars($modeType);

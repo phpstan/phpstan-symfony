@@ -48,7 +48,7 @@ final class InvalidOptionDefaultValueRule implements Rule
 		}
 
 		$modeType = isset($node->getArgs()[2]) ? $scope->getType($node->getArgs()[2]->value) : new NullType();
-		if ($modeType instanceof NullType) {
+		if ($modeType->isNull()->yes()) {
 			$modeType = new ConstantIntegerType(1); // InputOption::VALUE_NONE
 		}
 		$modeTypes = TypeUtils::getConstantScalars($modeType);

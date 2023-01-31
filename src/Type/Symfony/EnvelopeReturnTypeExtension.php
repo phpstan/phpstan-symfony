@@ -7,12 +7,12 @@ use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\Accessory\AccessoryArrayListType;
 use PHPStan\Type\ArrayType;
-use PHPStan\Type\Constant\ConstantStringType;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\Generic\GenericClassStringType;
 use PHPStan\Type\IntegerType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
+use PHPStan\Type\TypeCombinator;
 use function count;
 
 final class EnvelopeReturnTypeExtension implements DynamicMethodReturnTypeExtension
@@ -42,11 +42,16 @@ final class EnvelopeReturnTypeExtension implements DynamicMethodReturnTypeExtens
 		}
 
 		$argType = $scope->getType($methodCall->getArgs()[0]->value);
-		if (!$argType instanceof ConstantStringType) {
+		if (count($argType->getConstantStrings()) === 0) {
 			return AccessoryArrayListType::intersectWith(new ArrayType(new IntegerType(), new ObjectType('Symfony\Component\Messenger\Stamp\StampInterface')));
 		}
 
-		return AccessoryArrayListType::intersectWith(new ArrayType(new IntegerType(), new ObjectType($argType->getValue())));
+		$objectTypes = [];
+		foreach ($argType->getConstantStrings() as $constantString) {
+			$objectTypes[] = new ObjectType($constantString->getValue());
+		}
+
+		return AccessoryArrayListType::intersectWith(new ArrayType(new IntegerType(), TypeCombinator::union(...$objectTypes)));
 	}
 
 }
