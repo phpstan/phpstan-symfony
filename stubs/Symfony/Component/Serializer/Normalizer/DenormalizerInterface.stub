@@ -2,6 +2,14 @@
 
 namespace Symfony\Component\Serializer\Normalizer;
 
+use Symfony\Component\Serializer\Exception\BadMethodCallException;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
+use Symfony\Component\Serializer\Exception\ExtraAttributesException;
+use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Symfony\Component\Serializer\Exception\LogicException;
+use Symfony\Component\Serializer\Exception\RuntimeException;
+use Symfony\Component\Serializer\Exception\UnexpectedValueException;
+
 interface DenormalizerInterface
 {
     /**
@@ -10,6 +18,14 @@ interface DenormalizerInterface
      * @param string|null $format
      * @param array<mixed> $context
      * @return mixed
+     *
+     * @throws BadMethodCallException
+     * @throws InvalidArgumentException
+     * @throws UnexpectedValueException
+     * @throws ExtraAttributesException
+     * @throws LogicException
+     * @throws RuntimeException
+     * @throws ExceptionInterface
      */
     public function denormalize($data, $type, $format = null, array $context = []);
 

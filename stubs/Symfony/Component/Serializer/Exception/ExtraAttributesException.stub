@@ -1,0 +1,20 @@
+<?php
+
+namespace Symfony\Component\Serializer\Exception;
+
+class ExtraAttributesException extends RuntimeException
+{
+    /**
+     * @param string[] $extraAttributes
+     */
+    public function __construct(array $extraAttributes, \Throwable $previous = null)
+    {
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getExtraAttributes()
+    {
+    }
+}

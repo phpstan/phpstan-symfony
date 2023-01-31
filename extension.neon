@@ -58,6 +58,14 @@ parameters:
 		- stubs/Symfony/Component/Serializer/Encoder/ContextAwareDecoderInterface.stub
 		- stubs/Symfony/Component/Serializer/Encoder/DecoderInterface.stub
 		- stubs/Symfony/Component/Serializer/Encoder/EncoderInterface.stub
+		- stubs/Symfony/Component/Serializer/Exception/BadMethodCallException.stub
+		- stubs/Symfony/Component/Serializer/Exception/CircularReferenceException.stub
+		- stubs/Symfony/Component/Serializer/Exception/ExceptionInterface.stub
+		- stubs/Symfony/Component/Serializer/Exception/ExtraAttributesException.stub
+		- stubs/Symfony/Component/Serializer/Exception/InvalidArgumentException.stub
+		- stubs/Symfony/Component/Serializer/Exception/LogicException.stub
+		- stubs/Symfony/Component/Serializer/Exception/RuntimeException.stub
+		- stubs/Symfony/Component/Serializer/Exception/UnexpectedValueException.stub
 		- stubs/Symfony/Component/Serializer/Normalizer/ContextAwareDenormalizerInterface.stub
 		- stubs/Symfony/Component/Serializer/Normalizer/ContextAwareNormalizerInterface.stub
 		- stubs/Symfony/Component/Serializer/Normalizer/DenormalizableInterface.stub

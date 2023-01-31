@@ -1,0 +1,7 @@
+<?php
+
+namespace Symfony\Component\Serializer\Exception;
+
+class LogicException extends \LogicException implements ExceptionInterface
+{
+}
