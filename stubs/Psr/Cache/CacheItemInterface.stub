@@ -2,6 +2,20 @@
 
 namespace Psr\Cache;
 
+/**
+ * @template TValue
+ */
 interface CacheItemInterface
 {
+    /**
+     * @return TValue
+     */
+    public function get();
+
+    /**
+     * @param TValue $value
+     *
+     * @return static
+     */
+    public function set($value);
 }

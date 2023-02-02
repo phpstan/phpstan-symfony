@@ -1,0 +1,37 @@
+<?php
+
+namespace Psr\Cache;
+
+/**
+ * @template TValue
+ */
+interface CacheItemPoolInterface
+{
+    /**
+     * @param string $key
+     *
+     * @return CacheItemInterface<TValue>
+     */
+    public function getItem($key);
+
+    /**
+     * @param array<string> $keys
+     *
+     * @return array<CacheItemInterface<TValue>>|\Traversable<CacheItemInterface<TValue>>
+     */
+    public function getItems(array $keys = array());
+
+    /**
+     * @param CacheItemInterface<TValue> $item
+     *
+     * @return bool
+     */
+    public function save(CacheItemInterface $item);
+
+    /**
+     * @param CacheItemInterface<TValue> $item
+     *
+     * @return bool
+     */
+    public function saveDeferred(CacheItemInterface $item);
+}

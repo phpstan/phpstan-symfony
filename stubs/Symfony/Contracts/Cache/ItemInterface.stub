@@ -4,6 +4,10 @@ namespace Symfony\Contracts\Cache;
 
 use Psr\Cache\CacheItemInterface;
 
+/**
+ * @template TValue
+ * @extends CacheItemInterface<TValue>
+ */
 interface ItemInterface extends CacheItemInterface
 {
 }
