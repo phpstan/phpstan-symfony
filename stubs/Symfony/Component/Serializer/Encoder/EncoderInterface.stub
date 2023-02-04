@@ -2,6 +2,8 @@
 
 namespace Symfony\Component\Serializer\Encoder;
 
+use Symfony\Component\Serializer\Exception\UnexpectedValueException;
+
 interface EncoderInterface
 {
     /**
@@ -9,6 +11,8 @@ interface EncoderInterface
      * @param string $format
      * @param array<mixed> $context
      * @return string
+     *
+     * @throws UnexpectedValueException
      */
     public function encode($data, $format, array $context = []);
 
