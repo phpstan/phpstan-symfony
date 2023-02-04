@@ -11,6 +11,8 @@ interface DecoderInterface
      * @param string $format
      * @param array<mixed> $context
      * @return mixed
+     *
+     * @throws UnexpectedValueException
      */
     public function decode($data, $format, array $context = []);
 

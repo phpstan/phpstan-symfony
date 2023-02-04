@@ -8,6 +8,8 @@ interface ExtensionInterface
 {
     /**
      * @param array<mixed> $configs
+     *
+     * @throws \InvalidArgumentException
      */
     public function load(array $configs, ContainerBuilder $container): void;
 }

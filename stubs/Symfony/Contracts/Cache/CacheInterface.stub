@@ -2,6 +2,8 @@
 
 namespace Symfony\Contracts\Cache;
 
+use Psr\Cache\InvalidArgumentException;
+
 interface CacheInterface
 {
     /**
@@ -10,6 +12,8 @@ interface CacheInterface
      * @param \Symfony\Contracts\Cache\CallbackInterface<T>|callable(\Symfony\Contracts\Cache\ItemInterface, bool): T $callback
      * @param array<mixed> $metadata
      * @return T
+     *
+     * @throws InvalidArgumentException
      */
     public function get(string $key, callable $callback, float $beta = null, array &$metadata = null);
 }

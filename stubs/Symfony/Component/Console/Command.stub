@@ -2,10 +2,16 @@
 
 namespace Symfony\Component\Console\Command;
 
+use Symfony\Component\Console\Exception\InvalidArgumentException;
+use Symfony\Component\Console\Exception\LogicException;
+
 class Command
 {
     /**
      * @return \Symfony\Component\Console\Helper\HelperInterface
+     *
+     * @throws LogicException
+     * @throws InvalidArgumentException
      */
     public function getHelper(string $name);
 }
