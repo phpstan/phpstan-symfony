@@ -3,14 +3,14 @@
 namespace PHPStan\Symfony;
 
 use PHPStan\PhpDoc\StubFilesExtension;
-use function class_exists;
+use function interface_exists;
 
 class PasswordAuthenticatedUserStubFilesExtension implements StubFilesExtension
 {
 
 	public function getFiles(): array
 	{
-		if (!class_exists('Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface')) {
+		if (!interface_exists('Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface')) {
 			return [];
 		}
 
