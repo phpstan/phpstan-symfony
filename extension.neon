@@ -34,6 +34,7 @@ parameters:
 		- stubs/Symfony/Component/EventDispatcher/EventDispatcherInterface.stub
 		- stubs/Symfony/Component/EventDispatcher/EventSubscriberInterface.stub
 		- stubs/Symfony/Component/EventDispatcher/GenericEvent.stub
+		- stubs/Symfony/Component/Form/AbstractType.stub
 		- stubs/Symfony/Component/Form/ChoiceList/Loader/ChoiceLoaderInterface.stub
 		- stubs/Symfony/Component/Form/Exception/ExceptionInterface.stub
 		- stubs/Symfony/Component/Form/Exception/RuntimeException.stub
@@ -41,6 +42,7 @@ parameters:
 		- stubs/Symfony/Component/Form/DataTransformerInterface.stub
 		- stubs/Symfony/Component/Form/FormBuilderInterface.stub
 		- stubs/Symfony/Component/Form/FormInterface.stub
+		- stubs/Symfony/Component/Form/FormFactoryInterface.stub
 		- stubs/Symfony/Component/Form/FormTypeExtensionInterface.stub
 		- stubs/Symfony/Component/Form/FormTypeInterface.stub
 		- stubs/Symfony/Component/Form/FormView.stub
@@ -50,6 +52,7 @@ parameters:
 		- stubs/Symfony/Component/HttpFoundation/Session.stub
 		- stubs/Symfony/Component/Messenger/StampInterface.stub
 		- stubs/Symfony/Component/Messenger/Envelope.stub
+		- stubs/Symfony/Component/OptionsResolver/Exception/InvalidOptionsException.stub
 		- stubs/Symfony/Component/OptionsResolver/Options.stub
 		- stubs/Symfony/Component/Process/Process.stub
 		- stubs/Symfony/Component/PropertyAccess/PropertyPathInterface.stub
