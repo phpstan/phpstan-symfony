@@ -22,9 +22,22 @@ class FormFactoryAwareClass
 		$form = $this->formFactory->create(DataClassType::class, new DataClass());
 		$data = $form->getData();
 		$this->thisOnlyAcceptsDataClass($data);
+		$this->thisOnlyAcceptsDataClassOrNull($data);
+	}
+
+	public function doSomethingNullable(): void
+	{
+		$form = $this->formFactory->create(DataClassType::class);
+		$data = $form->getData();
+		// $this->thisOnlyAcceptsDataClass($data); // ERROR!
+		$this->thisOnlyAcceptsDataClassOrNull($data);
 	}
 
 	private function thisOnlyAcceptsDataClass(DataClass $data): void
+	{
+	}
+
+	private function thisOnlyAcceptsDataClassOrNull(?DataClass $data): void
 	{
 	}
 }

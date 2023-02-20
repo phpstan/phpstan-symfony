@@ -14,7 +14,7 @@ interface FormFactoryInterface
 	 * @param TData $data
 	 * @param array<string, mixed> $options
 	 *
-	 * @phpstan-return FormInterface<TData>
+	 * @phpstan-return ($data is null ? FormInterface<null|TData> : FormInterface<TData>)
 	 *
 	 * @throws \Symfony\Component\OptionsResolver\Exception\InvalidOptionsException
 	 */
@@ -27,8 +27,8 @@ interface FormFactoryInterface
 	 * @param class-string<TFormType> $type
 	 * @param TData $data
 	 * @param array<string, mixed> $options
-	 *
-	 * @phpstan-return FormInterface<TData>
+     *
+     * @phpstan-return ($data is null ? FormInterface<null|TData> : FormInterface<TData>)
 	 *
 	 * @throws \Symfony\Component\OptionsResolver\Exception\InvalidOptionsException
 	 */
