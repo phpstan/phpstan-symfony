@@ -2,15 +2,28 @@
 
 namespace PHPStan\Symfony;
 
+use PHPStan\BetterReflection\Reflector\Exception\IdentifierNotFound;
+use PHPStan\BetterReflection\Reflector\Reflector;
 use PHPStan\PhpDoc\StubFilesExtension;
-use function interface_exists;
 
 class PasswordAuthenticatedUserStubFilesExtension implements StubFilesExtension
 {
 
+	/** @var Reflector */
+	private $reflector;
+
+	public function __construct(
+		Reflector $reflector
+	)
+	{
+		$this->reflector = $reflector;
+	}
+
 	public function getFiles(): array
 	{
-		if (!interface_exists('Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface')) {
+		try {
+			$this->reflector->reflectClass('Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface');
+		} catch (IdentifierNotFound $e) {
 			return [];
 		}
 
