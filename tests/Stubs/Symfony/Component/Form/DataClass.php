@@ -1,18 +1,14 @@
-<?php
+<?php declare(strict_types = 1);
 
-declare(strict_types=1);
-
-namespace Stubs\Symfony\Component\Form;
+namespace PHPStan\Stubs\Symfony\Component\Form;
 
 class DataClass
 {
-	/**
-	 * @var int
-	 */
+
+	/** @var int */
 	public $foo;
 
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	public $bar;
+
 }

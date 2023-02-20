@@ -1,19 +1,17 @@
-<?php
+<?php declare(strict_types = 1);
 
-namespace Stubs\Symfony\Component\Form;
+namespace PHPStan\Stubs\Symfony\Component\Form;
 
 use Symfony\Component\Form\FormFactoryInterface;
 
 class FormFactoryAwareClass
 {
-	/**
-	 * @var FormFactoryInterface
-	 */
+
+	/** @var FormFactoryInterface */
 	private $formFactory;
 
-	public function __construct(
-		FormFactoryInterface $formFactory
-	) {
+	public function __construct(FormFactoryInterface $formFactory)
+	{
 		$this->formFactory = $formFactory;
 	}
 
@@ -40,4 +38,5 @@ class FormFactoryAwareClass
 	private function thisOnlyAcceptsDataClassOrNull(?DataClass $data): void
 	{
 	}
+
 }

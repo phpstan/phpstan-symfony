@@ -1,6 +1,6 @@
-<?php
+<?php declare(strict_types = 1);
 
-namespace Stubs\Symfony\Component\Form;
+namespace PHPStan\Stubs\Symfony\Component\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -13,6 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class DataClassType extends AbstractType
 {
+
 	public function buildForm(FormBuilderInterface $builder, array $options): void
 	{
 		$builder
@@ -29,4 +30,5 @@ class DataClassType extends AbstractType
 			])
 		;
 	}
+
 }
