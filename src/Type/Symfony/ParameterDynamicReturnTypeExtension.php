@@ -14,7 +14,6 @@ use PHPStan\Type\ArrayType;
 use PHPStan\Type\BooleanType;
 use PHPStan\Type\Constant\ConstantArrayType;
 use PHPStan\Type\Constant\ConstantBooleanType;
-use PHPStan\Type\Constant\ConstantStringType;
 use PHPStan\Type\ConstantType;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\FloatType;
@@ -160,9 +159,12 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 				$keyTypes = [];
 				$valueTypes = [];
 				foreach ($value as $key => $element) {
-					/** @var ConstantStringType $keyType */
 					$keyType = $scope->getTypeFromValue($key);
-					$keyTypes[] = $keyType;
+					$keyStringTypes = $keyType->getConstantStrings();
+					if (count($keyStringTypes) !== 1) {
+						throw new ShouldNotHappenException();
+					}
+					$keyTypes[] = $keyStringTypes[0];
 					$valueTypes[] = $this->generalizeTypeFromValue($scope, $element);
 				}
 
