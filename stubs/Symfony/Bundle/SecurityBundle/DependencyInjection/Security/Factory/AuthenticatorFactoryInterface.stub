@@ -1,0 +1,16 @@
+<?php
+
+namespace Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory;
+
+use Symfony\Component\Config\Definition\Builder\NodeDefinition;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+
+interface AuthenticatorFactoryInterface
+{
+    /**
+     * @param array<string, mixed> $config
+     *
+     * @return string|string[]
+     */
+    public function createAuthenticator(ContainerBuilder $container, string $firewallName, array $config, string $userProviderId);
+}

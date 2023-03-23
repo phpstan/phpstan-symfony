@@ -23,6 +23,8 @@ parameters:
 		- stubs/Symfony/Bundle/FrameworkBundle/KernelBrowser.stub
 		- stubs/Symfony/Bundle/FrameworkBundle/Test/KernelTestCase.stub
 		- stubs/Symfony/Bundle/FrameworkBundle/Test/TestContainer.stub
+		- stubs/Symfony/Bundle/SecurityBundle/DependencyInjection/Security/Factory/AuthenticatorFactoryInterface.stub
+		- stubs/Symfony/Bundle/SecurityBundle/DependencyInjection/Security/Factory/FirewallListenerFactoryInterface.stub
 		- stubs/Symfony/Component/Console/Command.stub
 		- stubs/Symfony/Component/Console/Exception/ExceptionInterface.stub
 		- stubs/Symfony/Component/Console/Exception/InvalidArgumentException.stub
