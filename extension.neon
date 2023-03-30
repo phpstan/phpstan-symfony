@@ -58,8 +58,6 @@ parameters:
 		- stubs/Symfony/Component/Security/Core/Authentication/Token/TokenInterface.stub
 		- stubs/Symfony/Component/Security/Core/Authorization/Voter/Voter.stub
 		- stubs/Symfony/Component/Security/Core/Authorization/Voter/VoterInterface.stub
-		- stubs/Symfony/Component/Security/Core/User/PasswordAuthenticatedUserInterface.stub
-		- stubs/Symfony/Component/Security/Core/User/PasswordUpgraderInterface.stub
 		- stubs/Symfony/Component/Serializer/Encoder/ContextAwareDecoderInterface.stub
 		- stubs/Symfony/Component/Serializer/Encoder/DecoderInterface.stub
 		- stubs/Symfony/Component/Serializer/Encoder/EncoderInterface.stub
@@ -296,6 +294,10 @@ services:
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
 	-
 		class: PHPStan\Symfony\InputBagStubFilesExtension
+		tags:
+			- phpstan.stubFilesExtension
+	-
+		class: PHPStan\Symfony\PasswordAuthenticatedUserStubFilesExtension
 		tags:
 			- phpstan.stubFilesExtension
 

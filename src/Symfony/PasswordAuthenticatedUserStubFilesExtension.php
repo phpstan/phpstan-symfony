@@ -6,7 +6,7 @@ use PHPStan\BetterReflection\Reflector\Exception\IdentifierNotFound;
 use PHPStan\BetterReflection\Reflector\Reflector;
 use PHPStan\PhpDoc\StubFilesExtension;
 
-class InputBagStubFilesExtension implements StubFilesExtension
+class PasswordAuthenticatedUserStubFilesExtension implements StubFilesExtension
 {
 
 	/** @var Reflector */
@@ -22,14 +22,14 @@ class InputBagStubFilesExtension implements StubFilesExtension
 	public function getFiles(): array
 	{
 		try {
-			$this->reflector->reflectClass('Symfony\Component\HttpFoundation\InputBag');
+			$this->reflector->reflectClass('Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface');
 		} catch (IdentifierNotFound $e) {
 			return [];
 		}
 
 		return [
-			__DIR__ . '/../../stubs/Symfony/Component/HttpFoundation/InputBag.stub',
-			__DIR__ . '/../../stubs/Symfony/Component/HttpFoundation/Request.stub',
+			__DIR__ . '/../../stubs/Symfony/Component/Security/Core/User/PasswordAuthenticatedUserInterface.stub',
+			__DIR__ . '/../../stubs/Symfony/Component/Security/Core/User/PasswordUpgraderInterface.stub',
 		];
 	}
 
