@@ -13,6 +13,10 @@ parameters:
 		consoleApplicationLoader: null
 	featureToggles:
 		skipCheckGenericClasses:
+			- Symfony\Component\Form\AbstractType
+			- Symfony\Component\Form\FormInterface
+			- Symfony\Component\Form\FormTypeExtensionInterface
+			- Symfony\Component\Form\FormTypeInterface
 			- Symfony\Component\OptionsResolver\Options
 			- Symfony\Component\Security\Core\Authorization\Voter\Voter
 			- Symfony\Component\Security\Core\User\PasswordUpgraderInterface
