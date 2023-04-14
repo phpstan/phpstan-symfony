@@ -60,13 +60,13 @@ class FormFactoryAwareClass
 	public function doSomething(): void
 	{
 		$form = $this->formFactory->create(DataClassType::class, new DataClass());
-		assertType('PHPStan\Type\Symfony\DataClass', $form->getData());
+		assertType('GenericFormDataType\DataClass', $form->getData());
 	}
 
 	public function doSomethingNullable(): void
 	{
 		$form = $this->formFactory->create(DataClassType::class);
-		assertType('PHPStan\Type\Symfony\DataClass|null', $form->getData());
+		assertType('GenericFormDataType\DataClass|null', $form->getData());
 	}
 
 }
