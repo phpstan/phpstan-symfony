@@ -11,6 +11,13 @@ namespace Symfony\Component\Form;
 interface FormInterface extends \ArrayAccess, \Traversable, \Countable
 {
     /**
+     * @param TData $modelData
+     *
+     * @return $this
+     */
+    public function setData($modelData): FormInterface;
+
+    /**
      * @return TData
      */
     public function getData();
