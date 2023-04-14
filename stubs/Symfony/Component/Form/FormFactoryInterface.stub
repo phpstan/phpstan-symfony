@@ -1,0 +1,36 @@
+<?php
+
+namespace Symfony\Component\Form;
+
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+
+interface FormFactoryInterface
+{
+	/**
+	 * @template TFormType of FormTypeInterface<TData>
+	 * @template TData
+	 *
+	 * @param class-string<TFormType> $type
+	 * @param TData                   $data
+	 * @param array<string, mixed>    $options
+	 *
+	 * @phpstan-return ($data is null ? FormInterface<null|TData> : FormInterface<TData>)
+	 *
+	 * @throws \Symfony\Component\OptionsResolver\Exception\InvalidOptionsException
+	 */
+	public function create(string $type = FormType::class, $data = null, array $options = []): FormInterface;
+
+	/**
+	 * @template TFormType of FormTypeInterface<TData>
+	 * @template TData
+	 *
+	  * @param class-string<TFormType> $type
+	 * @param TData                   $data
+	 * @param array<string, mixed>    $options
+	 *
+	 * @phpstan-return ($data is null ? FormInterface<null|TData> : FormInterface<TData>)
+	 *
+	 * @throws \Symfony\Component\OptionsResolver\Exception\InvalidOptionsException
+	 */
+	public function createNamed(string $name, string $type = FormType::class, $data = null, array $options = []): FormInterface;
+}

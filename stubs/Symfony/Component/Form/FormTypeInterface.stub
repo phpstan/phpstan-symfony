@@ -2,6 +2,9 @@
 
 namespace Symfony\Component\Form;
 
+/**
+ * @template TData
+ */
 interface FormTypeInterface
 {
     /**
@@ -10,11 +13,13 @@ interface FormTypeInterface
     public function buildForm(FormBuilderInterface $builder, array $options): void;
 
     /**
+     * @phpstan-param FormInterface<TData> $form
      * @param array<string, mixed> $options
      */
     public function buildView(FormView $view, FormInterface $form, array $options): void;
 
     /**
+     * @phpstan-param FormInterface<TData> $form
      * @param array<string, mixed> $options
      */
     public function finishView(FormView $view, FormInterface $form, array $options): void;

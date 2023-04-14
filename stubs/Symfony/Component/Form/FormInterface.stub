@@ -3,10 +3,22 @@
 namespace Symfony\Component\Form;
 
 /**
- * @extends \ArrayAccess<string, \Symfony\Component\Form\FormInterface>
- * @extends \Traversable<string, \Symfony\Component\Form\FormInterface>
+ * @template TData
+ *
+ * @extends \ArrayAccess<string, \Symfony\Component\Form\FormInterface<mixed>>
+ * @extends \Traversable<string, \Symfony\Component\Form\FormInterface<mixed>>
  */
 interface FormInterface extends \ArrayAccess, \Traversable, \Countable
 {
+    /**
+     * @param TData $modelData
+     *
+     * @return $this
+     */
+    public function setData($modelData): FormInterface;
 
+    /**
+     * @return TData
+     */
+    public function getData();
 }

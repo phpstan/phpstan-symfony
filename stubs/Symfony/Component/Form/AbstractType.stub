@@ -1,0 +1,12 @@
+<?php
+
+namespace Symfony\Component\Form;
+
+/**
+ * @template TData
+ *
+ * @implements FormTypeInterface<TData>
+ */
+abstract class AbstractType implements FormTypeInterface
+{
+}
