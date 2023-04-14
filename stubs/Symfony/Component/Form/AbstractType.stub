@@ -9,4 +9,22 @@ namespace Symfony\Component\Form;
  */
 abstract class AbstractType implements FormTypeInterface
 {
+
+	/**
+	 * @param array<string, mixed> $options
+	 */
+	public function buildForm(FormBuilderInterface $builder, array $options): void;
+
+	/**
+	 * @param FormInterface<TData> $form
+	 * @param array<string, mixed> $options
+	 */
+	public function buildView(FormView $view, FormInterface $form, array $options): void;
+
+	/**
+	 * @param FormInterface<TData> $form
+	 * @param array<string, mixed> $options
+	 */
+	public function finishView(FormView $view, FormInterface $form, array $options): void;
+
 }
