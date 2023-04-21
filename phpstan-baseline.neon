@@ -1,6 +1,11 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Although PHPStan\\\\Reflection\\\\Php\\\\PhpPropertyReflection is covered by backward compatibility promise, this instanceof assumption might break because it's not guaranteed to always stay the same\\.$#"
+			count: 1
+			path: src/Symfony/RequiredAutowiringExtension.php
+
+		-
 			message: "#^Call to function method_exists\\(\\) with Symfony\\\\Component\\\\Console\\\\Input\\\\InputOption and 'isNegatable' will always evaluate to true\\.$#"
 			count: 1
 			path: src/Type/Symfony/GetOptionTypeHelper.php
@@ -9,6 +14,11 @@ parameters:
 			message: "#^Accessing PHPStan\\\\Rules\\\\Methods\\\\CallMethodsRule\\:\\:class is not covered by backward compatibility promise\\. The class might change in a minor PHPStan version\\.$#"
 			count: 1
 			path: tests/Rules/NonexistentInputBagClassTest.php
+
+		-
+			message: "#^Accessing PHPStan\\\\Rules\\\\Properties\\\\UninitializedPropertyRule\\:\\:class is not covered by backward compatibility promise\\. The class might change in a minor PHPStan version\\.$#"
+			count: 1
+			path: tests/Symfony/RequiredAutowiringExtensionTest.php
 
 		-
 			message: "#^Accessing PHPStan\\\\Rules\\\\Comparison\\\\ImpossibleCheckTypeMethodCallRule\\:\\:class is not covered by backward compatibility promise\\. The class might change in a minor PHPStan version\\.$#"

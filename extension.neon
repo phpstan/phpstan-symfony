@@ -329,3 +329,10 @@ services:
 	-
 		factory: PHPStan\Type\Symfony\InputBagTypeSpecifyingExtension
 		tags: [phpstan.typeSpecifier.methodTypeSpecifyingExtension]
+
+	# Additional constructors and initialization checks for @required autowiring
+	-
+		class: PHPStan\Symfony\RequiredAutowiringExtension
+		tags:
+			- phpstan.properties.readWriteExtension
+			- phpstan.additionalConstructorsExtension
