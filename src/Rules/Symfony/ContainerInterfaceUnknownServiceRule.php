@@ -89,8 +89,14 @@ final class ContainerInterfaceUnknownServiceRule implements Rule
 	{
 		$scopeClassReflection = $scope->getClassReflection();
 		return $scopeClassReflection !== null &&
-			$scopeClassReflection->implementsInterface('Symfony\Contracts\Service\ServiceSubscriberInterface') &&
-			($isContainerType->yes() || $isPsrContainerType->yes());
+			(
+				$scopeClassReflection->implementsInterface('Symfony\Contracts\Service\ServiceSubscriberInterface') ||
+				$scopeClassReflection->implementsInterface('Symfony\Component\DependencyInjection\ServiceSubscriberInterface')
+			) &&
+			(
+				$isContainerType->yes() ||
+				$isPsrContainerType->yes()
+			);
 	}
 
 }

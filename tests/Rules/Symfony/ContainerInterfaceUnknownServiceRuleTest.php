@@ -86,6 +86,20 @@ final class ContainerInterfaceUnknownServiceRuleTest extends RuleTestCase
 		);
 	}
 
+	public function testGetPrivateServiceInLegacyServiceSubscriberWithAnotherKey(): void
+	{
+		if (!interface_exists('Symfony\Component\DependencyInjection\ServiceSubscriberInterface')) {
+			self::markTestSkipped('The test needs Symfony\Component\DependencyInjection\ServiceSubscriberInterface class.');
+		}
+
+		$this->analyse(
+			[
+				__DIR__ . '/ExampleLegacyServiceSubscriberWithLocatorKey.php',
+			],
+			[]
+		);
+	}
+
 	public static function getAdditionalConfigFiles(): array
 	{
 		return [
