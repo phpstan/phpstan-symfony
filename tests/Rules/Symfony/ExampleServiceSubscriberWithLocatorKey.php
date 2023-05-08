@@ -3,9 +3,7 @@
 namespace PHPStan\Rules\Symfony;
 
 use Psr\Container\ContainerInterface;
-use Symfony\Component\DependencyInjection\ParameterBag\ContainerBag;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
-use function PHPStan\Rules\Symfony\doFoo;
 
 final class ExampleServiceSubscriberWithLocatorKey implements ServiceSubscriberInterface
 {
@@ -18,9 +16,14 @@ final class ExampleServiceSubscriberWithLocatorKey implements ServiceSubscriberI
 		$this->locator = $locator;
 	}
 
-	public function privateService(): void
+	public function privateAliasService(): void
 	{
-		$this->locator->get('foobar');
+		$this->locator->get('private_alias');
+	}
+
+	public function publicAliasService(): void
+	{
+		$this->locator->get('public_alias');
 	}
 
 	/**
