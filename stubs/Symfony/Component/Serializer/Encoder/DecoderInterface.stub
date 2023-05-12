@@ -18,7 +18,8 @@ interface DecoderInterface
 
     /**
      * @param string $format Format name
+     * @param array<mixed> $context
      * @return bool
      */
-    public function supportsDecoding($format);
+    public function supportsDecoding($format, array $context = []);
 }
