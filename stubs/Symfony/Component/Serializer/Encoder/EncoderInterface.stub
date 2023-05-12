@@ -18,7 +18,8 @@ interface EncoderInterface
 
     /**
      * @param string $format Format name
+     * @param array<mixed> $context
      * @return bool
      */
-    public function supportsEncoding($format);
+    public function supportsEncoding($format, array $context = []);
 }
