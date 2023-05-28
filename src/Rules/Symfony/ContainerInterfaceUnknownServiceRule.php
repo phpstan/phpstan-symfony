@@ -9,6 +9,7 @@ use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleError;
 use PHPStan\Symfony\ServiceMap;
+use PHPStan\TrinaryLogic;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Symfony\Helper;
 use function sprintf;
@@ -72,12 +73,30 @@ final class ContainerInterfaceUnknownServiceRule implements Rule
 		if ($serviceId !== null) {
 			$service = $this->serviceMap->getService($serviceId);
 			$serviceIdType = $scope->getType($node->getArgs()[0]->value);
-			if ($service === null && !$scope->getType(Helper::createMarkerNode($node->var, $serviceIdType, $this->printer))->equals($serviceIdType)) {
+			if (
+				$service === null &&
+				!$this->isContainerCallInServiceSubscriber($isContainerType, $isPsrContainerType, $scope) &&
+				!$scope->getType(Helper::createMarkerNode($node->var, $serviceIdType, $this->printer))->equals($serviceIdType)
+				) {
 				return [sprintf('Service "%s" is not registered in the container.', $serviceId)];
 			}
 		}
 
 		return [];
+	}
+
+	private function isContainerCallInServiceSubscriber(TrinaryLogic $isContainerType, TrinaryLogic $isPsrContainerType, Scope $scope): bool
+	{
+		$scopeClassReflection = $scope->getClassReflection();
+		return $scopeClassReflection !== null &&
+			(
+				$scopeClassReflection->implementsInterface('Symfony\Contracts\Service\ServiceSubscriberInterface') ||
+				$scopeClassReflection->implementsInterface('Symfony\Component\DependencyInjection\ServiceSubscriberInterface')
+			) &&
+			(
+				$isContainerType->yes() ||
+				$isPsrContainerType->yes()
+			);
 	}
 
 }

@@ -8,5 +8,11 @@
                 <argument key="private" type="service" id="private"/>
             </argument>
         </service>
+        <service id="service_locator_with_alias_key" class="Symfony\Component\DependencyInjection\ServiceLocator" public="true">
+            <argument type="collection">
+                <argument key="private_alias" type="service" id="private"/>
+                <argument key="public_alias" type="service" id="public"/>
+            </argument>
+        </service>
     </services>
 </container>

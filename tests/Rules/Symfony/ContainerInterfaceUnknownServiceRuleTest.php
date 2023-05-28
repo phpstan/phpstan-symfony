@@ -41,8 +41,8 @@ final class ContainerInterfaceUnknownServiceRuleTest extends RuleTestCase
 
 	public function testGetPrivateServiceInAbstractController(): void
 	{
-		if (!class_exists('Symfony\Bundle\FrameworkBundle\Controller\Controller')) {
-			self::markTestSkipped();
+		if (!class_exists('Symfony\Bundle\FrameworkBundle\Controller\AbstractController')) {
+			self::markTestSkipped('The test needs Symfony\Bundle\FrameworkBundle\Controller\AbstractController class.');
 		}
 
 		$this->analyse(
@@ -58,7 +58,7 @@ final class ContainerInterfaceUnknownServiceRuleTest extends RuleTestCase
 		);
 	}
 
-	public function testGetPrivateServiceInLegacyServiceSubscriber(): void
+	public function testGetPrivateServiceInServiceSubscriber(): void
 	{
 		if (!interface_exists('Symfony\Contracts\Service\ServiceSubscriberInterface')) {
 			self::markTestSkipped('The test needs Symfony\Contracts\Service\ServiceSubscriberInterface class.');
@@ -67,6 +67,34 @@ final class ContainerInterfaceUnknownServiceRuleTest extends RuleTestCase
 		$this->analyse(
 			[
 				__DIR__ . '/ExampleServiceSubscriber.php',
+			],
+			[]
+		);
+	}
+
+	public function testGetPrivateServiceInServiceSubscriberWithAnotherKey(): void
+	{
+		if (!interface_exists('Symfony\Contracts\Service\ServiceSubscriberInterface')) {
+			self::markTestSkipped('The test needs Symfony\Contracts\Service\ServiceSubscriberInterface class.');
+		}
+
+		$this->analyse(
+			[
+				__DIR__ . '/ExampleServiceSubscriberWithLocatorKey.php',
+			],
+			[]
+		);
+	}
+
+	public function testGetPrivateServiceInLegacyServiceSubscriberWithAnotherKey(): void
+	{
+		if (!interface_exists('Symfony\Component\DependencyInjection\ServiceSubscriberInterface')) {
+			self::markTestSkipped('The test needs Symfony\Component\DependencyInjection\ServiceSubscriberInterface class.');
+		}
+
+		$this->analyse(
+			[
+				__DIR__ . '/ExampleLegacyServiceSubscriberWithLocatorKey.php',
 			],
 			[]
 		);
