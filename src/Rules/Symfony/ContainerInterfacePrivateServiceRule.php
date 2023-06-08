@@ -71,6 +71,7 @@ final class ContainerInterfacePrivateServiceRule implements Rule
 			if ($service !== null && !$service->isPublic()) {
 				return [
 					RuleErrorBuilder::message(sprintf('Service "%s" is private.', $serviceId))
+						->identifier('symfonyContainer.privateService')
 						->build(),
 				];
 			}

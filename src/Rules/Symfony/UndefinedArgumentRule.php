@@ -75,7 +75,9 @@ final class UndefinedArgumentRule implements Rule
 				if ($scope->getType(Helper::createMarkerNode($node->var, $argType, $this->printer))->equals($argType)) {
 					continue;
 				}
-				$errors[] = RuleErrorBuilder::message(sprintf('Command "%s" does not define argument "%s".', $name, $argName))->build();
+				$errors[] = RuleErrorBuilder::message(sprintf('Command "%s" does not define argument "%s".', $name, $argName))
+					->identifier('symfonyConsole.argumentNotFound')
+					->build();
 			}
 		}
 

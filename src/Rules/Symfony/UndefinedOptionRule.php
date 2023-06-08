@@ -75,7 +75,9 @@ final class UndefinedOptionRule implements Rule
 				if ($scope->getType(Helper::createMarkerNode($node->var, $optType, $this->printer))->equals($optType)) {
 					continue;
 				}
-				$errors[] = RuleErrorBuilder::message(sprintf('Command "%s" does not define option "%s".', $name, $optName))->build();
+				$errors[] = RuleErrorBuilder::message(sprintf('Command "%s" does not define option "%s".', $name, $optName))
+					->identifier('symfonyConsole.optionNotFound')
+					->build();
 			}
 		}
 
