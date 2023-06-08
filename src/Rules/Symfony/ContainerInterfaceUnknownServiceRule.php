@@ -71,7 +71,9 @@ final class ContainerInterfaceUnknownServiceRule implements Rule
 			$serviceIdType = $scope->getType($node->getArgs()[0]->value);
 			if ($service === null && !$scope->getType(Helper::createMarkerNode($node->var, $serviceIdType, $this->printer))->equals($serviceIdType)) {
 				return [
-					RuleErrorBuilder::message(sprintf('Service "%s" is not registered in the container.', $serviceId))->build(),
+					RuleErrorBuilder::message(sprintf('Service "%s" is not registered in the container.', $serviceId))
+						->identifier('symfonyContainer.serviceNotFound')
+						->build(),
 				];
 			}
 		}
