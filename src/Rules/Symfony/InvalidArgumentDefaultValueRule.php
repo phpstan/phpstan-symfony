@@ -6,7 +6,7 @@ use PhpParser\Node;
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
-use PHPStan\Rules\RuleError;
+use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Type\ArrayType;
 use PHPStan\Type\Constant\ConstantIntegerType;
 use PHPStan\Type\IntegerType;
@@ -30,9 +30,6 @@ final class InvalidArgumentDefaultValueRule implements Rule
 		return MethodCall::class;
 	}
 
-	/**
-	 * @return (string|RuleError)[] errors
-	 */
 	public function processNode(Node $node, Scope $scope): array
 	{
 		if (!(new ObjectType('Symfony\Component\Console\Command\Command'))->isSuperTypeOf($scope->getType($node->var))->yes()) {
@@ -62,12 +59,22 @@ final class InvalidArgumentDefaultValueRule implements Rule
 
 		// not an array
 		if (($mode & 4) !== 4 && !(new UnionType([new StringType(), new NullType()]))->isSuperTypeOf($defaultType)->yes()) {
-			return [sprintf('Parameter #4 $default of method Symfony\Component\Console\Command\Command::addArgument() expects string|null, %s given.', $defaultType->describe(VerbosityLevel::typeOnly()))];
+			return [
+				RuleErrorBuilder::message(sprintf(
+					'Parameter #4 $default of method Symfony\Component\Console\Command\Command::addArgument() expects string|null, %s given.',
+					$defaultType->describe(VerbosityLevel::typeOnly())
+				))->build(),
+			];
 		}
 
 		// is array
 		if (($mode & 4) === 4 && !(new UnionType([new ArrayType(new IntegerType(), new StringType()), new NullType()]))->isSuperTypeOf($defaultType)->yes()) {
-			return [sprintf('Parameter #4 $default of method Symfony\Component\Console\Command\Command::addArgument() expects array<int, string>|null, %s given.', $defaultType->describe(VerbosityLevel::typeOnly()))];
+			return [
+				RuleErrorBuilder::message(sprintf(
+					'Parameter #4 $default of method Symfony\Component\Console\Command\Command::addArgument() expects array<int, string>|null, %s given.',
+					$defaultType->describe(VerbosityLevel::typeOnly())
+				))->build(),
+			];
 		}
 
 		return [];

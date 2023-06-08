@@ -7,7 +7,7 @@ use PhpParser\Node\Expr\MethodCall;
 use PhpParser\PrettyPrinter\Standard;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
-use PHPStan\Rules\RuleError;
+use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Symfony\ServiceMap;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Symfony\Helper;
@@ -36,9 +36,6 @@ final class ContainerInterfaceUnknownServiceRule implements Rule
 		return MethodCall::class;
 	}
 
-	/**
-	 * @return (string|RuleError)[] errors
-	 */
 	public function processNode(Node $node, Scope $scope): array
 	{
 		if (!$node->name instanceof Node\Identifier) {
@@ -73,7 +70,9 @@ final class ContainerInterfaceUnknownServiceRule implements Rule
 			$service = $this->serviceMap->getService($serviceId);
 			$serviceIdType = $scope->getType($node->getArgs()[0]->value);
 			if ($service === null && !$scope->getType(Helper::createMarkerNode($node->var, $serviceIdType, $this->printer))->equals($serviceIdType)) {
-				return [sprintf('Service "%s" is not registered in the container.', $serviceId)];
+				return [
+					RuleErrorBuilder::message(sprintf('Service "%s" is not registered in the container.', $serviceId))->build(),
+				];
 			}
 		}
 
