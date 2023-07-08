@@ -1,0 +1,14 @@
+<?php
+
+namespace Twig;
+
+class TwigFilter
+{
+    /**
+     * @param callable|array<class-string, string>|null $callable
+     * @param array<string, mixed> $options
+     */
+    public function __construct(string $name, $callable = null, array $options = [])
+    {
+    }
+}
