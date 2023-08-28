@@ -7,5 +7,10 @@ namespace Symfony\Component\HttpFoundation;
  */
 class ParameterBag implements \IteratorAggregate
 {
-
+    /**
+     * @return list<string>
+     */
+    public function keys(): array
+    {
+    }
 }
