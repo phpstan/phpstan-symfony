@@ -1,0 +1,6 @@
+services:
+	-
+		class: PHPStan\Symfony\RequiredAutowiringExtension
+		tags:
+		    - phpstan.properties.readWriteExtension
+		    - phpstan.additionalConstructorsExtension
