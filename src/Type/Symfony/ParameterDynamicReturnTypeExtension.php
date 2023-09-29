@@ -158,6 +158,7 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 			if ($hasOnlyStringKey) {
 				$keyTypes = [];
 				$valueTypes = [];
+				/** @var array<mixed>|bool|float|int|string $element */
 				foreach ($value as $key => $element) {
 					$keyType = $scope->getTypeFromValue($key);
 					$keyStringTypes = $keyType->getConstantStrings();
@@ -173,9 +174,11 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 
 			return new ArrayType(
 				TypeCombinator::union(...array_map(function ($item) use ($scope): Type {
+					/** @var array<mixed>|bool|float|int|string $item */
 					return $this->generalizeTypeFromValue($scope, $item);
 				}, array_keys($value))),
 				TypeCombinator::union(...array_map(function ($item) use ($scope): Type {
+					/** @var array<mixed>|bool|float|int|string $item */
 					return $this->generalizeTypeFromValue($scope, $item);
 				}, array_values($value)))
 			);

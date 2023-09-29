@@ -2,14 +2,21 @@
 
 namespace PHPStan\Symfony;
 
+/**
+ * @phpstan-type ParametersArray array{
+ *     containerXmlPath?: string, container_xml_path?: string,
+ *     constantHassers?: bool, constant_hassers?: bool,
+ *     consoleApplicationLoader?: string, console_application_loader?: string,
+ * }
+ */
 final class Configuration
 {
 
-	/** @var array<string, mixed> */
+	/** @var ParametersArray */
 	private $parameters;
 
 	/**
-	 * @param array<string, mixed> $parameters
+	 * @phpstan-param ParametersArray $parameters
 	 */
 	public function __construct(array $parameters)
 	{
