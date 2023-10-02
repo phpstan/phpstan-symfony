@@ -71,6 +71,20 @@ parameters:
         - var/cache/dev/Symfony/Config
 ```
 
+## Ignore container service checks for tests
+
+Inside tests maybe inlined or private container services are accessed. To disable the ruleset for `tests` directory following can be added to the `phpstan.neon` file:
+
+```neon
+parameters:
+    # ...
+    ignoreErrors:
+        - path: "tests/"
+          message: '#Service "(.*)" is not registered in the container.#'
+        - path: "tests/"
+          message: '#Service "(.*)" is private.#'
+```
+
 ## Constant hassers
 
 Sometimes, when you are dealing with optional dependencies, the `::has()` methods can cause problems. For example, the following construct would complain that the condition is always either on or off, depending on whether you have the dependency for `service` installed:
