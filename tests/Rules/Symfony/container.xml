@@ -8,5 +8,6 @@
                 <argument key="private" type="service" id="private"/>
             </argument>
         </service>
+        <service id="Bar" class="Bar"></service>
     </services>
 </container>

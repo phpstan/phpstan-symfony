@@ -72,6 +72,41 @@ final class ContainerInterfaceUnknownServiceRuleTest extends RuleTestCase
 		);
 	}
 
+	public function testGetPrivateServiceInServiceSubscriberWithTrait(): void
+	{
+		if (!interface_exists('Symfony\Contracts\Service\ServiceSubscriberInterface')) {
+			self::markTestSkipped('The test needs Symfony\Contracts\Service\ServiceSubscriberInterface class.');
+		}
+
+		if (!trait_exists('Symfony\Contracts\Service\ServiceSubscriberTrait')) {
+			self::markTestSkipped('The test needs Symfony\Contracts\Service\ServiceSubscriberTrait class.');
+		}
+
+		$this->analyse(
+			[
+				__DIR__ . '/ExampleServiceTraitSubscriber.php',
+			],
+			[
+				[
+					'Service "unknown" is not registered in the container.',
+					44,
+				],
+				[
+					'Service "unknown" is not registered in the container.',
+					50,
+				],
+				[
+					'Service "unknown" is not registered in the container.',
+					56,
+				],
+				[
+					'Service "Baz" is not registered in the container.',
+					68,
+				],
+			]
+		);
+	}
+
 	public static function getAdditionalConfigFiles(): array
 	{
 		return [
