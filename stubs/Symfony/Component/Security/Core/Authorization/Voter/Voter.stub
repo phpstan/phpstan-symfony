@@ -13,6 +13,7 @@ abstract class Voter implements VoterInterface
     /**
      * Determines if the attribute and subject are supported by this voter.
      *
+     * @param string $attribute
      * @param mixed $subject
      *
      * @phpstan-assert-if-true TSubject $subject
