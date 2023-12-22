@@ -42,6 +42,7 @@ final class CacheInterfaceGetDynamicReturnTypeExtension implements DynamicMethod
 			if ($returnType->isConstantScalarValue()->yes()) {
 				return $returnType->generalize(GeneralizePrecision::lessSpecific());
 			}
+			return $returnType;
 		}
 
 		return null;
