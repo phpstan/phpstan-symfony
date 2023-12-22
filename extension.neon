@@ -336,3 +336,8 @@ services:
 		tags:
 			- phpstan.properties.readWriteExtension
 			- phpstan.additionalConstructorsExtension
+
+	# CacheInterface::get() return type
+	-
+		factory: PHPStan\Type\Symfony\CacheInterfaceGetDynamicReturnTypeExtension
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
