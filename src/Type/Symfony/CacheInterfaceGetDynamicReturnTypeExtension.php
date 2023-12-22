@@ -39,10 +39,7 @@ final class CacheInterfaceGetDynamicReturnTypeExtension implements DynamicMethod
 			$returnType = $parametersAcceptor->getReturnType();
 
 			// generalize template parameters
-			if ($returnType->isConstantScalarValue()->yes()) {
-				return $returnType->generalize(GeneralizePrecision::lessSpecific());
-			}
-			return $returnType;
+			return $returnType->generalize(GeneralizePrecision::templateArgument());
 		}
 
 		return null;

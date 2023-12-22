@@ -21,6 +21,17 @@ function testNonScalarCacheCallable(\Symfony\Contracts\Cache\CacheInterface $cac
 	assertType('string', $result);
 };
 
+
+/**
+ * @param callable():non-empty-string $fn
+ */
+function testCacheCallableReturnTypeGeneralization(\Symfony\Contracts\Cache\CacheInterface $cache, callable $fn): void {
+	$result = $cache->get('foo', $fn);
+
+	assertType('string', $result);
+};
+
+
 /**
  * @param \Symfony\Contracts\Cache\CallbackInterface<\stdClass> $cb
  */
