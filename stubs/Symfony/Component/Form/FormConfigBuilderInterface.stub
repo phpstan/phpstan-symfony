@@ -1,0 +1,13 @@
+<?php
+
+namespace Symfony\Component\Form;
+
+/**
+ * @template TData
+ *
+ * @extends FormConfigInterface<TData>
+ */
+interface FormConfigBuilderInterface extends FormConfigInterface
+{
+
+}
