@@ -29,6 +29,9 @@ class DataClassType extends AbstractType
 
 	public function buildForm(FormBuilderInterface $builder, array $options): void
 	{
+		assertType('GenericFormDataType\DataClass|null', $builder->getData());
+		assertType('GenericFormDataType\DataClass|null', $builder->getForm()->getData());
+
 		$builder
 			->add('foo', NumberType::class)
 			->add('bar', TextType::class)

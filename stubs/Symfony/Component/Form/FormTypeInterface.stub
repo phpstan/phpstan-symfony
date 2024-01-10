@@ -8,6 +8,7 @@ namespace Symfony\Component\Form;
 interface FormTypeInterface
 {
     /**
+     * @param FormBuilderInterface<TData|null> $builder
      * @param array<string, mixed> $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void;

@@ -3,9 +3,17 @@
 namespace Symfony\Component\Form;
 
 /**
- * @extends \Traversable<int, \Symfony\Component\Form\FormBuilderInterface>
+ * @template TData
+ *
+ * @extends \Traversable<int, \Symfony\Component\Form\FormBuilderInterface<mixed>>
+ * @extends FormConfigBuilderInterface<TData>
  */
-interface FormBuilderInterface extends \Traversable
+interface FormBuilderInterface extends \Traversable, \Countable, FormConfigBuilderInterface
 {
+
+    /**
+     * @return FormInterface<TData|null>
+     */
+    public function getForm(): FormInterface;
 
 }

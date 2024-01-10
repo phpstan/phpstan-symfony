@@ -1,0 +1,16 @@
+<?php
+
+namespace Symfony\Component\Form;
+
+/**
+ * @template TData
+ */
+interface FormConfigInterface
+{
+
+    /**
+     * @return TData
+     */
+    public function getData(): mixed;
+
+}
