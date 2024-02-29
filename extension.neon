@@ -346,3 +346,8 @@ services:
 	-
 		factory: PHPStan\Type\Symfony\CacheInterfaceGetDynamicReturnTypeExtension
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
+	# Extension::getConfiguration() return type
+	-
+		factory: PHPStan\Type\Symfony\ExtensionGetConfigurationReturnTypeExtension
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
