@@ -14,6 +14,9 @@ parameters:
 	featureToggles:
 		skipCheckGenericClasses:
 			- Symfony\Component\Form\AbstractType
+			- Symfony\Component\Form\FormBuilderInterface
+			- Symfony\Component\Form\FormConfigBuilderInterface
+			- Symfony\Component\Form\FormConfigInterface
 			- Symfony\Component\Form\FormInterface
 			- Symfony\Component\Form\FormTypeExtensionInterface
 			- Symfony\Component\Form\FormTypeInterface
@@ -47,6 +50,8 @@ parameters:
 		- stubs/Symfony/Component/Form/Exception/TransformationFailedException.stub
 		- stubs/Symfony/Component/Form/DataTransformerInterface.stub
 		- stubs/Symfony/Component/Form/FormBuilderInterface.stub
+		- stubs/Symfony/Component/Form/FormConfigBuilderInterface.stub
+		- stubs/Symfony/Component/Form/FormConfigInterface.stub
 		- stubs/Symfony/Component/Form/FormInterface.stub
 		- stubs/Symfony/Component/Form/FormFactoryInterface.stub
 		- stubs/Symfony/Component/Form/FormTypeExtensionInterface.stub
@@ -340,4 +345,9 @@ services:
 	# CacheInterface::get() return type
 	-
 		factory: PHPStan\Type\Symfony\CacheInterfaceGetDynamicReturnTypeExtension
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
+	# Extension::getConfiguration() return type
+	-
+		factory: PHPStan\Type\Symfony\ExtensionGetConfigurationReturnTypeExtension
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
