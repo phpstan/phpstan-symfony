@@ -28,6 +28,7 @@ class ExtensionTest extends TypeInferenceTestCase
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/ExampleOptionCommand.php');
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/ExampleOptionLazyCommand.php');
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/kernel_interface.php');
+		yield from $this->gatherAssertTypes(__DIR__ . '/data/property_accessor.php');
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/request_get_content.php');
 
 		$ref = new ReflectionMethod(Request::class, 'getSession');

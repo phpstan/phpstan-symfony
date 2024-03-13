@@ -66,6 +66,7 @@ parameters:
 		- stubs/Symfony/Component/OptionsResolver/Exception/InvalidOptionsException.stub
 		- stubs/Symfony/Component/OptionsResolver/Options.stub
 		- stubs/Symfony/Component/Process/Process.stub
+		- stubs/Symfony/Component/PropertyAccess/PropertyAccessorInterface.stub
 		- stubs/Symfony/Component/PropertyAccess/PropertyPathInterface.stub
 		- stubs/Symfony/Component/Security/Acl/Model/AclInterface.stub
 		- stubs/Symfony/Component/Security/Acl/Model/EntryInterface.stub
