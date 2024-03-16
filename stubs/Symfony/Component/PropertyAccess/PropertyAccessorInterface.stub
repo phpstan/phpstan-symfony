@@ -1,0 +1,23 @@
+<?php
+
+namespace Symfony\Component\PropertyAccess;
+
+interface PropertyAccessorInterface
+{
+
+    /**
+     * @phpstan-template T of object|array<mixed>
+     * @phpstan-param T &$objectOrArray
+     * @phpstan-param-out ($objectOrArray is object ? T : array<mixed>) $objectOrArray
+     * @phpstan-param string|PropertyPathInterface $propertyPath
+     * @phpstan-param mixed $value
+     *
+     * @return void
+     *
+     * @throws Exception\InvalidArgumentException If the property path is invalid
+     * @throws Exception\AccessException          If a property/index does not exist or is not public
+     * @throws Exception\UnexpectedTypeException  If a value within the path is neither object nor array
+     */
+    public function setValue(&$objectOrArray, $propertyPath, $value);
+
+}
