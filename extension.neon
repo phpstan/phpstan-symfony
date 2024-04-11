@@ -96,6 +96,8 @@ parameters:
 		- stubs/Symfony/Component/Serializer/Normalizer/NormalizableInterface.stub
 		- stubs/Symfony/Component/Serializer/Normalizer/NormalizerInterface.stub
 		- stubs/Symfony/Component/Validator/Constraint.stub
+		- stubs/Symfony/Component/Validator/Constraints/Composite.stub
+		- stubs/Symfony/Component/Validator/Constraints/Compound.stub
 		- stubs/Symfony/Component/Validator/ConstraintViolationInterface.stub
 		- stubs/Symfony/Component/Validator/ConstraintViolationListInterface.stub
 		- stubs/Symfony/Contracts/Cache/CacheInterface.stub
