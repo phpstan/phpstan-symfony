@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraint;
 abstract class Compound extends Composite
 {
     /**
-     * @param array<mixed> $options
+     * @param array<string, mixed> $options
      * @return array<Constraint>
      */
     abstract protected function getConstraints(array $options): array;
