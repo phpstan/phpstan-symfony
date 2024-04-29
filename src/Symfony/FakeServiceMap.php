@@ -21,7 +21,7 @@ final class FakeServiceMap implements ServiceMap
 		return null;
 	}
 
-	public static function getServiceIdFromNode(Expr $node, Scope $scope): ?string
+	public function getServiceIdFromNode(Expr $node, Scope $scope): ?string
 	{
 		return null;
 	}

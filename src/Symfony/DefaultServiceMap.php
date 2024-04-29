@@ -34,7 +34,7 @@ final class DefaultServiceMap implements ServiceMap
 		return $this->services[$id] ?? null;
 	}
 
-	public static function getServiceIdFromNode(Expr $node, Scope $scope): ?string
+	public function getServiceIdFromNode(Expr $node, Scope $scope): ?string
 	{
 		$strings = TypeUtils::getConstantStrings($scope->getType($node));
 		return count($strings) === 1 ? $strings[0]->getValue() : null;

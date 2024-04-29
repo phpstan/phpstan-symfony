@@ -123,7 +123,7 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 			return $defaultReturnType;
 		}
 
-		$parameterKeys = $this->parameterMap::getParameterKeysFromNode($methodCall->getArgs()[0]->value, $scope);
+		$parameterKeys = $this->parameterMap->getParameterKeysFromNode($methodCall->getArgs()[0]->value, $scope);
 		if ($parameterKeys === []) {
 			return $defaultReturnType;
 		}
@@ -222,7 +222,7 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 			return $defaultReturnType;
 		}
 
-		$parameterKeys = $this->parameterMap::getParameterKeysFromNode($methodCall->getArgs()[0]->value, $scope);
+		$parameterKeys = $this->parameterMap->getParameterKeysFromNode($methodCall->getArgs()[0]->value, $scope);
 		if ($parameterKeys === []) {
 			return $defaultReturnType;
 		}

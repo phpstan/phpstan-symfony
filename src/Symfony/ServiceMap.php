@@ -15,6 +15,6 @@ interface ServiceMap
 
 	public function getService(string $id): ?ServiceDefinition;
 
-	public static function getServiceIdFromNode(Expr $node, Scope $scope): ?string;
+	public function getServiceIdFromNode(Expr $node, Scope $scope): ?string;
 
 }

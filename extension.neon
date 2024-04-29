@@ -128,14 +128,14 @@ services:
 		class: PHPStan\Symfony\ServiceMapFactory
 		factory: PHPStan\Symfony\XmlServiceMapFactory
 	-
-		factory: @symfony.serviceMapFactory::create()
+		factory: PHPStan\Symfony\LazyServiceMap
 
 	# parameter map
 	symfony.parameterMapFactory:
 		class: PHPStan\Symfony\ParameterMapFactory
 		factory: PHPStan\Symfony\XmlParameterMapFactory
 	-
-		factory: @symfony.parameterMapFactory::create()
+		factory: PHPStan\Symfony\LazyParameterMap
 
 	# ControllerTrait::get()/has() return type
 	-
