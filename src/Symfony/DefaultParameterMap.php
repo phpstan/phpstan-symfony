@@ -35,7 +35,7 @@ final class DefaultParameterMap implements ParameterMap
 		return $this->parameters[$key] ?? null;
 	}
 
-	public static function getParameterKeysFromNode(Expr $node, Scope $scope): array
+	public function getParameterKeysFromNode(Expr $node, Scope $scope): array
 	{
 		$strings = TypeUtils::getConstantStrings($scope->getType($node));
 

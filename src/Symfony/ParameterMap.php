@@ -18,6 +18,6 @@ interface ParameterMap
 	/**
 	 * @return array<string>
 	 */
-	public static function getParameterKeysFromNode(Expr $node, Scope $scope): array;
+	public function getParameterKeysFromNode(Expr $node, Scope $scope): array;
 
 }
