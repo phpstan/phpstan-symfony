@@ -10,6 +10,7 @@ use PHPStan\Symfony\ConsoleApplicationResolver;
 use PHPStan\Type\ArrayType;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\IntegerType;
+use PHPStan\Type\NullType;
 use PHPStan\Type\StringType;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
@@ -74,6 +75,11 @@ final class InputInterfaceGetArgumentDynamicReturnTypeExtension implements Dynam
 			} catch (InvalidArgumentException $e) {
 				// noop
 			}
+		}
+
+		$method = $scope->getFunction();
+		if ($method instanceof MethodReflection && $method->getName() === 'interact') {
+			$argTypes[] = new NullType();
 		}
 
 		return count($argTypes) > 0 ? TypeCombinator::union(...$argTypes) : null;
