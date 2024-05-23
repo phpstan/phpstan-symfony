@@ -67,6 +67,12 @@ class ExtensionTest extends TypeInferenceTestCase
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/extension/with-configuration-with-constructor/WithConfigurationWithConstructorExtension.php');
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/extension/with-configuration-with-constructor-optional-params/WithConfigurationWithConstructorOptionalParamsExtension.php');
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/extension/with-configuration-with-constructor-required-params/WithConfigurationWithConstructorRequiredParamsExtension.php');
+
+		if (!class_exists('Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator')) {
+			return;
+		}
+
+		yield from $this->gatherAssertTypes(__DIR__ . '/data/definition_configurator.php');
 	}
 
 	/**

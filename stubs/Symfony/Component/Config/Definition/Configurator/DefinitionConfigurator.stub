@@ -1,0 +1,11 @@
+<?php
+
+namespace Symfony\Component\Config\Definition\Configurator;
+
+class DefinitionConfigurator
+{
+    /**
+     * @return \Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition
+     */
+    public function rootNode();
+}
