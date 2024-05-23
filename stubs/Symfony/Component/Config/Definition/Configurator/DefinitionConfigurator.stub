@@ -2,10 +2,14 @@
 
 namespace Symfony\Component\Config\Definition\Configurator;
 
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+
 class DefinitionConfigurator
 {
+
     /**
-     * @return \Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition
+     * @return ArrayNodeDefinition
      */
     public function rootNode();
+
 }
