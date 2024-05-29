@@ -113,6 +113,17 @@ final class DefaultServiceMapTest extends TestCase
 				self::assertSame('withClass', $service->getAlias());
 			},
 		];
+		yield [
+			'aliasForInlined',
+			static function (?Service $service): void {
+				self::assertNotNull($service);
+				self::assertSame('aliasForInlined', $service->getId());
+				self::assertNull($service->getClass());
+				self::assertFalse($service->isPublic());
+				self::assertFalse($service->isSynthetic());
+				self::assertSame('inlined', $service->getAlias());
+			},
+		];
 	}
 
 }

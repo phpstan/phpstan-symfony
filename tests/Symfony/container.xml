@@ -41,5 +41,7 @@
     <service id="public" class="Foo" public="true"></service>
     <service id="synthetic" class="Foo" synthetic="true"></service>
     <service id="alias" class="Bar" alias="withClass"></service>
+    <service id=".inlined"></service>
+    <service id="aliasForInlined" alias=".inlined"></service>
   </services>
 </container>
