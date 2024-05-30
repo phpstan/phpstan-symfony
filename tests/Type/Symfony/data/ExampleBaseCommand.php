@@ -17,6 +17,17 @@ abstract class ExampleBaseCommand extends Command
 		$this->addArgument('base');
 	}
 
+	protected function interact(InputInterface $input, OutputInterface $output): int
+	{
+		assertType('string|null', $input->getArgument('base'));
+		assertType('string|null', $input->getArgument('aaa'));
+		assertType('string|null', $input->getArgument('bbb'));
+		assertType('array<int, string>|string|null', $input->getArgument('diff'));
+		assertType('array<int, string>|null', $input->getArgument('arr'));
+		assertType('string|null', $input->getArgument('both'));
+		assertType('Symfony\Component\Console\Helper\QuestionHelper', $this->getHelper('question'));
+	}
+
 	protected function execute(InputInterface $input, OutputInterface $output): int
 	{
 		assertType('string|null', $input->getArgument('base'));
