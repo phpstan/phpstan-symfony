@@ -16,6 +16,7 @@ use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
 use PHPStan\Type\TypeUtils;
 use function count;
+use function in_array;
 
 final class InputInterfaceGetArgumentDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
@@ -78,7 +79,11 @@ final class InputInterfaceGetArgumentDynamicReturnTypeExtension implements Dynam
 		}
 
 		$method = $scope->getFunction();
-		if ($method instanceof MethodReflection && $method->getName() === 'interact') {
+		if (
+			$method instanceof MethodReflection
+			&& $method->getName() === 'interact'
+			&& in_array('Symfony\Component\Console\Command\Command', $method->getDeclaringClass()->getParentClassesNames(), true)
+		) {
 			$argTypes[] = new NullType();
 		}
 
