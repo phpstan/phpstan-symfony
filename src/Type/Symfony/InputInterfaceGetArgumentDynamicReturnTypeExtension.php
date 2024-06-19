@@ -89,7 +89,7 @@ final class InputInterfaceGetArgumentDynamicReturnTypeExtension implements Dynam
 		if (
 			$canBeNullInInteract
 			&& $method instanceof MethodReflection
-			&& $method->getName() === 'interact'
+			&& ($method->getName() === 'interact' || $method->getName() === 'initialize')
 			&& in_array('Symfony\Component\Console\Command\Command', $method->getDeclaringClass()->getParentClassesNames(), true)
 		) {
 			$argTypes[] = new NullType();
