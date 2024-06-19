@@ -19,8 +19,26 @@ abstract class ExampleBaseCommand extends Command
 		$this->addArgument('base');
 	}
 
-	protected function interact(InputInterface $input, OutputInterface $output): int
+	protected function initialize(InputInterface $input, OutputInterface $output): void
 	{
+		assertType('bool', $input->hasArgument('command'));
+		assertType('string|null', $input->getArgument('command'));
+
+		assertType('string|null', $input->getArgument('base'));
+		assertType('string', $input->getArgument('aaa'));
+		assertType('string', $input->getArgument('bbb'));
+		assertType('string|null', $input->getArgument('required'));
+		assertType('array<int, string>|string', $input->getArgument('diff'));
+		assertType('array<int, string>', $input->getArgument('arr'));
+		assertType('string|null', $input->getArgument('both'));
+		assertType('Symfony\Component\Console\Helper\QuestionHelper', $this->getHelper('question'));
+	}
+
+	protected function interact(InputInterface $input, OutputInterface $output): void
+	{
+		assertType('bool', $input->hasArgument('command'));
+		assertType('string|null', $input->getArgument('command'));
+
 		assertType('string|null', $input->getArgument('base'));
 		assertType('string', $input->getArgument('aaa'));
 		assertType('string', $input->getArgument('bbb'));
@@ -33,6 +51,9 @@ abstract class ExampleBaseCommand extends Command
 
 	protected function execute(InputInterface $input, OutputInterface $output): int
 	{
+		assertType('true', $input->hasArgument('command'));
+		assertType('string', $input->getArgument('command'));
+
 		assertType('string|null', $input->getArgument('base'));
 		assertType('string', $input->getArgument('aaa'));
 		assertType('string', $input->getArgument('bbb'));
