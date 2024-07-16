@@ -322,6 +322,10 @@ services:
 		class: PHPStan\Symfony\PasswordAuthenticatedUserStubFilesExtension
 		tags:
 			- phpstan.stubFilesExtension
+	-
+		class: PHPStan\Symfony\SymfonyDiagnoseExtension
+		tags:
+			- phpstan.diagnoseExtension
 
 	# FormInterface::getErrors() return type
 	-
