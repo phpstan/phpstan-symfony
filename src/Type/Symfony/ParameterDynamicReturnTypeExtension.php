@@ -13,6 +13,7 @@ use PHPStan\Symfony\ParameterMap;
 use PHPStan\Type\ArrayType;
 use PHPStan\Type\BooleanType;
 use PHPStan\Type\Constant\ConstantArrayType;
+use PHPStan\Type\Constant\ConstantArrayTypeBuilder;
 use PHPStan\Type\Constant\ConstantBooleanType;
 use PHPStan\Type\ConstantType;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
@@ -168,7 +169,9 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 					$valueTypes[] = $this->generalizeTypeFromValue($scope, $element);
 				}
 
-				return new ConstantArrayType($keyTypes, $valueTypes);
+				return ConstantArrayTypeBuilder::createFromConstantArray(
+					new ConstantArrayType($keyTypes, $valueTypes)
+				)->getArray();
 			}
 
 			return new ArrayType(
