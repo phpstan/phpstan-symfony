@@ -80,6 +80,7 @@ final class ExampleAbstractController extends AbstractController
 		assertType("array{a: string, b: string, c: string}", $container->getParameter('app.map'));
 		assertType("array{a: string, b: string, c: string}", $parameterBag->get('app.map'));
 		assertType("array{a: string, b: string, c: string}", $this->getParameter('app.map'));
+		assertType("non-falsy-string", implode(',', $this->getParameter('app.hugemap')));
 		assertType("string", $container->getParameter('app.binary'));
 		assertType("string", $parameterBag->get('app.binary'));
 		assertType("string", $this->getParameter('app.binary'));
