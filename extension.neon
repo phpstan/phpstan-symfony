@@ -27,6 +27,7 @@ parameters:
 		- stubs/Psr/Cache/CacheException.stub
 		- stubs/Psr/Cache/CacheItemInterface.stub
 		- stubs/Psr/Cache/InvalidArgumentException.stub
+		- stubs/Symfony/Bundle/FrameworkBundle/Controller/AbstractController.stub
 		- stubs/Symfony/Bundle/FrameworkBundle/KernelBrowser.stub
 		- stubs/Symfony/Bundle/FrameworkBundle/Test/KernelTestCase.stub
 		- stubs/Symfony/Bundle/FrameworkBundle/Test/TestContainer.stub
@@ -103,6 +104,7 @@ parameters:
 		- stubs/Symfony/Contracts/Cache/CacheInterface.stub
 		- stubs/Symfony/Contracts/Cache/CallbackInterface.stub
 		- stubs/Symfony/Contracts/Cache/ItemInterface.stub
+		- stubs/Symfony/Contracts/Service/ServiceSubscriberInterface.stub
 		- stubs/Twig/Node/Node.stub
 
 parametersSchema:
