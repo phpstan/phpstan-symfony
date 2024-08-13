@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace PHPStan\Symfony;
 
@@ -7,118 +7,125 @@ use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\UnionType;
+use RuntimeException;
 use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
+use function count;
+use function is_int;
+use function is_null;
+use function is_string;
 
 // todo add tests
 final class MessageMapFactory
 {
-    /** @var ReflectionProvider */
-    private $reflectionProvider;
 
-    /** @var ServiceMap */
-    private $serviceMap;
+	/** @var ReflectionProvider */
+	private $reflectionProvider;
 
-    public function __construct(ServiceMap $symfonyServiceMap, ReflectionProvider $reflectionProvider)
-    {
-        $this->serviceMap = $symfonyServiceMap;
-        $this->reflectionProvider = $reflectionProvider;
-    }
+	/** @var ServiceMap */
+	private $serviceMap;
 
-    public function create(): MessageMap
-    {
-        $returnTypesMap = [];
+	public function __construct(ServiceMap $symfonyServiceMap, ReflectionProvider $reflectionProvider)
+	{
+		$this->serviceMap = $symfonyServiceMap;
+		$this->reflectionProvider = $reflectionProvider;
+	}
 
-        foreach ($this->serviceMap->getServices() as $service) {
-            $serviceClass = $service->getClass();
+	public function create(): MessageMap
+	{
+		$returnTypesMap = [];
 
-            // todo handle abstract/parent services somehow?
-            if (is_null($serviceClass)) {
-                continue;
-            }
+		foreach ($this->serviceMap->getServices() as $service) {
+			$serviceClass = $service->getClass();
 
-            foreach ($service->getTags() as $tag) {
-                // todo could there be more tags with the same name for the same service?
-                // todo check if message handler tag name is constant or configurable
-                if ($tag->getName() !== 'messenger.message_handler') {
-                    continue;
-                }
+			// todo handle abstract/parent services somehow?
+			if (is_null($serviceClass)) {
+				continue;
+			}
 
-                $tagAttributes = $tag->getAttributes();
-                $reflectionClass = $this->reflectionProvider->getClass($serviceClass);
+			foreach ($service->getTags() as $tag) {
+				// todo could there be more tags with the same name for the same service?
+				// todo check if message handler tag name is constant or configurable
+				if ($tag->getName() !== 'messenger.message_handler') {
+					continue;
+				}
 
-                if (isset($tagAttributes['handles'])) {
-                    $handles = isset($tag['method']) ? [$tag['handles'] => $tag['method']] : [$tag['handles']];
-                } else {
-                    $handles = $this->guessHandledMessages($reflectionClass);
-                }
+				$tagAttributes = $tag->getAttributes();
+				$reflectionClass = $this->reflectionProvider->getClass($serviceClass);
 
-                foreach ($handles as $messageClassName => $options) {
-                    if (\is_int($messageClassName) && \is_string($options)) {
-                        $messageClassName = $options;
-                        $options = [];
-                    }
+				if (isset($tagAttributes['handles'])) {
+					$handles = isset($tag['method']) ? [$tag['handles'] => $tag['method']] : [$tag['handles']];
+				} else {
+					$handles = $this->guessHandledMessages($reflectionClass);
+				}
 
-                    $options['method'] = $options['method'] ?? '__invoke';
+				foreach ($handles as $messageClassName => $options) {
+					if (is_int($messageClassName) && is_string($options)) {
+						$messageClassName = $options;
+						$options = [];
+					}
 
-                    $methodReflection = $reflectionClass->getNativeMethod($options['method']);
-                    $variant = ParametersAcceptorSelector::selectSingle($methodReflection->getVariants());
+					$options['method'] = $options['method'] ?? '__invoke';
 
-                    $returnTypesMap[$messageClassName][] = $variant->getReturnType();
-                }
-            }
-        }
+					$methodReflection = $reflectionClass->getNativeMethod($options['method']);
+					$variant = ParametersAcceptorSelector::selectSingle($methodReflection->getVariants());
 
-        $messages = [];
-        foreach ($returnTypesMap as $messageClassName => $returnTypes) {
-            $messages[] = new Message($messageClassName, $returnTypes);
-        }
+					$returnTypesMap[$messageClassName][] = $variant->getReturnType();
+				}
+			}
+		}
 
-        return new MessageMap($messages);
-    }
+		$messages = [];
+		foreach ($returnTypesMap as $messageClassName => $returnTypes) {
+			$messages[] = new Message($messageClassName, $returnTypes);
+		}
 
-    private function guessHandledMessages(ClassReflection $reflectionClass): iterable
-    {
-        if ($reflectionClass->implementsInterface(MessageSubscriberInterface::class)) {
-            // todo handle different return formats
-            return $reflectionClass->getName()::getHandledMessages();
-        }
+		return new MessageMap($messages);
+	}
 
-        // todo handle if doesn't exists
-        $methodReflection = $reflectionClass->getNativeMethod('__invoke');
+	private function guessHandledMessages(ClassReflection $reflectionClass): iterable
+	{
+		if ($reflectionClass->implementsInterface(MessageSubscriberInterface::class)) {
+			// todo handle different return formats
+			return $reflectionClass->getName()::getHandledMessages();
+		}
 
-        $variant = ParametersAcceptorSelector::selectSingle($methodReflection->getVariants());
-        $parameters = $variant->getParameters();
+		// todo handle if doesn't exists
+		$methodReflection = $reflectionClass->getNativeMethod('__invoke');
 
-        if (1 !== count($parameters)) {
-            // todo handle error
-            throw new \RuntimeException('invalid handler');
-        }
+		$variant = ParametersAcceptorSelector::selectSingle($methodReflection->getVariants());
+		$parameters = $variant->getParameters();
 
-        $type = $parameters[0]->getType();
+		if (count($parameters) !== 1) {
+			// todo handle error
+			throw new RuntimeException('invalid handler');
+		}
 
-        if ($type instanceof UnionType) {
-            $types = [];
-            foreach ($type->getTypes() as $type) {
-                if (!$type instanceof ObjectType) {
-                    // todo handle error
-                    throw new \RuntimeException('invalid handler');
-                }
+		$type = $parameters[0]->getType();
 
-                $types[] = $type->getClassName();
-            }
+		if ($type instanceof UnionType) {
+			$types = [];
+			foreach ($type->getTypes() as $type) {
+				if (!$type instanceof ObjectType) {
+					// todo handle error
+					throw new RuntimeException('invalid handler');
+				}
 
-            if ($types) {
-                return $types;
-            }
+				$types[] = $type->getClassName();
+			}
 
-            // todo handle error
-            throw new \RuntimeException('invalid handler');
-        }
+			if ($types) {
+				return $types;
+			}
 
-        if (!$type instanceof ObjectType) {
-            throw new \RuntimeException('invalid handler');
-        }
+			// todo handle error
+			throw new RuntimeException('invalid handler');
+		}
 
-        return [$type->getClassName()];
-    }
+		if (!$type instanceof ObjectType) {
+			throw new RuntimeException('invalid handler');
+		}
+
+		return [$type->getClassName()];
+	}
+
 }
