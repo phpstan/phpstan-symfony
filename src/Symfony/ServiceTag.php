@@ -1,28 +1,30 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace PHPStan\Symfony;
 
 final class ServiceTag implements ServiceTagDefinition
 {
-    /** @var string */
-    private $name;
 
-    /** @var array */
-    private $attributes;
+	/** @var string */
+	private $name;
 
-    public function __construct(string $name, array $attributes = [])
-    {
-        $this->name = $name;
-        $this->attributes = $attributes;
-    }
+	/** @var array */
+	private $attributes;
 
-    public function getName(): string
-    {
-        return $this->name;
-    }
+	public function __construct(string $name, array $attributes = [])
+	{
+		$this->name = $name;
+		$this->attributes = $attributes;
+	}
 
-    public function getAttributes(): array
-    {
-        return $this->attributes;
-    }
+	public function getName(): string
+	{
+		return $this->name;
+	}
+
+	public function getAttributes(): array
+	{
+		return $this->attributes;
+	}
+
 }

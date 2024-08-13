@@ -15,5 +15,6 @@ interface ServiceDefinition
 
 	public function getAlias(): ?string;
 
-    public function getTags(): array;
+	public function getTags(): array;
+
 }
