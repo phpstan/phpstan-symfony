@@ -47,12 +47,22 @@ final class XmlServiceMapFactory implements ServiceMapFactory
 				continue;
 			}
 
+            $serviceTags = [];
+            foreach ($def->tag as $tag) {
+                $tagAttrs = ((array) $tag->attributes())['@attributes'] ?? [];
+                $tagName = $tagAttrs['name'];
+                unset($tagAttrs['name']);
+
+                $serviceTags[] = new ServiceTag($tagName, $tagAttrs);
+            }
+
 			$service = new Service(
 				$this->cleanServiceId((string) $attrs->id),
 				isset($attrs->class) ? (string) $attrs->class : null,
 				isset($attrs->public) && (string) $attrs->public === 'true',
 				isset($attrs->synthetic) && (string) $attrs->synthetic === 'true',
-				isset($attrs->alias) ? $this->cleanServiceId((string) $attrs->alias) : null
+				isset($attrs->alias) ? $this->cleanServiceId((string) $attrs->alias) : null,
+                $serviceTags
 			);
 
 			if ($service->getAlias() !== null) {

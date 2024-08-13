@@ -139,6 +139,13 @@ services:
 	-
 		factory: @symfony.parameterMapFactory::create()
 
+	# message map
+	symfony.messageMapFactory:
+		class: PHPStan\Symfony\MessageMapFactory
+		factory: PHPStan\Symfony\MessageMapFactory
+	-
+		factory: @symfony.messageMapFactory::create()
+
 	# ControllerTrait::get()/has() return type
 	-
 		factory: PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension(Symfony\Component\DependencyInjection\ContainerInterface)
@@ -200,6 +207,11 @@ services:
 	# Envelope::all() return type
 	-
 		factory: PHPStan\Type\Symfony\EnvelopeReturnTypeExtension
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
+	# Messenger HandleTrait::handle() return type
+	-
+		factory: PHPStan\Type\Symfony\MessengerHandleTraitDynamicReturnTypeExtension
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
 
 	# InputInterface::getArgument() return type
