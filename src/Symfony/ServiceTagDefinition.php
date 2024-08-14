@@ -7,6 +7,7 @@ interface ServiceTagDefinition
 
 	public function getName(): string;
 
+	/** @return array<string, string> */
 	public function getAttributes(): array;
 
 }

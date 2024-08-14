@@ -8,9 +8,10 @@ final class ServiceTag implements ServiceTagDefinition
 	/** @var string */
 	private $name;
 
-	/** @var array */
+	/** @var array<string, string> */
 	private $attributes;
 
+	/** @param array<string, string> $attributes */
 	public function __construct(string $name, array $attributes = [])
 	{
 		$this->name = $name;

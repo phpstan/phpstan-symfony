@@ -5,8 +5,6 @@ namespace PHPStan\Symfony;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Reflection\ReflectionProvider;
-use PHPStan\Type\ObjectType;
-use PHPStan\Type\UnionType;
 use RuntimeException;
 use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
 use function count;
@@ -17,6 +15,8 @@ use function is_string;
 // todo add tests
 final class MessageMapFactory
 {
+
+	private const DEFAULT_HANDLER_METHOD = '__invoke';
 
 	/** @var ReflectionProvider */
 	private $reflectionProvider;
@@ -53,19 +53,13 @@ final class MessageMapFactory
 				$reflectionClass = $this->reflectionProvider->getClass($serviceClass);
 
 				if (isset($tagAttributes['handles'])) {
-					$handles = isset($tag['method']) ? [$tag['handles'] => $tag['method']] : [$tag['handles']];
+					// todo cover by test case
+					$handles = [$tagAttributes['handles'] => ['method' => $tagAttributes['method'] ?? self::DEFAULT_HANDLER_METHOD]];
 				} else {
 					$handles = $this->guessHandledMessages($reflectionClass);
 				}
 
 				foreach ($handles as $messageClassName => $options) {
-					if (is_int($messageClassName) && is_string($options)) {
-						$messageClassName = $options;
-						$options = [];
-					}
-
-					$options['method'] = $options['method'] ?? '__invoke';
-
 					$methodReflection = $reflectionClass->getNativeMethod($options['method']);
 					$variant = ParametersAcceptorSelector::selectSingle($methodReflection->getVariants());
 
@@ -82,15 +76,24 @@ final class MessageMapFactory
 		return new MessageMap($messages);
 	}
 
+	/** @return array<string, array<string, string>> */
 	private function guessHandledMessages(ClassReflection $reflectionClass): iterable
 	{
 		if ($reflectionClass->implementsInterface(MessageSubscriberInterface::class)) {
 			// todo handle different return formats
-			return $reflectionClass->getName()::getHandledMessages();
+			foreach ($reflectionClass->getName()::getHandledMessages() as $index => $value) {
+				if (is_int($index) && is_string($value)) {
+					yield $value => ['method' => self::DEFAULT_HANDLER_METHOD];
+				} else {
+					yield $index => $value;
+				}
+			}
+
+			return;
 		}
 
 		// todo handle if doesn't exists
-		$methodReflection = $reflectionClass->getNativeMethod('__invoke');
+		$methodReflection = $reflectionClass->getNativeMethod(self::DEFAULT_HANDLER_METHOD);
 
 		$variant = ParametersAcceptorSelector::selectSingle($methodReflection->getVariants());
 		$parameters = $variant->getParameters();
@@ -102,30 +105,10 @@ final class MessageMapFactory
 
 		$type = $parameters[0]->getType();
 
-		if ($type instanceof UnionType) {
-			$types = [];
-			foreach ($type->getTypes() as $type) {
-				if (!$type instanceof ObjectType) {
-					// todo handle error
-					throw new RuntimeException('invalid handler');
-				}
-
-				$types[] = $type->getClassName();
-			}
-
-			if ($types) {
-				return $types;
-			}
-
-			// todo handle error
-			throw new RuntimeException('invalid handler');
+		// todo many class names?
+		foreach ($type->getObjectClassNames() as $className) {
+			yield $className => ['method' => self::DEFAULT_HANDLER_METHOD];
 		}
-
-		if (!$type instanceof ObjectType) {
-			throw new RuntimeException('invalid handler');
-		}
-
-		return [$type->getClassName()];
 	}
 
 }

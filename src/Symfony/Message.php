@@ -2,6 +2,7 @@
 
 namespace PHPStan\Symfony;
 
+use PHPStan\Type\Type;
 use function count;
 
 final class Message
@@ -10,9 +11,10 @@ final class Message
 	/** @var string */
 	private $class;
 
-	/** @var array */
+	/** @var Type[] */
 	private $returnTypes;
 
+	/** @param Type[] $returnTypes */
 	public function __construct(string $class, array $returnTypes)
 	{
 		$this->class = $class;
@@ -24,6 +26,7 @@ final class Message
 		return $this->class;
 	}
 
+	/** @return Type[] */
 	public function getReturnTypes(): array
 	{
 		return $this->returnTypes;

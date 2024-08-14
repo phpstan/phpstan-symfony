@@ -20,9 +20,10 @@ final class Service implements ServiceDefinition
 	/** @var string|null */
 	private $alias;
 
-	/** @var array */
+	/** @var ServiceTag[] */
 	private $tags;
 
+	/** @param ServiceTag[] $tags */
 	public function __construct(
 		string $id,
 		?string $class,

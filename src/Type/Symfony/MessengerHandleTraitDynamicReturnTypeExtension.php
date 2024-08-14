@@ -9,8 +9,9 @@ use PHPStan\Reflection\MethodReflection;
 use PHPStan\Symfony\MessageMap;
 use PHPStan\Symfony\MessageMapFactory;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
-use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
+use function count;
+use function is_null;
 
 final class MessengerHandleTraitDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
@@ -18,7 +19,7 @@ final class MessengerHandleTraitDynamicReturnTypeExtension implements DynamicMet
 	/** @var MessageMapFactory */
 	private $messageMapFactory;
 
-	/** @var MessageMap */
+	/** @var MessageMap|null */
 	private $messageMap;
 
 	public function __construct(MessageMapFactory $symfonyMessageMapFactory)
@@ -34,8 +35,7 @@ final class MessengerHandleTraitDynamicReturnTypeExtension implements DynamicMet
 		// todo or make it configurable with passing concrete classes names to extension config
 		// todo or use reflection somehow to get all classes that use HandleTrait and configure it dynamically
 
-		// todo temporarily hardcoded test class here
-		return HandleTraitClass::class;
+		return HandleTraitClass::class; // @phpstan-ignore-line todo temporarily hardcoded test class here
 	}
 
 	public function isMethodSupported(MethodReflection $methodReflection): bool
@@ -56,16 +56,15 @@ final class MessengerHandleTraitDynamicReturnTypeExtension implements DynamicMet
 		//  - [] read SF doc to determine any other cases to covers
 
 		$arg = $methodCall->getArgs()[0]->value;
-		$argType = $scope->getType($arg);
+		$argClassNames = $scope->getType($arg)->getObjectClassNames();
 
-		if ($argType instanceof ObjectType) {
+		// todo filter out not handled cases on map creation?
+		if (count($argClassNames) === 1) {
 			$messageMap = $this->getMessageMap();
-			if ($messageMap->hasMessageForClass($argType->getClassName())) {
-				$message = $messageMap->getMessageForClass($argType->getClassName());
+			$message = $messageMap->getMessageForClass($argClassNames[0]);
 
-				if ($message->countReturnTypes() === 1) {
-					return $message->getReturnTypes()[0];
-				}
+			if (!is_null($message) && $message->countReturnTypes() === 1) {
+				return $message->getReturnTypes()[0];
 			}
 		}
 
@@ -74,7 +73,7 @@ final class MessengerHandleTraitDynamicReturnTypeExtension implements DynamicMet
 
 	private function getMessageMap(): MessageMap
 	{
-		if (!$this->messageMap) {
+		if (is_null($this->messageMap)) {
 			$this->messageMap = $this->messageMapFactory->create();
 		}
 

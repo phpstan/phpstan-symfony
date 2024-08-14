@@ -2,8 +2,6 @@
 
 namespace PHPStan\Symfony;
 
-use function array_key_exists;
-
 final class MessageMap
 {
 
@@ -23,11 +21,6 @@ final class MessageMap
 	public function getMessageForClass(string $class): ?Message
 	{
 		return $this->messages[$class] ?? null;
-	}
-
-	public function hasMessageForClass(string $class): bool
-	{
-		return array_key_exists($class, $this->messages);
 	}
 
 }
