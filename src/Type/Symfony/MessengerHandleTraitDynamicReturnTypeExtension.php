@@ -35,7 +35,8 @@ final class MessengerHandleTraitDynamicReturnTypeExtension implements DynamicMet
 		// todo or make it configurable with passing concrete classes names to extension config
 		// todo or use reflection somehow to get all classes that use HandleTrait and configure it dynamically
 
-		return HandleTraitClass::class; // @phpstan-ignore-line todo temporarily hardcoded test class here
+		// todo temporarily hardcoded test class here
+		return HandleTraitClass::class;
 	}
 
 	public function isMethodSupported(MethodReflection $methodReflection): bool
