@@ -16,6 +16,7 @@ use function count;
 use function file_exists;
 use function in_array;
 use function is_string;
+use function preg_match;
 use function sprintf;
 
 /**
@@ -24,10 +25,10 @@ use function sprintf;
 final class TwigTemplateExistsRule implements Rule
 {
 
-	/** @var list<string> */
+	/** @var array<string, string|null> */
 	private $twigTemplateDirectories;
 
-	/** @param list<string> $twigTemplateDirectories */
+	/** @param array<string, string|null> $twigTemplateDirectories */
 	public function __construct(array $twigTemplateDirectories)
 	{
 		$this->twigTemplateDirectories = $twigTemplateDirectories;
@@ -108,7 +109,18 @@ final class TwigTemplateExistsRule implements Rule
 
 	private function twigTemplateExists(string $templateName): bool
 	{
-		foreach ($this->twigTemplateDirectories as $twigTemplateDirectory) {
+		if (preg_match('#^@(.+)\/(.+)$#', $templateName, $matches) === 1) {
+			$templateNamespace = $matches[1];
+			$templateName = $matches[2];
+		} else {
+			$templateNamespace = null;
+		}
+
+		foreach ($this->twigTemplateDirectories as $twigTemplateDirectory => $namespace) {
+			if ($namespace !== $templateNamespace) {
+				continue;
+			}
+
 			$templatePath = $twigTemplateDirectory . '/' . $templateName;
 
 			if (file_exists($templatePath)) {

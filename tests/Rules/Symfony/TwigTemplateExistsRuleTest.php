@@ -13,7 +13,10 @@ final class TwigTemplateExistsRuleTest extends RuleTestCase
 
 	protected function getRule(): Rule
 	{
-		return new TwigTemplateExistsRule([__DIR__ . '/templates']);
+		return new TwigTemplateExistsRule([
+			__DIR__ . '/twig/templates' => null,
+			__DIR__ . '/twig/admin' => 'admin',
+		]);
 	}
 
 	public function testGetArgument(): void
@@ -82,6 +85,14 @@ final class TwigTemplateExistsRuleTest extends RuleTestCase
 				[
 					'Twig template "baz.html.twig" does not exist.',
 					61,
+				],
+				[
+					'Twig template "@admin/foo.html.twig" does not exist.',
+					66,
+				],
+				[
+					'Twig template "backend.html.twig" does not exist.',
+					67,
 				],
 			]
 		);

@@ -116,7 +116,7 @@ parametersSchema:
 		constantHassers: bool()
 		console_application_loader: schema(string(), nullable())
 		consoleApplicationLoader: schema(string(), nullable())
-		twigTemplateDirectories: listOf(string())
+		twigTemplateDirectories: arrayOf(schema(string(), nullable()))
 	])
 
 services:
