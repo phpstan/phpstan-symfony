@@ -61,10 +61,6 @@ final class ExampleTwigController extends AbstractController
 		$this->render($name);
 
 		$this->render($this->getName());
-
-		$this->render('@admin/backend.html.twig');
-		$this->render('@admin/foo.html.twig');
-		$this->render('backend.html.twig');
 	}
 
 	private function getName(): string

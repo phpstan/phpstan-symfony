@@ -3,6 +3,7 @@
 namespace PHPStan\Rules\Symfony;
 
 use PHPStan\Rules\Rule;
+use PHPStan\Symfony\TwigEnvironmentResolver;
 use PHPStan\Testing\RuleTestCase;
 
 /**
@@ -13,7 +14,7 @@ final class TwigTemplateExistsRuleNoTemplatesTest extends RuleTestCase
 
 	protected function getRule(): Rule
 	{
-		return new TwigTemplateExistsRule([]);
+		return new TwigTemplateExistsRule(new TwigEnvironmentResolver(null));
 	}
 
 	public function testGetArgument(): void

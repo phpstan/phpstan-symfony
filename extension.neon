@@ -11,7 +11,7 @@ parameters:
 		constantHassers: true
 		console_application_loader: null
 		consoleApplicationLoader: null
-		twigTemplateDirectories: []
+		twigEnvironmentLoader: null
 	featureToggles:
 		skipCheckGenericClasses:
 			- Symfony\Component\Form\AbstractType
@@ -116,7 +116,7 @@ parametersSchema:
 		constantHassers: bool()
 		console_application_loader: schema(string(), nullable())
 		consoleApplicationLoader: schema(string(), nullable())
-		twigTemplateDirectories: arrayOf(schema(string(), nullable()))
+		twigEnvironmentLoader: schema(string(), nullable())
 	])
 
 services:
@@ -369,8 +369,6 @@ services:
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
 
 	-
-		class: PHPStan\Rules\Symfony\TwigTemplateExistsRule
+		class: PHPStan\Symfony\TwigEnvironmentResolver
 		arguments:
-			twigTemplateDirectories: %symfony.twigTemplateDirectories%
-		tags:
-			- phpstan.rules.rule
+			twigEnvironmentLoader: %symfony.twigEnvironmentLoader%

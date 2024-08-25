@@ -3,6 +3,7 @@
 namespace PHPStan\Rules\Symfony;
 
 use PHPStan\Rules\Rule;
+use PHPStan\Symfony\TwigEnvironmentResolver;
 use PHPStan\Testing\RuleTestCase;
 
 /**
@@ -13,10 +14,7 @@ final class TwigTemplateExistsRuleTest extends RuleTestCase
 
 	protected function getRule(): Rule
 	{
-		return new TwigTemplateExistsRule([
-			__DIR__ . '/twig/templates' => null,
-			__DIR__ . '/twig/admin' => 'admin',
-		]);
+		return new TwigTemplateExistsRule(new TwigEnvironmentResolver(__DIR__ . '/twig_environment_loader.php'));
 	}
 
 	public function testGetArgument(): void
@@ -85,14 +83,6 @@ final class TwigTemplateExistsRuleTest extends RuleTestCase
 				[
 					'Twig template "baz.html.twig" does not exist.',
 					61,
-				],
-				[
-					'Twig template "@admin/foo.html.twig" does not exist.',
-					66,
-				],
-				[
-					'Twig template "backend.html.twig" does not exist.',
-					67,
 				],
 			]
 		);

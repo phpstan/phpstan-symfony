@@ -11,12 +11,11 @@ use PhpParser\Node\Scalar\String_;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
+use PHPStan\Symfony\TwigEnvironmentResolver;
 use PHPStan\Type\ObjectType;
 use function count;
-use function file_exists;
 use function in_array;
 use function is_string;
-use function preg_match;
 use function sprintf;
 
 /**
@@ -25,13 +24,12 @@ use function sprintf;
 final class TwigTemplateExistsRule implements Rule
 {
 
-	/** @var array<string, string|null> */
-	private $twigTemplateDirectories;
+	/** @var TwigEnvironmentResolver */
+	private $twigEnvironmentResolver;
 
-	/** @param array<string, string|null> $twigTemplateDirectories */
-	public function __construct(array $twigTemplateDirectories)
+	public function __construct(TwigEnvironmentResolver $twigEnvironmentResolver)
 	{
-		$this->twigTemplateDirectories = $twigTemplateDirectories;
+		$this->twigEnvironmentResolver = $twigEnvironmentResolver;
 	}
 
 	public function getNodeType(): string
@@ -41,10 +39,6 @@ final class TwigTemplateExistsRule implements Rule
 
 	public function processNode(Node $node, Scope $scope): array
 	{
-		if (count($this->twigTemplateDirectories) === 0) {
-			return [];
-		}
-
 		$templateArg = $this->getTwigTemplateArg($node, $scope);
 
 		if ($templateArg === null) {
@@ -70,7 +64,7 @@ final class TwigTemplateExistsRule implements Rule
 		$errors = [];
 
 		foreach ($templateNames as $templateName) {
-			if ($this->twigTemplateExists($templateName)) {
+			if ($this->twigEnvironmentResolver->templateExists($templateName)) {
 				continue;
 			}
 
@@ -105,30 +99,6 @@ final class TwigTemplateExistsRule implements Rule
 		}
 
 		return null;
-	}
-
-	private function twigTemplateExists(string $templateName): bool
-	{
-		if (preg_match('#^@(.+)\/(.+)$#', $templateName, $matches) === 1) {
-			$templateNamespace = $matches[1];
-			$templateName = $matches[2];
-		} else {
-			$templateNamespace = null;
-		}
-
-		foreach ($this->twigTemplateDirectories as $twigTemplateDirectory => $namespace) {
-			if ($namespace !== $templateNamespace) {
-				continue;
-			}
-
-			$templatePath = $twigTemplateDirectory . '/' . $templateName;
-
-			if (file_exists($templatePath)) {
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 }
