@@ -21,7 +21,7 @@ class Cookie
      *
      * @throws \InvalidArgumentException
      */
-    public function __construct(string $name, string $value = null, $expire = 0, ?string $path = '/', string $domain = null, ?bool $secure = false, bool $httpOnly = true, bool $raw = false, string $sameSite = null);
+    public function __construct(string $name, ?string $value = null, $expire = 0, ?string $path = '/', ?string $domain = null, ?bool $secure = false, bool $httpOnly = true, bool $raw = false, ?string $sameSite = null);
 
     /**
      * @param string                        $name     The name of the cookie
@@ -36,7 +36,7 @@ class Cookie
      *
      * @throws \InvalidArgumentException
      */
-    public function create(string $name, string $value = null, $expire = 0, ?string $path = '/', string $domain = null, ?bool $secure = false, bool $httpOnly = true, bool $raw = false, string $sameSite = null): self;
+    public function create(string $name, ?string $value = null, $expire = 0, ?string $path = '/', ?string $domain = null, ?bool $secure = false, bool $httpOnly = true, bool $raw = false, ?string $sameSite = null): self;
 
     /**
      * @return self::SAMESITE_*|null
