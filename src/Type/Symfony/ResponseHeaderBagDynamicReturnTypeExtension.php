@@ -52,9 +52,9 @@ final class ResponseHeaderBagDynamicReturnTypeExtension implements DynamicMethod
 						new StringType(),
 						new ArrayType(
 							new StringType(),
-							new ObjectType(Cookie::class)
-						)
-					)
+							new ObjectType(Cookie::class),
+						),
+					),
 				);
 			}
 		}

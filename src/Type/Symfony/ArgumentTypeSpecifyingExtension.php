@@ -15,11 +15,9 @@ use PHPStan\Type\MethodTypeSpecifyingExtension;
 final class ArgumentTypeSpecifyingExtension implements MethodTypeSpecifyingExtension, TypeSpecifierAwareExtension
 {
 
-	/** @var Standard */
-	private $printer;
+	private Standard $printer;
 
-	/** @var TypeSpecifier */
-	private $typeSpecifier;
+	private TypeSpecifier $typeSpecifier;
 
 	public function __construct(Standard $printer)
 	{
@@ -45,7 +43,7 @@ final class ArgumentTypeSpecifyingExtension implements MethodTypeSpecifyingExten
 		return $this->typeSpecifier->create(
 			Helper::createMarkerNode($node->var, $argType, $this->printer),
 			$argType,
-			$context
+			$context,
 		);
 	}
 

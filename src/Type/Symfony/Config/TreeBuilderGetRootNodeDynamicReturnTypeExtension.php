@@ -37,7 +37,7 @@ final class TreeBuilderGetRootNodeDynamicReturnTypeExtension implements DynamicM
 		if ($calledOnType instanceof TreeBuilderType) {
 			return new ParentObjectType(
 				$calledOnType->getRootNodeClassName(),
-				$calledOnType
+				$calledOnType,
 			);
 		}
 

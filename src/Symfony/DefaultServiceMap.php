@@ -11,7 +11,7 @@ final class DefaultServiceMap implements ServiceMap
 {
 
 	/** @var ServiceDefinition[] */
-	private $services;
+	private array $services;
 
 	/**
 	 * @param ServiceDefinition[] $services

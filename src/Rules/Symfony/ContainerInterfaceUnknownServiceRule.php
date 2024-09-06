@@ -19,11 +19,9 @@ use function sprintf;
 final class ContainerInterfaceUnknownServiceRule implements Rule
 {
 
-	/** @var ServiceMap */
-	private $serviceMap;
+	private ServiceMap $serviceMap;
 
-	/** @var Standard */
-	private $printer;
+	private Standard $printer;
 
 	public function __construct(ServiceMap $symfonyServiceMap, Standard $printer)
 	{

@@ -5,8 +5,7 @@ namespace PHPStan\Symfony;
 final class Parameter implements ParameterDefinition
 {
 
-	/** @var string */
-	private $key;
+	private string $key;
 
 	/** @var array<mixed>|bool|float|int|string */
 	private $value;

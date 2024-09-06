@@ -62,7 +62,7 @@ final class InvalidArgumentDefaultValueRule implements Rule
 			return [
 				RuleErrorBuilder::message(sprintf(
 					'Parameter #4 $default of method Symfony\Component\Console\Command\Command::addArgument() expects string|null, %s given.',
-					$defaultType->describe(VerbosityLevel::typeOnly())
+					$defaultType->describe(VerbosityLevel::typeOnly()),
 				))->identifier('argument.type')->build(),
 			];
 		}
@@ -72,7 +72,7 @@ final class InvalidArgumentDefaultValueRule implements Rule
 			return [
 				RuleErrorBuilder::message(sprintf(
 					'Parameter #4 $default of method Symfony\Component\Console\Command\Command::addArgument() expects array<int, string>|null, %s given.',
-					$defaultType->describe(VerbosityLevel::typeOnly())
+					$defaultType->describe(VerbosityLevel::typeOnly()),
 				))->identifier('argument.type')->build(),
 			];
 		}

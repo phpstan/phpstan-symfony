@@ -34,7 +34,7 @@ final class CacheInterfaceGetDynamicReturnTypeExtension implements DynamicMethod
 			$parametersAcceptor = ParametersAcceptorSelector::selectFromArgs(
 				$scope,
 				$methodCall->getArgs(),
-				$callbackReturnType->getCallableParametersAcceptors($scope)
+				$callbackReturnType->getCallableParametersAcceptors($scope),
 			);
 			$returnType = $parametersAcceptor->getReturnType();
 

@@ -72,7 +72,7 @@ final class ArrayNodeDefinitionPrototypeDynamicReturnTypeExtension implements Dy
 
 		return new ParentObjectType(
 			$defaultType->describe(VerbosityLevel::typeOnly()),
-			$calledOnType
+			$calledOnType,
 		);
 	}
 

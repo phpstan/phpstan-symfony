@@ -18,8 +18,7 @@ use function get_class;
 final class CommandGetHelperDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
 
-	/** @var ConsoleApplicationResolver */
-	private $consoleApplicationResolver;
+	private ConsoleApplicationResolver $consoleApplicationResolver;
 
 	public function __construct(ConsoleApplicationResolver $consoleApplicationResolver)
 	{

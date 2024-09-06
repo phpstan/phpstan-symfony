@@ -34,7 +34,7 @@ final class ContainerInterfacePrivateServiceRuleTest extends RuleTestCase
 					'Service "private" is private.',
 					13,
 				],
-			]
+			],
 		);
 	}
 
@@ -54,7 +54,7 @@ final class ContainerInterfacePrivateServiceRuleTest extends RuleTestCase
 				__DIR__ . '/ExampleLegacyServiceSubscriberFromAbstractController.php',
 				__DIR__ . '/ExampleLegacyServiceSubscriberFromLegacyController.php',
 			],
-			[]
+			[],
 		);
 	}
 
@@ -74,7 +74,7 @@ final class ContainerInterfacePrivateServiceRuleTest extends RuleTestCase
 				__DIR__ . '/ExampleServiceSubscriberFromAbstractController.php',
 				__DIR__ . '/ExampleServiceSubscriberFromLegacyController.php',
 			],
-			[]
+			[],
 		);
 	}
 

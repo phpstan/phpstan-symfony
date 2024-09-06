@@ -5,20 +5,15 @@ namespace PHPStan\Symfony;
 final class Service implements ServiceDefinition
 {
 
-	/** @var string */
-	private $id;
+	private string $id;
 
-	/** @var string|null */
-	private $class;
+	private ?string $class = null;
 
-	/** @var bool */
-	private $public;
+	private bool $public;
 
-	/** @var bool */
-	private $synthetic;
+	private bool $synthetic;
 
-	/** @var string|null */
-	private $alias;
+	private ?string $alias = null;
 
 	public function __construct(
 		string $id,

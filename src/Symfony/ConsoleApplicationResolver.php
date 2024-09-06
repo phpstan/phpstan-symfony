@@ -16,11 +16,9 @@ use function sprintf;
 final class ConsoleApplicationResolver
 {
 
-	/** @var string|null */
-	private $consoleApplicationLoader;
+	private ?string $consoleApplicationLoader = null;
 
-	/** @var Application|null */
-	private $consoleApplication;
+	private ?Application $consoleApplication = null;
 
 	public function __construct(Configuration $configuration)
 	{

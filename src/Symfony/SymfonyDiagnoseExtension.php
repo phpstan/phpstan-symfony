@@ -9,8 +9,7 @@ use function sprintf;
 class SymfonyDiagnoseExtension implements DiagnoseExtension
 {
 
-	/** @var ConsoleApplicationResolver */
-	private $consoleApplicationResolver;
+	private ConsoleApplicationResolver $consoleApplicationResolver;
 
 	public function __construct(ConsoleApplicationResolver $consoleApplicationResolver)
 	{
@@ -21,7 +20,7 @@ class SymfonyDiagnoseExtension implements DiagnoseExtension
 	{
 		$output->writeLineFormatted(sprintf(
 			'<info>Symfony\'s consoleApplicationLoader:</info> %s',
-			$this->consoleApplicationResolver->hasConsoleApplicationLoader() ? 'In use' : 'No'
+			$this->consoleApplicationResolver->hasConsoleApplicationLoader() ? 'In use' : 'No',
 		));
 		$output->writeLineFormatted('');
 	}

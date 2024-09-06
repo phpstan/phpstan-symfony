@@ -20,8 +20,7 @@ final class RequestTypeSpecifyingExtension implements MethodTypeSpecifyingExtens
 	private const HAS_METHOD_NAME = 'hasSession';
 	private const GET_METHOD_NAME = 'getSession';
 
-	/** @var TypeSpecifier */
-	private $typeSpecifier;
+	private TypeSpecifier $typeSpecifier;
 
 	public function getClass(): string
 	{
@@ -45,7 +44,7 @@ final class RequestTypeSpecifyingExtension implements MethodTypeSpecifyingExtens
 		return $this->typeSpecifier->create(
 			new MethodCall($node->var, self::GET_METHOD_NAME),
 			TypeCombinator::removeNull($returnType),
-			$context
+			$context,
 		);
 	}
 

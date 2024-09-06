@@ -35,7 +35,7 @@ final class InvalidArgumentDefaultValueRuleTest extends RuleTestCase
 					'Parameter #4 $default of method Symfony\Component\Console\Command\Command::addArgument() expects array<int, string>|null, array<string, string> given.',
 					25,
 				],
-			]
+			],
 		);
 	}
 

@@ -12,8 +12,7 @@ use function substr;
 final class XmlServiceMapFactory implements ServiceMapFactory
 {
 
-	/** @var string|null */
-	private $containerXml;
+	private ?string $containerXml = null;
 
 	public function __construct(Configuration $configuration)
 	{
@@ -52,7 +51,7 @@ final class XmlServiceMapFactory implements ServiceMapFactory
 				isset($attrs->class) ? (string) $attrs->class : null,
 				isset($attrs->public) && (string) $attrs->public === 'true',
 				isset($attrs->synthetic) && (string) $attrs->synthetic === 'true',
-				isset($attrs->alias) ? $this->cleanServiceId((string) $attrs->alias) : null
+				isset($attrs->alias) ? $this->cleanServiceId((string) $attrs->alias) : null,
 			);
 
 			if ($service->getAlias() !== null) {
@@ -72,7 +71,7 @@ final class XmlServiceMapFactory implements ServiceMapFactory
 				$services[$alias]->getClass(),
 				$service->isPublic(),
 				$service->isSynthetic(),
-				$alias
+				$alias,
 			);
 		}
 

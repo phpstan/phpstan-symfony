@@ -35,7 +35,7 @@ final class ContainerInterfaceUnknownServiceRuleTest extends RuleTestCase
 					'Service "unknown" is not registered in the container.',
 					25,
 				],
-			]
+			],
 		);
 	}
 
@@ -54,7 +54,7 @@ final class ContainerInterfaceUnknownServiceRuleTest extends RuleTestCase
 					'Service "unknown" is not registered in the container.',
 					25,
 				],
-			]
+			],
 		);
 	}
 
@@ -68,7 +68,7 @@ final class ContainerInterfaceUnknownServiceRuleTest extends RuleTestCase
 			[
 				__DIR__ . '/ExampleServiceSubscriber.php',
 			],
-			[]
+			[],
 		);
 	}
 

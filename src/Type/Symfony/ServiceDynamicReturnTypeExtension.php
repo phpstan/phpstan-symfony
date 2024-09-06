@@ -23,20 +23,15 @@ use function is_string;
 final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
 
-	/** @var string */
-	private $className;
+	private string $className;
 
-	/** @var bool */
-	private $constantHassers;
+	private bool $constantHassers;
 
-	/** @var ServiceMap */
-	private $serviceMap;
+	private ServiceMap $serviceMap;
 
-	/** @var ParameterMap */
-	private $parameterMap;
+	private ParameterMap $parameterMap;
 
-	/** @var ParameterBag|null */
-	private $parameterBag;
+	private ?ParameterBag $parameterBag = null;
 
 	public function __construct(
 		string $className,

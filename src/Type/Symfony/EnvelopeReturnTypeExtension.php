@@ -37,7 +37,7 @@ final class EnvelopeReturnTypeExtension implements DynamicMethodReturnTypeExtens
 		if (count($methodCall->getArgs()) === 0) {
 			return new ArrayType(
 				new GenericClassStringType(new ObjectType('Symfony\Component\Messenger\Stamp\StampInterface')),
-				AccessoryArrayListType::intersectWith(new ArrayType(new IntegerType(), new ObjectType('Symfony\Component\Messenger\Stamp\StampInterface')))
+				AccessoryArrayListType::intersectWith(new ArrayType(new IntegerType(), new ObjectType('Symfony\Component\Messenger\Stamp\StampInterface'))),
 			);
 		}
 

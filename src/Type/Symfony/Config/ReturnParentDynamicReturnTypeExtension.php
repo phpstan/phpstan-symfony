@@ -14,11 +14,10 @@ use function in_array;
 final class ReturnParentDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
 
-	/** @var string */
-	private $className;
+	private string $className;
 
 	/** @var string[] */
-	private $methods;
+	private array $methods;
 
 	/**
 	 * @param string[] $methods

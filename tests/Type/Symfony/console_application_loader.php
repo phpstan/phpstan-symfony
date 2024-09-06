@@ -15,9 +15,7 @@ $application->add(new ExampleBCommand());
 $application->add(new ExampleOptionCommand());
 
 if (class_exists(LazyCommand::class)) {
-	$application->add(new LazyCommand('lazy-example-option', [], '', false, static function () {
-		return new ExampleOptionLazyCommand();
-	}));
+	$application->add(new LazyCommand('lazy-example-option', [], '', false, static fn () => new ExampleOptionLazyCommand()));
 } else {
 	$application->add(new ExampleOptionLazyCommand());
 }

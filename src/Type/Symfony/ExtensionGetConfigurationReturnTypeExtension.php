@@ -19,8 +19,7 @@ use function substr_replace;
 class ExtensionGetConfigurationReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
 
-	/** @var ReflectionProvider */
-	private $reflectionProvider;
+	private ReflectionProvider $reflectionProvider;
 
 	public function __construct(ReflectionProvider $reflectionProvider)
 	{

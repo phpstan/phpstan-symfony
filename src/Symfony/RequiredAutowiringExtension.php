@@ -13,8 +13,7 @@ use function count;
 class RequiredAutowiringExtension implements ReadWritePropertiesExtension, AdditionalConstructorsExtension
 {
 
-	/** @var FileTypeMapper */
-	private $fileTypeMapper;
+	private FileTypeMapper $fileTypeMapper;
 
 	public function __construct(FileTypeMapper $fileTypeMapper)
 	{

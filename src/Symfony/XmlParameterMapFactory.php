@@ -15,8 +15,7 @@ use function strpos;
 final class XmlParameterMapFactory implements ParameterMapFactory
 {
 
-	/** @var string|null */
-	private $containerXml;
+	private ?string $containerXml = null;
 
 	public function __construct(Configuration $configuration)
 	{
@@ -47,7 +46,7 @@ final class XmlParameterMapFactory implements ParameterMapFactory
 
 			$parameter = new Parameter(
 				(string) $attrs->key,
-				$this->getNodeValue($def)
+				$this->getNodeValue($def),
 			);
 
 			$parameters[$parameter->getKey()] = $parameter;

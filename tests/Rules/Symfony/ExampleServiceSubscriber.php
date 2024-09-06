@@ -9,8 +9,7 @@ use Symfony\Contracts\Service\ServiceSubscriberInterface;
 final class ExampleServiceSubscriber implements ServiceSubscriberInterface
 {
 
-	/** @var ContainerInterface */
-	private $locator;
+	private ContainerInterface $locator;
 
 	public function __construct(ContainerInterface $locator)
 	{

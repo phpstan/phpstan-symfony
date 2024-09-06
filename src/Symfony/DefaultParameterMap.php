@@ -12,7 +12,7 @@ final class DefaultParameterMap implements ParameterMap
 {
 
 	/** @var ParameterDefinition[] */
-	private $parameters;
+	private array $parameters;
 
 	/**
 	 * @param ParameterDefinition[] $parameters
@@ -39,9 +39,7 @@ final class DefaultParameterMap implements ParameterMap
 	{
 		$strings = TypeUtils::getConstantStrings($scope->getType($node));
 
-		return array_map(static function (Type $type) {
-			return $type->getValue();
-		}, $strings);
+		return array_map(static fn (Type $type) => $type->getValue(), $strings);
 	}
 
 }

@@ -9,8 +9,7 @@ use PHPStan\PhpDoc\StubFilesExtension;
 class InputBagStubFilesExtension implements StubFilesExtension
 {
 
-	/** @var Reflector */
-	private $reflector;
+	private Reflector $reflector;
 
 	public function __construct(
 		Reflector $reflector

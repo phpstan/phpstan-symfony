@@ -9,8 +9,7 @@ use PHPStan\Type\VerbosityLevel;
 class ParentObjectType extends ObjectType
 {
 
-	/** @var Type */
-	private $parent;
+	private Type $parent;
 
 	public function __construct(string $className, Type $parent)
 	{

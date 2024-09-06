@@ -17,11 +17,9 @@ use function count;
 final class InputInterfaceGetOptionsDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
 
-	/** @var ConsoleApplicationResolver */
-	private $consoleApplicationResolver;
+	private ConsoleApplicationResolver $consoleApplicationResolver;
 
-	/** @var GetOptionTypeHelper */
-	private $getOptionTypeHelper;
+	private GetOptionTypeHelper $getOptionTypeHelper;
 
 	public function __construct(ConsoleApplicationResolver $consoleApplicationResolver, GetOptionTypeHelper $getOptionTypeHelper)
 	{

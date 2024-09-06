@@ -18,8 +18,7 @@ use function in_array;
 final class InputInterfaceHasArgumentDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
 
-	/** @var ConsoleApplicationResolver */
-	private $consoleApplicationResolver;
+	private ConsoleApplicationResolver $consoleApplicationResolver;
 
 	public function __construct(ConsoleApplicationResolver $consoleApplicationResolver)
 	{

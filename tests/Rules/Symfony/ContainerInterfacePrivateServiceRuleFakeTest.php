@@ -29,7 +29,7 @@ final class ContainerInterfacePrivateServiceRuleFakeTest extends RuleTestCase
 			[
 				__DIR__ . '/ExampleController.php',
 			],
-			[]
+			[],
 		);
 	}
 
@@ -42,7 +42,7 @@ final class ContainerInterfacePrivateServiceRuleFakeTest extends RuleTestCase
 			[
 				__DIR__ . '/ExampleAbstractController.php',
 			],
-			[]
+			[],
 		);
 	}
 
@@ -62,7 +62,7 @@ final class ContainerInterfacePrivateServiceRuleFakeTest extends RuleTestCase
 				__DIR__ . '/ExampleLegacyServiceSubscriberFromAbstractController.php',
 				__DIR__ . '/ExampleLegacyServiceSubscriberFromLegacyController.php',
 			],
-			[]
+			[],
 		);
 	}
 
@@ -82,7 +82,7 @@ final class ContainerInterfacePrivateServiceRuleFakeTest extends RuleTestCase
 				__DIR__ . '/ExampleServiceSubscriberFromAbstractController.php',
 				__DIR__ . '/ExampleServiceSubscriberFromLegacyController.php',
 			],
-			[]
+			[],
 		);
 	}
 

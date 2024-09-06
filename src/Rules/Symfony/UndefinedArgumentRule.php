@@ -22,11 +22,9 @@ use function sprintf;
 final class UndefinedArgumentRule implements Rule
 {
 
-	/** @var ConsoleApplicationResolver */
-	private $consoleApplicationResolver;
+	private ConsoleApplicationResolver $consoleApplicationResolver;
 
-	/** @var Standard */
-	private $printer;
+	private Standard $printer;
 
 	public function __construct(ConsoleApplicationResolver $consoleApplicationResolver, Standard $printer)
 	{

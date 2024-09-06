@@ -19,8 +19,7 @@ use function sprintf;
 final class ContainerInterfacePrivateServiceRule implements Rule
 {
 
-	/** @var ServiceMap */
-	private $serviceMap;
+	private ServiceMap $serviceMap;
 
 	public function __construct(ServiceMap $symfonyServiceMap)
 	{

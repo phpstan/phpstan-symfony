@@ -44,23 +44,17 @@ use function strlen;
 final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
 
-	/** @var string */
-	private $className;
+	private string $className;
 
-	/** @var string|null */
-	private $methodGet;
+	private ?string $methodGet = null;
 
-	/** @var string|null */
-	private $methodHas;
+	private ?string $methodHas = null;
 
-	/** @var bool */
-	private $constantHassers;
+	private bool $constantHassers;
 
-	/** @var ParameterMap */
-	private $parameterMap;
+	private ParameterMap $parameterMap;
 
-	/** @var TypeStringResolver */
-	private $typeStringResolver;
+	private TypeStringResolver $typeStringResolver;
 
 	public function __construct(
 		string $className,
@@ -86,9 +80,7 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 
 	public function isMethodSupported(MethodReflection $methodReflection): bool
 	{
-		$methods = array_filter([$this->methodGet, $this->methodHas], static function (?string $method): bool {
-			return $method !== null;
-		});
+		$methods = array_filter([$this->methodGet, $this->methodHas], static fn (?string $method): bool => $method !== null);
 
 		return in_array($methodReflection->getName(), $methods, true);
 	}
@@ -170,17 +162,13 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 				}
 
 				return ConstantArrayTypeBuilder::createFromConstantArray(
-					new ConstantArrayType($keyTypes, $valueTypes)
+					new ConstantArrayType($keyTypes, $valueTypes),
 				)->getArray();
 			}
 
 			return new ArrayType(
-				TypeCombinator::union(...array_map(function ($item) use ($scope): Type {
-					return $this->generalizeTypeFromValue($scope, $item);
-				}, array_keys($value))),
-				TypeCombinator::union(...array_map(function ($item) use ($scope): Type {
-					return $this->generalizeTypeFromValue($scope, $item);
-				}, array_values($value)))
+				TypeCombinator::union(...array_map(fn ($item): Type => $this->generalizeTypeFromValue($scope, $item), array_keys($value))),
+				TypeCombinator::union(...array_map(fn ($item): Type => $this->generalizeTypeFromValue($scope, $item), array_values($value))),
 			);
 		}
 

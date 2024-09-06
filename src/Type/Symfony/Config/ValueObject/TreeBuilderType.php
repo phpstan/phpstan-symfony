@@ -7,8 +7,7 @@ use PHPStan\Type\ObjectType;
 class TreeBuilderType extends ObjectType
 {
 
-	/** @var string */
-	private $rootNodeClassName;
+	private string $rootNodeClassName;
 
 	public function __construct(string $className, string $rootNodeClassName)
 	{

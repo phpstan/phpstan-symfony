@@ -41,7 +41,7 @@ final class ContainerInterfaceUnknownServiceRuleFakeTest extends RuleTestCase
 			[
 				__DIR__ . '/ExampleController.php',
 			],
-			[]
+			[],
 		);
 	}
 
@@ -55,7 +55,7 @@ final class ContainerInterfaceUnknownServiceRuleFakeTest extends RuleTestCase
 			[
 				__DIR__ . '/ExampleAbstractController.php',
 			],
-			[]
+			[],
 		);
 	}
 
