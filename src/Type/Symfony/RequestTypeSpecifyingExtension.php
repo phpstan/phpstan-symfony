@@ -45,6 +45,7 @@ final class RequestTypeSpecifyingExtension implements MethodTypeSpecifyingExtens
 			new MethodCall($node->var, self::GET_METHOD_NAME),
 			TypeCombinator::removeNull($returnType),
 			$context,
+			$scope,
 		);
 	}
 

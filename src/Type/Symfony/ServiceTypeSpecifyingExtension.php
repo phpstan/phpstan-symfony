@@ -47,6 +47,7 @@ final class ServiceTypeSpecifyingExtension implements MethodTypeSpecifyingExtens
 			Helper::createMarkerNode($node->var, $argType, $this->printer),
 			$argType,
 			$context,
+			$scope,
 		);
 	}
 

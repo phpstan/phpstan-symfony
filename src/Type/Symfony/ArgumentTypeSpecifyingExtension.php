@@ -44,6 +44,7 @@ final class ArgumentTypeSpecifyingExtension implements MethodTypeSpecifyingExten
 			Helper::createMarkerNode($node->var, $argType, $this->printer),
 			$argType,
 			$context,
+			$scope,
 		);
 	}
 

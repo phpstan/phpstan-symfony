@@ -38,6 +38,7 @@ final class InputBagTypeSpecifyingExtension implements MethodTypeSpecifyingExten
 			new MethodCall($node->var, self::GET_METHOD_NAME, $node->getArgs()),
 			new NullType(),
 			$context->negate(),
+			$scope,
 		);
 	}
 
