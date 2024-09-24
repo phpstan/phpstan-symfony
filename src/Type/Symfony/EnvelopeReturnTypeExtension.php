@@ -37,13 +37,13 @@ final class EnvelopeReturnTypeExtension implements DynamicMethodReturnTypeExtens
 		if (count($methodCall->getArgs()) === 0) {
 			return new ArrayType(
 				new GenericClassStringType(new ObjectType('Symfony\Component\Messenger\Stamp\StampInterface')),
-				AccessoryArrayListType::intersectWith(new ArrayType(new IntegerType(), new ObjectType('Symfony\Component\Messenger\Stamp\StampInterface'))),
+				TypeCombinator::intersect(new ArrayType(new IntegerType(), new ObjectType('Symfony\Component\Messenger\Stamp\StampInterface')), new AccessoryArrayListType()),
 			);
 		}
 
 		$argType = $scope->getType($methodCall->getArgs()[0]->value);
 		if (count($argType->getConstantStrings()) === 0) {
-			return AccessoryArrayListType::intersectWith(new ArrayType(new IntegerType(), new ObjectType('Symfony\Component\Messenger\Stamp\StampInterface')));
+			return TypeCombinator::intersect(new ArrayType(new IntegerType(), new ObjectType('Symfony\Component\Messenger\Stamp\StampInterface')), new AccessoryArrayListType());
 		}
 
 		$objectTypes = [];
@@ -51,7 +51,7 @@ final class EnvelopeReturnTypeExtension implements DynamicMethodReturnTypeExtens
 			$objectTypes[] = new ObjectType($constantString->getValue());
 		}
 
-		return AccessoryArrayListType::intersectWith(new ArrayType(new IntegerType(), TypeCombinator::union(...$objectTypes)));
+		return TypeCombinator::intersect(new ArrayType(new IntegerType(), TypeCombinator::union(...$objectTypes)), new AccessoryArrayListType());
 	}
 
 }
