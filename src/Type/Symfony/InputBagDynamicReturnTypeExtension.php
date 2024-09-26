@@ -37,7 +37,7 @@ final class InputBagDynamicReturnTypeExtension implements DynamicMethodReturnTyp
 		MethodReflection $methodReflection,
 		MethodCall $methodCall,
 		Scope $scope
-	): Type
+	): ?Type
 	{
 		if ($methodReflection->getName() === 'get') {
 			return $this->getGetTypeFromMethodCall($methodReflection, $methodCall, $scope);
@@ -54,17 +54,21 @@ final class InputBagDynamicReturnTypeExtension implements DynamicMethodReturnTyp
 		MethodReflection $methodReflection,
 		MethodCall $methodCall,
 		Scope $scope
-	): Type
+	): ?Type
 	{
 		if (isset($methodCall->getArgs()[1])) {
 			$argType = $scope->getType($methodCall->getArgs()[1]->value);
 			$isNull = (new NullType())->isSuperTypeOf($argType);
 			if ($isNull->no()) {
-				return TypeCombinator::removeNull(ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType());
+				return TypeCombinator::removeNull(ParametersAcceptorSelector::selectFromArgs(
+					$scope,
+					$methodCall->getArgs(),
+					$methodReflection->getVariants(),
+				)->getReturnType());
 			}
 		}
 
-		return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
+		return null;
 	}
 
 	private function getAllTypeFromMethodCall(

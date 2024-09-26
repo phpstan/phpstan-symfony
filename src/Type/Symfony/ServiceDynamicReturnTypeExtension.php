@@ -5,7 +5,6 @@ namespace PHPStan\Type\Symfony;
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
-use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\ShouldNotHappenException;
 use PHPStan\Symfony\Configuration;
 use PHPStan\Symfony\ParameterMap;
@@ -56,7 +55,7 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 		return in_array($methodReflection->getName(), ['get', 'has'], true);
 	}
 
-	public function getTypeFromMethodCall(MethodReflection $methodReflection, MethodCall $methodCall, Scope $scope): Type
+	public function getTypeFromMethodCall(MethodReflection $methodReflection, MethodCall $methodCall, Scope $scope): ?Type
 	{
 		switch ($methodReflection->getName()) {
 			case 'get':
@@ -71,16 +70,15 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 		MethodReflection $methodReflection,
 		MethodCall $methodCall,
 		Scope $scope
-	): Type
+	): ?Type
 	{
-		$returnType = ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
 		if (!isset($methodCall->getArgs()[0])) {
-			return $returnType;
+			return null;
 		}
 
 		$parameterBag = $this->tryGetParameterBag();
 		if ($parameterBag === null) {
-			return $returnType;
+			return null;
 		}
 
 		$serviceId = $this->serviceMap::getServiceIdFromNode($methodCall->getArgs()[0]->value, $scope);
@@ -91,7 +89,7 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 			}
 		}
 
-		return $returnType;
+		return null;
 	}
 
 	private function tryGetParameterBag(): ?ParameterBag
@@ -122,11 +120,10 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 		MethodReflection $methodReflection,
 		MethodCall $methodCall,
 		Scope $scope
-	): Type
+	): ?Type
 	{
-		$returnType = ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
 		if (!isset($methodCall->getArgs()[0]) || !$this->constantHassers) {
-			return $returnType;
+			return null;
 		}
 
 		$serviceId = $this->serviceMap::getServiceIdFromNode($methodCall->getArgs()[0]->value, $scope);
@@ -135,7 +132,7 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 			return new ConstantBooleanType($service !== null && $service->isPublic());
 		}
 
-		return $returnType;
+		return null;
 	}
 
 	private function determineServiceClass(ParameterBag $parameterBag, ServiceDefinition $service): ?string

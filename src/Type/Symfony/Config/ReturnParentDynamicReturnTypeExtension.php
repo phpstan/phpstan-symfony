@@ -5,7 +5,6 @@ namespace PHPStan\Type\Symfony\Config;
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
-use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\Symfony\Config\ValueObject\ParentObjectType;
 use PHPStan\Type\Type;
@@ -42,14 +41,14 @@ final class ReturnParentDynamicReturnTypeExtension implements DynamicMethodRetur
 		MethodReflection $methodReflection,
 		MethodCall $methodCall,
 		Scope $scope
-	): Type
+	): ?Type
 	{
 		$calledOnType = $scope->getType($methodCall->var);
 		if ($calledOnType instanceof ParentObjectType) {
 			return $calledOnType->getParent();
 		}
 
-		return ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
+		return null;
 	}
 
 }

@@ -6,7 +6,6 @@ use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\PhpDoc\TypeStringResolver;
 use PHPStan\Reflection\MethodReflection;
-use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\ShouldNotHappenException;
 use PHPStan\Symfony\Configuration;
 use PHPStan\Symfony\ParameterMap;
@@ -85,7 +84,7 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 		return in_array($methodReflection->getName(), $methods, true);
 	}
 
-	public function getTypeFromMethodCall(MethodReflection $methodReflection, MethodCall $methodCall, Scope $scope): Type
+	public function getTypeFromMethodCall(MethodReflection $methodReflection, MethodCall $methodCall, Scope $scope): ?Type
 	{
 		switch ($methodReflection->getName()) {
 			case $this->methodGet:
@@ -206,16 +205,15 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 		MethodReflection $methodReflection,
 		MethodCall $methodCall,
 		Scope $scope
-	): Type
+	): ?Type
 	{
-		$defaultReturnType = ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
 		if (!isset($methodCall->getArgs()[0]) || !$this->constantHassers) {
-			return $defaultReturnType;
+			return null;
 		}
 
 		$parameterKeys = $this->parameterMap::getParameterKeysFromNode($methodCall->getArgs()[0]->value, $scope);
 		if ($parameterKeys === []) {
-			return $defaultReturnType;
+			return null;
 		}
 
 		$has = null;
@@ -228,7 +226,7 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 				($has === true && $parameter === null)
 				|| ($has === false && $parameter !== null)
 			) {
-				return $defaultReturnType;
+				return null;
 			}
 		}
 

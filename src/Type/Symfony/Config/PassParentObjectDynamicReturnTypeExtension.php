@@ -47,7 +47,11 @@ final class PassParentObjectDynamicReturnTypeExtension implements DynamicMethodR
 	{
 		$calledOnType = $scope->getType($methodCall->var);
 
-		$defaultType = ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
+		$defaultType = ParametersAcceptorSelector::selectFromArgs(
+			$scope,
+			$methodCall->getArgs(),
+			$methodReflection->getVariants(),
+		)->getReturnType();
 
 		return new ParentObjectType($defaultType->describe(VerbosityLevel::typeOnly()), $calledOnType);
 	}

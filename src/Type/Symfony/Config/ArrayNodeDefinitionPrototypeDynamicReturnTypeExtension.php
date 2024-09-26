@@ -55,7 +55,11 @@ final class ArrayNodeDefinitionPrototypeDynamicReturnTypeExtension implements Dy
 	{
 		$calledOnType = $scope->getType($methodCall->var);
 
-		$defaultType = ParametersAcceptorSelector::selectSingle($methodReflection->getVariants())->getReturnType();
+		$defaultType = ParametersAcceptorSelector::selectFromArgs(
+			$scope,
+			$methodCall->getArgs(),
+			$methodReflection->getVariants(),
+		)->getReturnType();
 
 		if ($methodReflection->getName() === 'prototype') {
 			if (!isset($methodCall->getArgs()[0])) {
