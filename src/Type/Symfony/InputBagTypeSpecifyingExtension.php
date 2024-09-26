@@ -29,7 +29,7 @@ final class InputBagTypeSpecifyingExtension implements MethodTypeSpecifyingExten
 
 	public function isMethodSupported(MethodReflection $methodReflection, MethodCall $node, TypeSpecifierContext $context): bool
 	{
-		return $methodReflection->getName() === self::HAS_METHOD_NAME && !$context->null();
+		return $methodReflection->getName() === self::HAS_METHOD_NAME && $context->false();
 	}
 
 	public function specifyTypes(MethodReflection $methodReflection, MethodCall $node, Scope $scope, TypeSpecifierContext $context): SpecifiedTypes
