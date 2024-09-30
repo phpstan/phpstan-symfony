@@ -18,17 +18,17 @@ final class Configuration
 
 	public function getContainerXmlPath(): ?string
 	{
-		return $this->parameters['containerXmlPath'] ?? $this->parameters['container_xml_path'] ?? null;
+		return $this->parameters['containerXmlPath'];
 	}
 
 	public function hasConstantHassers(): bool
 	{
-		return $this->parameters['constantHassers'] ?? $this->parameters['constant_hassers'] ?? true;
+		return $this->parameters['constantHassers'];
 	}
 
 	public function getConsoleApplicationLoader(): ?string
 	{
-		return $this->parameters['consoleApplicationLoader'] ?? $this->parameters['console_application_loader'] ?? null;
+		return $this->parameters['consoleApplicationLoader'];
 	}
 
 }

@@ -1,3 +1,0 @@
-parameters:
-	symfony:
-		container_xml_path: container.xml

@@ -1,4 +1,4 @@
 parameters:
 	symfony:
-		console_application_loader: console_application_loader.php
-		container_xml_path: container.xml
+		consoleApplicationLoader: console_application_loader.php
+		containerXmlPath: container.xml

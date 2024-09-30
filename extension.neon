@@ -5,11 +5,8 @@ parameters:
 		uncheckedExceptionClasses:
 			- 'Symfony\Component\Console\Exception\InvalidArgumentException'
 	symfony:
-		container_xml_path: null
 		containerXmlPath: null
-		constant_hassers: true
 		constantHassers: true
-		console_application_loader: null
 		consoleApplicationLoader: null
 	featureToggles:
 		skipCheckGenericClasses:
@@ -109,11 +106,8 @@ parameters:
 
 parametersSchema:
 	symfony: structure([
-		container_xml_path: schema(string(), nullable())
 		containerXmlPath: schema(string(), nullable())
-		constant_hassers: bool()
 		constantHassers: bool()
-		console_application_loader: schema(string(), nullable())
 		consoleApplicationLoader: schema(string(), nullable())
 	])
 
