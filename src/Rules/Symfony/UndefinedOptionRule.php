@@ -12,7 +12,6 @@ use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Symfony\ConsoleApplicationResolver;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Symfony\Helper;
-use PHPStan\Type\TypeUtils;
 use function count;
 use function sprintf;
 
@@ -58,7 +57,7 @@ final class UndefinedOptionRule implements Rule
 		}
 
 		$optType = $scope->getType($node->getArgs()[0]->value);
-		$optStrings = TypeUtils::getConstantStrings($optType);
+		$optStrings = $optType->getConstantStrings();
 		if (count($optStrings) !== 1) {
 			return [];
 		}

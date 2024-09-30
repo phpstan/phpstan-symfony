@@ -5,7 +5,6 @@ namespace PHPStan\Symfony;
 use PhpParser\Node\Expr;
 use PHPStan\Analyser\Scope;
 use PHPStan\Type\Type;
-use PHPStan\Type\TypeUtils;
 use function array_map;
 
 final class DefaultParameterMap implements ParameterMap
@@ -37,7 +36,7 @@ final class DefaultParameterMap implements ParameterMap
 
 	public static function getParameterKeysFromNode(Expr $node, Scope $scope): array
 	{
-		$strings = TypeUtils::getConstantStrings($scope->getType($node));
+		$strings = $scope->getType($node)->getConstantStrings();
 
 		return array_map(static fn (Type $type) => $type->getValue(), $strings);
 	}

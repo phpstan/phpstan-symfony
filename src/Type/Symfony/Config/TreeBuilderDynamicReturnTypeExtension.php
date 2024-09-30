@@ -10,7 +10,6 @@ use PHPStan\ShouldNotHappenException;
 use PHPStan\Type\DynamicStaticMethodReturnTypeExtension;
 use PHPStan\Type\Symfony\Config\ValueObject\TreeBuilderType;
 use PHPStan\Type\Type;
-use PHPStan\Type\TypeUtils;
 use function count;
 
 final class TreeBuilderDynamicReturnTypeExtension implements DynamicStaticMethodReturnTypeExtension
@@ -47,7 +46,7 @@ final class TreeBuilderDynamicReturnTypeExtension implements DynamicStaticMethod
 		$type = 'array';
 
 		if (isset($methodCall->getArgs()[1])) {
-			$argStrings = TypeUtils::getConstantStrings($scope->getType($methodCall->getArgs()[1]->value));
+			$argStrings = $scope->getType($methodCall->getArgs()[1]->value)->getConstantStrings();
 			if (count($argStrings) === 1 && isset(self::MAPPING[$argStrings[0]->getValue()])) {
 				$type = $argStrings[0]->getValue();
 			}

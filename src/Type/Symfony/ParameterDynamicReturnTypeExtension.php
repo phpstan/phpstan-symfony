@@ -14,7 +14,6 @@ use PHPStan\Type\BooleanType;
 use PHPStan\Type\Constant\ConstantArrayType;
 use PHPStan\Type\Constant\ConstantArrayTypeBuilder;
 use PHPStan\Type\Constant\ConstantBooleanType;
-use PHPStan\Type\ConstantType;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\FloatType;
 use PHPStan\Type\GeneralizePrecision;
@@ -194,7 +193,7 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 				}
 				return new ArrayType($this->generalizeType($type->getKeyType()), $this->generalizeType($type->getItemType()));
 			}
-			if ($type instanceof ConstantType) {
+			if ($type->isConstantValue()->yes()) {
 				return $type->generalize(GeneralizePrecision::lessSpecific());
 			}
 			return $traverse($type);

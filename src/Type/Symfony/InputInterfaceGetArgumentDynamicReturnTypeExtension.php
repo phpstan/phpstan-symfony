@@ -14,7 +14,6 @@ use PHPStan\Type\NullType;
 use PHPStan\Type\StringType;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
-use PHPStan\Type\TypeUtils;
 use function count;
 use function in_array;
 
@@ -49,7 +48,7 @@ final class InputInterfaceGetArgumentDynamicReturnTypeExtension implements Dynam
 			return null;
 		}
 
-		$argStrings = TypeUtils::getConstantStrings($scope->getType($methodCall->getArgs()[0]->value));
+		$argStrings = $scope->getType($methodCall->getArgs()[0]->value)->getConstantStrings();
 		if (count($argStrings) !== 1) {
 			return null;
 		}

@@ -10,7 +10,6 @@ use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
-use PHPStan\Type\TypeUtils;
 use Throwable;
 use function count;
 use function get_class;
@@ -46,7 +45,7 @@ final class CommandGetHelperDynamicReturnTypeExtension implements DynamicMethodR
 			return null;
 		}
 
-		$argStrings = TypeUtils::getConstantStrings($scope->getType($methodCall->getArgs()[0]->value));
+		$argStrings = $scope->getType($methodCall->getArgs()[0]->value)->getConstantStrings();
 		if (count($argStrings) !== 1) {
 			return null;
 		}

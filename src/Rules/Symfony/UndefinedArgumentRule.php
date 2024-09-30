@@ -12,7 +12,6 @@ use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Symfony\ConsoleApplicationResolver;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Symfony\Helper;
-use PHPStan\Type\TypeUtils;
 use function count;
 use function sprintf;
 
@@ -58,7 +57,7 @@ final class UndefinedArgumentRule implements Rule
 		}
 
 		$argType = $scope->getType($node->getArgs()[0]->value);
-		$argStrings = TypeUtils::getConstantStrings($argType);
+		$argStrings = $argType->getConstantStrings();
 		if (count($argStrings) !== 1) {
 			return [];
 		}

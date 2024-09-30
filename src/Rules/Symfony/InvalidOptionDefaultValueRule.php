@@ -15,7 +15,6 @@ use PHPStan\Type\MixedType;
 use PHPStan\Type\NullType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\StringType;
-use PHPStan\Type\TypeUtils;
 use PHPStan\Type\UnionType;
 use PHPStan\Type\VerbosityLevel;
 use function count;
@@ -48,7 +47,7 @@ final class InvalidOptionDefaultValueRule implements Rule
 		if ($modeType->isNull()->yes()) {
 			$modeType = new ConstantIntegerType(1); // InputOption::VALUE_NONE
 		}
-		$modeTypes = TypeUtils::getConstantScalars($modeType);
+		$modeTypes = $modeType->getConstantScalarTypes();
 		if (count($modeTypes) !== 1) {
 			return [];
 		}

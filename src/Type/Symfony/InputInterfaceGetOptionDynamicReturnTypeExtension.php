@@ -10,7 +10,6 @@ use PHPStan\Symfony\ConsoleApplicationResolver;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
-use PHPStan\Type\TypeUtils;
 use function count;
 
 final class InputInterfaceGetOptionDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
@@ -47,7 +46,7 @@ final class InputInterfaceGetOptionDynamicReturnTypeExtension implements Dynamic
 			return null;
 		}
 
-		$optStrings = TypeUtils::getConstantStrings($scope->getType($methodCall->getArgs()[0]->value));
+		$optStrings = $scope->getType($methodCall->getArgs()[0]->value)->getConstantStrings();
 		if (count($optStrings) !== 1) {
 			return null;
 		}
