@@ -11,6 +11,7 @@ parameters:
 		constantHassers: true
 		console_application_loader: null
 		consoleApplicationLoader: null
+		twigEnvironmentLoader: null
 	featureToggles:
 		skipCheckGenericClasses:
 			- Symfony\Component\Form\AbstractType
@@ -115,6 +116,7 @@ parametersSchema:
 		constantHassers: bool()
 		console_application_loader: schema(string(), nullable())
 		consoleApplicationLoader: schema(string(), nullable())
+		twigEnvironmentLoader: schema(string(), nullable())
 	])
 
 services:
@@ -365,3 +367,8 @@ services:
 	-
 		factory: PHPStan\Type\Symfony\ExtensionGetConfigurationReturnTypeExtension
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+
+	-
+		class: PHPStan\Symfony\TwigEnvironmentResolver
+		arguments:
+			twigEnvironmentLoader: %symfony.twigEnvironmentLoader%
