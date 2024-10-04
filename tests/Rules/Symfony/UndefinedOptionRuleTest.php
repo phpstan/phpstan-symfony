@@ -2,7 +2,7 @@
 
 namespace PHPStan\Rules\Symfony;
 
-use PhpParser\PrettyPrinter\Standard;
+use PHPStan\Node\Printer\Printer;
 use PHPStan\Rules\Rule;
 use PHPStan\Symfony\Configuration;
 use PHPStan\Symfony\ConsoleApplicationResolver;
@@ -16,7 +16,7 @@ final class UndefinedOptionRuleTest extends RuleTestCase
 
 	protected function getRule(): Rule
 	{
-		return new UndefinedOptionRule(new ConsoleApplicationResolver(new Configuration(['consoleApplicationLoader' => __DIR__ . '/console_application_loader.php'])), new Standard());
+		return new UndefinedOptionRule(new ConsoleApplicationResolver(new Configuration(['consoleApplicationLoader' => __DIR__ . '/console_application_loader.php'])), self::getContainer()->getByType(Printer::class));
 	}
 
 	public function testGetArgument(): void

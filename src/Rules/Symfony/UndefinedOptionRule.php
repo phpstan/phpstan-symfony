@@ -5,8 +5,8 @@ namespace PHPStan\Rules\Symfony;
 use InvalidArgumentException;
 use PhpParser\Node;
 use PhpParser\Node\Expr\MethodCall;
-use PhpParser\PrettyPrinter\Standard;
 use PHPStan\Analyser\Scope;
+use PHPStan\Node\Printer\Printer;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Symfony\ConsoleApplicationResolver;
@@ -23,9 +23,9 @@ final class UndefinedOptionRule implements Rule
 
 	private ConsoleApplicationResolver $consoleApplicationResolver;
 
-	private Standard $printer;
+	private Printer $printer;
 
-	public function __construct(ConsoleApplicationResolver $consoleApplicationResolver, Standard $printer)
+	public function __construct(ConsoleApplicationResolver $consoleApplicationResolver, Printer $printer)
 	{
 		$this->consoleApplicationResolver = $consoleApplicationResolver;
 		$this->printer = $printer;

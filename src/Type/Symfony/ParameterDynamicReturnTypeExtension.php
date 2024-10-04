@@ -42,6 +42,7 @@ use function strlen;
 final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
 
+	/** @var class-string */
 	private string $className;
 
 	private ?string $methodGet = null;
@@ -54,6 +55,9 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 
 	private TypeStringResolver $typeStringResolver;
 
+	/**
+	 * @param class-string $className
+	 */
 	public function __construct(
 		string $className,
 		?string $methodGet,

@@ -2,13 +2,14 @@
 
 namespace PHPStan\Rules\Symfony;
 
-use PhpParser\PrettyPrinter\Standard;
+use PHPStan\Node\Printer\Printer;
 use PHPStan\Rules\Rule;
 use PHPStan\Symfony\Configuration;
 use PHPStan\Symfony\XmlServiceMapFactory;
 use PHPStan\Testing\RuleTestCase;
 use PHPStan\Type\MethodTypeSpecifyingExtension;
 use PHPStan\Type\Symfony\ServiceTypeSpecifyingExtension;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use function class_exists;
 
 /**
@@ -19,7 +20,7 @@ final class ContainerInterfaceUnknownServiceRuleFakeTest extends RuleTestCase
 
 	protected function getRule(): Rule
 	{
-		return new ContainerInterfaceUnknownServiceRule((new XmlServiceMapFactory(new Configuration([])))->create(), new Standard());
+		return new ContainerInterfaceUnknownServiceRule((new XmlServiceMapFactory(new Configuration([])))->create(), self::getContainer()->getByType(Printer::class));
 	}
 
 	/**
@@ -28,7 +29,7 @@ final class ContainerInterfaceUnknownServiceRuleFakeTest extends RuleTestCase
 	protected function getMethodTypeSpecifyingExtensions(): array
 	{
 		return [
-			new ServiceTypeSpecifyingExtension('Symfony\Bundle\FrameworkBundle\Controller\Controller', new Standard()),
+			new ServiceTypeSpecifyingExtension(AbstractController::class, self::getContainer()->getByType(Printer::class)),
 		];
 	}
 

@@ -15,12 +15,14 @@ use function in_array;
 final class PassParentObjectDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
 
+	/** @var class-string */
 	private string $className;
 
 	/** @var string[] */
 	private array $methods;
 
 	/**
+	 * @param class-string $className
 	 * @param string[] $methods
 	 */
 	public function __construct(string $className, array $methods)

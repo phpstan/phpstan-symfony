@@ -22,6 +22,7 @@ use function is_string;
 final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
 {
 
+	/** @var class-string */
 	private string $className;
 
 	private bool $constantHassers;
@@ -32,6 +33,9 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 
 	private ?ParameterBag $parameterBag = null;
 
+	/**
+	 * @param class-string $className
+	 */
 	public function __construct(
 		string $className,
 		Configuration $configuration,
