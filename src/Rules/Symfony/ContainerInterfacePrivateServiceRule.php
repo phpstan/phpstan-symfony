@@ -82,13 +82,13 @@ final class ContainerInterfacePrivateServiceRule implements Rule
 	private function isServiceSubscriber(Type $containerType, Scope $scope): TrinaryLogic
 	{
 		$serviceSubscriberInterfaceType = new ObjectType('Symfony\Contracts\Service\ServiceSubscriberInterface');
-		$isContainerServiceSubscriber = $serviceSubscriberInterfaceType->isSuperTypeOf($containerType);
+		$isContainerServiceSubscriber = $serviceSubscriberInterfaceType->isSuperTypeOf($containerType)->result;
 		$classReflection = $scope->getClassReflection();
 		if ($classReflection === null) {
 			return $isContainerServiceSubscriber;
 		}
 		$containedClassType = new ObjectType($classReflection->getName());
-		return $isContainerServiceSubscriber->or($serviceSubscriberInterfaceType->isSuperTypeOf($containedClassType));
+		return $isContainerServiceSubscriber->or($serviceSubscriberInterfaceType->isSuperTypeOf($containedClassType)->result);
 	}
 
 }
