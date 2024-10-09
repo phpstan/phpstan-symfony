@@ -8,18 +8,6 @@ parameters:
 		containerXmlPath: null
 		constantHassers: true
 		consoleApplicationLoader: null
-	featureToggles:
-		skipCheckGenericClasses:
-			- Symfony\Component\Form\AbstractType
-			- Symfony\Component\Form\FormBuilderInterface
-			- Symfony\Component\Form\FormConfigBuilderInterface
-			- Symfony\Component\Form\FormConfigInterface
-			- Symfony\Component\Form\FormInterface
-			- Symfony\Component\Form\FormTypeExtensionInterface
-			- Symfony\Component\Form\FormTypeInterface
-			- Symfony\Component\OptionsResolver\Options
-			- Symfony\Component\Security\Core\Authorization\Voter\Voter
-			- Symfony\Component\Security\Core\User\PasswordUpgraderInterface
 	stubFiles:
 		- stubs/Psr/Cache/CacheException.stub
 		- stubs/Psr/Cache/CacheItemInterface.stub
