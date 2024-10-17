@@ -53,14 +53,13 @@ final class MessageMapFactory
 				$reflectionClass = $this->reflectionProvider->getClass($serviceClass);
 
 				if (isset($tagAttributes['handles'])) {
-					// todo cover by test case
 					$handles = [$tagAttributes['handles'] => ['method' => $tagAttributes['method'] ?? self::DEFAULT_HANDLER_METHOD]];
 				} else {
 					$handles = $this->guessHandledMessages($reflectionClass);
 				}
 
 				foreach ($handles as $messageClassName => $options) {
-					$methodReflection = $reflectionClass->getNativeMethod($options['method']);
+					$methodReflection = $reflectionClass->getNativeMethod($options['method'] ?? self::DEFAULT_HANDLER_METHOD);
 					$variant = ParametersAcceptorSelector::selectSingle($methodReflection->getVariants());
 
 					$returnTypesMap[$messageClassName][] = $variant->getReturnType();
@@ -84,7 +83,6 @@ final class MessageMapFactory
 	private function guessHandledMessages(ClassReflection $reflectionClass): iterable
 	{
 		if ($reflectionClass->implementsInterface(MessageSubscriberInterface::class)) {
-			// todo handle different return formats
 			foreach ($reflectionClass->getName()::getHandledMessages() as $index => $value) {
 				if (is_int($index) && is_string($value)) {
 					yield $value => ['method' => self::DEFAULT_HANDLER_METHOD];
