@@ -4,7 +4,6 @@ namespace PHPStan\Symfony;
 
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\MissingMethodFromReflectionException;
-use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Reflection\ReflectionProvider;
 use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
 use function count;
@@ -15,6 +14,7 @@ use function is_string;
 final class MessageMapFactory
 {
 
+	private const MESSENGER_HANDLER_TAG = 'messenger.message_handler';
 	private const DEFAULT_HANDLER_METHOD = '__invoke';
 
 	/** @var ReflectionProvider */
@@ -36,15 +36,12 @@ final class MessageMapFactory
 		foreach ($this->serviceMap->getServices() as $service) {
 			$serviceClass = $service->getClass();
 
-			// todo handle abstract/parent services somehow?
 			if (is_null($serviceClass)) {
 				continue;
 			}
 
 			foreach ($service->getTags() as $tag) {
-				// todo could there be more tags with the same name for the same service?
-				// todo check if message handler tag name is constant or configurable
-				if ($tag->getName() !== 'messenger.message_handler') {
+				if ($tag->getName() !== self::MESSENGER_HANDLER_TAG) {
 					continue;
 				}
 
@@ -59,9 +56,10 @@ final class MessageMapFactory
 
 				foreach ($handles as $messageClassName => $options) {
 					$methodReflection = $reflectionClass->getNativeMethod($options['method'] ?? self::DEFAULT_HANDLER_METHOD);
-					$variant = ParametersAcceptorSelector::selectSingle($methodReflection->getVariants());
 
-					$returnTypesMap[$messageClassName][] = $variant->getReturnType();
+					foreach ($methodReflection->getVariants() as $variant) {
+						$returnTypesMap[$messageClassName][] = $variant->getReturnType();
+					}
 				}
 			}
 		}

@@ -49,8 +49,6 @@ class MultiQueryHandler implements MessageSubscriberInterface
     {
         return 'string result';
     }
-
-    // todo add handle method with union return type?
 }
 
 class TaggedQuery {}
