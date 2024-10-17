@@ -16,6 +16,7 @@ class RegularQueryHandler
     }
 }
 
+class BooleanQuery {}
 class StringQuery {}
 class IntQuery {}
 class FloatQuery {}
@@ -23,15 +24,15 @@ class MultiQueryHandler implements MessageSubscriberInterface
 {
     public static function getHandledMessages(): iterable
     {
-        yield StringQuery::class;
+        yield BooleanQuery::class;
         yield IntQuery::class => ['method' => 'handleInt'];
         yield FloatQuery::class => ['method' => 'handleFloat'];
         yield StringQuery::class => ['method' => 'handleString'];
     }
 
-    public function __invoke(StringQuery $query): string
+    public function __invoke(BooleanQuery $query): bool
     {
-        return 'string result';
+        return true;
     }
 
     public function handleInt(IntQuery $query): int
@@ -52,16 +53,63 @@ class MultiQueryHandler implements MessageSubscriberInterface
     // todo add handle method with union return type?
 }
 
+class TaggedQuery {}
+class TaggedResult {}
+class TaggedHandler
+{
+    public function handle(TaggedQuery $query): TaggedResult
+    {
+        return new TaggedResult();
+    }
+}
+
+class MultiHandlesForInTheSameHandlerQuery {}
+class MultiHandlesForInTheSameHandler implements MessageSubscriberInterface
+{
+    public static function getHandledMessages(): iterable
+    {
+        yield MultiHandlesForInTheSameHandlerQuery::class;
+        yield MultiHandlesForInTheSameHandlerQuery::class => ['priority' => '0'];
+    }
+
+    public function __invoke(MultiHandlesForInTheSameHandlerQuery $query): bool
+    {
+        return true;
+    }
+}
+
+class MultiHandlersForTheSameMessageQuery {}
+class MultiHandlersForTheSameMessageHandler1
+{
+    public function __invoke(MultiHandlersForTheSameMessageQuery $query): bool
+    {
+        return true;
+    }
+}
+class MultiHandlersForTheSameMessageHandler2
+{
+    public function __invoke(MultiHandlersForTheSameMessageQuery $query): bool
+    {
+        return false;
+    }
+}
+
 class HandleTraitClass {
     use HandleTrait;
 
     public function __invoke()
     {
         assertType(RegularQueryResult::class, $this->handle(new RegularQuery()));
+
+        assertType('bool', $this->handle(new BooleanQuery()));
         assertType('int', $this->handle(new IntQuery()));
         assertType('float', $this->handle(new FloatQuery()));
+        assertType('string', $this->handle(new StringQuery()));
 
-        // HandleTrait will throw exception in fact due to multiple handlers per single query
-        assertType('mixed', $this->handle(new StringQuery()));
+        assertType(TaggedResult::class, $this->handle(new TaggedQuery()));
+
+        // HandleTrait will throw exception in fact due to multiple handle methods/handlers per single query
+        assertType('mixed', $this->handle(new MultiHandlesForInTheSameHandlerQuery()));
+        assertType('mixed', $this->handle(new MultiHandlersForTheSameMessageQuery()));
     }
 }
