@@ -354,5 +354,23 @@
         <service id="parameterised_foo" class="%app.class%"></service>
         <service id="parameterised_bar" class="%app.class%\Bar"></service>
         <service id="synthetic" class="Synthetic" public="true" synthetic="true" />
+        <service id="regular_query_handler" class="MessengerHandleTrait\RegularQueryHandler">
+            <tag name="messenger.message_handler"/>
+        </service>
+        <service id="multi_query_handler" class="MessengerHandleTrait\MultiQueryHandler">
+            <tag name="messenger.message_handler"/>
+        </service>
+        <service id="tagged_handler" class="MessengerHandleTrait\TaggedHandler">
+            <tag name="messenger.message_handler" handles="MessengerHandleTrait\TaggedQuery" method="handle"/>
+        </service>
+        <service id="multi_handles_for_in_the_same_handler" class="MessengerHandleTrait\MultiHandlesForInTheSameHandler">
+            <tag name="messenger.message_handler"/>
+        </service>
+        <service id="multi_handlers_for_the_same_message_handler_1" class="MessengerHandleTrait\MultiHandlersForTheSameMessageHandler1">
+            <tag name="messenger.message_handler"/>
+        </service>
+        <service id="multi_handlers_for_the_same_message_handler_2" class="MessengerHandleTrait\MultiHandlersForTheSameMessageHandler2">
+            <tag name="messenger.message_handler"/>
+        </service>
     </services>
 </container>

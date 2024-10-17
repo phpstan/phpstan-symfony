@@ -1,5 +1,6 @@
 /tests/tmp
 /build-cs
 /vendor
+/.idea
 /composer.lock
 .phpunit.result.cache
