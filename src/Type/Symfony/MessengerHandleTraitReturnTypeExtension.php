@@ -33,15 +33,6 @@ final class MessengerHandleTraitReturnTypeExtension implements ExpressionTypeRes
 
 	public function getType(Expr $expr, Scope $scope): ?Type
 	{
-		// todo handle different cases:
-		//  - [X] regular message classes
-		//  - [ ] interfaces for message classes
-		//  - [ ] many handlers for one message? it would throw exception in HandleTrait anyway
-		//  - [x] many messages for one handler
-		//  - [partially] cover MessageSubscriberInterface
-		//  - [partially] custom method names for handlers (different than default "__invoke" magic method)
-		//  - [] read SF doc to determine any other cases to covers
-
 		if ($this->isSupported($expr, $scope)) {
 			$arg = $expr->getArgs()[0]->value;
 			$argClassNames = $scope->getType($arg)->getObjectClassNames();
