@@ -3,16 +3,15 @@
 namespace PHPStan\Symfony;
 
 use PHPStan\Reflection\ClassReflection;
+use PHPStan\Reflection\MissingMethodFromReflectionException;
 use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Reflection\ReflectionProvider;
-use RuntimeException;
 use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
 use function count;
 use function is_int;
 use function is_null;
 use function is_string;
 
-// todo add tests
 final class MessageMapFactory
 {
 
@@ -94,23 +93,30 @@ final class MessageMapFactory
 			return;
 		}
 
-		// todo handle if doesn't exists
-		$methodReflection = $reflectionClass->getNativeMethod(self::DEFAULT_HANDLER_METHOD);
+		try {
+			$methodReflection = $reflectionClass->getNativeMethod(self::DEFAULT_HANDLER_METHOD);
+		} catch (MissingMethodFromReflectionException $e) {
+			return;
+		}
 
-		$variant = ParametersAcceptorSelector::selectSingle($methodReflection->getVariants());
-		$parameters = $variant->getParameters();
+		$variants = $methodReflection->getVariants();
+		if (count($variants) !== 1) {
+			return;
+		}
+
+		$parameters = $variants[0]->getParameters();
 
 		if (count($parameters) !== 1) {
-			// todo handle error
-			throw new RuntimeException('invalid handler');
+			return;
 		}
 
-		$type = $parameters[0]->getType();
+		$classNames = $parameters[0]->getType()->getObjectClassNames();
 
-		// todo many class names?
-		foreach ($type->getObjectClassNames() as $className) {
-			yield $className => ['method' => self::DEFAULT_HANDLER_METHOD];
+		if (count($classNames) !== 1) {
+			return;
 		}
+
+		yield $classNames[0] => ['method' => self::DEFAULT_HANDLER_METHOD];
 	}
 
 }
