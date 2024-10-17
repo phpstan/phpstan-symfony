@@ -46,13 +46,12 @@ final class MessengerHandleTraitReturnTypeExtension implements ExpressionTypeRes
 			$arg = $expr->getArgs()[0]->value;
 			$argClassNames = $scope->getType($arg)->getObjectClassNames();
 
-			// todo filter out not handled cases on map creation?
 			if (count($argClassNames) === 1) {
 				$messageMap = $this->getMessageMap();
-				$message = $messageMap->getMessageForClass($argClassNames[0]);
+				$returnType = $messageMap->getTypeForClass($argClassNames[0]);
 
-				if (!is_null($message) && $message->countReturnTypes() === 1) {
-					return $message->getReturnTypes()[0];
+				if (!is_null($returnType)) {
+					return $returnType;
 				}
 			}
 		}

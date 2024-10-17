@@ -68,12 +68,16 @@ final class MessageMapFactory
 			}
 		}
 
-		$messages = [];
+		$messageMap = [];
 		foreach ($returnTypesMap as $messageClassName => $returnTypes) {
-			$messages[] = new Message($messageClassName, $returnTypes);
+			if (count($returnTypes) !== 1) {
+				continue;
+			}
+
+			$messageMap[$messageClassName] = $returnTypes[0];
 		}
 
-		return new MessageMap($messages);
+		return new MessageMap($messageMap);
 	}
 
 	/** @return array<string, array<string, string>> */

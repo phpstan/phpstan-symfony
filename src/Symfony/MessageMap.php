@@ -2,25 +2,25 @@
 
 namespace PHPStan\Symfony;
 
+use PHPStan\Type\Type;
+
 final class MessageMap
 {
 
-	/** @var Message[] */
-	private $messages = [];
+	/** @var array<string, Type> */
+	private $messageMap;
 
 	/**
-	 * @param Message[] $messages
+	 * @param array<string, Type> $messageMap
 	 */
-	public function __construct(array $messages)
+	public function __construct(array $messageMap)
 	{
-		foreach ($messages as $message) {
-			$this->messages[$message->getClass()] = $message;
-		}
+		$this->messageMap = $messageMap;
 	}
 
-	public function getMessageForClass(string $class): ?Message
+	public function getTypeForClass(string $class): ?Type
 	{
-		return $this->messages[$class] ?? null;
+		return $this->messageMap[$class] ?? null;
 	}
 
 }
