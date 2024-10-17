@@ -211,8 +211,8 @@ services:
 
 	# Messenger HandleTrait::handle() return type
 	-
-		factory: PHPStan\Type\Symfony\MessengerHandleTraitDynamicReturnTypeExtension
-		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+		class: PHPStan\Type\Symfony\MessengerHandleTraitReturnTypeExtension
+		tags: [phpstan.broker.expressionTypeResolverExtension]
 
 	# InputInterface::getArgument() return type
 	-
