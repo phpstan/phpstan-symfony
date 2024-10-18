@@ -5,10 +5,12 @@ namespace PHPStan\Symfony;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\MissingMethodFromReflectionException;
 use PHPStan\Reflection\ReflectionProvider;
+use PHPStan\ShouldNotHappenException;
 use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
+use function class_exists;
 use function count;
+use function is_array;
 use function is_int;
-use function is_null;
 use function is_string;
 
 final class MessageMapFactory
@@ -36,7 +38,7 @@ final class MessageMapFactory
 		foreach ($this->serviceMap->getServices() as $service) {
 			$serviceClass = $service->getClass();
 
-			if (is_null($serviceClass)) {
+			if ($serviceClass === null) {
 				continue;
 			}
 
@@ -45,6 +47,7 @@ final class MessageMapFactory
 					continue;
 				}
 
+				/** @var array{handles?: class-string, method?: string} $tagAttributes */
 				$tagAttributes = $tag->getAttributes();
 				$reflectionClass = $this->reflectionProvider->getClass($serviceClass);
 
@@ -76,15 +79,15 @@ final class MessageMapFactory
 		return new MessageMap($messageMap);
 	}
 
-	/** @return array<string, array<string, string>> */
+	/** @return array<class-string, array<string, string>> */
 	private function guessHandledMessages(ClassReflection $reflectionClass): iterable
 	{
 		if ($reflectionClass->implementsInterface(MessageSubscriberInterface::class)) {
 			foreach ($reflectionClass->getName()::getHandledMessages() as $index => $value) {
-				if (is_int($index) && is_string($value)) {
-					yield $value => ['method' => self::DEFAULT_HANDLER_METHOD];
-				} else {
+				if (self::containOptions($index, $value)) {
 					yield $index => $value;
+				} else {
+					yield $value => ['method' => self::DEFAULT_HANDLER_METHOD];
 				}
 			}
 
@@ -108,6 +111,7 @@ final class MessageMapFactory
 			return;
 		}
 
+		/** @var class-string[] $classNames */
 		$classNames = $parameters[0]->getType()->getObjectClassNames();
 
 		if (count($classNames) !== 1) {
@@ -115,6 +119,23 @@ final class MessageMapFactory
 		}
 
 		yield $classNames[0] => ['method' => self::DEFAULT_HANDLER_METHOD];
+	}
+
+	/**
+	 * @phpstan-assert-if-true class-string $index
+	 * @phpstan-assert-if-true array<string, mixed> $value
+	 * @phpstan-assert-if-false int $index
+	 * @phpstan-assert-if-false class-string $value
+	 */
+	private static function containOptions(mixed $index, mixed $value): bool
+	{
+		if (is_string($index) && class_exists($index) && is_array($value)) {
+			return true;
+		} elseif (is_int($index) && is_string($value) && class_exists($value)) {
+			return false;
+		}
+
+		throw new ShouldNotHappenException();
 	}
 
 }
