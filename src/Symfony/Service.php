@@ -20,12 +20,17 @@ final class Service implements ServiceDefinition
 	/** @var string|null */
 	private $alias;
 
+	/** @var ServiceTag[] */
+	private $tags;
+
+	/** @param ServiceTag[] $tags */
 	public function __construct(
 		string $id,
 		?string $class,
 		bool $public,
 		bool $synthetic,
-		?string $alias
+		?string $alias,
+		array $tags = []
 	)
 	{
 		$this->id = $id;
@@ -33,6 +38,7 @@ final class Service implements ServiceDefinition
 		$this->public = $public;
 		$this->synthetic = $synthetic;
 		$this->alias = $alias;
+		$this->tags = $tags;
 	}
 
 	public function getId(): string
@@ -58,6 +64,11 @@ final class Service implements ServiceDefinition
 	public function getAlias(): ?string
 	{
 		return $this->alias;
+	}
+
+	public function getTags(): array
+	{
+		return $this->tags;
 	}
 
 }
