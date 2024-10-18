@@ -122,12 +122,14 @@ final class MessageMapFactory
 	}
 
 	/**
+	 * @param mixed $index
+	 * @param mixed $value
 	 * @phpstan-assert-if-true class-string $index
 	 * @phpstan-assert-if-true array<string, mixed> $value
 	 * @phpstan-assert-if-false int $index
 	 * @phpstan-assert-if-false class-string $value
 	 */
-	private static function containOptions(mixed $index, mixed $value): bool
+	private static function containOptions($index, $value): bool
 	{
 		if (is_string($index) && class_exists($index) && is_array($value)) {
 			return true;
