@@ -35,6 +35,7 @@ final class MessengerHandleTraitReturnTypeExtension implements ExpressionTypeRes
 	{
 		if ($this->isSupported($expr, $scope)) {
 			$arg = $expr->getArgs()[0]->value;
+			/** @var class-string[] $argClassNames */
 			$argClassNames = $scope->getType($arg)->getObjectClassNames();
 
 			if (count($argClassNames) === 1) {
@@ -52,7 +53,7 @@ final class MessengerHandleTraitReturnTypeExtension implements ExpressionTypeRes
 
 	private function getMessageMap(): MessageMap
 	{
-		if (is_null($this->messageMap)) {
+		if ($this->messageMap === null) {
 			$this->messageMap = $this->messageMapFactory->create();
 		}
 
