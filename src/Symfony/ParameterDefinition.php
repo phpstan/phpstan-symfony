@@ -2,6 +2,9 @@
 
 namespace PHPStan\Symfony;
 
+/**
+ * @api
+ */
 interface ParameterDefinition
 {
 

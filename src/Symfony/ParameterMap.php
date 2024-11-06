@@ -5,6 +5,9 @@ namespace PHPStan\Symfony;
 use PhpParser\Node\Expr;
 use PHPStan\Analyser\Scope;
 
+/**
+ * @api
+ */
 interface ParameterMap
 {
 
