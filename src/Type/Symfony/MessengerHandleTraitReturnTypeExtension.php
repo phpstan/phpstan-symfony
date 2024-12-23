@@ -10,7 +10,6 @@ use PHPStan\Symfony\MessageMap;
 use PHPStan\Symfony\MessageMapFactory;
 use PHPStan\Type\ExpressionTypeResolverExtension;
 use PHPStan\Type\Type;
-use ReflectionException;
 use function count;
 use function is_null;
 
@@ -35,7 +34,6 @@ final class MessengerHandleTraitReturnTypeExtension implements ExpressionTypeRes
 	{
 		if ($this->isSupported($expr, $scope)) {
 			$arg = $expr->getArgs()[0]->value;
-			/** @var class-string[] $argClassNames */
 			$argClassNames = $scope->getType($arg)->getObjectClassNames();
 
 			if (count($argClassNames) === 1) {
@@ -61,7 +59,7 @@ final class MessengerHandleTraitReturnTypeExtension implements ExpressionTypeRes
 	}
 
 	/**
-	 * @phpstan-assert-if-true MethodCall $expr
+	 * @phpstan-assert-if-true =MethodCall $expr
 	 */
 	private function isSupported(Expr $expr, Scope $scope): bool
 	{
@@ -73,14 +71,16 @@ final class MessengerHandleTraitReturnTypeExtension implements ExpressionTypeRes
 			return false;
 		}
 
-		try {
-			$methodReflection = $scope->getClassReflection()->getNativeReflection()->getMethod(self::TRAIT_METHOD_NAME);
-			$declaringClassReflection = $methodReflection->getBetterReflection()->getDeclaringClass();
+		$reflectionClass = $scope->getClassReflection()->getNativeReflection();
 
-			return $declaringClassReflection->getName() === self::TRAIT_NAME;
-		} catch (ReflectionException $e) {
+		if (!$reflectionClass->hasMethod(self::TRAIT_METHOD_NAME)) {
 			return false;
 		}
+
+		$methodReflection = $reflectionClass->getMethod(self::TRAIT_METHOD_NAME);
+		$declaringClassReflection = $methodReflection->getBetterReflection()->getDeclaringClass();
+
+		return $declaringClassReflection->getName() === self::TRAIT_NAME;
 	}
 
 }

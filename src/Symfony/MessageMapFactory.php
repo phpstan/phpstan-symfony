@@ -3,7 +3,6 @@
 namespace PHPStan\Symfony;
 
 use PHPStan\Reflection\ClassReflection;
-use PHPStan\Reflection\MissingMethodFromReflectionException;
 use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\ShouldNotHappenException;
 use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
@@ -47,9 +46,14 @@ final class MessageMapFactory
 					continue;
 				}
 
+				if (!$this->reflectionProvider->hasClass($serviceClass)) {
+					continue;
+				}
+
+				$reflectionClass = $this->reflectionProvider->getClass($serviceClass);
+
 				/** @var array{handles?: class-string, method?: string} $tagAttributes */
 				$tagAttributes = $tag->getAttributes();
-				$reflectionClass = $this->reflectionProvider->getClass($serviceClass);
 
 				if (isset($tagAttributes['handles'])) {
 					$handles = [$tagAttributes['handles'] => ['method' => $tagAttributes['method'] ?? self::DEFAULT_HANDLER_METHOD]];
@@ -58,7 +62,13 @@ final class MessageMapFactory
 				}
 
 				foreach ($handles as $messageClassName => $options) {
-					$methodReflection = $reflectionClass->getNativeMethod($options['method'] ?? self::DEFAULT_HANDLER_METHOD);
+					$methodName = $options['method'] ?? self::DEFAULT_HANDLER_METHOD;
+
+					if (!$reflectionClass->hasNativeMethod($methodName)) {
+						continue;
+					}
+
+					$methodReflection = $reflectionClass->getNativeMethod($methodName);
 
 					foreach ($methodReflection->getVariants() as $variant) {
 						$returnTypesMap[$messageClassName][] = $variant->getReturnType();
@@ -79,26 +89,32 @@ final class MessageMapFactory
 		return new MessageMap($messageMap);
 	}
 
-	/** @return array<class-string, array<string, string>> */
+	/** @return iterable<string, array<string, string>> */
 	private function guessHandledMessages(ClassReflection $reflectionClass): iterable
 	{
 		if ($reflectionClass->implementsInterface(MessageSubscriberInterface::class)) {
-			foreach ($reflectionClass->getName()::getHandledMessages() as $index => $value) {
-				if (self::containOptions($index, $value)) {
-					yield $index => $value;
-				} else {
-					yield $value => ['method' => self::DEFAULT_HANDLER_METHOD];
+			$className = $reflectionClass->getName();
+
+			foreach ($className::getHandledMessages() as $index => $value) {
+				try {
+					if (self::containOptions($index, $value)) {
+						yield $index => $value;
+					} else {
+						yield $value => ['method' => self::DEFAULT_HANDLER_METHOD];
+					}
+				} catch (ShouldNotHappenException $e) {
+					continue;
 				}
 			}
 
 			return;
 		}
 
-		try {
-			$methodReflection = $reflectionClass->getNativeMethod(self::DEFAULT_HANDLER_METHOD);
-		} catch (MissingMethodFromReflectionException $e) {
+		if (!$reflectionClass->hasNativeMethod(self::DEFAULT_HANDLER_METHOD)) {
 			return;
 		}
+
+		$methodReflection = $reflectionClass->getNativeMethod(self::DEFAULT_HANDLER_METHOD);
 
 		$variants = $methodReflection->getVariants();
 		if (count($variants) !== 1) {
@@ -111,7 +127,6 @@ final class MessageMapFactory
 			return;
 		}
 
-		/** @var class-string[] $classNames */
 		$classNames = $parameters[0]->getType()->getObjectClassNames();
 
 		if (count($classNames) !== 1) {
@@ -124,10 +139,10 @@ final class MessageMapFactory
 	/**
 	 * @param mixed $index
 	 * @param mixed $value
-	 * @phpstan-assert-if-true class-string $index
-	 * @phpstan-assert-if-true array<string, mixed> $value
-	 * @phpstan-assert-if-false int $index
-	 * @phpstan-assert-if-false class-string $value
+	 * @phpstan-assert-if-true =class-string $index
+	 * @phpstan-assert-if-true =array<string, mixed> $value
+	 * @phpstan-assert-if-false =int $index
+	 * @phpstan-assert-if-false =class-string $value
 	 */
 	private static function containOptions($index, $value): bool
 	{

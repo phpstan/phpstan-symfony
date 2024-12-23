@@ -7,16 +7,15 @@ use PHPStan\Type\Type;
 final class MessageMap
 {
 
-	/** @var array<class-string, Type> */
+	/** @var array<string, Type> */
 	private $messageMap;
 
-	/** @param array<class-string, Type> $messageMap */
+	/** @param array<string, Type> $messageMap */
 	public function __construct(array $messageMap)
 	{
 		$this->messageMap = $messageMap;
 	}
 
-	/** @param class-string $class */
 	public function getTypeForClass(string $class): ?Type
 	{
 		return $this->messageMap[$class] ?? null;
