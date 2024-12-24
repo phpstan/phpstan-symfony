@@ -58,6 +58,7 @@ class ExtensionTest extends TypeInferenceTestCase
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/FormInterface_getErrors.php');
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/cache.php');
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/form_data_type.php');
+		yield from $this->gatherAssertTypes(__DIR__ . '/data/form_options.php');
 
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/extension/with-configuration/WithConfigurationExtension.php');
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/extension/without-configuration/WithoutConfigurationExtension.php');

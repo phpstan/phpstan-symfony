@@ -7,12 +7,13 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 interface FormFactoryInterface
 {
 	/**
-	 * @template TFormType of FormTypeInterface<TData>
+	 * @template TFormType of FormTypeInterface<TData, TOptions>
 	 * @template TData
+	 * @template TOptions of array<string, mixed>
 	 *
 	 * @param class-string<TFormType> $type
 	 * @param TData                   $data
-	 * @param array<string, mixed>    $options
+	 * @param TOptions                $options
 	 *
 	 * @phpstan-return ($data is null ? FormInterface<null|TData> : FormInterface<TData>)
 	 *
@@ -21,12 +22,13 @@ interface FormFactoryInterface
 	public function create(string $type = FormType::class, $data = null, array $options = []): FormInterface;
 
 	/**
-	 * @template TFormType of FormTypeInterface<TData>
+	 * @template TFormType of FormTypeInterface<TData, TOptions>
 	 * @template TData
+	 * @template TOptions of array<string, mixed>
 	 *
-	  * @param class-string<TFormType> $type
+	 * @param class-string<TFormType> $type
 	 * @param TData                   $data
-	 * @param array<string, mixed>    $options
+	 * @param TOptions                $options
 	 *
 	 * @phpstan-return ($data is null ? FormInterface<null|TData> : FormInterface<TData>)
 	 *

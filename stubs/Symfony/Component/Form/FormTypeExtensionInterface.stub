@@ -4,24 +4,25 @@ namespace Symfony\Component\Form;
 
 /**
  * @template TData
+ * @template TOptions of array<string, mixed>
  */
 interface FormTypeExtensionInterface
 {
     /**
      * @param FormBuilderInterface<TData|null> $builder
-     * @param array<string, mixed> $options
+     * @param TOptions $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void;
 
     /**
-     * @phpstan-param FormInterface<TData> $form
-     * @param array<string, mixed> $options
+     * @param FormInterface<TData> $form
+     * @param TOptions $options
      */
     public function buildView(FormView $view, FormInterface $form, array $options): void;
 
     /**
-     * @phpstan-param FormInterface<TData> $form
-     * @param array<string, mixed> $options
+     * @param FormInterface<TData> $form
+     * @param TOptions $options
      */
     public function finishView(FormView $view, FormInterface $form, array $options): void;
 }

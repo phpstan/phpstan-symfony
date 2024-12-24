@@ -9,12 +9,13 @@ use Symfony\Contracts\Service\ServiceSubscriberInterface;
 abstract class AbstractController implements ServiceSubscriberInterface
 {
 	/**
-	 * @template TFormType of FormTypeInterface<TData>
+	 * @template TFormType of FormTypeInterface<TData, TOptions>
 	 * @template TData
+	 * @template TOptions of array<string, mixed>
 	 *
 	 * @param class-string<TFormType> $type
 	 * @param TData                   $data
-	 * @param array<string, mixed>    $options
+	 * @param TOptions                $options
 	 *
 	 * @phpstan-return ($data is null ? FormInterface<null|TData> : FormInterface<TData>)
 	 */
