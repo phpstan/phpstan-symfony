@@ -4,7 +4,6 @@ namespace PHPStan\Symfony;
 
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\ReflectionProvider;
-use PHPStan\ShouldNotHappenException;
 use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
 use function class_exists;
 use function count;
@@ -96,14 +95,11 @@ final class MessageMapFactory
 			$className = $reflectionClass->getName();
 
 			foreach ($className::getHandledMessages() as $index => $value) {
-				try {
-					if (self::containOptions($index, $value)) {
-						yield $index => $value;
-					} else {
-						yield $value => ['method' => self::DEFAULT_HANDLER_METHOD];
-					}
-				} catch (ShouldNotHappenException $e) {
-					continue;
+				$containOptions = self::containOptions($index, $value);
+				if ($containOptions === true) {
+					yield $index => $value;
+				} elseif ($containOptions === false) {
+					yield $value => ['method' => self::DEFAULT_HANDLER_METHOD];
 				}
 			}
 
@@ -144,7 +140,7 @@ final class MessageMapFactory
 	 * @phpstan-assert-if-false =int $index
 	 * @phpstan-assert-if-false =class-string $value
 	 */
-	private static function containOptions($index, $value): bool
+	private static function containOptions($index, $value): ?bool
 	{
 		if (is_string($index) && class_exists($index) && is_array($value)) {
 			return true;
@@ -152,7 +148,7 @@ final class MessageMapFactory
 			return false;
 		}
 
-		throw new ShouldNotHappenException();
+		return null;
 	}
 
 }

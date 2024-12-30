@@ -33,7 +33,12 @@ final class MessengerHandleTraitReturnTypeExtension implements ExpressionTypeRes
 	public function getType(Expr $expr, Scope $scope): ?Type
 	{
 		if ($this->isSupported($expr, $scope)) {
-			$arg = $expr->getArgs()[0]->value;
+			$args = $expr->getArgs();
+			if (count($args) !== 1) {
+				return null;
+			}
+
+			$arg = $args[0]->value;
 			$argClassNames = $scope->getType($arg)->getObjectClassNames();
 
 			if (count($argClassNames) === 1) {
