@@ -15,7 +15,7 @@
   "require": {
     "php": "^7.4 || ^8.0",
     "ext-simplexml": "*",
-    "phpstan/phpstan": "^2.0"
+    "phpstan/phpstan": "^2.1.2"
   },
   "conflict": {
     "symfony/framework-bundle": "<3.0"

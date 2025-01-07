@@ -4,6 +4,7 @@ namespace PHPStan\Symfony;
 
 use SimpleXMLElement;
 use function file_get_contents;
+use function ksort;
 use function simplexml_load_string;
 use function sprintf;
 use function strpos;
@@ -11,6 +12,8 @@ use function substr;
 
 final class XmlServiceMapFactory implements ServiceMapFactory
 {
+
+	private ?ServiceMap $serviceMap = null;
 
 	private ?string $containerXml = null;
 
@@ -21,6 +24,10 @@ final class XmlServiceMapFactory implements ServiceMapFactory
 
 	public function create(): ServiceMap
 	{
+		if ($this->serviceMap !== null) {
+			return $this->serviceMap;
+		}
+
 		if ($this->containerXml === null) {
 			return new FakeServiceMap();
 		}
@@ -85,7 +92,9 @@ final class XmlServiceMapFactory implements ServiceMapFactory
 			);
 		}
 
-		return new DefaultServiceMap($services);
+		ksort($services);
+
+		return $this->serviceMap = new DefaultServiceMap($services);
 	}
 
 	private function cleanServiceId(string $id): string

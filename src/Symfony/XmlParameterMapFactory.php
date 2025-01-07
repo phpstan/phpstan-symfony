@@ -8,12 +8,15 @@ use SimpleXMLElement;
 use function base64_decode;
 use function file_get_contents;
 use function is_numeric;
+use function ksort;
 use function simplexml_load_string;
 use function sprintf;
 use function strpos;
 
 final class XmlParameterMapFactory implements ParameterMapFactory
 {
+
+	private ?ParameterMap $parameterMap = null;
 
 	private ?string $containerXml = null;
 
@@ -24,6 +27,10 @@ final class XmlParameterMapFactory implements ParameterMapFactory
 
 	public function create(): ParameterMap
 	{
+		if ($this->parameterMap !== null) {
+			return $this->parameterMap;
+		}
+
 		if ($this->containerXml === null) {
 			return new FakeParameterMap();
 		}
@@ -52,7 +59,9 @@ final class XmlParameterMapFactory implements ParameterMapFactory
 			$parameters[$parameter->getKey()] = $parameter;
 		}
 
-		return new DefaultParameterMap($parameters);
+		ksort($parameters);
+
+		return $this->parameterMap = new DefaultParameterMap($parameters);
 	}
 
 	/**
