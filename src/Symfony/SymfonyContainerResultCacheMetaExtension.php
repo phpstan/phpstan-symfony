@@ -10,17 +10,14 @@ use function serialize;
 final class SymfonyContainerResultCacheMetaExtension implements ResultCacheMetaExtension
 {
 
-	private ParameterMapFactory $parameterMapFactory;
+	private ParameterMap $parameterMap;
 
-	private ServiceMapFactory $serviceMapFactory;
+	private ServiceMap $serviceMap;
 
-	public function __construct(
-		ParameterMapFactory $parameterMapFactory,
-		ServiceMapFactory $serviceMapFactory
-	)
+	public function __construct(ParameterMap $parameterMap, ServiceMap $serviceMap)
 	{
-		$this->parameterMapFactory = $parameterMapFactory;
-		$this->serviceMapFactory = $serviceMapFactory;
+		$this->parameterMap = $parameterMap;
+		$this->serviceMap = $serviceMap;
 	}
 
 	public function getKey(): string
@@ -36,7 +33,7 @@ final class SymfonyContainerResultCacheMetaExtension implements ResultCacheMetaE
 					'name' => $parameter->getKey(),
 					'value' => $parameter->getValue(),
 				],
-				$this->parameterMapFactory->create()->getParameters(),
+				$this->parameterMap->getParameters(),
 			),
 			'services' => array_map(
 				static fn (ServiceDefinition $service) => [
@@ -46,7 +43,7 @@ final class SymfonyContainerResultCacheMetaExtension implements ResultCacheMetaE
 					'synthetic' => $service->isSynthetic() ? 'yes' : 'no',
 					'alias' => $service->getAlias(),
 				],
-				$this->serviceMapFactory->create()->getServices(),
+				$this->serviceMap->getServices(),
 			),
 		]));
 	}

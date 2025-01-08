@@ -13,8 +13,6 @@ use function substr;
 final class XmlServiceMapFactory implements ServiceMapFactory
 {
 
-	private ?ServiceMap $serviceMap = null;
-
 	private ?string $containerXml = null;
 
 	public function __construct(?string $containerXmlPath)
@@ -24,10 +22,6 @@ final class XmlServiceMapFactory implements ServiceMapFactory
 
 	public function create(): ServiceMap
 	{
-		if ($this->serviceMap !== null) {
-			return $this->serviceMap;
-		}
-
 		if ($this->containerXml === null) {
 			return new FakeServiceMap();
 		}
@@ -94,7 +88,7 @@ final class XmlServiceMapFactory implements ServiceMapFactory
 
 		ksort($services);
 
-		return $this->serviceMap = new DefaultServiceMap($services);
+		return new DefaultServiceMap($services);
 	}
 
 	private function cleanServiceId(string $id): string

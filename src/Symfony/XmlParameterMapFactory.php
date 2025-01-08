@@ -16,8 +16,6 @@ use function strpos;
 final class XmlParameterMapFactory implements ParameterMapFactory
 {
 
-	private ?ParameterMap $parameterMap = null;
-
 	private ?string $containerXml = null;
 
 	public function __construct(?string $containerXmlPath)
@@ -27,10 +25,6 @@ final class XmlParameterMapFactory implements ParameterMapFactory
 
 	public function create(): ParameterMap
 	{
-		if ($this->parameterMap !== null) {
-			return $this->parameterMap;
-		}
-
 		if ($this->containerXml === null) {
 			return new FakeParameterMap();
 		}
@@ -61,7 +55,7 @@ final class XmlParameterMapFactory implements ParameterMapFactory
 
 		ksort($parameters);
 
-		return $this->parameterMap = new DefaultParameterMap($parameters);
+		return new DefaultParameterMap($parameters);
 	}
 
 	/**
