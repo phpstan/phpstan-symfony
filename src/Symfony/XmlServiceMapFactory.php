@@ -3,6 +3,7 @@
 namespace PHPStan\Symfony;
 
 use SimpleXMLElement;
+use function count;
 use function file_get_contents;
 use function ksort;
 use function simplexml_load_string;
@@ -40,35 +41,38 @@ final class XmlServiceMapFactory implements ServiceMapFactory
 		$services = [];
 		/** @var Service[] $aliases */
 		$aliases = [];
-		foreach ($xml->services->service as $def) {
-			/** @var SimpleXMLElement $attrs */
-			$attrs = $def->attributes();
-			if (!isset($attrs->id)) {
-				continue;
-			}
 
-			$serviceTags = [];
-			foreach ($def->tag as $tag) {
-				$tagAttrs = ((array) $tag->attributes())['@attributes'] ?? [];
-				$tagName = $tagAttrs['name'];
-				unset($tagAttrs['name']);
+		if (count($xml->services) > 0) {
+			foreach ($xml->services->service as $def) {
+				/** @var SimpleXMLElement $attrs */
+				$attrs = $def->attributes();
+				if (!isset($attrs->id)) {
+					continue;
+				}
 
-				$serviceTags[] = new ServiceTag($tagName, $tagAttrs);
-			}
+				$serviceTags = [];
+				foreach ($def->tag as $tag) {
+					$tagAttrs = ((array) $tag->attributes())['@attributes'] ?? [];
+					$tagName = $tagAttrs['name'];
+					unset($tagAttrs['name']);
 
-			$service = new Service(
-				$this->cleanServiceId((string) $attrs->id),
-				isset($attrs->class) ? (string) $attrs->class : null,
-				isset($attrs->public) && (string) $attrs->public === 'true',
-				isset($attrs->synthetic) && (string) $attrs->synthetic === 'true',
-				isset($attrs->alias) ? $this->cleanServiceId((string) $attrs->alias) : null,
-				$serviceTags,
-			);
+					$serviceTags[] = new ServiceTag($tagName, $tagAttrs);
+				}
 
-			if ($service->getAlias() !== null) {
-				$aliases[] = $service;
-			} else {
-				$services[$service->getId()] = $service;
+				$service = new Service(
+					$this->cleanServiceId((string) $attrs->id),
+					isset($attrs->class) ? (string) $attrs->class : null,
+					isset($attrs->public) && (string) $attrs->public === 'true',
+					isset($attrs->synthetic) && (string) $attrs->synthetic === 'true',
+					isset($attrs->alias) ? $this->cleanServiceId((string) $attrs->alias) : null,
+					$serviceTags,
+				);
+
+				if ($service->getAlias() !== null) {
+					$aliases[] = $service;
+				} else {
+					$services[$service->getId()] = $service;
+				}
 			}
 		}
 		foreach ($aliases as $service) {

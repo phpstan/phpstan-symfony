@@ -6,6 +6,7 @@ use InvalidArgumentException;
 use PHPStan\ShouldNotHappenException;
 use SimpleXMLElement;
 use function base64_decode;
+use function count;
 use function file_get_contents;
 use function is_numeric;
 use function ksort;
@@ -41,16 +42,19 @@ final class XmlParameterMapFactory implements ParameterMapFactory
 
 		/** @var Parameter[] $parameters */
 		$parameters = [];
-		foreach ($xml->parameters->parameter as $def) {
-			/** @var SimpleXMLElement $attrs */
-			$attrs = $def->attributes();
 
-			$parameter = new Parameter(
-				(string) $attrs->key,
-				$this->getNodeValue($def),
-			);
+		if (count($xml->parameters) > 0) {
+			foreach ($xml->parameters->parameter as $def) {
+				/** @var SimpleXMLElement $attrs */
+				$attrs = $def->attributes();
 
-			$parameters[$parameter->getKey()] = $parameter;
+				$parameter = new Parameter(
+					(string) $attrs->key,
+					$this->getNodeValue($def),
+				);
+
+				$parameters[$parameter->getKey()] = $parameter;
+			}
 		}
 
 		ksort($parameters);
