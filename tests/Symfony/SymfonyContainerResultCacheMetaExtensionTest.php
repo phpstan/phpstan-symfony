@@ -167,6 +167,89 @@ final class SymfonyContainerResultCacheMetaExtensionTest extends PHPStanTestCase
 				XML,
 		];
 
+		yield 'service tag attributes changes' => [
+			[
+				<<<'XML'
+					<container>
+						<services>
+							<service id="Foo" class="Foo">
+								<tag name="foo.bar" baz="bar"/>
+								<tag name="foo.baz" baz="baz"/>
+							</service>
+						</services>
+					</container>
+					XML,
+				<<<'XML'
+					<container>
+						<services>
+							<service id="Foo" class="Foo">
+								<tag name="foo.baz" baz="baz"/>
+								<tag name="foo.bar" baz="bar"/>
+							</service>
+						</services>
+					</container>
+					XML,
+			],
+			<<<'XML'
+				<container>
+					<services>
+						<service id="Foo" class="Foo">
+							<tag name="foo.bar" baz="bar"/>
+							<tag name="foo.baz" baz="buzz"/>
+						</service>
+					</services>
+				</container>
+				XML,
+		];
+
+		yield 'service tag added' => [
+			[
+				<<<'XML'
+					<container>
+						<services>
+							<service id="Foo" class="Foo">
+								<tag name="foo.bar" baz="bar"/>
+							</service>
+						</services>
+					</container>
+					XML,
+			],
+			<<<'XML'
+				<container>
+					<services>
+						<service id="Foo" class="Foo">
+							<tag name="foo.bar" baz="bar"/>
+							<tag name="foo.baz" baz="baz"/>
+						</service>
+					</services>
+				</container>
+				XML,
+		];
+
+		yield 'service tag removed' => [
+			[
+				<<<'XML'
+					<container>
+						<services>
+							<service id="Foo" class="Foo">
+								<tag name="foo.bar" baz="bar"/>
+								<tag name="foo.baz" baz="baz"/>
+							</service>
+						</services>
+					</container>
+					XML,
+			],
+			<<<'XML'
+				<container>
+					<services>
+						<service id="Foo" class="Foo">
+							<tag name="foo.bar" baz="bar"/>
+						</service>
+					</services>
+				</container>
+				XML,
+		];
+
 		yield 'new service added' => [
 			[
 				<<<'XML'
