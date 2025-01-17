@@ -54,3 +54,32 @@ class HandleTraitClass {
         assertType('mixed', $this->handle(new MultiHandlersForTheSameMessageQuery()));
     }
 }
+
+class QueryBus {
+    use HandleTrait;
+
+    public function dispatch(object $query): mixed
+    {
+        return $this->handle($query);
+    }
+}
+
+class Controller {
+    public function action()
+    {
+        $queryBus = new QueryBus();
+
+        assertType(RegularQueryResult::class, $queryBus->dispatch(new RegularQuery()));
+
+        assertType('bool', $queryBus->dispatch(new BooleanQuery()));
+        assertType('int', $queryBus->dispatch(new IntQuery()));
+        assertType('float', $queryBus->dispatch(new FloatQuery()));
+        assertType('string', $queryBus->dispatch(new StringQuery()));
+
+        assertType(TaggedResult::class, $queryBus->dispatch(new TaggedQuery()));
+
+        // HandleTrait will throw exception in fact due to multiple handle methods/handlers per single query
+        assertType('mixed', $queryBus->dispatch(new MultiHandlesForInTheSameHandlerQuery()));
+        assertType('mixed', $queryBus->dispatch(new MultiHandlersForTheSameMessageQuery()));
+    }
+}
