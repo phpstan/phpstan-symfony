@@ -6,8 +6,8 @@ use PHPStan\Analyser\ResultCache\ResultCacheMetaExtension;
 use function array_map;
 use function hash;
 use function ksort;
-use function serialize;
 use function sort;
+use function var_export;
 
 final class SymfonyContainerResultCacheMetaExtension implements ResultCacheMetaExtension
 {
@@ -56,7 +56,7 @@ final class SymfonyContainerResultCacheMetaExtension implements ResultCacheMetaE
 		}
 		ksort($services);
 
-		return hash('sha256', serialize(['parameters' => $parameters, 'services' => $services]));
+		return hash('sha256', var_export(['parameters' => $parameters, 'services' => $services], true));
 	}
 
 }
