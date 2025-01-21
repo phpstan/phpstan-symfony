@@ -4,45 +4,33 @@ namespace PHPStan\Symfony;
 
 use PHPStan\Testing\PHPStanTestCase;
 use function count;
-use function file_put_contents;
-use function sys_get_temp_dir;
-use function tempnam;
 
+/**
+ * @phpstan-type ContainerContents array{parameters?: ParameterMap, services?: ServiceMap}
+ */
 final class SymfonyContainerResultCacheMetaExtensionTest extends PHPStanTestCase
 {
 
-	private static string $configFilePath;
-
 	/**
-	 * This test has to check if hash of the Symfony Container is correctly calculated,
-	 * in order to do that we need to dynamically create a temporary configuration file
-	 * because `PHPStanTestCase::getContainer()` caches container under key calculated from
-	 * additional config files' paths, so we can't reuse the same config file between tests.
-	 */
-	public static function getAdditionalConfigFiles(): array
-	{
-		return [
-			__DIR__ . '/../../extension.neon',
-			self::$configFilePath,
-		];
-	}
-
-	/**
-	 * @param list<string> $sameHashXmlContents
+	 * @param list<ContainerContents> $sameHashContents
+	 * @param ContainerContents $invalidatingContent
 	 *
 	 * @dataProvider provideContainerHashIsCalculatedCorrectlyCases
 	 */
 	public function testContainerHashIsCalculatedCorrectly(
-		array $sameHashXmlContents,
-		string $invalidatingXmlContent
+		array $sameHashContents,
+		array $invalidatingContent
 	): void
 	{
 		$hash = null;
 
-		self::assertGreaterThan(0, count($sameHashXmlContents));
+		self::assertGreaterThan(0, count($sameHashContents));
 
-		foreach ($sameHashXmlContents as $xmlContent) {
-			$currentHash = $this->calculateSymfonyContainerHash($xmlContent);
+		foreach ($sameHashContents as $content) {
+			$currentHash = (new SymfonyContainerResultCacheMetaExtension(
+				$content['parameters'] ?? new DefaultParameterMap([]),
+				$content['services'] ?? new DefaultServiceMap([]),
+			))->getHash();
 
 			if ($hash === null) {
 				$hash = $currentHash;
@@ -51,337 +39,256 @@ final class SymfonyContainerResultCacheMetaExtensionTest extends PHPStanTestCase
 			}
 		}
 
-		self::assertNotSame($hash, $this->calculateSymfonyContainerHash($invalidatingXmlContent));
+		self::assertNotSame(
+			$hash,
+			(new SymfonyContainerResultCacheMetaExtension(
+				$invalidatingContent['parameters'] ?? new DefaultParameterMap([]),
+				$invalidatingContent['services'] ?? new DefaultServiceMap([]),
+			))->getHash(),
+		);
 	}
 
 	/**
-	 * @return iterable<string, array{list<string>, string}>
+	 * @return iterable<string, array{list<ContainerContents>, ContainerContents}>
 	 */
 	public static function provideContainerHashIsCalculatedCorrectlyCases(): iterable
 	{
 		yield 'service "class" changes' => [
 			[
-				<<<'XML'
-					<container>
-						<services>
-							<service id="Foo" class="Foo" />
-							<service id="Bar" class="Bar" />
-						</services>
-					</container>
-					XML,
+				[
+					'services' => new DefaultServiceMap([
+						new Service('Foo', 'Foo', true, false, null),
+						new Service('Bar', 'Bar', true, false, null),
+					]),
+				],
 				// Swapping services order in XML file does not affect the calculated hash
-				<<<'XML'
-					<container>
-						<services>
-							<service id="Bar" class="Bar" />
-							<service id="Foo" class="Foo" />
-						</services>
-					</container>
-					XML,
+				[
+					'services' => new DefaultServiceMap([
+						new Service('Bar', 'Bar', true, false, null),
+						new Service('Foo', 'Foo', true, false, null),
+					]),
+				],
 			],
-			<<<'XML'
-				<container>
-					<services>
-						<service id="Foo" class="Foo" />
-						<service id="Bar" class="BarAdapter" />
-					</services>
-				</container>
-				XML,
+			[
+				'services' => new DefaultServiceMap([
+					new Service('Foo', 'Foo', true, false, null),
+					new Service('Bar', 'BarAdapter', true, false, null),
+				]),
+			],
 		];
 
 		yield 'service visibility changes' => [
 			[
-				<<<'XML'
-					<container>
-						<services>
-							<service id="Foo" class="Foo" public="true" />
-						</services>
-					</container>
-					XML,
-				// Placement of XML attributes does not affect the calculated hash
-				<<<'XML'
-					<container>
-						<services>
-							<service id="Foo" public="true" class="Foo" />
-						</services>
-					</container>
-					XML,
+				[
+					'services' => new DefaultServiceMap([
+						new Service('Foo', 'Foo', true, false, null),
+					]),
+				],
 			],
-			<<<'XML'
-				<container>
-					<services>
-						<service id="Foo" class="Foo" public="false" />
-					</services>
-				</container>
-				XML,
+			[
+				'services' => new DefaultServiceMap([
+					new Service('Foo', 'Foo', false, false, null),
+				]),
+			],
 		];
 
 		yield 'service syntheticity changes' => [
 			[
-				<<<'XML'
-					<container>
-						<services>
-							<service id="Foo" class="Foo" synthetic="false" />
-						</services>
-					</container>
-					XML,
+				[
+					'services' => new DefaultServiceMap([
+						new Service('Foo', 'Foo', true, false, null),
+					]),
+				],
 			],
-			<<<'XML'
-				<container>
-					<services>
-						<service id="Foo" class="Foo" synthetic="true" />
-					</services>
-				</container>
-				XML,
+			[
+				'services' => new DefaultServiceMap([
+					new Service('Foo', 'Foo', true, true, null),
+				]),
+			],
 		];
 
 		yield 'service alias changes' => [
 			[
-				<<<'XML'
-					<container>
-						<services>
-							<service id="Foo" class="Foo" />
-							<service id="Bar" class="Bar" />
-							<service id="Baz" alias="Foo" />
-						</services>
-					</container>
-					XML,
-				<<<'XML'
-					<container>
-						<services>
-							<service id="Baz" alias="Foo" />
-							<service id="Foo" class="Foo" />
-							<service id="Bar" class="Bar" />
-						</services>
-					</container>
-					XML,
+				[
+					'services' => new DefaultServiceMap([
+						new Service('Foo', 'Foo', true, false, null),
+						new Service('Bar', 'Bar', true, false, null),
+						new Service('Baz', null, true, false, 'Foo'),
+					]),
+				],
+				// Swapping services order in XML file does not affect the calculated hash
+				[
+					'services' => new DefaultServiceMap([
+						new Service('Baz', null, true, false, 'Foo'),
+						new Service('Bar', 'Bar', true, false, null),
+						new Service('Foo', 'Foo', true, false, null),
+					]),
+				],
 			],
-			<<<'XML'
-				<container>
-					<services>
-						<service id="Foo" class="Foo" />
-						<service id="Bar" class="Bar" />
-						<service id="Baz" alias="Bar" />
-					</services>
-				</container>
-				XML,
+			[
+				'services' => new DefaultServiceMap([
+					new Service('Foo', 'Foo', true, false, null),
+					new Service('Bar', 'Bar', true, false, null),
+					new Service('Baz', null, true, false, 'Bar'),
+				]),
+			],
 		];
 
 		yield 'service tag attributes changes' => [
 			[
-				<<<'XML'
-					<container>
-						<services>
-							<service id="Foo" class="Foo">
-								<tag name="foo.bar" baz="bar"/>
-								<tag name="foo.baz" baz="baz"/>
-							</service>
-						</services>
-					</container>
-					XML,
-				<<<'XML'
-					<container>
-						<services>
-							<service id="Foo" class="Foo">
-								<tag name="foo.baz" baz="baz"/>
-								<tag name="foo.bar" baz="bar"/>
-							</service>
-						</services>
-					</container>
-					XML,
+				[
+					'services' => new DefaultServiceMap([
+						new Service('Foo', 'Foo', true, false, null, [
+							new ServiceTag('foo.bar', ['baz' => 'bar']),
+							new ServiceTag('foo.baz', ['baz' => 'baz']),
+						]),
+					]),
+				],
+				[
+					'services' => new DefaultServiceMap([
+						new Service('Foo', 'Foo', true, false, null, [
+							new ServiceTag('foo.baz', ['baz' => 'baz']),
+							new ServiceTag('foo.bar', ['baz' => 'bar']),
+						]),
+					]),
+				],
 			],
-			<<<'XML'
-				<container>
-					<services>
-						<service id="Foo" class="Foo">
-							<tag name="foo.bar" baz="bar"/>
-							<tag name="foo.baz" baz="buzz"/>
-						</service>
-					</services>
-				</container>
-				XML,
+			[
+				'services' => new DefaultServiceMap([
+					new Service('Foo', 'Foo', true, false, null, [
+						new ServiceTag('foo.bar', ['baz' => 'bar']),
+						new ServiceTag('foo.baz', ['baz' => 'buzz']),
+					]),
+				]),
+			],
 		];
 
 		yield 'service tag added' => [
 			[
-				<<<'XML'
-					<container>
-						<services>
-							<service id="Foo" class="Foo">
-								<tag name="foo.bar" baz="bar"/>
-							</service>
-						</services>
-					</container>
-					XML,
+				[
+					'services' => new DefaultServiceMap([
+						new Service('Foo', 'Foo', true, false, null, [
+							new ServiceTag('foo.bar', ['baz' => 'bar']),
+						]),
+					]),
+				],
 			],
-			<<<'XML'
-				<container>
-					<services>
-						<service id="Foo" class="Foo">
-							<tag name="foo.bar" baz="bar"/>
-							<tag name="foo.baz" baz="baz"/>
-						</service>
-					</services>
-				</container>
-				XML,
+			[
+				'services' => new DefaultServiceMap([
+					new Service('Foo', 'Foo', true, false, null, [
+						new ServiceTag('foo.bar', ['baz' => 'bar']),
+						new ServiceTag('foo.baz', ['baz' => 'baz']),
+					]),
+				]),
+			],
 		];
 
 		yield 'service tag removed' => [
 			[
-				<<<'XML'
-					<container>
-						<services>
-							<service id="Foo" class="Foo">
-								<tag name="foo.bar" baz="bar"/>
-								<tag name="foo.baz" baz="baz"/>
-							</service>
-						</services>
-					</container>
-					XML,
+				[
+					'services' => new DefaultServiceMap([
+						new Service('Foo', 'Foo', true, false, null, [
+							new ServiceTag('foo.bar', ['baz' => 'bar']),
+							new ServiceTag('foo.baz', ['baz' => 'baz']),
+						]),
+					]),
+				],
 			],
-			<<<'XML'
-				<container>
-					<services>
-						<service id="Foo" class="Foo">
-							<tag name="foo.bar" baz="bar"/>
-						</service>
-					</services>
-				</container>
-				XML,
+			[
+				'services' => new DefaultServiceMap([
+					new Service('Foo', 'Foo', true, false, null, [
+						new ServiceTag('foo.bar', ['baz' => 'bar']),
+					]),
+				]),
+			],
 		];
 
 		yield 'new service added' => [
 			[
-				<<<'XML'
-					<container>
-						<services>
-							<service id="Foo" class="Foo" />
-						</services>
-					</container>
-					XML,
+				[
+					'services' => new DefaultServiceMap([
+						new Service('Foo', 'Foo', true, false, null),
+					]),
+				],
 			],
-			<<<'XML'
-				<container>
-					<services>
-						<service id="Foo" class="Foo" />
-						<service id="Bar" class="Bar" />
-					</services>
-				</container>
-				XML,
+			[
+				'services' => new DefaultServiceMap([
+					new Service('Foo', 'Foo', true, false, null),
+					new Service('Bar', 'Bar', true, false, null),
+				]),
+			],
 		];
 
 		yield 'service removed' => [
 			[
-				<<<'XML'
-					<container>
-						<services>
-							<service id="Foo" class="Foo" />
-							<service id="Bar" class="Bar" />
-						</services>
-					</container>
-					XML,
+				[
+					'services' => new DefaultServiceMap([
+						new Service('Foo', 'Foo', true, false, null),
+						new Service('Bar', 'Bar', true, false, null),
+					]),
+				],
 			],
-			<<<'XML'
-				<container>
-					<services>
-						<service id="Foo" class="Foo" />
-					</services>
-				</container>
-				XML,
+			[
+				'services' => new DefaultServiceMap([
+					new Service('Foo', 'Foo', true, false, null),
+				]),
+			],
 		];
 
 		yield 'parameter value changes' => [
 			[
-				<<<'XML'
-					<container>
-						<parameters>
-							<parameter key="foo">foo</parameter>
-							<parameter key="bar">bar</parameter>
-						</parameters>
-					</container>
-					XML,
-				// Swapping parameters order in XML file does not affect the calculated hash
-				<<<'XML'
-					<container>
-						<parameters>
-							<parameter key="bar">bar</parameter>
-							<parameter key="foo">foo</parameter>
-						</parameters>
-					</container>
-					XML,
+				[
+					'parameters' => new DefaultParameterMap([
+						new Parameter('foo', 'foo'),
+						new Parameter('bar', 'bar'),
+					]),
+				],
+				[
+					'parameters' => new DefaultParameterMap([
+						new Parameter('bar', 'bar'),
+						new Parameter('foo', 'foo'),
+					]),
+				],
 			],
-			<<<'XML'
-				<container>
-					<parameters>
-						<parameter key="foo">foo</parameter>
-						<parameter key="bar">buzz</parameter>
-					</parameters>
-				</container>
-				XML,
+			[
+				'parameters' => new DefaultParameterMap([
+					new Parameter('foo', 'foo'),
+					new Parameter('bar', 'buzz'),
+				]),
+			],
 		];
 
 		yield 'new parameter added' => [
 			[
-				<<<'XML'
-					<container>
-						<parameters>
-							<parameter key="foo">foo</parameter>
-						</parameters>
-					</container>
-					XML,
+				[
+					'parameters' => new DefaultParameterMap([
+						new Parameter('foo', 'foo'),
+					]),
+				],
 			],
-			<<<'XML'
-				<container>
-					<parameters>
-						<parameter key="foo">foo</parameter>
-						<parameter key="bar">bar</parameter>
-					</parameters>
-				</container>
-				XML,
+			[
+				'parameters' => new DefaultParameterMap([
+					new Parameter('foo', 'foo'),
+					new Parameter('bar', 'bar'),
+				]),
+			],
 		];
 
 		yield 'parameter removed' => [
 			[
-				<<<'XML'
-					<container>
-						<parameters>
-							<parameter key="foo">foo</parameter>
-							<parameter key="bar">bar</parameter>
-						</parameters>
-					</container>
-					XML,
+				[
+					'parameters' => new DefaultParameterMap([
+						new Parameter('foo', 'foo'),
+						new Parameter('bar', 'bar'),
+					]),
+				],
 			],
-			<<<'XML'
-				<container>
-					<parameters>
-						<parameter key="foo">foo</parameter>
-					</parameters>
-				</container>
-				XML,
+			[
+				'parameters' => new DefaultParameterMap([
+					new Parameter('foo', 'foo'),
+				]),
+			],
 		];
-	}
-
-	private function calculateSymfonyContainerHash(string $xmlContent): string
-	{
-		$symfonyContainerXmlPath = tempnam(sys_get_temp_dir(), 'phpstan-meta-extension-test-container-xml-');
-		self::$configFilePath = tempnam(sys_get_temp_dir(), 'phpstan-meta-extension-test-config-') . '.neon';
-
-		file_put_contents(
-			self::$configFilePath,
-			<<<NEON
-				parameters:
-					symfony:
-						containerXmlPath: '$symfonyContainerXmlPath'
-				NEON,
-		);
-		file_put_contents($symfonyContainerXmlPath, $xmlContent);
-
-		$metaExtension = new SymfonyContainerResultCacheMetaExtension(
-			self::getContainer()->getByType(ParameterMap::class),
-			self::getContainer()->getByType(ServiceMap::class),
-		);
-
-		return $metaExtension->getHash();
 	}
 
 }

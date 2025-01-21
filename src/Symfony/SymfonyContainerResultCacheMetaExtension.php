@@ -5,6 +5,7 @@ namespace PHPStan\Symfony;
 use PHPStan\Analyser\ResultCache\ResultCacheMetaExtension;
 use function array_map;
 use function hash;
+use function ksort;
 use function serialize;
 use function sort;
 
@@ -28,37 +29,34 @@ final class SymfonyContainerResultCacheMetaExtension implements ResultCacheMetaE
 
 	public function getHash(): string
 	{
-		return hash('sha256', serialize([
-			'parameters' => array_map(
-				static fn (ParameterDefinition $parameter): array => [
-					'name' => $parameter->getKey(),
-					'value' => $parameter->getValue(),
-				],
-				$this->parameterMap->getParameters(),
-			),
-			'services' => array_map(
-				static function (ServiceDefinition $service): array {
-					$serviceTags = array_map(
-						static fn (ServiceTag $tag) => [
-							'name' => $tag->getName(),
-							'attributes' => $tag->getAttributes(),
-						],
-						$service->getTags(),
-					);
-					sort($serviceTags);
+		$services = $parameters = [];
 
-					return [
-						'id' => $service->getId(),
-						'class' => $service->getClass(),
-						'public' => $service->isPublic() ? 'yes' : 'no',
-						'synthetic' => $service->isSynthetic() ? 'yes' : 'no',
-						'alias' => $service->getAlias(),
-						'tags' => $serviceTags,
-					];
-				},
-				$this->serviceMap->getServices(),
-			),
-		]));
+		foreach ($this->parameterMap->getParameters() as $parameter) {
+			$parameters[$parameter->getKey()] = $parameter->getValue();
+		}
+		ksort($parameters);
+
+		foreach ($this->serviceMap->getServices() as $service) {
+			$serviceTags = array_map(
+				static fn (ServiceTag $tag) => [
+					'name' => $tag->getName(),
+					'attributes' => $tag->getAttributes(),
+				],
+				$service->getTags(),
+			);
+			sort($serviceTags);
+
+			$services[$service->getId()] = [
+				'class' => $service->getClass(),
+				'public' => $service->isPublic() ? 'yes' : 'no',
+				'synthetic' => $service->isSynthetic() ? 'yes' : 'no',
+				'alias' => $service->getAlias(),
+				'tags' => $serviceTags,
+			];
+		}
+		ksort($services);
+
+		return hash('sha256', serialize(['parameters' => $parameters, 'services' => $services]));
 	}
 
 }
