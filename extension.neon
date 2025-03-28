@@ -319,10 +319,6 @@ services:
 		tags:
 			- phpstan.stubFilesExtension
 	-
-		class: PHPStan\Symfony\PasswordAuthenticatedUserStubFilesExtension
-		tags:
-			- phpstan.stubFilesExtension
-	-
 		class: PHPStan\Symfony\SymfonyDiagnoseExtension
 		tags:
 			- phpstan.diagnoseExtension
