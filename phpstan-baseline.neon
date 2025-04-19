@@ -1,26 +1,79 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Although PHPStan\\\\Reflection\\\\Php\\\\PhpPropertyReflection is covered by backward compatibility promise, this instanceof assumption might break because it's not guaranteed to always stay the same\\.$#"
+			message: '#^Call to internal method Symfony\\Component\\Console\\Command\\Command\:\:mergeApplicationDefinition\(\) from outside its root namespace Symfony\.$#'
+			identifier: method.internal
+			count: 1
+			path: src/Rules/Symfony/UndefinedArgumentRule.php
+
+		-
+			message: '#^Call to internal method Symfony\\Component\\Console\\Command\\Command\:\:mergeApplicationDefinition\(\) from outside its root namespace Symfony\.$#'
+			identifier: method.internal
+			count: 1
+			path: src/Rules/Symfony/UndefinedOptionRule.php
+
+		-
+			message: '#^Although PHPStan\\Reflection\\Php\\PhpPropertyReflection is covered by backward compatibility promise, this instanceof assumption might break because it''s not guaranteed to always stay the same\.$#'
+			identifier: phpstanApi.instanceofAssumption
 			count: 1
 			path: src/Symfony/RequiredAutowiringExtension.php
 
 		-
-			message: "#^Call to function method_exists\\(\\) with Symfony\\\\Component\\\\Console\\\\Input\\\\InputOption and 'isNegatable' will always evaluate to true\\.$#"
+			message: '#^Call to internal method Symfony\\Component\\Console\\Command\\Command\:\:mergeApplicationDefinition\(\) from outside its root namespace Symfony\.$#'
+			identifier: method.internal
+			count: 1
+			path: src/Type/Symfony/CommandGetHelperDynamicReturnTypeExtension.php
+
+		-
+			message: '#^Call to function method_exists\(\) with Symfony\\Component\\Console\\Input\\InputOption and ''isNegatable'' will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
 			count: 1
 			path: src/Type/Symfony/GetOptionTypeHelper.php
 
 		-
-			message: "#^Accessing PHPStan\\\\Rules\\\\Methods\\\\CallMethodsRule\\:\\:class is not covered by backward compatibility promise\\. The class might change in a minor PHPStan version\\.$#"
+			message: '#^Call to internal method Symfony\\Component\\Console\\Command\\Command\:\:mergeApplicationDefinition\(\) from outside its root namespace Symfony\.$#'
+			identifier: method.internal
+			count: 1
+			path: src/Type/Symfony/InputInterfaceGetArgumentDynamicReturnTypeExtension.php
+
+		-
+			message: '#^Call to internal method Symfony\\Component\\Console\\Command\\Command\:\:mergeApplicationDefinition\(\) from outside its root namespace Symfony\.$#'
+			identifier: method.internal
+			count: 1
+			path: src/Type/Symfony/InputInterfaceGetOptionDynamicReturnTypeExtension.php
+
+		-
+			message: '#^Call to internal method Symfony\\Component\\Console\\Command\\Command\:\:mergeApplicationDefinition\(\) from outside its root namespace Symfony\.$#'
+			identifier: method.internal
+			count: 1
+			path: src/Type/Symfony/InputInterfaceGetOptionsDynamicReturnTypeExtension.php
+
+		-
+			message: '#^Call to internal method Symfony\\Component\\Console\\Command\\Command\:\:mergeApplicationDefinition\(\) from outside its root namespace Symfony\.$#'
+			identifier: method.internal
+			count: 1
+			path: src/Type/Symfony/InputInterfaceHasArgumentDynamicReturnTypeExtension.php
+
+		-
+			message: '#^Call to internal method Symfony\\Component\\Console\\Command\\Command\:\:mergeApplicationDefinition\(\) from outside its root namespace Symfony\.$#'
+			identifier: method.internal
+			count: 1
+			path: src/Type/Symfony/InputInterfaceHasOptionDynamicReturnTypeExtension.php
+
+		-
+			message: '#^Accessing PHPStan\\Rules\\Methods\\CallMethodsRule\:\:class is not covered by backward compatibility promise\. The class might change in a minor PHPStan version\.$#'
+			identifier: phpstanApi.classConstant
 			count: 1
 			path: tests/Rules/NonexistentInputBagClassTest.php
 
 		-
-			message: "#^Accessing PHPStan\\\\Rules\\\\Properties\\\\UninitializedPropertyRule\\:\\:class is not covered by backward compatibility promise\\. The class might change in a minor PHPStan version\\.$#"
+			message: '#^Accessing PHPStan\\Rules\\Properties\\UninitializedPropertyRule\:\:class is not covered by backward compatibility promise\. The class might change in a minor PHPStan version\.$#'
+			identifier: phpstanApi.classConstant
 			count: 1
 			path: tests/Symfony/RequiredAutowiringExtensionTest.php
 
 		-
-			message: "#^Accessing PHPStan\\\\Rules\\\\Comparison\\\\ImpossibleCheckTypeMethodCallRule\\:\\:class is not covered by backward compatibility promise\\. The class might change in a minor PHPStan version\\.$#"
+			message: '#^Accessing PHPStan\\Rules\\Comparison\\ImpossibleCheckTypeMethodCallRule\:\:class is not covered by backward compatibility promise\. The class might change in a minor PHPStan version\.$#'
+			identifier: phpstanApi.classConstant
 			count: 1
 			path: tests/Type/Symfony/ImpossibleCheckTypeMethodCallRuleTest.php
