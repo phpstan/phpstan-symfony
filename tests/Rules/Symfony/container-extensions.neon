@@ -1,0 +1,7 @@
+services:
+	-
+		class: PHPStan\Type\Symfony\Container\KernelBrowserGetContainerDynamicReturnTypeExtension
+		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
+	-
+		class: PHPStan\Type\Symfony\Container\KernelTestCaseGetContainerDynamicReturnTypeExtension
+		tags: [phpstan.broker.dynamicStaticMethodReturnTypeExtension]

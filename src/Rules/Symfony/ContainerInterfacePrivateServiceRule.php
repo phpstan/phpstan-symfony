@@ -10,6 +10,7 @@ use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Symfony\ServiceMap;
 use PHPStan\TrinaryLogic;
 use PHPStan\Type\ObjectType;
+use PHPStan\Type\Symfony\Container\TestContainerType;
 use PHPStan\Type\Type;
 use function sprintf;
 
@@ -43,11 +44,17 @@ final class ContainerInterfacePrivateServiceRule implements Rule
 
 		$argType = $scope->getType($node->var);
 
-		$isTestContainerType = (new ObjectType('Symfony\Bundle\FrameworkBundle\Test\TestContainer'))->isSuperTypeOf($argType);
+		if (
+			$argType instanceof TestContainerType
+			|| (new ObjectType('Symfony\Bundle\FrameworkBundle\Test\TestContainer'))->isSuperTypeOf($argType)->yes()
+		) {
+			return [];
+		}
+
 		$isOldServiceSubscriber = (new ObjectType('Symfony\Component\DependencyInjection\ServiceSubscriberInterface'))->isSuperTypeOf($argType);
 		$isServiceSubscriber = $this->isServiceSubscriber($argType, $scope);
 		$isServiceLocator = (new ObjectType('Symfony\Component\DependencyInjection\ServiceLocator'))->isSuperTypeOf($argType);
-		if ($isTestContainerType->yes() || $isOldServiceSubscriber->yes() || $isServiceSubscriber->yes() || $isServiceLocator->yes()) {
+		if ($isOldServiceSubscriber->yes() || $isServiceSubscriber->yes() || $isServiceLocator->yes()) {
 			return [];
 		}
 

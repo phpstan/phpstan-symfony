@@ -77,4 +77,21 @@ final class ContainerInterfacePrivateServiceRuleTest extends RuleTestCase
 		);
 	}
 
+	public function testGetPrivateServiceInTest(): void
+	{
+		$this->analyse(
+			[
+				__DIR__ . '/ExampleTest.php',
+			],
+			[],
+		);
+	}
+
+	public static function getAdditionalConfigFiles(): array
+	{
+		return [
+			__DIR__ . '/container-extensions.neon',
+		];
+	}
+
 }
