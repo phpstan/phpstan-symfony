@@ -87,11 +87,4 @@ final class ContainerInterfacePrivateServiceRuleTest extends RuleTestCase
 		);
 	}
 
-	public static function getAdditionalConfigFiles(): array
-	{
-		return [
-			__DIR__ . '/container-extensions.neon',
-		];
-	}
-
 }
