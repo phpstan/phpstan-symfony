@@ -43,11 +43,11 @@ final class ContainerInterfacePrivateServiceRule implements Rule
 
 		$argType = $scope->getType($node->var);
 
-		$isTestContainerType = (new ObjectType('Symfony\Bundle\FrameworkBundle\Test\TestContainer'))->isSuperTypeOf($argType);
+		$isTestContainer = $this->isTestContainer($argType, $scope);
 		$isOldServiceSubscriber = (new ObjectType('Symfony\Component\DependencyInjection\ServiceSubscriberInterface'))->isSuperTypeOf($argType);
 		$isServiceSubscriber = $this->isServiceSubscriber($argType, $scope);
 		$isServiceLocator = (new ObjectType('Symfony\Component\DependencyInjection\ServiceLocator'))->isSuperTypeOf($argType);
-		if ($isTestContainerType->yes() || $isOldServiceSubscriber->yes() || $isServiceSubscriber->yes() || $isServiceLocator->yes()) {
+		if ($isTestContainer->yes() || $isOldServiceSubscriber->yes() || $isServiceSubscriber->yes() || $isServiceLocator->yes()) {
 			return [];
 		}
 
@@ -89,6 +89,27 @@ final class ContainerInterfacePrivateServiceRule implements Rule
 		}
 		$containedClassType = new ObjectType($classReflection->getName());
 		return $isContainerServiceSubscriber->or($serviceSubscriberInterfaceType->isSuperTypeOf($containedClassType)->result);
+	}
+
+	private function isTestContainer(Type $containerType, Scope $scope): TrinaryLogic
+	{
+		$testContainer = new ObjectType('Symfony\Bundle\FrameworkBundle\Test\TestContainer');
+		$isTestContainer = $testContainer->isSuperTypeOf($containerType)->result;
+
+		$classReflection = $scope->getClassReflection();
+		if ($classReflection === null) {
+			return $isTestContainer;
+		}
+
+		$containerInterface = new ObjectType('Symfony\Component\DependencyInjection\ContainerInterface');
+		$kernelTestCase = new ObjectType('Symfony\Bundle\FrameworkBundle\Test\KernelTestCase');
+		$containedClassType = new ObjectType($classReflection->getName());
+
+		return $isTestContainer->or(
+			$containerInterface->isSuperTypeOf($containerType)->result->and(
+				$kernelTestCase->isSuperTypeOf($containedClassType)->result,
+			),
+		);
 	}
 
 }

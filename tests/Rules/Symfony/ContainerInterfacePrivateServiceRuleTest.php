@@ -77,4 +77,14 @@ final class ContainerInterfacePrivateServiceRuleTest extends RuleTestCase
 		);
 	}
 
+	public function testGetPrivateServiceInTest(): void
+	{
+		$this->analyse(
+			[
+				__DIR__ . '/ExampleTest.php',
+			],
+			[],
+		);
+	}
+
 }
