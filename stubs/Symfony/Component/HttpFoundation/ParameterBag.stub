@@ -3,12 +3,12 @@
 namespace Symfony\Component\HttpFoundation;
 
 /**
- * @implements \IteratorAggregate<string, mixed>
+ * @implements \IteratorAggregate<array-key, mixed>
  */
 class ParameterBag implements \IteratorAggregate
 {
     /**
-     * @return list<string>
+     * @return list<array-key>
      */
     public function keys(): array
     {
