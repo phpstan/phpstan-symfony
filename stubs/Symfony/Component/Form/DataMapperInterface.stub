@@ -1,0 +1,22 @@
+<?php
+
+namespace Symfony\Component\Form;
+
+/**
+ * @template TViewData
+ */
+interface DataMapperInterface
+{
+    /**
+     * @param TViewData|null $viewData
+     * @param \Traversable<mixed, FormInterface<mixed>> $forms
+     */
+    public function mapDataToForms(mixed $viewData, \Traversable $forms): void;
+
+    /**
+     * @param \Traversable<mixed, FormInterface<mixed>> $forms
+     * @param TViewData|null $viewData
+     * @param-out TViewData $viewData
+     */
+    public function mapFormsToData(\Traversable $forms, mixed &$viewData): void;
+}
