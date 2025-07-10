@@ -3,6 +3,7 @@
 namespace PHPStan\Type\Symfony;
 
 use PHPStan\Testing\TypeInferenceTestCase;
+use ReflectionClass;
 use ReflectionMethod;
 use Symfony\Component\HttpFoundation\Request;
 use function class_exists;
@@ -46,6 +47,11 @@ class ExtensionTest extends TypeInferenceTestCase
 
 		if (class_exists('Symfony\Bundle\FrameworkBundle\Controller\AbstractController')) {
 			yield from $this->gatherAssertTypes(__DIR__ . '/data/ExampleAbstractController.php');
+
+			$ref = new ReflectionClass('Symfony\Bundle\FrameworkBundle\Controller\AbstractController');
+			if ($ref->hasMethod('get')) {
+				yield from $this->gatherAssertTypes(__DIR__ . '/data/ExampleAbstractControllerServices.php');
+			}
 		}
 
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/serializer.php');
