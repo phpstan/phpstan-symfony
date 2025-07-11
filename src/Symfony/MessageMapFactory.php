@@ -91,7 +91,7 @@ final class MessageMapFactory
 	/** @return iterable<string, array<string, string>> */
 	private function guessHandledMessages(ClassReflection $reflectionClass): iterable
 	{
-		if (class_exists(MessageSubscriberInterface::class) && $reflectionClass->implementsInterface(MessageSubscriberInterface::class)) {
+		if (interface_exists(MessageSubscriberInterface::class) && $reflectionClass->implementsInterface(MessageSubscriberInterface::class)) {
 			$className = $reflectionClass->getName();
 
 			foreach ($className::getHandledMessages() as $index => $value) {
