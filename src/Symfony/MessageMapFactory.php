@@ -7,6 +7,7 @@ use PHPStan\Reflection\ReflectionProvider;
 use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
 use function class_exists;
 use function count;
+use function interface_exists;
 use function is_array;
 use function is_int;
 use function is_string;
