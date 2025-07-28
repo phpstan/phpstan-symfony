@@ -62,9 +62,18 @@ class QueryBus {
     {
         return $this->handle($query);
     }
+
+	public function dispatch2(object $query): mixed
+	{
+		return $this->handle($query);
+	}
 }
 
-class QueryBus2 {
+interface QueryBusInterface {
+	public function dispatch(object $query): mixed;
+}
+
+class QueryBusWithInterface implements QueryBusInterface {
 	use HandleTrait;
 
 	public function dispatch(object $query): mixed
@@ -87,11 +96,14 @@ class Controller {
 
         assertType(TaggedResult::class, $queryBus->dispatch(new TaggedQuery()));
 
+		assertType(RegularQueryResult::class, $queryBus->dispatch2(new RegularQuery()));
+
+		$queryBusWithInterface = new QueryBusWithInterface();
+
+		assertType(RegularQueryResult::class, $queryBusWithInterface->dispatch(new RegularQuery()));
+
         // HandleTrait will throw exception in fact due to multiple handle methods/handlers per single query
         assertType('mixed', $queryBus->dispatch(new MultiHandlesForInTheSameHandlerQuery()));
         assertType('mixed', $queryBus->dispatch(new MultiHandlersForTheSameMessageQuery()));
-
-		$queryBus2 = new QueryBus2();
-		assertType(TaggedResult::class, $queryBus2->dispatch(new TaggedQuery()));
     }
 }

@@ -10,9 +10,10 @@ parameters:
 		consoleApplicationLoader: null
 		messenger:
 			handleTraitWrappers:
-				# move that params to tests only
+				# todo move that params to tests only
 				- MessengerHandleTrait\QueryBus::dispatch
-				- MessengerHandleTrait\QueryBus2::dispatch
+				- MessengerHandleTrait\QueryBus::dispatch2
+				- MessengerHandleTrait\QueryBusInterface::dispatch
 	stubFiles:
 		- stubs/Psr/Cache/CacheException.stub
 		- stubs/Psr/Cache/CacheItemInterface.stub

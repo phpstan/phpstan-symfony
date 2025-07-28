@@ -6,6 +6,7 @@ use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Identifier;
 use PHPStan\Analyser\Scope;
+use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\Symfony\MessageMap;
 use PHPStan\Symfony\MessageMapFactory;
 use PHPStan\Type\ExpressionTypeResolverExtension;
@@ -18,7 +19,7 @@ use function is_null;
  * Configurable extension for resolving return types of methods that internally use HandleTrait.
  *
  * Configured via PHPStan parameters under symfony.messenger.handleTraitWrappers with
- * "Class::method" patterns, e.g.:
+ * "class::method" patterns, e.g.:
  * - App\Bus\QueryBus::dispatch
  * - App\Bus\QueryBus::query
  * - App\Bus\CommandBus::execute
@@ -34,11 +35,14 @@ final class MessengerHandleTraitWrapperReturnTypeExtension implements Expression
 	/** @var array<string> */
 	private array $wrappers;
 
+	private ReflectionProvider $reflectionProvider;
+
 	/** @param array{handleTraitWrappers: array<string>}|null $messenger */
-	public function __construct(MessageMapFactory $messageMapFactory, ?array $messenger)
+	public function __construct(MessageMapFactory $messageMapFactory, ?array $messenger, ReflectionProvider $reflectionProvider)
 	{
 		$this->messageMapFactory = $messageMapFactory;
 		$this->wrappers = $messenger['handleTraitWrappers'] ?? [];
+		$this->reflectionProvider = $reflectionProvider;
 	}
 
 	public function getType(Expr $expr, Scope $scope): ?Type
@@ -91,8 +95,23 @@ final class MessengerHandleTraitWrapperReturnTypeExtension implements Expression
 		$className = $classNames[0];
 		$classMethodCombination = $className . '::' . $methodName;
 
-		// Check if this class::method combination is configured
-		return in_array($classMethodCombination, $this->wrappers, true);
+		// Check if this exact class::method combination is configured
+		if (in_array($classMethodCombination, $this->wrappers, true)) {
+			return true;
+		}
+
+		// Check if any interface implemented by this class::method is configured
+		if ($this->reflectionProvider->hasClass($className)) {
+			$classReflection = $this->reflectionProvider->getClass($className);
+			foreach ($classReflection->getInterfaces() as $interface) {
+				$interfaceMethodCombination = $interface->getName() . '::' . $methodName;
+				if (in_array($interfaceMethodCombination, $this->wrappers, true)) {
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	private function getMessageMap(): MessageMap
