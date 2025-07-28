@@ -29,6 +29,7 @@ This extension provides following features:
 * Provides correct return type for `Extension::getConfiguration()` method.
 * Provides correct return type for `CacheInterface::get()` method based on the callback return type.
 * Provides correct return type for `BrowserKitAssertionsTrait::getClient()` method.
+* Provides configurable return type resolution for methods that internally use Messenger `HandleTrait`.
 * Notifies you when you try to get an unregistered service from the container.
 * Notifies you when you try to get a private service from the container.
 * Notifies you when you access undefined console command arguments or options.
@@ -179,4 +180,95 @@ Call the new env in your `console-application.php`:
 
 ```php
 $kernel = new \App\Kernel('phpstan_env', (bool) $_SERVER['APP_DEBUG']);
+```
+
+## Messenger HandleTrait Wrappers
+
+The extension provides advanced type inference for methods that internally use Symfony Messenger's `HandleTrait`. This feature is particularly useful for query bus implementations (in CQRS pattern) that use/wrap the `HandleTrait::handle()` method.
+
+### Configuration
+
+```neon
+parameters:
+    symfony:
+        messenger:
+            handleTraitWrappers:
+                - App\Bus\QueryBus::dispatch
+                - App\Bus\QueryBus::execute
+                - App\Bus\QueryBusInterface::dispatch
+```
+
+### Message Handlers
+
+```php
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+
+// Product handler that returns Product
+#[AsMessageHandler]
+class GetProductQueryHandler
+{
+    public function __invoke(GetProductQuery $query): Product
+    {
+        return $this->productRepository->get($query->productId);
+    }
+}
+```
+
+### PHP Examples
+
+```php
+use Symfony\Component\Messenger\HandleTrait;
+use Symfony\Component\Messenger\MessageBusInterface;
+
+// Basic query bus implementation
+class QueryBus
+{
+    use HandleTrait;
+
+    public function __construct(MessageBusInterface $messageBus)
+    {
+        $this->messageBus = $messageBus;
+    }
+
+    public function dispatch(object $query): mixed
+    {
+        return $this->handle($query); // Return type will be inferred
+    }
+
+    // Multiple methods per class example
+    public function execute(object $message): mixed
+    {
+        return $this->handle($message);
+    }
+}
+
+// Interface-based configuration example
+interface QueryBusInterface
+{
+    public function dispatch(object $query): mixed;
+}
+
+class QueryBusWithInterface implements QueryBusInterface
+{
+    use HandleTrait;
+
+    public function __construct(MessageBusInterface $queryBus)
+    {
+        $this->messageBus = $queryBus;
+    }
+
+    public function dispatch(object $query): mixed
+    {
+        return $this->handle($query);
+    }
+}
+
+// Usage examples with proper type inference
+$query = new GetProductQuery($productId);
+$queryBus = new QueryBus($messageBus);
+$queryBusWithInterface = new QueryBusWithInterface($messageBus);
+
+$product = $queryBus->dispatch($query); // Returns: Product
+$product2 = $queryBus->execute($query); // Returns: Product
+$product3 = $queryBusWithInterface->dispatch($query); // Returns: Product
 ```
