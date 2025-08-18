@@ -25,7 +25,7 @@ jobs:
 
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
@@ -49,10 +49,10 @@ jobs:
 
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: "Checkout build-cs"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: "phpstan/build-cs"
           path: "build-cs"
@@ -100,7 +100,7 @@ jobs:
 
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
@@ -139,7 +139,7 @@ jobs:
 
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
