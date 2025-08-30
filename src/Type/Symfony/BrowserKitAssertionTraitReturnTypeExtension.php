@@ -7,8 +7,11 @@ use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Identifier;
 use PHPStan\Analyser\Scope;
 use PHPStan\Type\ExpressionTypeResolverExtension;
+use PHPStan\Type\NullType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
+use PHPStan\Type\TypeCombinator;
+use PHPStan\Type\UnionType;
 use function count;
 
 final class BrowserKitAssertionTraitReturnTypeExtension implements ExpressionTypeResolverExtension
@@ -22,7 +25,13 @@ final class BrowserKitAssertionTraitReturnTypeExtension implements ExpressionTyp
 		if ($this->isSupported($expr, $scope)) {
 			$args = $expr->getArgs();
 			if (count($args) > 0) {
-				return $scope->getType($args[0]->value);
+				return TypeCombinator::intersect(
+					$scope->getType($args[0]->value),
+					new UnionType([
+						new ObjectType('Symfony\Component\BrowserKit\AbstractBrowser'),
+						new NullType(),
+					]),
+				);
 			}
 
 			return new ObjectType('Symfony\Component\BrowserKit\AbstractBrowser');
