@@ -9,11 +9,12 @@ use function PHPStan\Testing\assertType;
 class Foo {
     use BrowserKitAssertionsTrait;
 
-    public function test(AbstractBrowser $browser, ?AbstractBrowser $nullableBrowser)
+    public function test(AbstractBrowser $browser, ?AbstractBrowser $nullableBrowser, mixed $mixed)
     {
         assertType('Symfony\Component\BrowserKit\AbstractBrowser', $this->getClient());
         assertType('null', $this->getClient(null));
         assertType('Symfony\Component\BrowserKit\AbstractBrowser', $this->getClient($browser));
         assertType('Symfony\Component\BrowserKit\AbstractBrowser|null', $this->getClient($nullableBrowser));
+        assertType('Symfony\Component\BrowserKit\AbstractBrowser|null', $this->getClient($mixed));
     }
 }
