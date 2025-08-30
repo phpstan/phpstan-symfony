@@ -193,6 +193,11 @@ services:
 		factory: PHPStan\Type\Symfony\EnvelopeReturnTypeExtension
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
 
+	# BrowserKitAssertionTrait::getClient() return type
+	-
+		class: PHPStan\Type\Symfony\BrowserKitAssertionTraitReturnTypeExtension
+		tags: [phpstan.broker.expressionTypeResolverExtension]
+
 	# Messenger HandleTrait::handle() return type
 	-
 		class: PHPStan\Type\Symfony\MessengerHandleTraitReturnTypeExtension

@@ -14,6 +14,7 @@ class ExtensionTest extends TypeInferenceTestCase
 
 	public function dataFileAsserts(): iterable
 	{
+		yield from $this->gatherAssertTypes(__DIR__ . '/data/browserkit_assertion_trait.php');
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/messenger_handle_trait.php');
 
 		if (interface_exists('Symfony\Component\Messenger\Handler\MessageSubscriberInterface')) {
