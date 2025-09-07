@@ -7,6 +7,7 @@ use PHPStan\Reflection\ReflectionProvider;
 use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
 use function class_exists;
 use function count;
+use function interface_exists;
 use function is_array;
 use function is_int;
 use function is_string;
@@ -89,7 +90,7 @@ final class MessageMapFactory
 	/** @return iterable<string, array<string, string>> */
 	private function guessHandledMessages(ClassReflection $reflectionClass): iterable
 	{
-		if ($reflectionClass->implementsInterface(MessageSubscriberInterface::class)) {
+		if (interface_exists(MessageSubscriberInterface::class) && $reflectionClass->implementsInterface(MessageSubscriberInterface::class)) {
 			$className = $reflectionClass->getName();
 
 			foreach ($className::getHandledMessages() as $index => $value) {
