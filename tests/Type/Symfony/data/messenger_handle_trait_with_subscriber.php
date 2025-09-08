@@ -56,7 +56,7 @@ class MultiHandlesForInTheSameHandler implements MessageSubscriberInterface
     }
 }
 
-class HandleTraitClass {
+class HandleTraitClassWithSubscriber {
     use HandleTrait;
 
     public function __invoke()
