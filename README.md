@@ -232,20 +232,20 @@ class QueryBus
 
     public function dispatch(object $query): mixed
     {
-        return $this->handle($query); // Return type will be inferred
+        return $this->handle($query); // Return type will be inferred in calling code as query result
     }
 
     // Multiple methods per class example
     public function execute(object $message): mixed
     {
-        return $this->handle($message);
+        return $this->handle($message); // Return type will be inferred in calling code as query result
     }
 }
 
 // Interface-based configuration example
 interface QueryBusInterface
 {
-    public function dispatch(object $query): mixed;
+    public function dispatch(object $query): mixed; // Return type will be inferred in calling code as query result
 }
 
 class QueryBusWithInterface implements QueryBusInterface
@@ -263,7 +263,7 @@ class QueryBusWithInterface implements QueryBusInterface
     }
 }
 
-// Usage examples with proper type inference
+// Examples of use with proper type inference
 $query = new GetProductQuery($productId);
 $queryBus = new QueryBus($messageBus);
 $queryBusWithInterface = new QueryBusWithInterface($messageBus);
@@ -271,4 +271,5 @@ $queryBusWithInterface = new QueryBusWithInterface($messageBus);
 $product = $queryBus->dispatch($query); // Returns: Product
 $product2 = $queryBus->execute($query); // Returns: Product
 $product3 = $queryBusWithInterface->dispatch($query); // Returns: Product
+// Without the feature all above query bus results would be default 'mixed'.
 ```
