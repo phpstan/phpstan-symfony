@@ -66,7 +66,7 @@ final class MessengerHandleTraitReturnTypeExtension implements ExpressionTypeRes
 	 */
 	private function isSupported(Expr $expr, Scope $scope): bool
 	{
-		if (!($expr instanceof MethodCall) || !($expr->name instanceof Identifier) || $expr->name->name !== self::TRAIT_METHOD_NAME) {
+		if (!($expr instanceof MethodCall) || !($expr->name instanceof Identifier) || $expr->name->toLowerString() !== self::TRAIT_METHOD_NAME) {
 			return false;
 		}
 
@@ -74,14 +74,18 @@ final class MessengerHandleTraitReturnTypeExtension implements ExpressionTypeRes
 			return false;
 		}
 
-		$reflectionClass = $scope->getClassReflection()->getNativeReflection();
+		$methodReflection = $scope->getMethodReflection($scope->getType($expr->var), $expr->name->toString());
+		if ($methodReflection === null) {
+			return false;
+		}
 
+		$reflectionClass = $methodReflection->getDeclaringClass()->getNativeReflection();
 		if (!$reflectionClass->hasMethod(self::TRAIT_METHOD_NAME)) {
 			return false;
 		}
 
-		$methodReflection = $reflectionClass->getMethod(self::TRAIT_METHOD_NAME);
-		$declaringClassReflection = $methodReflection->getBetterReflection()->getDeclaringClass();
+		$traitMethodReflection = $reflectionClass->getMethod(self::TRAIT_METHOD_NAME);
+		$declaringClassReflection = $traitMethodReflection->getBetterReflection()->getDeclaringClass();
 
 		return $declaringClassReflection->getName() === self::TRAIT_NAME;
 	}

@@ -18,7 +18,7 @@ final class BrowserKitAssertionTraitReturnTypeExtension implements ExpressionTyp
 {
 
 	private const TRAIT_NAME = 'Symfony\Bundle\FrameworkBundle\Test\BrowserKitAssertionsTrait';
-	private const TRAIT_METHOD_NAME = 'getClient';
+	private const TRAIT_METHOD_NAME = 'getclient';
 
 	public function getType(Expr $expr, Scope $scope): ?Type
 	{
@@ -45,7 +45,7 @@ final class BrowserKitAssertionTraitReturnTypeExtension implements ExpressionTyp
 	 */
 	private function isSupported(Expr $expr, Scope $scope): bool
 	{
-		if (!($expr instanceof MethodCall) || !($expr->name instanceof Identifier) || $expr->name->name !== self::TRAIT_METHOD_NAME) {
+		if (!($expr instanceof MethodCall) || !($expr->name instanceof Identifier) || $expr->name->toLowerString() !== self::TRAIT_METHOD_NAME) {
 			return false;
 		}
 
@@ -53,14 +53,18 @@ final class BrowserKitAssertionTraitReturnTypeExtension implements ExpressionTyp
 			return false;
 		}
 
-		$reflectionClass = $scope->getClassReflection()->getNativeReflection();
+		$methodReflection = $scope->getMethodReflection($scope->getType($expr->var), $expr->name->toString());
+		if ($methodReflection === null) {
+			return false;
+		}
 
+		$reflectionClass = $methodReflection->getDeclaringClass()->getNativeReflection();
 		if (!$reflectionClass->hasMethod(self::TRAIT_METHOD_NAME)) {
 			return false;
 		}
 
-		$methodReflection = $reflectionClass->getMethod(self::TRAIT_METHOD_NAME);
-		$declaringClassReflection = $methodReflection->getBetterReflection()->getDeclaringClass();
+		$traitMethodReflection = $reflectionClass->getMethod(self::TRAIT_METHOD_NAME);
+		$declaringClassReflection = $traitMethodReflection->getBetterReflection()->getDeclaringClass();
 
 		return $declaringClassReflection->getName() === self::TRAIT_NAME;
 	}
