@@ -7,10 +7,13 @@ use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
+use PHPStan\Symfony\AutowireLocatorServiceMapFactory;
+use PHPStan\Symfony\DefaultServiceMap;
 use PHPStan\Symfony\ServiceMap;
 use PHPStan\TrinaryLogic;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
+use function is_null;
 use function sprintf;
 
 /**
@@ -66,15 +69,25 @@ final class ContainerInterfacePrivateServiceRule implements Rule
 		}
 
 		$serviceId = $this->serviceMap::getServiceIdFromNode($node->getArgs()[0]->value, $scope);
-		if ($serviceId !== null) {
-			$service = $this->serviceMap->getService($serviceId);
-			if ($service !== null && !$service->isPublic()) {
-				return [
-					RuleErrorBuilder::message(sprintf('Service "%s" is private.', $serviceId))
-						->identifier('symfonyContainer.privateService')
-						->build(),
-				];
-			}
+		if ($serviceId === null) {
+			return [];
+		}
+
+		$isContainerInterfaceType = $isContainerType->yes() || $isPsrContainerType->yes();
+		if (
+			$isContainerInterfaceType &&
+			$this->isAutowireLocatorService($node, $scope, $serviceId)
+		) {
+			return [];
+		}
+
+		$service = $this->serviceMap->getService($serviceId);
+		if ($service !== null && !$service->isPublic()) {
+			return [
+				RuleErrorBuilder::message(sprintf('Service "%s" is private.', $serviceId))
+					->identifier('symfonyContainer.privateService')
+					->build(),
+			];
 		}
 
 		return [];
@@ -90,6 +103,18 @@ final class ContainerInterfacePrivateServiceRule implements Rule
 		}
 		$containedClassType = new ObjectType($classReflection->getName());
 		return $isContainerServiceSubscriber->or($serviceSubscriberInterfaceType->isSuperTypeOf($containedClassType));
+	}
+
+	private function isAutowireLocatorService(Node $node, Scope $scope, string $serviceId): bool
+	{
+		$autowireLocatorServiceMapFactory = new AutowireLocatorServiceMapFactory($node, $scope);
+		$autowireLocatorServiceMap = $autowireLocatorServiceMapFactory->create();
+
+		if (!$autowireLocatorServiceMap instanceof DefaultServiceMap) {
+			return false;
+		}
+
+		return !is_null($autowireLocatorServiceMap->getService($serviceId));
 	}
 
 }

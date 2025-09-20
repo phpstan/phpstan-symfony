@@ -6,8 +6,11 @@ use PhpParser\Node;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\PrettyPrinter\Standard;
 use PHPStan\Analyser\Scope;
+use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
+use PHPStan\Symfony\AutowireLocatorServiceMapFactory;
+use PHPStan\Symfony\DefaultServiceMap;
 use PHPStan\Symfony\ServiceMap;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Symfony\Helper;
@@ -66,19 +69,56 @@ final class ContainerInterfaceUnknownServiceRule implements Rule
 		}
 
 		$serviceId = $this->serviceMap::getServiceIdFromNode($node->getArgs()[0]->value, $scope);
-		if ($serviceId !== null) {
-			$service = $this->serviceMap->getService($serviceId);
-			$serviceIdType = $scope->getType($node->getArgs()[0]->value);
-			if ($service === null && !$scope->getType(Helper::createMarkerNode($node->var, $serviceIdType, $this->printer))->equals($serviceIdType)) {
-				return [
-					RuleErrorBuilder::message(sprintf('Service "%s" is not registered in the container.', $serviceId))
-						->identifier('symfonyContainer.serviceNotFound')
-						->build(),
-				];
+		if ($serviceId === null) {
+			return [];
+		}
+
+		$isContainerInterfaceType = $isContainerType->yes() || $isPsrContainerType->yes();
+		if ($isContainerInterfaceType) {
+			$autowireLoaderResult = $this->getAutowireLocatorResult($node, $scope, $serviceId);
+
+			if ($autowireLoaderResult !== null) {
+				return $autowireLoaderResult;
 			}
 		}
 
+		$service = $this->serviceMap->getService($serviceId);
+		$serviceIdType = $scope->getType($node->getArgs()[0]->value);
+		if ($service === null && !$scope->getType(Helper::createMarkerNode($node->var, $serviceIdType, $this->printer))->equals($serviceIdType)) {
+			return [
+				RuleErrorBuilder::message(sprintf('Service "%s" is not registered in the container.', $serviceId))
+					->identifier('symfonyContainer.serviceNotFound')
+					->build(),
+			];
+		}
+
 		return [];
+	}
+
+	/**
+	 * @return list<IdentifierRuleError>|null
+	 */
+	private function getAutowireLocatorResult(Node $node, Scope $scope, string $serviceId): ?array
+	{
+		$autowireLocatorServiceMapFactory = new AutowireLocatorServiceMapFactory($node, $scope);
+		$autowireLocatorServiceMap = $autowireLocatorServiceMapFactory->create();
+
+		// Our container has a valid AutowireLocator attribute, else we would get a FakeServiceMap.
+		if ($autowireLocatorServiceMap instanceof DefaultServiceMap) {
+			$autowireLocatorService = $autowireLocatorServiceMap->getService($serviceId);
+
+			if ($autowireLocatorService === null) {
+				return [
+					RuleErrorBuilder::message(sprintf('Service "%s" is not registered in the AutowireLocator.', $serviceId))
+						->identifier('symfonyContainer.undefinedService')
+						->build(),
+				];
+			}
+
+			return [];
+		}
+
+		return null;
 	}
 
 }

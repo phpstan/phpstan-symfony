@@ -8,6 +8,7 @@ use PHPStan\Symfony\XmlServiceMapFactory;
 use PHPStan\Testing\RuleTestCase;
 use function class_exists;
 use function interface_exists;
+use const PHP_VERSION_ID;
 
 /**
  * @extends RuleTestCase<ContainerInterfacePrivateServiceRule>
@@ -73,6 +74,39 @@ final class ContainerInterfacePrivateServiceRuleTest extends RuleTestCase
 				__DIR__ . '/ExampleServiceSubscriber.php',
 				__DIR__ . '/ExampleServiceSubscriberFromAbstractController.php',
 				__DIR__ . '/ExampleServiceSubscriberFromLegacyController.php',
+			],
+			[]
+		);
+	}
+
+	public function testGetPrivateServiceWithoutAutowireLocatorAttribute(): void
+	{
+		if (PHP_VERSION_ID < 80000) {
+			self::markTestSkipped('The test uses PHP Attributes which are available since PHP 8.0.');
+		}
+
+		$this->analyse(
+			[
+				__DIR__ . '/ExampleAutowireLocatorEmptyService.php',
+			],
+			[
+				[
+					'Service "private" is private.',
+					22,
+				],
+			]
+		);
+	}
+
+	public function testGetPrivateServiceViaAutowireLocatorAttribute(): void
+	{
+		if (PHP_VERSION_ID < 80000) {
+			self::markTestSkipped('The test uses PHP Attributes which are available since PHP 8.0.');
+		}
+
+		$this->analyse(
+			[
+				__DIR__ . '/ExampleAutowireLocatorService.php',
 			],
 			[]
 		);
