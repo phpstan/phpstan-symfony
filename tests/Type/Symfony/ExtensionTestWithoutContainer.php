@@ -8,7 +8,6 @@ use function class_exists;
 class ExtensionTestWithoutContainer extends TypeInferenceTestCase
 {
 
-	/** @return mixed[] */
 	public function dataExampleController(): iterable
 	{
 		if (!class_exists('Symfony\Bundle\FrameworkBundle\Controller\Controller')) {
@@ -18,7 +17,6 @@ class ExtensionTestWithoutContainer extends TypeInferenceTestCase
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/ExampleController.php');
 	}
 
-	/** @return mixed[] */
 	public function dataAbstractController(): iterable
 	{
 		if (!class_exists('Symfony\Bundle\FrameworkBundle\Controller\AbstractController')) {
