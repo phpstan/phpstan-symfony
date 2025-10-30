@@ -12,7 +12,6 @@ use function strpos;
 class ExtensionTest extends TypeInferenceTestCase
 {
 
-	/** @return mixed[] */
 	public function dataFileAsserts(): iterable
 	{
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/messenger_handle_trait.php');

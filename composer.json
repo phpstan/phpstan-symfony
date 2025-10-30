@@ -22,7 +22,7 @@
   },
   "require-dev": {
     "php-parallel-lint/php-parallel-lint": "^1.2",
-    "phpstan/phpstan-phpunit": "^2.0",
+    "phpstan/phpstan-phpunit": "^2.0.8",
     "phpstan/phpstan-strict-rules": "^2.0",
     "phpunit/phpunit": "^9.6",
     "psr/container": "1.1.2",
