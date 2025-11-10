@@ -254,7 +254,7 @@ services:
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
 		arguments:
 		    className: Symfony\Component\Config\Definition\Builder\NodeBuilder
-		    methods: [arrayNode, scalarNode, booleanNode, integerNode, floatNode, enumNode, variableNode]
+		    methods: [arrayNode, scalarNode, stringNode, booleanNode, integerNode, floatNode, enumNode, variableNode]
 
 	# NodeBuilder::end() return type
 	-

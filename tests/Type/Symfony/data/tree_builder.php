@@ -154,6 +154,13 @@ assertType('Symfony\Component\Config\Definition\Builder\ScalarNodeDefinition', $
 assertType('Symfony\Component\Config\Definition\Builder\ScalarNodeDefinition', $scalarRootNode->defaultValue("default"));
 assertType('Symfony\Component\Config\Definition\Builder\TreeBuilder', $scalarRootNode->defaultValue("default")->end());
 
+$stringTreeBuilder = new TreeBuilder('my_tree', 'string');
+$stringRootNode = $stringTreeBuilder->getRootNode();
+
+assertType('Symfony\Component\Config\Definition\Builder\StringNodeDefinition', $stringRootNode);
+assertType('Symfony\Component\Config\Definition\Builder\StringNodeDefinition', $stringRootNode->defaultValue("default"));
+assertType('Symfony\Component\Config\Definition\Builder\TreeBuilder', $stringRootNode->defaultValue("default")->end());
+
 $booleanTreeBuilder = new TreeBuilder('my_tree', 'boolean');
 $booleanRootNode = $booleanTreeBuilder->getRootNode();
 

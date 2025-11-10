@@ -19,6 +19,7 @@ final class ArrayNodeDefinitionPrototypeDynamicReturnTypeExtension implements Dy
 	private const PROTOTYPE_METHODS = [
 		'arrayPrototype',
 		'scalarPrototype',
+		'stringPrototype',
 		'booleanPrototype',
 		'integerPrototype',
 		'floatPrototype',
@@ -29,6 +30,7 @@ final class ArrayNodeDefinitionPrototypeDynamicReturnTypeExtension implements Dy
 	private const MAPPING = [
 		'variable' => 'Symfony\Component\Config\Definition\Builder\VariableNodeDefinition',
 		'scalar' => 'Symfony\Component\Config\Definition\Builder\ScalarNodeDefinition',
+		'string' => 'Symfony\Component\Config\Definition\Builder\StringNodeDefinition',
 		'boolean' => 'Symfony\Component\Config\Definition\Builder\BooleanNodeDefinition',
 		'integer' => 'Symfony\Component\Config\Definition\Builder\IntegerNodeDefinition',
 		'float' => 'Symfony\Component\Config\Definition\Builder\FloatNodeDefinition',
