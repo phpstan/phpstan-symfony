@@ -6,9 +6,13 @@ use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Type\ArrayType;
+use PHPStan\Type\BooleanType;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
+use PHPStan\Type\FloatType;
+use PHPStan\Type\IntegerType;
 use PHPStan\Type\MixedType;
 use PHPStan\Type\ObjectType;
+use PHPStan\Type\StringType;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
 use function count;
@@ -65,6 +69,17 @@ class SerializerDynamicReturnTypeExtension implements DynamicMethodReturnTypeExt
 		if (substr($objectName, -2) === '[]') {
 			// The key type is determined by the data
 			return new ArrayType(new MixedType(false), $this->getType(substr($objectName, 0, -2)));
+		}
+
+		switch ($objectName) {
+			case 'int':
+				return new IntegerType();
+			case 'string':
+				return new StringType();
+			case 'bool':
+				return new BooleanType();
+			case 'float':
+				return new FloatType();
 		}
 
 		return new ObjectType($objectName);
