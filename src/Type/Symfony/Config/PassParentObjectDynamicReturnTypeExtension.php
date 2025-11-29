@@ -9,7 +9,7 @@ use PHPStan\Reflection\ParametersAcceptorSelector;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\Symfony\Config\ValueObject\ParentObjectType;
 use PHPStan\Type\Type;
-use PHPStan\Type\VerbosityLevel;
+use function count;
 use function in_array;
 
 final class PassParentObjectDynamicReturnTypeExtension implements DynamicMethodReturnTypeExtension
@@ -45,7 +45,7 @@ final class PassParentObjectDynamicReturnTypeExtension implements DynamicMethodR
 		MethodReflection $methodReflection,
 		MethodCall $methodCall,
 		Scope $scope
-	): Type
+	): ?Type
 	{
 		$calledOnType = $scope->getType($methodCall->var);
 
@@ -55,7 +55,12 @@ final class PassParentObjectDynamicReturnTypeExtension implements DynamicMethodR
 			$methodReflection->getVariants(),
 		)->getReturnType();
 
-		return new ParentObjectType($defaultType->describe(VerbosityLevel::typeOnly()), $calledOnType);
+		$classNames = $defaultType->getObjectClassNames();
+		if (count($classNames) !== 1) {
+			return null;
+		}
+
+		return new ParentObjectType($classNames[0], $calledOnType);
 	}
 
 }
