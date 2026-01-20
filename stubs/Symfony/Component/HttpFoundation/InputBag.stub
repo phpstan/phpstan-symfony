@@ -3,14 +3,15 @@
 namespace Symfony\Component\HttpFoundation;
 
 /**
- * @template TValue of string|int|float|bool
+ * @template TInput of string|int|float|bool|null
  */
 final class InputBag extends ParameterBag
 {
 
 	/**
-	 * @param TValue|null $default
-	 * @return TValue|null
+     * @template TDefault of string|int|float|bool|null
+     * @param TDefault $default
+     * @return TDefault|TInput
 	 */
 	public function get(string $key, $default = null)
 	{
