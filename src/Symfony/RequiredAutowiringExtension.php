@@ -37,7 +37,17 @@ class RequiredAutowiringExtension implements ReadWritePropertiesExtension, Addit
 			return false;
 		}
 
-		if ($property->getDocComment() !== null && $this->isRequiredFromDocComment($property->getDocComment())) {
+		$declaringClass = $property->getDeclaringClass();
+		$declaringTrait = null;
+		if ($property instanceof PhpPropertyReflection && $property->getDeclaringTrait() !== null) {
+			$declaringTrait = $property->getDeclaringTrait()->getName();
+		}
+
+		if (
+			$property->getDocComment() !== null
+			&& $declaringClass->getFileName() !== null
+			&& $this->isRequiredFromDocComment($declaringClass->getFileName(), $declaringClass->getName(), $declaringTrait, null, $property->getDocComment())
+		) {
 			return true;
 		}
 
@@ -54,16 +64,25 @@ class RequiredAutowiringExtension implements ReadWritePropertiesExtension, Addit
 		$additionalConstructors = [];
 		$nativeReflection = $classReflection->getNativeReflection();
 
-		foreach ($nativeReflection->getMethods() as $method) {
+		foreach ($nativeReflection->getBetterReflection()->getImmediateMethods() as $method) {
 			if (!$method->isPublic()) {
 				continue;
 			}
 
-			if ($method->getDocComment() !== false && $this->isRequiredFromDocComment($method->getDocComment())) {
+			$declaringTrait = null;
+			if ($method->getDeclaringClass()->isTrait()) {
+				$declaringTrait = $method->getDeclaringClass()->getName();
+			}
+
+			if (
+				$method->getDocComment() !== null
+				&& $method->getFileName() !== null
+				&& $this->isRequiredFromDocComment($method->getFileName(), $nativeReflection->getName(), $declaringTrait, $method->getName(), $method->getDocComment())
+			) {
 				$additionalConstructors[] = $method->getName();
 			}
 
-			if (count($method->getAttributes('Symfony\Contracts\Service\Attribute\Required')) === 0) {
+			if (count($method->getAttributesByName('Symfony\Contracts\Service\Attribute\Required')) === 0) {
 				continue;
 			}
 
@@ -73,9 +92,9 @@ class RequiredAutowiringExtension implements ReadWritePropertiesExtension, Addit
 		return $additionalConstructors;
 	}
 
-	private function isRequiredFromDocComment(string $docComment): bool
+	private function isRequiredFromDocComment(string $fileName, string $className, ?string $traitName, ?string $functionName, string $docComment): bool
 	{
-		$phpDoc = $this->fileTypeMapper->getResolvedPhpDoc(null, null, null, null, $docComment);
+		$phpDoc = $this->fileTypeMapper->getResolvedPhpDoc($fileName, $className, $traitName, $functionName, $docComment);
 
 		foreach ($phpDoc->getPhpDocNodes() as $node) {
 			// @required tag is available, meaning this property is always initialized

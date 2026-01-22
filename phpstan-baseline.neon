@@ -15,7 +15,7 @@ parameters:
 		-
 			message: '#^Although PHPStan\\Reflection\\Php\\PhpPropertyReflection is covered by backward compatibility promise, this instanceof assumption might break because it''s not guaranteed to always stay the same\.$#'
 			identifier: phpstanApi.instanceofAssumption
-			count: 1
+			count: 2
 			path: src/Symfony/RequiredAutowiringExtension.php
 
 		-
