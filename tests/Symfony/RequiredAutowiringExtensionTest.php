@@ -8,6 +8,7 @@ use PHPStan\Rules\Rule;
 use PHPStan\Testing\RuleTestCase;
 use Symfony\Contracts\Service\Attribute\Required;
 use function class_exists;
+use const PHP_VERSION_ID;
 
 /**
  * @extends RuleTestCase<UninitializedPropertyRule>
@@ -53,6 +54,18 @@ final class RequiredAutowiringExtensionTest extends RuleTestCase
 				16,
 			],
 		]);
+	}
+
+
+	public function testBug468(): void
+	{
+		if (!class_exists(Required::class)) {
+			self::markTestSkipped('Required symfony/service-contracts@3.2.1 or higher is not installed');
+		}
+		if (PHP_VERSION_ID < 80100) {
+			self::markTestSkipped('Test requires PHP 8.1.');
+		}
+		$this->analyse([__DIR__ . '/data/bug-468.php'], []);
 	}
 
 	public static function getAdditionalConfigFiles(): array

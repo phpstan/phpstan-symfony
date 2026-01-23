@@ -64,8 +64,12 @@ class RequiredAutowiringExtension implements ReadWritePropertiesExtension, Addit
 		$additionalConstructors = [];
 		$nativeReflection = $classReflection->getNativeReflection();
 
-		foreach ($nativeReflection->getBetterReflection()->getImmediateMethods() as $method) {
+		foreach ($nativeReflection->getBetterReflection()->getMethods() as $method) {
 			if (!$method->isPublic()) {
+				continue;
+			}
+
+			if ($method->getImplementingClass()->getName() !== $nativeReflection->getName()) {
 				continue;
 			}
 
