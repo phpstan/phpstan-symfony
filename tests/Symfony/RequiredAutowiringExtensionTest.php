@@ -56,7 +56,6 @@ final class RequiredAutowiringExtensionTest extends RuleTestCase
 		]);
 	}
 
-
 	public function testBug468(): void
 	{
 		if (!class_exists(Required::class)) {
