@@ -5,6 +5,7 @@
   "license": [
     "MIT"
   ],
+  "keywords": ["static analysis"],
   "authors": [
     {
       "name": "Lukáš Unger",
