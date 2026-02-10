@@ -6,59 +6,38 @@ use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Identifier;
 use PHPStan\Analyser\Scope;
-use PHPStan\Symfony\MessageMap;
-use PHPStan\Symfony\MessageMapFactory;
 use PHPStan\Type\ExpressionTypeResolverExtension;
+use PHPStan\Type\NullType;
+use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
+use PHPStan\Type\TypeCombinator;
+use PHPStan\Type\UnionType;
 use function count;
-use function is_null;
 
-final class MessengerHandleTraitReturnTypeExtension implements ExpressionTypeResolverExtension
+final class BrowserKitAssertionTraitReturnTypeExtension implements ExpressionTypeResolverExtension
 {
 
-	private const TRAIT_NAME = 'Symfony\Component\Messenger\HandleTrait';
-	private const TRAIT_METHOD_NAME = 'handle';
-
-	private MessageMapFactory $messageMapFactory;
-
-	private ?MessageMap $messageMap = null;
-
-	public function __construct(MessageMapFactory $symfonyMessageMapFactory)
-	{
-		$this->messageMapFactory = $symfonyMessageMapFactory;
-	}
+	private const TRAIT_NAME = 'Symfony\Bundle\FrameworkBundle\Test\BrowserKitAssertionsTrait';
+	private const TRAIT_METHOD_NAME = 'getclient';
 
 	public function getType(Expr $expr, Scope $scope): ?Type
 	{
 		if ($this->isSupported($expr, $scope)) {
 			$args = $expr->getArgs();
-			if (count($args) !== 1) {
-				return null;
+			if (count($args) > 0) {
+				return TypeCombinator::intersect(
+					$scope->getType($args[0]->value),
+					new UnionType([
+						new ObjectType('Symfony\Component\BrowserKit\AbstractBrowser'),
+						new NullType(),
+					]),
+				);
 			}
 
-			$arg = $args[0]->value;
-			$argClassNames = $scope->getType($arg)->getObjectClassNames();
-
-			if (count($argClassNames) === 1) {
-				$messageMap = $this->getMessageMap();
-				$returnType = $messageMap->getTypeForClass($argClassNames[0]);
-
-				if (!is_null($returnType)) {
-					return $returnType;
-				}
-			}
+			return new ObjectType('Symfony\Component\BrowserKit\AbstractBrowser');
 		}
 
 		return null;
-	}
-
-	private function getMessageMap(): MessageMap
-	{
-		if ($this->messageMap === null) {
-			$this->messageMap = $this->messageMapFactory->create();
-		}
-
-		return $this->messageMap;
 	}
 
 	/**
