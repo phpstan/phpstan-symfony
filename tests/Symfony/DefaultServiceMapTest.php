@@ -25,6 +25,9 @@ final class DefaultServiceMapTest extends TestCase
 		self::assertNotNull($serviceMap->getService('withClass'));
 	}
 
+	/**
+	 * @return Iterator<array-key, array{string, callable}>
+	 */
 	public function getServiceProvider(): Iterator
 	{
 		yield [

@@ -25,6 +25,9 @@ final class DefaultParameterMapTest extends TestCase
 		self::assertNotNull($serviceMap->getParameter('app.string'));
 	}
 
+	/**
+	 * @return Iterator<array-key, array{string, callable}>
+	 */
 	public function getParameterProvider(): Iterator
 	{
 		yield [
