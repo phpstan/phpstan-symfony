@@ -11,6 +11,7 @@ use PHPStan\Symfony\MessageMap;
 use PHPStan\Symfony\MessageMapFactory;
 use PHPStan\Type\ExpressionTypeResolverExtension;
 use PHPStan\Type\Type;
+use PHPStan\Type\TypeCombinator;
 use function count;
 use function in_array;
 use function is_null;
@@ -59,16 +60,23 @@ final class MessengerHandleTraitWrapperReturnTypeExtension implements Expression
 		$arg = $args[0]->value;
 		$argClassNames = $scope->getType($arg)->getObjectClassNames();
 
-		if (count($argClassNames) === 1) {
-			$messageMap = $this->getMessageMap();
-			$returnType = $messageMap->getTypeForClass($argClassNames[0]);
-
-			if (!is_null($returnType)) {
-				return $returnType;
-			}
+		if (count($argClassNames) === 0) {
+			return null;
 		}
 
-		return null;
+		$returnTypes = [];
+		foreach ($argClassNames as $argClassName) {
+			$messageMap = $this->getMessageMap();
+			$returnType = $messageMap->getTypeForClass($argClassName);
+
+			if (is_null($returnType)) {
+				return null;
+			}
+
+			$returnTypes[] = $returnType;
+		}
+
+		return TypeCombinator::union(...$returnTypes);
 	}
 
 	/**
@@ -88,11 +96,21 @@ final class MessengerHandleTraitWrapperReturnTypeExtension implements Expression
 		$varType = $scope->getType($expr->var);
 		$classNames = $varType->getObjectClassNames();
 
-		if (count($classNames) !== 1) {
+		if (count($classNames) === 0) {
 			return false;
 		}
 
-		$className = $classNames[0];
+		foreach ($classNames as $className) {
+			if (!$this->isClassMethodSupported($className, $methodName)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	private function isClassMethodSupported(string $className, string $methodName): bool
+	{
 		$classMethodCombination = $className . '::' . $methodName;
 
 		// Check if this exact class::method combination is configured
