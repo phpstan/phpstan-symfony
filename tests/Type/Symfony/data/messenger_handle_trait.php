@@ -61,25 +61,25 @@ class HandleTraitClass {
 class QueryBus {
     use HandleTrait;
 
-    public function dispatch(object $query): mixed
+    public function dispatch(object $query)
     {
         return $this->handle($query);
     }
 
-	public function dispatch2(object $query): mixed
+	public function dispatch2(object $query)
 	{
 		return $this->handle($query);
 	}
 }
 
 interface QueryBusInterface {
-	public function dispatch(object $query): mixed;
+	public function dispatch(object $query);
 }
 
 class QueryBusWithInterface implements QueryBusInterface {
 	use HandleTrait;
 
-	public function dispatch(object $query): mixed
+	public function dispatch(object $query)
 	{
 		return $this->handle($query);
 	}
