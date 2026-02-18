@@ -212,6 +212,8 @@ services:
 	-
 		class: PHPStan\Type\Symfony\MessengerHandleTraitWrapperReturnTypeExtension
 		tags: [phpstan.broker.expressionTypeResolverExtension]
+		arguments:
+			messenger: %symfony.messenger%
 
 	# InputInterface::getArgument() return type
 	-
