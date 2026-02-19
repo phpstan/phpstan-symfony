@@ -20,10 +20,22 @@ This extension provides following features:
 * Provides correct return type for `Envelope::all()` method based on the `$stampFqcn` parameter.
 * Provides correct return type for `InputBag::get()` method based on the `$default` parameter.
 * Provides correct return type for `InputBag::all()` method based on the `$key` parameter.
+* Provides correct return type for `ResponseHeaderBag::getCookies()` method based on the format argument.
 * Provides correct return types for `TreeBuilder` and `NodeDefinition` objects.
+* Provides correct return type for `SerializerInterface::deserialize()` and `DenormalizerInterface::denormalize()` methods based on the `$type` argument.
+* Provides correct return type for `HandleTrait::handle()` method based on the message handler map.
+* Provides correct return type for `FormInterface::getErrors()` method based on the `$deep` and `$flatten` parameters.
+* Provides correct return type for `KernelInterface::locateResource()` method.
+* Provides correct return type for `Extension::getConfiguration()` method.
+* Provides correct return type for `CacheInterface::get()` method based on the callback return type.
+* Provides correct return type for `BrowserKitAssertionsTrait::getClient()` method.
 * Notifies you when you try to get an unregistered service from the container.
 * Notifies you when you try to get a private service from the container.
-* Optionally correct return types for `InputInterface::getArgument()`, `::getOption`, `::hasArgument`, and `::hasOption`.
+* Notifies you when you access undefined console command arguments or options.
+* Validates default values of console command arguments and options.
+* Recognizes `@required` annotation and `#[Required]` attribute for autowiring properties and methods.
+* Optionally correct return types for `InputInterface::getArgument()`, `::getOption()`, `::getOptions()`, `::hasArgument()`, and `::hasOption()`.
+* Optionally provides correct return type for `Command::getHelper()` method.
 
 
 ## Installation
