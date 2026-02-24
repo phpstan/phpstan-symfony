@@ -10,7 +10,12 @@ jobs:
   tweet:
     runs-on: ubuntu-latest
     steps:
-      - uses: Eomm/why-don-t-you-tweet@v2
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@5ef0c079ce82195b2a36a210272d6b661572d83e # v2.14.2
+        with:
+          egress-policy: audit
+
+      - uses: Eomm/why-don-t-you-tweet@d9ec12835f4d494dda920f95f885df3dba380493 # v2.0.0
         if: ${{ !github.event.repository.private }}
         with:
           # GitHub event payload
