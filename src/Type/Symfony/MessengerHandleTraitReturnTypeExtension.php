@@ -10,6 +10,7 @@ use PHPStan\Symfony\MessageMap;
 use PHPStan\Symfony\MessageMapFactory;
 use PHPStan\Type\ExpressionTypeResolverExtension;
 use PHPStan\Type\Type;
+use PHPStan\Type\TypeCombinator;
 use function count;
 use function is_null;
 
@@ -30,26 +31,36 @@ final class MessengerHandleTraitReturnTypeExtension implements ExpressionTypeRes
 
 	public function getType(Expr $expr, Scope $scope): ?Type
 	{
-		if ($this->isSupported($expr, $scope)) {
-			$args = $expr->getArgs();
-			if (count($args) !== 1) {
+		if (!$this->isSupported($expr, $scope)) {
+			return null;
+		}
+
+		$args = $expr->getArgs();
+		if (count($args) !== 1) {
+			return null;
+		}
+
+		$arg = $args[0]->value;
+		$argClassNames = $scope->getType($arg)->getObjectClassNames();
+
+		if (count($argClassNames) === 0) {
+			return null;
+		}
+
+		$messageMap = $this->getMessageMap();
+
+		$returnTypes = [];
+		foreach ($argClassNames as $argClassName) {
+			$returnType = $messageMap->getTypeForClass($argClassName);
+
+			if (is_null($returnType)) {
 				return null;
 			}
 
-			$arg = $args[0]->value;
-			$argClassNames = $scope->getType($arg)->getObjectClassNames();
-
-			if (count($argClassNames) === 1) {
-				$messageMap = $this->getMessageMap();
-				$returnType = $messageMap->getTypeForClass($argClassNames[0]);
-
-				if (!is_null($returnType)) {
-					return $returnType;
-				}
-			}
+			$returnTypes[] = $returnType;
 		}
 
-		return null;
+		return TypeCombinator::union(...$returnTypes);
 	}
 
 	private function getMessageMap(): MessageMap

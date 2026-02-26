@@ -8,6 +8,8 @@ parameters:
 		containerXmlPath: null
 		constantHassers: true
 		consoleApplicationLoader: null
+		messenger:
+			handleTraitWrappers: []
 	stubFiles:
 		- stubs/Psr/Cache/CacheException.stub
 		- stubs/Psr/Cache/CacheItemInterface.stub
@@ -96,6 +98,9 @@ parametersSchema:
 		containerXmlPath: schema(string(), nullable())
 		constantHassers: bool()
 		consoleApplicationLoader: schema(string(), nullable())
+		messenger: structure([
+			handleTraitWrappers: listOf(string())
+		])
 	])
 
 services:
@@ -202,6 +207,13 @@ services:
 	-
 		class: PHPStan\Type\Symfony\MessengerHandleTraitReturnTypeExtension
 		tags: [phpstan.broker.expressionTypeResolverExtension]
+
+	# Messenger HandleTrait wrappers return type
+	-
+		class: PHPStan\Type\Symfony\MessengerHandleTraitWrapperReturnTypeExtension
+		tags: [phpstan.broker.expressionTypeResolverExtension]
+		arguments:
+			messenger: %symfony.messenger%
 
 	# InputInterface::getArgument() return type
 	-

@@ -50,7 +50,69 @@ class HandleTraitClass {
 
         assertType(TaggedResult::class, $this->handle(new TaggedQuery()));
 
+		$randomQuery = rand(0, 1) ? new RegularQuery() : new TaggedQuery();
+		assertType(RegularQueryResult::class . '|' . TaggedResult::class, $this->handle($randomQuery));
+
         // HandleTrait will throw exception in fact due to multiple handle methods/handlers per single query
         assertType('mixed', $this->handle(new MultiHandlersForTheSameMessageQuery()));
+    }
+}
+
+class QueryBus {
+    use HandleTrait;
+
+    public function dispatch(object $query)
+    {
+        return $this->handle($query);
+    }
+
+	public function dispatch2(object $query)
+	{
+		return $this->handle($query);
+	}
+}
+
+interface QueryBusInterface {
+	public function dispatch(object $query);
+}
+
+class QueryBusWithInterface implements QueryBusInterface {
+	use HandleTrait;
+
+	public function dispatch(object $query)
+	{
+		return $this->handle($query);
+	}
+}
+
+class Controller {
+    public function action()
+    {
+        $queryBus = new QueryBus();
+
+        assertType(RegularQueryResult::class, $queryBus->dispatch(new RegularQuery()));
+
+        assertType('bool', $queryBus->dispatch(new BooleanQuery()));
+        assertType('int', $queryBus->dispatch(new IntQuery()));
+        assertType('float', $queryBus->dispatch(new FloatQuery()));
+        assertType('string', $queryBus->dispatch(new StringQuery()));
+
+		$randomQuery = rand(0, 1) ? new IntQuery() : new StringQuery();
+		assertType('int|string', $queryBus->dispatch($randomQuery));
+
+        assertType(TaggedResult::class, $queryBus->dispatch(new TaggedQuery()));
+
+		assertType(RegularQueryResult::class, $queryBus->dispatch2(new RegularQuery()));
+
+		$queryBusWithInterface = new QueryBusWithInterface();
+
+		assertType(RegularQueryResult::class, $queryBusWithInterface->dispatch(new RegularQuery()));
+
+		$randomQueryBus = rand(0, 1) ? $queryBus : $queryBusWithInterface;
+		assertType(RegularQueryResult::class, $randomQueryBus->dispatch(new RegularQuery()));
+
+        // HandleTrait will throw exception in fact due to multiple handle methods/handlers per single query
+        assertType('mixed', $queryBus->dispatch(new MultiHandlesForInTheSameHandlerQuery()));
+        assertType('mixed', $queryBus->dispatch(new MultiHandlersForTheSameMessageQuery()));
     }
 }
