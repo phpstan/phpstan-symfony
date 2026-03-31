@@ -3,6 +3,7 @@
 namespace PHPStan\Type\Symfony;
 
 use PhpParser\Node\Expr\MethodCall;
+use PHPStan\Analyser\ExternalFileDependencyRegistrar;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\ShouldNotHappenException;
@@ -30,6 +31,10 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 
 	private ParameterMap $parameterMap;
 
+	private ?string $containerXmlPath;
+
+	private ?ExternalFileDependencyRegistrar $externalFileDependencyRegistrar;
+
 	private ?ParameterBag $parameterBag = null;
 
 	/**
@@ -39,13 +44,17 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 		string $className,
 		bool $constantHassers,
 		ServiceMap $symfonyServiceMap,
-		ParameterMap $symfonyParameterMap
+		ParameterMap $symfonyParameterMap,
+		?string $containerXmlPath = null,
+		?ExternalFileDependencyRegistrar $externalFileDependencyRegistrar = null,
 	)
 	{
 		$this->className = $className;
 		$this->constantHassers = $constantHassers;
 		$this->serviceMap = $symfonyServiceMap;
 		$this->parameterMap = $symfonyParameterMap;
+		$this->containerXmlPath = $containerXmlPath;
+		$this->externalFileDependencyRegistrar = $externalFileDependencyRegistrar;
 	}
 
 	public function getClass(): string
@@ -86,6 +95,7 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 
 		$serviceId = $this->serviceMap::getServiceIdFromNode($methodCall->getArgs()[0]->value, $scope);
 		if ($serviceId !== null) {
+			$this->registerExternalDependency();
 			$service = $this->serviceMap->getService($serviceId);
 			if ($service !== null && (!$service->isSynthetic() || $service->getClass() !== null)) {
 				return new ObjectType($this->determineServiceClass($parameterBag, $service) ?? $serviceId);
@@ -131,11 +141,19 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 
 		$serviceId = $this->serviceMap::getServiceIdFromNode($methodCall->getArgs()[0]->value, $scope);
 		if ($serviceId !== null) {
+			$this->registerExternalDependency();
 			$service = $this->serviceMap->getService($serviceId);
 			return new ConstantBooleanType($service !== null && $service->isPublic());
 		}
 
 		return null;
+	}
+
+	private function registerExternalDependency(): void
+	{
+		if ($this->containerXmlPath !== null && $this->externalFileDependencyRegistrar !== null) {
+			$this->externalFileDependencyRegistrar->add($this->containerXmlPath);
+		}
 	}
 
 	private function determineServiceClass(ParameterBag $parameterBag, ServiceDefinition $service): ?string

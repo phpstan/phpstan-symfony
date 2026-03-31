@@ -4,6 +4,7 @@ namespace PHPStan\Rules\Symfony;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr\MethodCall;
+use PHPStan\Analyser\ExternalFileDependencyRegistrar;
 use PHPStan\Analyser\Scope;
 use PHPStan\Node\Printer\Printer;
 use PHPStan\Rules\Rule;
@@ -23,10 +24,21 @@ final class ContainerInterfaceUnknownServiceRule implements Rule
 
 	private Printer $printer;
 
-	public function __construct(ServiceMap $symfonyServiceMap, Printer $printer)
+	private ?string $containerXmlPath;
+
+	private ?ExternalFileDependencyRegistrar $externalFileDependencyRegistrar;
+
+	public function __construct(
+		ServiceMap $symfonyServiceMap,
+		Printer $printer,
+		?string $containerXmlPath = null,
+		?ExternalFileDependencyRegistrar $externalFileDependencyRegistrar = null,
+	)
 	{
 		$this->serviceMap = $symfonyServiceMap;
 		$this->printer = $printer;
+		$this->containerXmlPath = $containerXmlPath;
+		$this->externalFileDependencyRegistrar = $externalFileDependencyRegistrar;
 	}
 
 	public function getNodeType(): string
@@ -65,6 +77,9 @@ final class ContainerInterfaceUnknownServiceRule implements Rule
 
 		$serviceId = $this->serviceMap::getServiceIdFromNode($node->getArgs()[0]->value, $scope);
 		if ($serviceId !== null) {
+			if ($this->containerXmlPath !== null && $this->externalFileDependencyRegistrar !== null) {
+				$this->externalFileDependencyRegistrar->add($this->containerXmlPath);
+			}
 			$service = $this->serviceMap->getService($serviceId);
 			$serviceIdType = $scope->getType($node->getArgs()[0]->value);
 			if ($service === null && !$scope->getType(Helper::createMarkerNode($node->var, $serviceIdType, $this->printer))->equals($serviceIdType)) {

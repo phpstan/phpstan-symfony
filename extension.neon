@@ -137,16 +137,16 @@ services:
 
 	# ControllerTrait::get()/has() return type
 	-
-		factory: PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension(Symfony\Component\DependencyInjection\ContainerInterface, %symfony.constantHassers%)
+		factory: PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension(Symfony\Component\DependencyInjection\ContainerInterface, %symfony.constantHassers%, containerXmlPath: %symfony.containerXmlPath%)
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
 	-
-		factory: PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension(Psr\Container\ContainerInterface, %symfony.constantHassers%)
+		factory: PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension(Psr\Container\ContainerInterface, %symfony.constantHassers%, containerXmlPath: %symfony.containerXmlPath%)
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
 	-
-		factory: PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension(Symfony\Bundle\FrameworkBundle\Controller\Controller, %symfony.constantHassers%)
+		factory: PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension(Symfony\Bundle\FrameworkBundle\Controller\Controller, %symfony.constantHassers%, containerXmlPath: %symfony.containerXmlPath%)
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
 	-
-		factory: PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension(Symfony\Bundle\FrameworkBundle\Controller\AbstractController, %symfony.constantHassers%)
+		factory: PHPStan\Type\Symfony\ServiceDynamicReturnTypeExtension(Symfony\Bundle\FrameworkBundle\Controller\AbstractController, %symfony.constantHassers%, containerXmlPath: %symfony.containerXmlPath%)
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
 
 	# ControllerTrait::has() type specification
@@ -314,20 +314,20 @@ services:
 
 	# ParameterBagInterface::get()/has() return type
 	-
-		factory: PHPStan\Type\Symfony\ParameterDynamicReturnTypeExtension(Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface, 'get', 'has', %symfony.constantHassers%)
+		factory: PHPStan\Type\Symfony\ParameterDynamicReturnTypeExtension(Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface, 'get', 'has', %symfony.constantHassers%, containerXmlPath: %symfony.containerXmlPath%)
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
 
 	# ContainerInterface::getParameter()/hasParameter() return type
 	-
-		factory: PHPStan\Type\Symfony\ParameterDynamicReturnTypeExtension(Symfony\Component\DependencyInjection\ContainerInterface, 'getParameter', 'hasParameter', %symfony.constantHassers%)
+		factory: PHPStan\Type\Symfony\ParameterDynamicReturnTypeExtension(Symfony\Component\DependencyInjection\ContainerInterface, 'getParameter', 'hasParameter', %symfony.constantHassers%, containerXmlPath: %symfony.containerXmlPath%)
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
 
 	# (Abstract)Controller::getParameter() return type
 	-
-		factory: PHPStan\Type\Symfony\ParameterDynamicReturnTypeExtension(Symfony\Bundle\FrameworkBundle\Controller\AbstractController, 'getParameter', null, %symfony.constantHassers%)
+		factory: PHPStan\Type\Symfony\ParameterDynamicReturnTypeExtension(Symfony\Bundle\FrameworkBundle\Controller\AbstractController, 'getParameter', null, %symfony.constantHassers%, containerXmlPath: %symfony.containerXmlPath%)
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
 	-
-		factory: PHPStan\Type\Symfony\ParameterDynamicReturnTypeExtension(Symfony\Bundle\FrameworkBundle\Controller\Controller, 'getParameter', null, %symfony.constantHassers%)
+		factory: PHPStan\Type\Symfony\ParameterDynamicReturnTypeExtension(Symfony\Bundle\FrameworkBundle\Controller\Controller, 'getParameter', null, %symfony.constantHassers%, containerXmlPath: %symfony.containerXmlPath%)
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
 	-
 		class: PHPStan\Symfony\InputBagStubFilesExtension
@@ -375,7 +375,6 @@ services:
 		factory: PHPStan\Type\Symfony\ExtensionGetConfigurationReturnTypeExtension
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
 
-	-
-		class: PHPStan\Symfony\SymfonyContainerResultCacheMetaExtension
-		tags:
-			- phpstan.resultCacheMetaExtension
+	# SymfonyContainerResultCacheMetaExtension removed: replaced by external file
+	# dependency tracking which provides incremental (per-file) cache invalidation
+	# instead of full cache invalidation when the container XML changes.
