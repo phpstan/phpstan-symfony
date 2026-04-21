@@ -11,29 +11,13 @@ parameters:
 		messenger:
 			handleTraitWrappers: []
 	stubFiles:
-		- stubs/Psr/Cache/CacheException.stub
-		- stubs/Psr/Cache/CacheItemInterface.stub
-		- stubs/Psr/Cache/InvalidArgumentException.stub
 		- stubs/Symfony/Bundle/FrameworkBundle/Controller/AbstractController.stub
-		- stubs/Symfony/Bundle/SecurityBundle/DependencyInjection/Security/Factory/AuthenticatorFactoryInterface.stub
-		- stubs/Symfony/Bundle/SecurityBundle/DependencyInjection/Security/Factory/FirewallListenerFactoryInterface.stub
-		- stubs/Symfony/Component/Console/Command.stub
-		- stubs/Symfony/Component/Console/Exception/ExceptionInterface.stub
-		- stubs/Symfony/Component/Console/Exception/InvalidArgumentException.stub
-		- stubs/Symfony/Component/Console/Exception/LogicException.stub
-		- stubs/Symfony/Component/Console/Helper/HelperInterface.stub
 		- stubs/Symfony/Component/Console/Output/OutputInterface.stub
-		- stubs/Symfony/Component/DependencyInjection/ContainerBuilder.stub
-		- stubs/Symfony/Component/DependencyInjection/Extension/ExtensionInterface.stub
-		- stubs/Symfony/Component/EventDispatcher/EventDispatcherInterface.stub
-		- stubs/Symfony/Component/EventDispatcher/EventSubscriberInterface.stub
-		- stubs/Symfony/Component/EventDispatcher/GenericEvent.stub
 		- stubs/Symfony/Component/Form/AbstractType.stub
 		- stubs/Symfony/Component/Form/ChoiceList/Loader/ChoiceLoaderInterface.stub
 		- stubs/Symfony/Component/Form/Exception/ExceptionInterface.stub
 		- stubs/Symfony/Component/Form/Exception/RuntimeException.stub
 		- stubs/Symfony/Component/Form/Exception/TransformationFailedException.stub
-		- stubs/Symfony/Component/Form/DataTransformerInterface.stub
 		- stubs/Symfony/Component/Form/FormBuilderInterface.stub
 		- stubs/Symfony/Component/Form/FormConfigBuilderInterface.stub
 		- stubs/Symfony/Component/Form/FormConfigInterface.stub
@@ -42,16 +26,8 @@ parameters:
 		- stubs/Symfony/Component/Form/FormTypeExtensionInterface.stub
 		- stubs/Symfony/Component/Form/FormTypeInterface.stub
 		- stubs/Symfony/Component/Form/FormView.stub
-		- stubs/Symfony/Component/HttpFoundation/Cookie.stub
-		- stubs/Symfony/Component/HttpFoundation/HeaderBag.stub
-		- stubs/Symfony/Component/HttpFoundation/ParameterBag.stub
-		- stubs/Symfony/Component/HttpFoundation/Session.stub
-		- stubs/Symfony/Component/Messenger/StampInterface.stub
-		- stubs/Symfony/Component/Messenger/Envelope.stub
 		- stubs/Symfony/Component/OptionsResolver/Exception/InvalidOptionsException.stub
 		- stubs/Symfony/Component/OptionsResolver/Options.stub
-		- stubs/Symfony/Component/Process/Exception/LogicException.stub
-		- stubs/Symfony/Component/Process/Process.stub
 		- stubs/Symfony/Component/PropertyAccess/Exception/AccessException.stub
 		- stubs/Symfony/Component/PropertyAccess/Exception/ExceptionInterface.stub
 		- stubs/Symfony/Component/PropertyAccess/Exception/InvalidArgumentException.stub
@@ -60,12 +36,8 @@ parameters:
 		- stubs/Symfony/Component/PropertyAccess/PropertyAccessor.stub
 		- stubs/Symfony/Component/PropertyAccess/PropertyAccessorInterface.stub
 		- stubs/Symfony/Component/PropertyAccess/PropertyPathInterface.stub
-		- stubs/Symfony/Component/Security/Acl/Model/AclInterface.stub
-		- stubs/Symfony/Component/Security/Acl/Model/EntryInterface.stub
 		- stubs/Symfony/Component/Security/Core/Authentication/Token/TokenInterface.stub
-		- stubs/Symfony/Component/Security/Core/Authorization/Voter/Voter.stub
 		- stubs/Symfony/Component/Security/Core/Authorization/Voter/VoterInterface.stub
-		- stubs/Symfony/Component/Serializer/Encoder/ContextAwareDecoderInterface.stub
 		- stubs/Symfony/Component/Serializer/Encoder/DecoderInterface.stub
 		- stubs/Symfony/Component/Serializer/Encoder/EncoderInterface.stub
 		- stubs/Symfony/Component/Serializer/Exception/BadMethodCallException.stub
@@ -76,22 +48,9 @@ parameters:
 		- stubs/Symfony/Component/Serializer/Exception/LogicException.stub
 		- stubs/Symfony/Component/Serializer/Exception/RuntimeException.stub
 		- stubs/Symfony/Component/Serializer/Exception/UnexpectedValueException.stub
-		- stubs/Symfony/Component/Serializer/Normalizer/ContextAwareDenormalizerInterface.stub
-		- stubs/Symfony/Component/Serializer/Normalizer/ContextAwareNormalizerInterface.stub
 		- stubs/Symfony/Component/Serializer/Normalizer/DenormalizableInterface.stub
-		- stubs/Symfony/Component/Serializer/Normalizer/DenormalizerInterface.stub
 		- stubs/Symfony/Component/Serializer/Normalizer/NormalizableInterface.stub
-		- stubs/Symfony/Component/Serializer/Normalizer/NormalizerInterface.stub
-		- stubs/Symfony/Component/Validator/Constraint.stub
-		- stubs/Symfony/Component/Validator/Constraints/Composite.stub
-		- stubs/Symfony/Component/Validator/Constraints/Compound.stub
-		- stubs/Symfony/Component/Validator/ConstraintViolationInterface.stub
-		- stubs/Symfony/Component/Validator/ConstraintViolationListInterface.stub
-		- stubs/Symfony/Contracts/Cache/CacheInterface.stub
-		- stubs/Symfony/Contracts/Cache/CallbackInterface.stub
-		- stubs/Symfony/Contracts/Cache/ItemInterface.stub
 		- stubs/Symfony/Contracts/Service/ServiceSubscriberInterface.stub
-		- stubs/Twig/Node/Node.stub
 
 parametersSchema:
 	symfony: structure([
@@ -134,6 +93,12 @@ services:
 		factory: PHPStan\Symfony\MessageMapFactory
 	-
 		factory: @symfony.messageMapFactory::create()
+
+	# stub loader
+	-
+		class: PHPStan\Stubs\Symfony\StubFilesExtensionLoader
+		tags:
+			- phpstan.stubFilesExtension
 
 	# ControllerTrait::get()/has() return type
 	-
@@ -329,10 +294,6 @@ services:
 	-
 		factory: PHPStan\Type\Symfony\ParameterDynamicReturnTypeExtension(Symfony\Bundle\FrameworkBundle\Controller\Controller, 'getParameter', null, %symfony.constantHassers%)
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
-	-
-		class: PHPStan\Symfony\InputBagStubFilesExtension
-		tags:
-			- phpstan.stubFilesExtension
 	-
 		class: PHPStan\Symfony\SymfonyDiagnoseExtension
 		tags:
