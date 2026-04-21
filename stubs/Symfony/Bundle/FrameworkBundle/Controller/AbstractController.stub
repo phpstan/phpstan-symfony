@@ -4,9 +4,8 @@ namespace Symfony\Bundle\FrameworkBundle\Controller;
 
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormTypeInterface;
-use Symfony\Contracts\Service\ServiceSubscriberInterface;
 
-abstract class AbstractController implements ServiceSubscriberInterface
+abstract class AbstractController
 {
 	/**
 	 * @template TFormType of FormTypeInterface<TData>

@@ -26,7 +26,6 @@ parameters:
 		- stubs/Symfony/Component/Form/FormView.stub
 		- stubs/Symfony/Component/OptionsResolver/Exception/InvalidOptionsException.stub
 		- stubs/Symfony/Component/OptionsResolver/Options.stub
-		- stubs/Symfony/Contracts/Service/ServiceSubscriberInterface.stub
 
 parametersSchema:
 	symfony: structure([
