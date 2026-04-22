@@ -41,6 +41,10 @@ class StubFilesExtensionLoader implements StubFilesExtension
 			$files[] = $stubsDir . '/Symfony/Component/Console/Helper/HelperInterface.stub';
 		}
 
+		if ($this->isInstalledVersionBelow('symfony/console', '8.1.0.0')) {
+			$files[] = $stubsDir . '/Symfony/Component/Console/Output/OutputInterface.stub';
+		}
+
 		if ($this->isInstalledVersionBelow('symfony/dependency-injection', '6.2.0.0')) {
 			$files[] = $stubsDir . '/Symfony/Component/DependencyInjection/ContainerBuilder.stub';
 			$files[] = $stubsDir . '/Symfony/Component/DependencyInjection/Extension/ExtensionInterface.stub';
@@ -57,6 +61,10 @@ class StubFilesExtensionLoader implements StubFilesExtension
 
 		if ($this->isInstalledVersionBelow('symfony/form', '6.2.0.0')) {
 			$files[] = $stubsDir . '/Symfony/Component/Form/DataTransformerInterface.stub';
+		}
+
+		if ($this->isInstalledVersionBelow('symfony/form', '8.1.0.0')) {
+			$files[] = $stubsDir . '/Symfony/Component/Form/ChoiceList/Loader/ChoiceLoaderInterface.stub';
 		}
 
 		if ($this->isInstalledVersionBelow('symfony/http-foundation', '5.4.0.0')) {
@@ -90,9 +98,25 @@ class StubFilesExtensionLoader implements StubFilesExtension
 			$files[] = $stubsDir . '/Symfony/Component/Process/Process.stub';
 		}
 
+		if ($this->isInstalledVersionBelow('symfony/property-access', '8.1.0.0')) {
+			$files[] = $stubsDir . '/Symfony/Component/PropertyAccess/Exception/AccessException.stub';
+			$files[] = $stubsDir . '/Symfony/Component/PropertyAccess/Exception/ExceptionInterface.stub';
+			$files[] = $stubsDir . '/Symfony/Component/PropertyAccess/Exception/InvalidArgumentException.stub';
+			$files[] = $stubsDir . '/Symfony/Component/PropertyAccess/Exception/RuntimeException.stub';
+			$files[] = $stubsDir . '/Symfony/Component/PropertyAccess/Exception/UnexpectedTypeException.stub';
+			$files[] = $stubsDir . '/Symfony/Component/PropertyAccess/PropertyAccessor.stub';
+			$files[] = $stubsDir . '/Symfony/Component/PropertyAccess/PropertyAccessorInterface.stub';
+			$files[] = $stubsDir . '/Symfony/Component/PropertyAccess/PropertyPathInterface.stub';
+		}
+
 		if ($this->isInstalledVersionBelow('symfony/security-acl', '3.2.0.0')) {
 			$files[] = $stubsDir . '/Symfony/Component/Security/Acl/Model/AclInterface.stub';
 			$files[] = $stubsDir . '/Symfony/Component/Security/Acl/Model/EntryInterface.stub';
+		}
+
+		if ($this->isInstalledVersionBelow('symfony/security-core', '8.1.0.0')) {
+			$files[] = $stubsDir . '/Symfony/Component/Security/Core/Authentication/Token/TokenInterface.stub';
+			$files[] = $stubsDir . '/Symfony/Component/Security/Core/Authorization/Voter/VoterInterface.stub';
 		}
 
 		if ($this->isInstalledVersionBelow('symfony/security-core', '6.3.0.0')) {
@@ -108,6 +132,21 @@ class StubFilesExtensionLoader implements StubFilesExtension
 		if ($this->isInstalledVersionBelow('symfony/serializer', '7.4.0.0')) {
 			$files[] = $stubsDir . '/Symfony/Component/Serializer/Normalizer/DenormalizerInterface.stub';
 			$files[] = $stubsDir . '/Symfony/Component/Serializer/Normalizer/NormalizerInterface.stub';
+		}
+
+		if ($this->isInstalledVersionBelow('symfony/serializer', '8.1.0.0')) {
+			$files[] = $stubsDir . '/Symfony/Component/Serializer/Encoder/DecoderInterface.stub';
+			$files[] = $stubsDir . '/Symfony/Component/Serializer/Encoder/EncoderInterface.stub';
+			$files[] = $stubsDir . '/Symfony/Component/Serializer/Exception/BadMethodCallException.stub';
+			$files[] = $stubsDir . '/Symfony/Component/Serializer/Exception/CircularReferenceException.stub';
+			$files[] = $stubsDir . '/Symfony/Component/Serializer/Exception/ExceptionInterface.stub';
+			$files[] = $stubsDir . '/Symfony/Component/Serializer/Exception/ExtraAttributesException.stub';
+			$files[] = $stubsDir . '/Symfony/Component/Serializer/Exception/InvalidArgumentException.stub';
+			$files[] = $stubsDir . '/Symfony/Component/Serializer/Exception/LogicException.stub';
+			$files[] = $stubsDir . '/Symfony/Component/Serializer/Exception/RuntimeException.stub';
+			$files[] = $stubsDir . '/Symfony/Component/Serializer/Exception/UnexpectedValueException.stub';
+			$files[] = $stubsDir . '/Symfony/Component/Serializer/Normalizer/DenormalizableInterface.stub';
+			$files[] = $stubsDir . '/Symfony/Component/Serializer/Normalizer/NormalizableInterface.stub';
 		}
 
 		if ($this->isInstalledVersionBelow('symfony/validator', '5.4.0.0')) {

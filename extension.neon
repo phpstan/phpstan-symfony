@@ -12,9 +12,7 @@ parameters:
 			handleTraitWrappers: []
 	stubFiles:
 		- stubs/Symfony/Bundle/FrameworkBundle/Controller/AbstractController.stub
-		- stubs/Symfony/Component/Console/Output/OutputInterface.stub
 		- stubs/Symfony/Component/Form/AbstractType.stub
-		- stubs/Symfony/Component/Form/ChoiceList/Loader/ChoiceLoaderInterface.stub
 		- stubs/Symfony/Component/Form/Exception/ExceptionInterface.stub
 		- stubs/Symfony/Component/Form/Exception/RuntimeException.stub
 		- stubs/Symfony/Component/Form/Exception/TransformationFailedException.stub
@@ -28,28 +26,6 @@ parameters:
 		- stubs/Symfony/Component/Form/FormView.stub
 		- stubs/Symfony/Component/OptionsResolver/Exception/InvalidOptionsException.stub
 		- stubs/Symfony/Component/OptionsResolver/Options.stub
-		- stubs/Symfony/Component/PropertyAccess/Exception/AccessException.stub
-		- stubs/Symfony/Component/PropertyAccess/Exception/ExceptionInterface.stub
-		- stubs/Symfony/Component/PropertyAccess/Exception/InvalidArgumentException.stub
-		- stubs/Symfony/Component/PropertyAccess/Exception/RuntimeException.stub
-		- stubs/Symfony/Component/PropertyAccess/Exception/UnexpectedTypeException.stub
-		- stubs/Symfony/Component/PropertyAccess/PropertyAccessor.stub
-		- stubs/Symfony/Component/PropertyAccess/PropertyAccessorInterface.stub
-		- stubs/Symfony/Component/PropertyAccess/PropertyPathInterface.stub
-		- stubs/Symfony/Component/Security/Core/Authentication/Token/TokenInterface.stub
-		- stubs/Symfony/Component/Security/Core/Authorization/Voter/VoterInterface.stub
-		- stubs/Symfony/Component/Serializer/Encoder/DecoderInterface.stub
-		- stubs/Symfony/Component/Serializer/Encoder/EncoderInterface.stub
-		- stubs/Symfony/Component/Serializer/Exception/BadMethodCallException.stub
-		- stubs/Symfony/Component/Serializer/Exception/CircularReferenceException.stub
-		- stubs/Symfony/Component/Serializer/Exception/ExceptionInterface.stub
-		- stubs/Symfony/Component/Serializer/Exception/ExtraAttributesException.stub
-		- stubs/Symfony/Component/Serializer/Exception/InvalidArgumentException.stub
-		- stubs/Symfony/Component/Serializer/Exception/LogicException.stub
-		- stubs/Symfony/Component/Serializer/Exception/RuntimeException.stub
-		- stubs/Symfony/Component/Serializer/Exception/UnexpectedValueException.stub
-		- stubs/Symfony/Component/Serializer/Normalizer/DenormalizableInterface.stub
-		- stubs/Symfony/Component/Serializer/Normalizer/NormalizableInterface.stub
 		- stubs/Symfony/Contracts/Service/ServiceSubscriberInterface.stub
 
 parametersSchema:
