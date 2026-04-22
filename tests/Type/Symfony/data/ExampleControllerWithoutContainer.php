@@ -5,6 +5,7 @@ namespace PHPStan\Type\Symfony;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use function PHPStan\Testing\assertType;
 
 final class ExampleControllerWithoutContainer extends Controller
 {
