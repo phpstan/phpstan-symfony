@@ -52,6 +52,10 @@ class ExtensionTest extends TypeInferenceTestCase
 
 		if (class_exists('Symfony\Bundle\FrameworkBundle\Controller\AbstractController')) {
 			yield from $this->gatherAssertTypes(__DIR__ . '/data/ExampleAbstractController.php');
+
+			if (method_exists('Symfony\Bundle\FrameworkBundle\Controller\AbstractController', 'get')) {
+				yield from $this->gatherAssertTypes(__DIR__ . '/data/ExampleAbstractControllerServices.php');
+			}
 		}
 
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/serializer.php');
