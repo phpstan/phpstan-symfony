@@ -13,9 +13,6 @@ parameters:
 	stubFiles:
 		- stubs/Symfony/Bundle/FrameworkBundle/Controller/AbstractController.stub
 		- stubs/Symfony/Component/Form/AbstractType.stub
-		- stubs/Symfony/Component/Form/Exception/ExceptionInterface.stub
-		- stubs/Symfony/Component/Form/Exception/RuntimeException.stub
-		- stubs/Symfony/Component/Form/Exception/TransformationFailedException.stub
 		- stubs/Symfony/Component/Form/FormBuilderInterface.stub
 		- stubs/Symfony/Component/Form/FormConfigBuilderInterface.stub
 		- stubs/Symfony/Component/Form/FormConfigInterface.stub
