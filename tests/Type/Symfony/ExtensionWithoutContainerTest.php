@@ -5,7 +5,7 @@ namespace PHPStan\Type\Symfony;
 use PHPStan\Testing\TypeInferenceTestCase;
 use function class_exists;
 
-class ExtensionTestWithoutContainer extends TypeInferenceTestCase
+class ExtensionWithoutContainerTest extends TypeInferenceTestCase
 {
 
 	public function dataExampleController(): iterable
@@ -14,7 +14,7 @@ class ExtensionTestWithoutContainer extends TypeInferenceTestCase
 			return;
 		}
 
-		yield from $this->gatherAssertTypes(__DIR__ . '/data/ExampleController.php');
+		yield from $this->gatherAssertTypes(__DIR__ . '/data/ExampleControllerWithoutContainer.php');
 	}
 
 	public function dataAbstractController(): iterable
@@ -23,7 +23,7 @@ class ExtensionTestWithoutContainer extends TypeInferenceTestCase
 			return;
 		}
 
-		yield from $this->gatherAssertTypes(__DIR__ . '/data/ExampleAbstractController.php');
+		yield from $this->gatherAssertTypes(__DIR__ . '/data/ExampleAbstractControllerWithoutContainer.php');
 	}
 
 	/**
