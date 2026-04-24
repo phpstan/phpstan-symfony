@@ -60,6 +60,9 @@ class StubFilesExtensionLoader implements StubFilesExtension
 		}
 
 		if ($this->isInstalledVersionBelow('symfony/form', '6.2.0.0')) {
+			$files[] = $stubsDir . '/Symfony/Component/Form/Exception/ExceptionInterface.stub';
+			$files[] = $stubsDir . '/Symfony/Component/Form/Exception/RuntimeException.stub';
+			$files[] = $stubsDir . '/Symfony/Component/Form/Exception/TransformationFailedException.stub';
 			$files[] = $stubsDir . '/Symfony/Component/Form/DataTransformerInterface.stub';
 		}
 
