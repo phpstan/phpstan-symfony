@@ -1,0 +1,24 @@
+<?php
+
+namespace Symfony\Component\Messenger;
+
+use Symfony\Component\Messenger\Stamp\StampInterface;
+
+class TraceableMessageBus
+{
+
+    /**
+     * @return list<array{
+     *     stamps: list<StampInterface>,
+     *     message: object,
+     *     caller: array{name: string, file: string|null, line: int|null},
+     *     callTime: float,
+     *     exception?: \Throwable,
+     *     stamps_after_dispatch: list<StampInterface>,
+     * }>
+     */
+    public function getDispatchedMessages(): array
+    {
+    }
+
+}
