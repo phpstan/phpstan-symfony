@@ -48,7 +48,8 @@ services:
 		arguments:
 			containerXmlPath: %symfony.containerXmlPath%
 	-
-		factory: @symfony.serviceMapFactory::create()
+		class: PHPStan\Symfony\ServiceMap
+		factory: PHPStan\Symfony\LazyServiceMap::create
 
 	# parameter map
 	symfony.parameterMapFactory:
@@ -57,7 +58,8 @@ services:
 		arguments:
 			containerXmlPath: %symfony.containerXmlPath%
 	-
-		factory: @symfony.parameterMapFactory::create()
+		class: PHPStan\Symfony\ParameterMap
+		factory: PHPStan\Symfony\LazyParameterMap::create
 
 	# message map
 	symfony.messageMapFactory:

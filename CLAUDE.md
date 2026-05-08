@@ -139,13 +139,14 @@ The extension auto-registers via `composer.json` `extra.phpstan.includes` when u
 
 ### Service Map
 
-The extension reads Symfony's compiled container XML dump to build a map of services. This enables detection of unknown/private services and correct return types for `get()` calls. The `ServiceMap` interface has two implementations:
-- `DefaultServiceMap` - populated from XML parsing
+The extension reads Symfony's compiled container XML dump to build a map of services. This enables detection of unknown/private services and correct return types for `get()` calls. The `ServiceMap` interface has three implementations:
+- `DefaultServiceMap` - populated from XML parsing via `XmlServiceMapFactory`
 - `FakeServiceMap` - no-op fallback when no container XML is configured
+- `LazyServiceMap` - lazy wrapper injected by the DI container; defers XML parsing until first access
 
 ### Parameter Map
 
-Similar to ServiceMap, reads container parameters from the XML dump for type-aware `getParameter()` return types.
+Similar to ServiceMap, reads container parameters from the XML dump for type-aware `getParameter()` return types. Has three implementations: `DefaultParameterMap` (from XML), `FakeParameterMap` (no-op fallback), and `LazyParameterMap` (lazy wrapper, same pattern as `LazyServiceMap`).
 
 ### Console Application Resolver
 
