@@ -312,5 +312,8 @@ services:
 
 	-
 		class: PHPStan\Symfony\SymfonyContainerResultCacheMetaExtension
+		arguments:
+			tmpDir: %tmpDir%
+			containerXmlPath: %symfony.containerXmlPath%
 		tags:
 			- phpstan.resultCacheMetaExtension

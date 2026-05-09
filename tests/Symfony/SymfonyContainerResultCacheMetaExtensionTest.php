@@ -4,12 +4,76 @@ namespace PHPStan\Symfony;
 
 use PHPStan\Testing\PHPStanTestCase;
 use function count;
+use function file_get_contents;
+use function file_put_contents;
+use function glob;
+use function mkdir;
+use function rmdir;
+use function sprintf;
+use function sys_get_temp_dir;
+use function uniqid;
+use function unlink;
 
 /**
  * @phpstan-type ContainerContents array{parameters?: ParameterMap, services?: ServiceMap}
  */
 final class SymfonyContainerResultCacheMetaExtensionTest extends PHPStanTestCase
 {
+
+	private string $tmpDir;
+
+	protected function setUp(): void
+	{
+		parent::setUp();
+		$this->tmpDir = sys_get_temp_dir() . '/phpstan-symfony-test-' . uniqid('', true);
+		mkdir($this->tmpDir, 0777, true);
+	}
+
+	protected function tearDown(): void
+	{
+		$cacheFiles = glob($this->tmpDir . '/*.hash');
+		if ($cacheFiles !== false) {
+			foreach ($cacheFiles as $file) {
+				unlink($file);
+			}
+		}
+		rmdir($this->tmpDir);
+		parent::tearDown();
+	}
+
+	public function testHashIsCalculatedAndWrittenToCacheFileOnCacheMiss(): void
+	{
+		$containerXmlPath = __DIR__ . '/container.xml';
+
+		$extension = new SymfonyContainerResultCacheMetaExtension(
+			new DefaultParameterMap([]),
+			new DefaultServiceMap([]),
+			$this->tmpDir,
+			$containerXmlPath,
+		);
+
+		$hash = $extension->getHash();
+
+		$cacheFile = sprintf('%s/symfonyDiContainer-c55d6ac45b535d6ecc9402cbb93825c38ec7b11b03f66577d0d3549b3d9ef75f.hash', $this->tmpDir);
+		self::assertFileExists($cacheFile);
+		self::assertSame($hash, file_get_contents($cacheFile));
+	}
+
+	public function testCachedHashIsReturnedOnCacheHit(): void
+	{
+		$containerXmlPath = __DIR__ . '/container.xml';
+		$cacheFile = sprintf('%s/symfonyDiContainer-c55d6ac45b535d6ecc9402cbb93825c38ec7b11b03f66577d0d3549b3d9ef75f.hash', $this->tmpDir);
+		file_put_contents($cacheFile, 'pre-computed-hash');
+
+		$extension = new SymfonyContainerResultCacheMetaExtension(
+			new DefaultParameterMap([]),
+			new DefaultServiceMap([]),
+			$this->tmpDir,
+			$containerXmlPath,
+		);
+
+		self::assertSame('pre-computed-hash', $extension->getHash());
+	}
 
 	/**
 	 * @param list<ContainerContents> $sameHashContents
@@ -30,6 +94,8 @@ final class SymfonyContainerResultCacheMetaExtensionTest extends PHPStanTestCase
 			$currentHash = (new SymfonyContainerResultCacheMetaExtension(
 				$content['parameters'] ?? new DefaultParameterMap([]),
 				$content['services'] ?? new DefaultServiceMap([]),
+				__DIR__ . '/../../tmp',
+				null,
 			))->getHash();
 
 			if ($hash === null) {
@@ -44,6 +110,8 @@ final class SymfonyContainerResultCacheMetaExtensionTest extends PHPStanTestCase
 			(new SymfonyContainerResultCacheMetaExtension(
 				$invalidatingContent['parameters'] ?? new DefaultParameterMap([]),
 				$invalidatingContent['services'] ?? new DefaultServiceMap([]),
+				__DIR__ . '/../../tmp',
+				null,
 			))->getHash(),
 		);
 	}

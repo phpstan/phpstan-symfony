@@ -4,9 +4,13 @@ namespace PHPStan\Symfony;
 
 use PHPStan\Analyser\ResultCache\ResultCacheMetaExtension;
 use function array_map;
+use function file_get_contents;
+use function file_put_contents;
 use function hash;
+use function hash_file;
 use function ksort;
 use function sort;
+use function sprintf;
 use function var_export;
 
 final class SymfonyContainerResultCacheMetaExtension implements ResultCacheMetaExtension
@@ -16,10 +20,16 @@ final class SymfonyContainerResultCacheMetaExtension implements ResultCacheMetaE
 
 	private ServiceMap $serviceMap;
 
-	public function __construct(ParameterMap $parameterMap, ServiceMap $serviceMap)
+	private string $tmpDir;
+
+	private ?string $containerXmlPath;
+
+	public function __construct(ParameterMap $parameterMap, ServiceMap $serviceMap, string $tmpDir, ?string $containerXmlPath)
 	{
 		$this->parameterMap = $parameterMap;
 		$this->serviceMap = $serviceMap;
+		$this->tmpDir = $tmpDir;
+		$this->containerXmlPath = $containerXmlPath;
 	}
 
 	public function getKey(): string
@@ -28,6 +38,29 @@ final class SymfonyContainerResultCacheMetaExtension implements ResultCacheMetaE
 	}
 
 	public function getHash(): string
+	{
+		if ($this->containerXmlPath !== null) {
+			$xmlHash = hash_file('sha256', $this->containerXmlPath);
+			if ($xmlHash === false) {
+				throw new XmlContainerNotExistsException(sprintf('Container %s does not exist', $this->containerXmlPath));
+			}
+			$hashFile = sprintf('%s/%s-%s.hash', $this->tmpDir, $this->getKey(), $xmlHash);
+			$hash = @file_get_contents($hashFile);
+			if ($hash !== false) {
+				return $hash;
+			}
+		}
+
+		$hash = $this->calculateHash();
+
+		if ($this->containerXmlPath !== null) {
+			file_put_contents($hashFile, $hash);
+		}
+
+		return $hash;
+	}
+
+	public function calculateHash(): string
 	{
 		$services = $parameters = [];
 
