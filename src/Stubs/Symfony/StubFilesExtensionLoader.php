@@ -4,8 +4,6 @@ namespace PHPStan\Stubs\Symfony;
 
 use Composer\InstalledVersions;
 use OutOfBoundsException;
-use PHPStan\BetterReflection\Reflector\Exception\IdentifierNotFound;
-use PHPStan\BetterReflection\Reflector\Reflector;
 use PHPStan\PhpDoc\StubFilesExtension;
 use function class_exists;
 use function dirname;
@@ -14,18 +12,9 @@ use function version_compare;
 class StubFilesExtensionLoader implements StubFilesExtension
 {
 
-	private Reflector $reflector;
-
-	public function __construct(
-		Reflector $reflector
-	)
-	{
-		$this->reflector = $reflector;
-	}
-
 	public function getFiles(): array
 	{
-		$stubsDir = dirname(dirname(dirname(__DIR__))) . '/stubs';
+		$stubsDir = dirname(__DIR__, 3) . '/stubs';
 		$files = [];
 
 		if ($this->isInstalledVersionBelow('symfony/security-bundle', '6.3.0.0')) {
@@ -82,12 +71,9 @@ class StubFilesExtensionLoader implements StubFilesExtension
 		if ($this->isInstalledVersionBelow('symfony/http-foundation', '7.4.0.0')) {
 			$files[] = $stubsDir . '/Symfony/Component/HttpFoundation/ParameterBag.stub';
 
-			try {
-				$this->reflector->reflectClass('Symfony\Component\HttpFoundation\InputBag');
+			if (!$this->isInstalledVersionBelow('symfony/http-foundation', '5.1.0.0')) {
 				$files[] = $stubsDir . '/Symfony/Component/HttpFoundation/InputBag.stub';
 				$files[] = $stubsDir . '/Symfony/Component/HttpFoundation/Request.stub';
-			} catch (IdentifierNotFound $e) {
-				// Don't load the InputBag and the associated Request stubs for older Symfony versions that did not have InputBag yet to avoid breaking the Request.
 			}
 		}
 
