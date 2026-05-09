@@ -14,7 +14,7 @@ class StubFilesExtensionLoader implements StubFilesExtension
 
 	public function getFiles(): array
 	{
-		$stubsDir = dirname(dirname(dirname(__DIR__))) . '/stubs';
+		$stubsDir = dirname(__DIR__, 3) . '/stubs';
 		$files = [];
 
 		if ($this->isInstalledVersionBelow('symfony/security-bundle', '6.3.0.0')) {
