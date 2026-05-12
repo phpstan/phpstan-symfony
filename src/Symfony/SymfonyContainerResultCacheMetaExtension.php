@@ -4,6 +4,7 @@ namespace PHPStan\Symfony;
 
 use PHPStan\Analyser\ResultCache\ResultCacheMetaExtension;
 use function array_map;
+use function basename;
 use function file_get_contents;
 use function file_put_contents;
 use function hash;
@@ -44,23 +45,27 @@ final class SymfonyContainerResultCacheMetaExtension implements ResultCacheMetaE
 			if ($xmlHash === false) {
 				throw new XmlContainerNotExistsException(sprintf('Container %s does not exist', $this->containerXmlPath));
 			}
-			$hashFile = sprintf('%s/%s-%s.hash', $this->tmpDir, $this->getKey(), $xmlHash);
-			$hash = @file_get_contents($hashFile);
-			if ($hash !== false) {
-				return $hash;
+			$xmlHashFile = sprintf('%s/%s-%s.hash', $this->tmpDir, $this->getKey(), basename($this->containerXmlPath));
+			$storedXmlHash = @file_get_contents($xmlHashFile);
+
+			$hashForResultCacheFile = sprintf('%s/%s-%s-result-cache-meta.hash', $this->tmpDir, $this->getKey(), basename($this->containerXmlPath));
+			$storedHashForResultCache = @file_get_contents($hashForResultCacheFile);
+			if ($storedXmlHash === $xmlHash && $storedHashForResultCache !== false) {
+				return $storedHashForResultCache;
 			}
 		}
 
-		$hash = $this->calculateHash();
+		$hashForResultCache = $this->calculateHash();
 
 		if ($this->containerXmlPath !== null) {
-			file_put_contents($hashFile, $hash);
+			file_put_contents($hashForResultCacheFile, $hashForResultCache);
+			file_put_contents($xmlHashFile, $xmlHash);
 		}
 
-		return $hash;
+		return $hashForResultCache;
 	}
 
-	public function calculateHash(): string
+	private function calculateHash(): string
 	{
 		$services = $parameters = [];
 

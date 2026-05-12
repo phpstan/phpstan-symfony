@@ -54,16 +54,22 @@ final class SymfonyContainerResultCacheMetaExtensionTest extends PHPStanTestCase
 
 		$hash = $extension->getHash();
 
-		$cacheFile = sprintf('%s/symfonyDiContainer-c55d6ac45b535d6ecc9402cbb93825c38ec7b11b03f66577d0d3549b3d9ef75f.hash', $this->tmpDir);
-		self::assertFileExists($cacheFile);
-		self::assertSame($hash, file_get_contents($cacheFile));
+		$resultCacheHashFile = sprintf('%s/symfonyDiContainer-container.xml-result-cache-meta.hash', $this->tmpDir);
+		self::assertFileExists($resultCacheHashFile);
+		self::assertSame($hash, file_get_contents($resultCacheHashFile));
+
+		$xmlHashFile = sprintf('%s/symfonyDiContainer-container.xml.hash', $this->tmpDir);
+		self::assertFileExists($xmlHashFile);
+		self::assertSame('c55d6ac45b535d6ecc9402cbb93825c38ec7b11b03f66577d0d3549b3d9ef75f', file_get_contents($xmlHashFile));
 	}
 
 	public function testCachedHashIsReturnedOnCacheHit(): void
 	{
 		$containerXmlPath = __DIR__ . '/container.xml';
-		$cacheFile = sprintf('%s/symfonyDiContainer-c55d6ac45b535d6ecc9402cbb93825c38ec7b11b03f66577d0d3549b3d9ef75f.hash', $this->tmpDir);
-		file_put_contents($cacheFile, 'pre-computed-hash');
+		$xmlHashFile = sprintf('%s/symfonyDiContainer-container.xml.hash', $this->tmpDir);
+		file_put_contents($xmlHashFile, 'c55d6ac45b535d6ecc9402cbb93825c38ec7b11b03f66577d0d3549b3d9ef75f');
+		$resultCacheHashFile = sprintf('%s/symfonyDiContainer-container.xml-result-cache-meta.hash', $this->tmpDir);
+		file_put_contents($resultCacheHashFile, 'pre-computed-hash');
 
 		$extension = new SymfonyContainerResultCacheMetaExtension(
 			new DefaultParameterMap([]),
