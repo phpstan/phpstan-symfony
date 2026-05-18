@@ -124,7 +124,6 @@ class StubFilesExtensionLoader implements StubFilesExtension
 
 		if ($this->isInstalledVersionBelow('symfony/serializer', '7.4.0.0')) {
 			$files[] = $stubsDir . '/Symfony/Component/Serializer/Normalizer/DenormalizerInterface.stub';
-			$files[] = $stubsDir . '/Symfony/Component/Serializer/Normalizer/NormalizerInterface.stub';
 		}
 
 		if ($this->isInstalledVersionBelow('symfony/serializer', '8.1.0.0')) {
@@ -140,6 +139,7 @@ class StubFilesExtensionLoader implements StubFilesExtension
 			$files[] = $stubsDir . '/Symfony/Component/Serializer/Exception/UnexpectedValueException.stub';
 			$files[] = $stubsDir . '/Symfony/Component/Serializer/Normalizer/DenormalizableInterface.stub';
 			$files[] = $stubsDir . '/Symfony/Component/Serializer/Normalizer/NormalizableInterface.stub';
+			$files[] = $stubsDir . '/Symfony/Component/Serializer/Normalizer/NormalizerInterface.stub';
 		}
 
 		if ($this->isInstalledVersionBelow('symfony/validator', '5.4.0.0')) {
