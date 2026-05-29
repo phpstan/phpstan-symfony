@@ -79,11 +79,11 @@ class StubFilesExtensionLoader implements StubFilesExtension
 
 		if ($this->isInstalledVersionBelow('symfony/messenger', '6.1.0.0')) {
 			$files[] = $stubsDir . '/Symfony/Component/Messenger/Envelope.stub';
-			$files[] = $stubsDir . '/Symfony/Component/Messenger/StampInterface.stub';
 		}
 
 		if ($this->isInstalledVersionBelow('symfony/messenger', '8.1.0.0')) {
 			$files[] = $stubsDir . '/Symfony/Component/Messenger/TraceableMessageBus.stub';
+			$files[] = $stubsDir . '/Symfony/Component/Messenger/StampInterface.stub';
 		}
 
 		if ($this->isInstalledVersionBelow('symfony/process', '5.4.0.0')) {
