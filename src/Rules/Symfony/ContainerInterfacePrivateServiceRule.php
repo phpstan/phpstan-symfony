@@ -4,6 +4,7 @@ namespace PHPStan\Rules\Symfony;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr\MethodCall;
+use PHPStan\Analyser\ExternalFileDependencyRegistrar;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
@@ -21,9 +22,19 @@ final class ContainerInterfacePrivateServiceRule implements Rule
 
 	private ServiceMap $serviceMap;
 
-	public function __construct(ServiceMap $symfonyServiceMap)
+	private ?string $containerXmlPath;
+
+	private ?ExternalFileDependencyRegistrar $externalFileDependencyRegistrar;
+
+	public function __construct(
+		ServiceMap $symfonyServiceMap,
+		?string $containerXmlPath = null,
+		?ExternalFileDependencyRegistrar $externalFileDependencyRegistrar = null,
+	)
 	{
 		$this->serviceMap = $symfonyServiceMap;
+		$this->containerXmlPath = $containerXmlPath;
+		$this->externalFileDependencyRegistrar = $externalFileDependencyRegistrar;
 	}
 
 	public function getNodeType(): string
@@ -66,6 +77,9 @@ final class ContainerInterfacePrivateServiceRule implements Rule
 
 		$serviceId = $this->serviceMap::getServiceIdFromNode($node->getArgs()[0]->value, $scope);
 		if ($serviceId !== null) {
+			if ($this->containerXmlPath !== null && $this->externalFileDependencyRegistrar !== null) {
+				$this->externalFileDependencyRegistrar->add($this->containerXmlPath);
+			}
 			$service = $this->serviceMap->getService($serviceId);
 			if ($service !== null && !$service->isPublic()) {
 				return [

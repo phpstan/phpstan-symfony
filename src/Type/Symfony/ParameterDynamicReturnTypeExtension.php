@@ -3,6 +3,7 @@
 namespace PHPStan\Type\Symfony;
 
 use PhpParser\Node\Expr\MethodCall;
+use PHPStan\Analyser\ExternalFileDependencyRegistrar;
 use PHPStan\Analyser\Scope;
 use PHPStan\PhpDoc\TypeStringResolver;
 use PHPStan\Reflection\MethodReflection;
@@ -54,6 +55,10 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 
 	private TypeStringResolver $typeStringResolver;
 
+	private ?string $containerXmlPath;
+
+	private ?ExternalFileDependencyRegistrar $externalFileDependencyRegistrar;
+
 	/**
 	 * @param class-string $className
 	 */
@@ -63,7 +68,9 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 		?string $methodHas,
 		bool $constantHassers,
 		ParameterMap $symfonyParameterMap,
-		TypeStringResolver $typeStringResolver
+		TypeStringResolver $typeStringResolver,
+		?string $containerXmlPath = null,
+		?ExternalFileDependencyRegistrar $externalFileDependencyRegistrar = null,
 	)
 	{
 		$this->className = $className;
@@ -72,6 +79,8 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 		$this->constantHassers = $constantHassers;
 		$this->parameterMap = $symfonyParameterMap;
 		$this->typeStringResolver = $typeStringResolver;
+		$this->containerXmlPath = $containerXmlPath;
+		$this->externalFileDependencyRegistrar = $externalFileDependencyRegistrar;
 	}
 
 	public function getClass(): string
@@ -121,6 +130,8 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 		if ($parameterKeys === []) {
 			return $defaultReturnType;
 		}
+
+		$this->registerExternalDependency();
 
 		$returnTypes = [];
 		foreach ($parameterKeys as $parameterKey) {
@@ -203,6 +214,13 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 		});
 	}
 
+	private function registerExternalDependency(): void
+	{
+		if ($this->containerXmlPath !== null && $this->externalFileDependencyRegistrar !== null) {
+			$this->externalFileDependencyRegistrar->add($this->containerXmlPath);
+		}
+	}
+
 	private function getHasTypeFromMethodCall(
 		MethodReflection $methodReflection,
 		MethodCall $methodCall,
@@ -217,6 +235,8 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 		if ($parameterKeys === []) {
 			return null;
 		}
+
+		$this->registerExternalDependency();
 
 		$has = null;
 		foreach ($parameterKeys as $parameterKey) {
