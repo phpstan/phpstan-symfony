@@ -1,0 +1,41 @@
+<?php
+
+use Symfony\Component\Uid\Exception\InvalidArgumentException;
+
+abstract class AbstractUid
+{
+    /**
+     * @var non-empty-string&non-decimal-int-string
+     */
+    protected string $uid;
+
+    /**
+     * @return non-empty-string&non-decimal-int-string
+	 */
+	public function toRfc4122(): string;
+
+    /**
+     * @return non-empty-string&non-decimal-int-string
+	 */
+	public function toHex(): string;
+
+    /**
+     * @return non-empty-string&non-decimal-int-string
+	 */
+	public function hash(): string;
+
+    /**
+     * @return non-empty-string&non-decimal-int-string
+	 */
+	final public function toString(): string;
+
+    /**
+     * @return non-empty-string&non-decimal-int-string
+     */
+	public function __toString(): string;
+
+    /**
+     * @return non-empty-string&non-decimal-int-string
+     */
+	public function jsonSerialize(): string;
+}

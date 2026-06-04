@@ -142,6 +142,10 @@ class StubFilesExtensionLoader implements StubFilesExtension
 			$files[] = $stubsDir . '/Symfony/Component/Serializer/Normalizer/NormalizerInterface.stub';
 		}
 
+		if ($this->isInstalledVersionBelow('symfony/uuid', '8.2.0.0')) {
+			$files[] = $stubsDir . '/Symfony/Component/Uid/AbstractUuid.stub';
+		}
+
 		if ($this->isInstalledVersionBelow('symfony/validator', '5.4.0.0')) {
 			$files[] = $stubsDir . '/Symfony/Component/Validator/ConstraintViolationInterface.stub';
 			$files[] = $stubsDir . '/Symfony/Component/Validator/ConstraintViolationListInterface.stub';
