@@ -3,7 +3,7 @@
 namespace Symfony\Component\Form;
 
 /**
- * @template TData
+ * @template TData = mixed
  *
  * @extends \ArrayAccess<string, \Symfony\Component\Form\FormInterface<mixed>>
  * @extends \Traversable<string, \Symfony\Component\Form\FormInterface<mixed>>
