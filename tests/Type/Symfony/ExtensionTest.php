@@ -76,6 +76,8 @@ class ExtensionTest extends TypeInferenceTestCase
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/extension/with-configuration-with-constructor/WithConfigurationWithConstructorExtension.php');
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/extension/with-configuration-with-constructor-optional-params/WithConfigurationWithConstructorOptionalParamsExtension.php');
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/extension/with-configuration-with-constructor-required-params/WithConfigurationWithConstructorRequiredParamsExtension.php');
+
+		yield from $this->gatherAssertTypes(__DIR__ . '/data/uid.php');
 	}
 
 	/**
