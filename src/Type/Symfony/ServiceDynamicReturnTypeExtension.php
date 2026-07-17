@@ -129,6 +129,14 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 			return null;
 		}
 
+		// A ServiceLocator is a scoped locator: its keys are local (e.g. tag index
+		// attributes from #[AutowireLocator]), not global container service ids. The
+		// ServiceMap only knows the global container, so it cannot decide has() here;
+		// returning a constant bool would wrongly make guard branches unreachable.
+		if ((new ObjectType('Symfony\Component\DependencyInjection\ServiceLocator'))->isSuperTypeOf($scope->getType($methodCall->var))->yes()) {
+			return null;
+		}
+
 		$serviceId = $this->serviceMap::getServiceIdFromNode($methodCall->getArgs()[0]->value, $scope);
 		if ($serviceId !== null) {
 			$service = $this->serviceMap->getService($serviceId);

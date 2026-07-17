@@ -33,6 +33,8 @@ class ExtensionTest extends TypeInferenceTestCase
 
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/tree_builder.php');
 
+		yield from $this->gatherAssertTypes(__DIR__ . '/data/service_locator.php');
+
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/ExampleBaseCommand.php');
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/ExampleOptionCommand.php');
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/ExampleOptionLazyCommand.php');
