@@ -50,6 +50,14 @@ final class ContainerInterfaceUnknownServiceRule implements Rule
 			return [];
 		}
 
+		// A ServiceLocator is a scoped locator: its keys are local (e.g. tag index
+		// attributes from #[AutowireLocator]), not global container service ids, so the
+		// ServiceMap has no knowledge of them and cannot tell whether they are registered.
+		$isServiceLocatorType = (new ObjectType('Symfony\Component\DependencyInjection\ServiceLocator'))->isSuperTypeOf($argType);
+		if ($isServiceLocatorType->yes()) {
+			return [];
+		}
+
 		$isControllerType = (new ObjectType('Symfony\Bundle\FrameworkBundle\Controller\Controller'))->isSuperTypeOf($argType);
 		$isAbstractControllerType = (new ObjectType('Symfony\Bundle\FrameworkBundle\Controller\AbstractController'))->isSuperTypeOf($argType);
 		$isContainerType = (new ObjectType('Symfony\Component\DependencyInjection\ContainerInterface'))->isSuperTypeOf($argType);
