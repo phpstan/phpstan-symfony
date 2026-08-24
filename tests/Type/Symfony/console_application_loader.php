@@ -10,14 +10,12 @@ use Symfony\Component\Console\Command\LazyCommand;
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
 $application = new Application();
-$application->add(new ExampleACommand());
-$application->add(new ExampleBCommand());
-$application->add(new ExampleOptionCommand());
+$application->addCommands([new ExampleACommand(), new ExampleBCommand(), new ExampleOptionCommand()]);
 
 if (class_exists(LazyCommand::class)) {
-	$application->add(new LazyCommand('lazy-example-option', [], '', false, static fn () => new ExampleOptionLazyCommand()));
+	$application->addCommands([new LazyCommand('lazy-example-option', [], '', false, static fn () => new ExampleOptionLazyCommand())]);
 } else {
-	$application->add(new ExampleOptionLazyCommand());
+	$application->addCommands([new ExampleOptionLazyCommand()]);
 }
 
 return $application;
