@@ -90,15 +90,14 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 	{
 		switch ($methodReflection->getName()) {
 			case $this->methodGet:
-				return $this->getGetTypeFromMethodCall($methodReflection, $methodCall, $scope);
+				return $this->getGetTypeFromMethodCall($methodCall, $scope);
 			case $this->methodHas:
-				return $this->getHasTypeFromMethodCall($methodReflection, $methodCall, $scope);
+				return $this->getHasTypeFromMethodCall($methodCall, $scope);
 		}
 		throw new ShouldNotHappenException();
 	}
 
 	private function getGetTypeFromMethodCall(
-		MethodReflection $methodReflection,
 		MethodCall $methodCall,
 		Scope $scope
 	): Type
@@ -204,7 +203,6 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 	}
 
 	private function getHasTypeFromMethodCall(
-		MethodReflection $methodReflection,
 		MethodCall $methodCall,
 		Scope $scope
 	): ?Type
