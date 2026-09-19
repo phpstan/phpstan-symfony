@@ -70,7 +70,6 @@ final class XmlParameterMapFactory implements ParameterMapFactory
 		/** @var SimpleXMLElement $attrs */
 		$attrs = $def->attributes();
 
-		$value = null;
 		switch ((string) $attrs->type) {
 			case 'collection':
 				$value = [];

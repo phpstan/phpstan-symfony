@@ -62,15 +62,14 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 	{
 		switch ($methodReflection->getName()) {
 			case 'get':
-				return $this->getGetTypeFromMethodCall($methodReflection, $methodCall, $scope);
+				return $this->getGetTypeFromMethodCall($methodCall, $scope);
 			case 'has':
-				return $this->getHasTypeFromMethodCall($methodReflection, $methodCall, $scope);
+				return $this->getHasTypeFromMethodCall($methodCall, $scope);
 		}
 		throw new ShouldNotHappenException();
 	}
 
 	private function getGetTypeFromMethodCall(
-		MethodReflection $methodReflection,
 		MethodCall $methodCall,
 		Scope $scope
 	): ?Type
@@ -120,7 +119,6 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 	}
 
 	private function getHasTypeFromMethodCall(
-		MethodReflection $methodReflection,
 		MethodCall $methodCall,
 		Scope $scope
 	): ?Type
