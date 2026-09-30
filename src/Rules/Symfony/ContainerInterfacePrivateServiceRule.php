@@ -4,10 +4,12 @@ namespace PHPStan\Rules\Symfony;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr\MethodCall;
+use PHPStan\Analyser\DependencyEmitter;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Symfony\ServiceMap;
+use PHPStan\Symfony\ServiceResultCacheValueExtension;
 use PHPStan\TrinaryLogic;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
@@ -31,6 +33,9 @@ final class ContainerInterfacePrivateServiceRule implements Rule
 		return MethodCall::class;
 	}
 
+	/**
+	 * @param Scope&DependencyEmitter $scope
+	 */
 	public function processNode(Node $node, Scope $scope): array
 	{
 		if (!$node->name instanceof Node\Identifier) {
@@ -66,6 +71,7 @@ final class ContainerInterfacePrivateServiceRule implements Rule
 
 		$serviceId = $this->serviceMap::getServiceIdFromNode($node->getArgs()[0]->value, $scope);
 		if ($serviceId !== null) {
+			$scope->valueDependency(ServiceResultCacheValueExtension::class, $serviceId);
 			$service = $this->serviceMap->getService($serviceId);
 			if ($service !== null && !$service->isPublic()) {
 				return [

@@ -311,9 +311,14 @@ services:
 		tags: [phpstan.broker.dynamicMethodReturnTypeExtension]
 
 	-
-		class: PHPStan\Symfony\SymfonyContainerResultCacheMetaExtension
-		arguments:
-			tmpDir: %tmpDir%
-			containerXmlPath: %symfony.containerXmlPath%
+		class: PHPStan\Symfony\ServiceResultCacheValueExtension
 		tags:
-			- phpstan.resultCacheMetaExtension
+			- phpstan.resultCacheValueExtension
+	-
+		class: PHPStan\Symfony\ParameterResultCacheValueExtension
+		tags:
+			- phpstan.resultCacheValueExtension
+	-
+		class: PHPStan\Symfony\MessageResultCacheValueExtension
+		tags:
+			- phpstan.resultCacheValueExtension

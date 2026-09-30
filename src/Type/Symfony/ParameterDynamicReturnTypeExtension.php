@@ -3,11 +3,13 @@
 namespace PHPStan\Type\Symfony;
 
 use PhpParser\Node\Expr\MethodCall;
+use PHPStan\Analyser\DependencyEmitter;
 use PHPStan\Analyser\Scope;
 use PHPStan\PhpDoc\TypeStringResolver;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\ShouldNotHappenException;
 use PHPStan\Symfony\ParameterMap;
+use PHPStan\Symfony\ParameterResultCacheValueExtension;
 use PHPStan\Type\ArrayType;
 use PHPStan\Type\BooleanType;
 use PHPStan\Type\Constant\ConstantArrayType;
@@ -86,6 +88,9 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 		return in_array($methodReflection->getName(), $methods, true);
 	}
 
+	/**
+	 * @param Scope&DependencyEmitter $scope
+	 */
 	public function getTypeFromMethodCall(MethodReflection $methodReflection, MethodCall $methodCall, Scope $scope): ?Type
 	{
 		switch ($methodReflection->getName()) {
@@ -97,6 +102,9 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 		throw new ShouldNotHappenException();
 	}
 
+	/**
+	 * @param Scope&DependencyEmitter $scope
+	 */
 	private function getGetTypeFromMethodCall(
 		MethodCall $methodCall,
 		Scope $scope
@@ -123,6 +131,7 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 
 		$returnTypes = [];
 		foreach ($parameterKeys as $parameterKey) {
+			$scope->valueDependency(ParameterResultCacheValueExtension::class, $parameterKey);
 			$parameter = $this->parameterMap->getParameter($parameterKey);
 			if ($parameter === null) {
 				return $defaultReturnType;
@@ -202,6 +211,9 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 		});
 	}
 
+	/**
+	 * @param Scope&DependencyEmitter $scope
+	 */
 	private function getHasTypeFromMethodCall(
 		MethodCall $methodCall,
 		Scope $scope
@@ -218,6 +230,7 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 
 		$has = null;
 		foreach ($parameterKeys as $parameterKey) {
+			$scope->valueDependency(ParameterResultCacheValueExtension::class, $parameterKey);
 			$parameter = $this->parameterMap->getParameter($parameterKey);
 
 			if ($has === null) {
