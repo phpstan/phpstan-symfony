@@ -3,12 +3,14 @@
 namespace PHPStan\Type\Symfony;
 
 use PhpParser\Node\Expr\MethodCall;
+use PHPStan\Analyser\DependencyEmitter;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\ShouldNotHappenException;
 use PHPStan\Symfony\ParameterMap;
 use PHPStan\Symfony\ServiceDefinition;
 use PHPStan\Symfony\ServiceMap;
+use PHPStan\Symfony\ServiceResultCacheValueExtension;
 use PHPStan\Type\Constant\ConstantBooleanType;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\ObjectType;
@@ -58,6 +60,9 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 		return in_array($methodReflection->getName(), ['get', 'has'], true);
 	}
 
+	/**
+	 * @param Scope&DependencyEmitter $scope
+	 */
 	public function getTypeFromMethodCall(MethodReflection $methodReflection, MethodCall $methodCall, Scope $scope): ?Type
 	{
 		switch ($methodReflection->getName()) {
@@ -69,6 +74,9 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 		throw new ShouldNotHappenException();
 	}
 
+	/**
+	 * @param Scope&DependencyEmitter $scope
+	 */
 	private function getGetTypeFromMethodCall(
 		MethodCall $methodCall,
 		Scope $scope
@@ -85,6 +93,7 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 
 		$serviceId = $this->serviceMap::getServiceIdFromNode($methodCall->getArgs()[0]->value, $scope);
 		if ($serviceId !== null) {
+			$scope->valueDependency(ServiceResultCacheValueExtension::class, $serviceId);
 			$service = $this->serviceMap->getService($serviceId);
 			if ($service !== null && (!$service->isSynthetic() || $service->getClass() !== null)) {
 				return new ObjectType($this->determineServiceClass($parameterBag, $service) ?? $serviceId);
@@ -118,6 +127,9 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 		return new ParameterBag($parameters);
 	}
 
+	/**
+	 * @param Scope&DependencyEmitter $scope
+	 */
 	private function getHasTypeFromMethodCall(
 		MethodCall $methodCall,
 		Scope $scope
@@ -129,6 +141,7 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 
 		$serviceId = $this->serviceMap::getServiceIdFromNode($methodCall->getArgs()[0]->value, $scope);
 		if ($serviceId !== null) {
+			$scope->valueDependency(ServiceResultCacheValueExtension::class, $serviceId);
 			$service = $this->serviceMap->getService($serviceId);
 			return new ConstantBooleanType($service !== null && $service->isPublic());
 		}

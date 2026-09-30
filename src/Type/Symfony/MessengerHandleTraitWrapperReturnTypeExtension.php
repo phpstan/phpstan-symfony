@@ -5,10 +5,12 @@ namespace PHPStan\Type\Symfony;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Identifier;
+use PHPStan\Analyser\DependencyEmitter;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\Symfony\MessageMap;
 use PHPStan\Symfony\MessageMapFactory;
+use PHPStan\Symfony\MessageResultCacheValueExtension;
 use PHPStan\Type\ExpressionTypeResolverExtension;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
@@ -46,6 +48,9 @@ final class MessengerHandleTraitWrapperReturnTypeExtension implements Expression
 		$this->reflectionProvider = $reflectionProvider;
 	}
 
+	/**
+	 * @param Scope&DependencyEmitter $scope
+	 */
 	public function getType(Expr $expr, Scope $scope): ?Type
 	{
 		if (!$this->isSupported($expr, $scope)) {
@@ -67,6 +72,7 @@ final class MessengerHandleTraitWrapperReturnTypeExtension implements Expression
 		$returnTypes = [];
 		foreach ($argClassNames as $argClassName) {
 			$messageMap = $this->getMessageMap();
+			$scope->valueDependency(MessageResultCacheValueExtension::class, $argClassName);
 			$returnType = $messageMap->getTypeForClass($argClassName);
 
 			if (is_null($returnType)) {
