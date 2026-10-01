@@ -3,7 +3,7 @@
 namespace PHPStan\Type\Symfony;
 
 use PhpParser\Node\Expr\MethodCall;
-use PHPStan\Analyser\DependencyEmitter;
+use PHPStan\Analyser\DependencyTracker;
 use PHPStan\Analyser\Scope;
 use PHPStan\PhpDoc\TypeStringResolver;
 use PHPStan\Reflection\MethodReflection;
@@ -89,7 +89,7 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 	}
 
 	/**
-	 * @param Scope&DependencyEmitter $scope
+	 * @param Scope&DependencyTracker $scope
 	 */
 	public function getTypeFromMethodCall(MethodReflection $methodReflection, MethodCall $methodCall, Scope $scope): ?Type
 	{
@@ -103,7 +103,7 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 	}
 
 	/**
-	 * @param Scope&DependencyEmitter $scope
+	 * @param Scope&DependencyTracker $scope
 	 */
 	private function getGetTypeFromMethodCall(
 		MethodCall $methodCall,
@@ -131,7 +131,7 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 
 		$returnTypes = [];
 		foreach ($parameterKeys as $parameterKey) {
-			$scope->valueDependency(ParameterResultCacheValueExtension::class, $parameterKey);
+			$scope->trackValueDependency(ParameterResultCacheValueExtension::class, $parameterKey);
 			$parameter = $this->parameterMap->getParameter($parameterKey);
 			if ($parameter === null) {
 				return $defaultReturnType;
@@ -212,7 +212,7 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 	}
 
 	/**
-	 * @param Scope&DependencyEmitter $scope
+	 * @param Scope&DependencyTracker $scope
 	 */
 	private function getHasTypeFromMethodCall(
 		MethodCall $methodCall,
@@ -230,7 +230,7 @@ final class ParameterDynamicReturnTypeExtension implements DynamicMethodReturnTy
 
 		$has = null;
 		foreach ($parameterKeys as $parameterKey) {
-			$scope->valueDependency(ParameterResultCacheValueExtension::class, $parameterKey);
+			$scope->trackValueDependency(ParameterResultCacheValueExtension::class, $parameterKey);
 			$parameter = $this->parameterMap->getParameter($parameterKey);
 
 			if ($has === null) {

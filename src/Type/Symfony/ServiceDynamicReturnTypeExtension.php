@@ -3,7 +3,7 @@
 namespace PHPStan\Type\Symfony;
 
 use PhpParser\Node\Expr\MethodCall;
-use PHPStan\Analyser\DependencyEmitter;
+use PHPStan\Analyser\DependencyTracker;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\ShouldNotHappenException;
@@ -61,7 +61,7 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 	}
 
 	/**
-	 * @param Scope&DependencyEmitter $scope
+	 * @param Scope&DependencyTracker $scope
 	 */
 	public function getTypeFromMethodCall(MethodReflection $methodReflection, MethodCall $methodCall, Scope $scope): ?Type
 	{
@@ -75,7 +75,7 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 	}
 
 	/**
-	 * @param Scope&DependencyEmitter $scope
+	 * @param Scope&DependencyTracker $scope
 	 */
 	private function getGetTypeFromMethodCall(
 		MethodCall $methodCall,
@@ -93,7 +93,7 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 
 		$serviceId = $this->serviceMap::getServiceIdFromNode($methodCall->getArgs()[0]->value, $scope);
 		if ($serviceId !== null) {
-			$scope->valueDependency(ServiceResultCacheValueExtension::class, $serviceId);
+			$scope->trackValueDependency(ServiceResultCacheValueExtension::class, $serviceId);
 			$service = $this->serviceMap->getService($serviceId);
 			if ($service !== null && (!$service->isSynthetic() || $service->getClass() !== null)) {
 				return new ObjectType($this->determineServiceClass($parameterBag, $service) ?? $serviceId);
@@ -128,7 +128,7 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 	}
 
 	/**
-	 * @param Scope&DependencyEmitter $scope
+	 * @param Scope&DependencyTracker $scope
 	 */
 	private function getHasTypeFromMethodCall(
 		MethodCall $methodCall,
@@ -141,7 +141,7 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 
 		$serviceId = $this->serviceMap::getServiceIdFromNode($methodCall->getArgs()[0]->value, $scope);
 		if ($serviceId !== null) {
-			$scope->valueDependency(ServiceResultCacheValueExtension::class, $serviceId);
+			$scope->trackValueDependency(ServiceResultCacheValueExtension::class, $serviceId);
 			$service = $this->serviceMap->getService($serviceId);
 			return new ConstantBooleanType($service !== null && $service->isPublic());
 		}

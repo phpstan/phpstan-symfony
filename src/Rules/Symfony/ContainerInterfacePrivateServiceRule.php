@@ -4,7 +4,7 @@ namespace PHPStan\Rules\Symfony;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr\MethodCall;
-use PHPStan\Analyser\DependencyEmitter;
+use PHPStan\Analyser\DependencyTracker;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
@@ -34,7 +34,7 @@ final class ContainerInterfacePrivateServiceRule implements Rule
 	}
 
 	/**
-	 * @param Scope&DependencyEmitter $scope
+	 * @param Scope&DependencyTracker $scope
 	 */
 	public function processNode(Node $node, Scope $scope): array
 	{
@@ -71,7 +71,7 @@ final class ContainerInterfacePrivateServiceRule implements Rule
 
 		$serviceId = $this->serviceMap::getServiceIdFromNode($node->getArgs()[0]->value, $scope);
 		if ($serviceId !== null) {
-			$scope->valueDependency(ServiceResultCacheValueExtension::class, $serviceId);
+			$scope->trackValueDependency(ServiceResultCacheValueExtension::class, $serviceId);
 			$service = $this->serviceMap->getService($serviceId);
 			if ($service !== null && !$service->isPublic()) {
 				return [
