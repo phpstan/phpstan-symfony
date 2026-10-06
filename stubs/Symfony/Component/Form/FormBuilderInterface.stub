@@ -3,7 +3,7 @@
 namespace Symfony\Component\Form;
 
 /**
- * @template TData
+ * @template TData = mixed
  *
  * @extends \Traversable<int, \Symfony\Component\Form\FormBuilderInterface<mixed>>
  * @extends FormConfigBuilderInterface<TData>
