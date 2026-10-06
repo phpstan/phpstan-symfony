@@ -34,7 +34,10 @@ final class ContainerInterfacePrivateServiceRuleFakeTest extends RuleTestCase
 
 	public function testGetPrivateServiceInAbstractController(): void
 	{
-		if (!class_exists('Symfony\Bundle\FrameworkBundle\Controller\Controller')) {
+		if (!class_exists('Symfony\Bundle\FrameworkBundle\Controller\AbstractController')) {
+			self::markTestSkipped();
+		}
+		if (!method_exists('Symfony\Bundle\FrameworkBundle\Controller\AbstractController', 'get')) {
 			self::markTestSkipped();
 		}
 		$this->analyse(

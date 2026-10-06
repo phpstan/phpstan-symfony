@@ -24,6 +24,10 @@ class ExtensionWithoutContainerTest extends TypeInferenceTestCase
 		}
 
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/ExampleAbstractControllerWithoutContainer.php');
+
+		if (method_exists('Symfony\Bundle\FrameworkBundle\Controller\AbstractController', 'get')) {
+			yield from $this->gatherAssertTypes(__DIR__ . '/data/ExampleAbstractControllerServicesWithoutContainer.php');
+		}
 	}
 
 	/**
