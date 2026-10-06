@@ -71,6 +71,20 @@ final class ContainerInterfaceUnknownServiceRuleTest extends RuleTestCase
 		);
 	}
 
+	public function testServiceLocatorKeyIsNotReportedAsUnknownService(): void
+	{
+		if (!class_exists('Symfony\Component\DependencyInjection\ServiceLocator')) {
+			self::markTestSkipped('The test needs Symfony\Component\DependencyInjection\ServiceLocator class.');
+		}
+
+		$this->analyse(
+			[
+				__DIR__ . '/ExampleServiceLocatorConsumer.php',
+			],
+			[],
+		);
+	}
+
 	public static function getAdditionalConfigFiles(): array
 	{
 		return [
