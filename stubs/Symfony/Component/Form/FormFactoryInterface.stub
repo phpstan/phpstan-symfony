@@ -33,4 +33,32 @@ interface FormFactoryInterface
 	 * @throws \Symfony\Component\OptionsResolver\Exception\InvalidOptionsException
 	 */
 	public function createNamed(string $name, string $type = FormType::class, $data = null, array $options = []): FormInterface;
+
+	/**
+	 * @template TFormType of FormTypeInterface<TData>
+	 * @template TData
+	 *
+	 * @param class-string<TFormType> $type
+	 * @param TData                   $data
+	 * @param array<string, mixed>    $options
+	 *
+	 * @phpstan-return ($data is null ? FormBuilderInterface<null|TData> : FormBuilderInterface<TData>)
+	 *
+	 * @throws \Symfony\Component\OptionsResolver\Exception\InvalidOptionsException
+	 */
+	public function createBuilder(string $type = FormType::class, $data = null, array $options = []): FormBuilderInterface;
+
+	/**
+	 * @template TFormType of FormTypeInterface<TData>
+	 * @template TData
+	 *
+	 * @param class-string<TFormType> $type
+	 * @param TData                   $data
+	 * @param array<string, mixed>    $options
+	 *
+	 * @phpstan-return ($data is null ? FormBuilderInterface<null|TData> : FormBuilderInterface<TData>)
+	 *
+	 * @throws \Symfony\Component\OptionsResolver\Exception\InvalidOptionsException
+	 */
+	public function createNamedBuilder(string $name, string $type = FormType::class, $data = null, array $options = []): FormBuilderInterface;
 }
