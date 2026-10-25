@@ -73,6 +73,33 @@ class FormFactoryAwareClass
 		assertType('GenericFormDataType\DataClass|null', $form->getData());
 	}
 
+	public function doSomethingWithBuilder(): void
+	{
+		$builder = $this->formFactory->createBuilder(DataClassType::class, new DataClass());
+		assertType('Symfony\Component\Form\FormBuilderInterface<GenericFormDataType\DataClass>', $builder);
+		assertType('GenericFormDataType\DataClass', $builder->getData());
+		assertType('GenericFormDataType\DataClass|null', $builder->getForm()->getData());
+	}
+
+	public function doSomethingNullableWithBuilder(): void
+	{
+		$builder = $this->formFactory->createBuilder(DataClassType::class);
+		assertType('GenericFormDataType\DataClass|null', $builder->getData());
+	}
+
+	public function doSomethingWithNamedBuilder(): void
+	{
+		$builder = $this->formFactory->createNamedBuilder('data_class', DataClassType::class, new DataClass());
+		assertType('Symfony\Component\Form\FormBuilderInterface<GenericFormDataType\DataClass>', $builder);
+		assertType('GenericFormDataType\DataClass', $builder->getData());
+	}
+
+	public function doSomethingNullableWithNamedBuilder(): void
+	{
+		$builder = $this->formFactory->createNamedBuilder('data_class', DataClassType::class);
+		assertType('GenericFormDataType\DataClass|null', $builder->getData());
+	}
+
 }
 
 class FormController extends AbstractController
