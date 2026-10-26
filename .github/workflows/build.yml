@@ -26,6 +26,7 @@ jobs:
           - "8.3"
           - "8.4"
           - "8.5"
+          - "8.6"
 
     steps:
       - name: Harden the runner (Audit all outbound calls)
@@ -109,6 +110,7 @@ jobs:
           - "8.3"
           - "8.4"
           - "8.5"
+          - "8.6"
         dependencies:
           - "lowest"
           - "highest"
@@ -154,6 +156,7 @@ jobs:
           - "8.3"
           - "8.4"
           - "8.5"
+          - "8.6"
         dependencies:
           - "lowest"
           - "highest"
