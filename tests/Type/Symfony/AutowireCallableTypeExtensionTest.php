@@ -11,6 +11,7 @@ class AutowireCallableTypeExtensionTest extends TypeInferenceTestCase
 	public function dataAsserts(): iterable
 	{
 		if (!class_exists('Symfony\Component\DependencyInjection\Attribute\AutowireCallable')) {
+			yield ['type', ''];
 			return;
 		}
 
@@ -28,6 +29,9 @@ class AutowireCallableTypeExtensionTest extends TypeInferenceTestCase
 	 */
 	public function testAsserts(string $assertType, string $file, ...$args): void
 	{
+		if (!class_exists('Symfony\Component\DependencyInjection\Attribute\AutowireCallable')) {
+			self::markTestSkipped('AutowireCallable requires Symfony 6.3.');
+		}
 		$this->assertFileAsserts($assertType, $file, ...$args);
 	}
 

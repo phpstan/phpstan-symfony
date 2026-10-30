@@ -150,8 +150,8 @@ final class AutowireCallableTypeExtension implements ExpressionTypeResolverExten
 		}
 		$constructor = $class->getConstructor();
 		$hasAttributes = false;
-		foreach ($constructor->getVariants()[0]->getParameters() as $parameter) {
-			if ($parameter->getAttributes() !== []) {
+		foreach ($constructor->getVariants()[0]->getParameters() as $constructorParameter) {
+			if ($constructorParameter->getAttributes() !== []) {
 				$hasAttributes = true;
 				break;
 			}
@@ -168,12 +168,12 @@ final class AutowireCallableTypeExtension implements ExpressionTypeResolverExten
 				$node = (new NodeFinder())->findFirst($this->parser->parseFile($file), static fn ($node): bool => $node instanceof Class_ && $node->namespacedName !== null && $node->namespacedName->toString() === $key);
 				$method = $node instanceof Class_ ? $node->getMethod('__construct') : null;
 				if ($method !== null) {
-					foreach ($method->getParams() as $parameter) {
-						if ($parameter->flags === 0 || !($parameter->var instanceof Variable) || !is_string($parameter->var->name)) {
+					foreach ($method->getParams() as $nodeParameter) {
+						if ($nodeParameter->flags === 0 || !($nodeParameter->var instanceof Variable) || !is_string($nodeParameter->var->name)) {
 							continue;
 						}
 
-						$this->assignedProperties[$key][$parameter->var->name] = $parameter->var->name;
+						$this->assignedProperties[$key][$nodeParameter->var->name] = $nodeParameter->var->name;
 					}
 					foreach ($method->getStmts() ?? [] as $statement) {
 						if (!$statement instanceof Expression || !$statement->expr instanceof Assign) {
