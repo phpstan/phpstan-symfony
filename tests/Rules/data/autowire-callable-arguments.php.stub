@@ -1,0 +1,79 @@
+<?php declare(strict_types = 1);
+
+namespace AutowireCallableArguments;
+
+use Closure;
+use Symfony\Component\DependencyInjection\Attribute\AutowireCallable;
+
+class Formatter
+{
+	public function format(string $value): string
+	{
+		return $value;
+	}
+}
+
+class Consumer
+{
+	public function __construct(
+		#[AutowireCallable(service: Formatter::class, method: 'format')]
+		Closure $format
+	)
+	{
+	}
+}
+
+new Consumer(static fn (int $value): int => $value);
+new Consumer(format: static fn (int $value): int => $value);
+new Consumer(static fn (string $value): string => $value);
+new Consumer((new Formatter())->format(...));
+
+class MutableConsumer
+{
+	public function __construct(
+		#[AutowireCallable(service: Formatter::class, method: 'format')]
+		private Closure $format
+	)
+	{
+	}
+
+	public function change(): void
+	{
+		$this->format = static fn (int $value): int => $value;
+	}
+}
+
+interface Converter
+{
+	public function convert(string $value): string;
+}
+
+class InterfaceConsumer
+{
+	public function __construct(
+		#[AutowireCallable(service: Formatter::class, method: 'format')]
+		private Converter $format
+	)
+	{
+	}
+
+	public function replace(Converter $format): void
+	{
+		$this->format = $format;
+	}
+}
+
+class NullableConsumer
+{
+	public function __construct(
+		#[AutowireCallable(service: Formatter::class, method: 'format')]
+		private ?Closure $format = null
+	)
+	{
+	}
+
+	public function clear(): void
+	{
+		$this->format = null;
+	}
+}

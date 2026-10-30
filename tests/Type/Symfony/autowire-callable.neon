@@ -1,0 +1,8 @@
+includes:
+	- ../../../extension.neon
+
+parameters:
+	fileExtensions: [php, stub]
+	scanFiles:
+		- data/autowire-callable.php.stub
+		- data/autowire-method-of.php.stub
