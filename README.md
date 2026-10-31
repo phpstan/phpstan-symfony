@@ -9,6 +9,7 @@
 This extension provides following features:
 
 * Provides correct return type for `ContainerInterface::get()` and `::has()` methods.
+* Infers locator service types from explicit `#[AutowireLocator]` maps and `SubscribedService` declarations, and checks unknown keys.
 * Provides correct return type for `Controller::get()` and `::has()` methods.
 * Provides correct return type for `AbstractController::get()` and `::has()` methods.
 * Provides correct return type for `ContainerInterface::getParameter()` and `::hasParameter()` methods.
