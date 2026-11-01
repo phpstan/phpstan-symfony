@@ -7,6 +7,13 @@ on:
     tags:
       - '*'
 
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
 jobs:
   deploy:
     name: "Deploy"
@@ -20,6 +27,8 @@ jobs:
 
       - name: "Checkout"
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Generate changelog
         id: changelog
@@ -27,7 +36,7 @@ jobs:
         with:
           myToken: ${{ secrets.PHPSTAN_BOT_TOKEN }}
 
-      - name: "Create release"
+      - name: "Create release" # zizmor: ignore[superfluous-actions]
         uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3.0.3
         with:
           token: ${{ secrets.PHPSTAN_BOT_TOKEN }}

@@ -6,8 +6,15 @@ on:
   release:
     types: [published]
 
+concurrency:
+  group: toot-${{ github.event.release.tag_name }}
+  cancel-in-progress: true
+
+permissions: {}
+
 jobs:
   toot:
+    name: "Toot release"
     runs-on: ubuntu-latest
     steps:
       - name: Harden the runner (Audit all outbound calls)
