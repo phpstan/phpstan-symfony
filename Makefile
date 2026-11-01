@@ -7,7 +7,7 @@ tests:
 
 .PHONY: lint
 lint:
-	php vendor/bin/parallel-lint --colors \
+	php vendor/bin/parallel-lint --colors -e php,php3,php4,php5,phtml,phpt,fixed \
 		src tests
 
 .PHONY: cs-install
