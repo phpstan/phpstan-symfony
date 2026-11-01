@@ -1,0 +1,4 @@
+skip:
+  # Every third-party action is pinned to a full commit SHA, which is what protects against
+  # a compromised upstream; whether the publisher is a "verified creator" adds nothing on top.
+  - rule: github_action_from_unverified_creator_used

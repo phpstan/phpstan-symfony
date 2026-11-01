@@ -15,6 +15,13 @@ on:
           - patch
           - minor
 
+concurrency:
+  group: create-tag
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
 jobs:
   create-tag:
     name: "Create tag"
@@ -25,7 +32,8 @@ jobs:
         with:
           egress-policy: audit
 
-      - name: "Checkout"
+      # Credentials must stay persisted: rickstaa/action-create-tag pushes the tag with them
+      - name: "Checkout" # zizmor: ignore[artipacked]
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
