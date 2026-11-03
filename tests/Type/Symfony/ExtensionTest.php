@@ -25,6 +25,7 @@ class ExtensionTest extends TypeInferenceTestCase
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/traceable_message_bus.php');
 
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/header_bag_get.php');
+		yield from $this->gatherAssertTypes(__DIR__ . '/data/parameter_bag.php');
 		yield from $this->gatherAssertTypes(__DIR__ . '/data/response_header_bag_get_cookies.php');
 
 		if (class_exists('Symfony\Component\HttpFoundation\InputBag')) {

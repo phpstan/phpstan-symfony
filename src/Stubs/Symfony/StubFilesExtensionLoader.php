@@ -68,13 +68,17 @@ class StubFilesExtensionLoader implements StubFilesExtension
 			$files[] = $stubsDir . '/Symfony/Component/HttpFoundation/Cookie.stub';
 		}
 
-		if ($this->isInstalledVersionBelow('symfony/http-foundation', '7.4.0.0')) {
+		// keys() returns int keys for numeric parameter names until symfony/http-foundation 8.2 casts them to string
+		if ($this->isInstalledVersionBelow('symfony/http-foundation', '8.2.0.0')) {
 			$files[] = $stubsDir . '/Symfony/Component/HttpFoundation/ParameterBag.stub';
+		}
 
-			if (!$this->isInstalledVersionBelow('symfony/http-foundation', '5.1.0.0')) {
-				$files[] = $stubsDir . '/Symfony/Component/HttpFoundation/InputBag.stub';
-				$files[] = $stubsDir . '/Symfony/Component/HttpFoundation/Request.stub';
-			}
+		if (
+			$this->isInstalledVersionBelow('symfony/http-foundation', '7.4.0.0')
+			&& !$this->isInstalledVersionBelow('symfony/http-foundation', '5.1.0.0')
+		) {
+			$files[] = $stubsDir . '/Symfony/Component/HttpFoundation/InputBag.stub';
+			$files[] = $stubsDir . '/Symfony/Component/HttpFoundation/Request.stub';
 		}
 
 		if ($this->isInstalledVersionBelow('symfony/messenger', '6.1.0.0')) {
