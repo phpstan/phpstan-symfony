@@ -34,8 +34,8 @@ final class RequestDynamicReturnTypeExtension implements DynamicMethodReturnType
 		}
 
 		$argType = $scope->getType($methodCall->getArgs()[0]->value);
-		$isTrueType = $firstArgType->isTrue();
-		$isFalseType = $firstArgType->isFalse();
+		$isTrueType = $argType->isTrue();
+		$isFalseType = $argType->isFalse();
 		$compareTypes = $isTrueType->compareTo($isFalseType);
 		if ($compareTypes === $isTrueType) {
 			return new ResourceType();
