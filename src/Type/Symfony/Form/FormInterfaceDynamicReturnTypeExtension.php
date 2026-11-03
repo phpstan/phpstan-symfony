@@ -5,7 +5,6 @@ namespace PHPStan\Type\Symfony\Form;
 use PhpParser\Node\Expr\MethodCall;
 use PHPStan\Analyser\Scope;
 use PHPStan\Reflection\MethodReflection;
-use PHPStan\Type\Constant\ConstantBooleanType;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\Generic\GenericObjectType;
 use PHPStan\Type\ObjectType;
@@ -41,10 +40,10 @@ final class FormInterfaceDynamicReturnTypeExtension implements DynamicMethodRetu
 		$firstArgType = $scope->getType($methodCall->getArgs()[0]->value);
 		$secondArgType = $scope->getType($methodCall->getArgs()[1]->value);
 
-		$firstIsTrueType = (new ConstantBooleanType(true))->isSuperTypeOf($firstArgType)->result;
-		$firstIsFalseType = (new ConstantBooleanType(false))->isSuperTypeOf($firstArgType)->result;
-		$secondIsTrueType = (new ConstantBooleanType(true))->isSuperTypeOf($secondArgType)->result;
-		$secondIsFalseType = (new ConstantBooleanType(false))->isSuperTypeOf($secondArgType)->result;
+		$firstIsTrueType = $firstArgType->isTrue();
+		$firstIsFalseType = $firstArgType->isFalse();
+		$secondIsTrueType = $secondArgType->isTrue();
+		$secondIsFalseType = $secondArgType->isFalse();
 
 		$firstCompareType = $firstIsTrueType->compareTo($firstIsFalseType);
 		$secondCompareType = $secondIsTrueType->compareTo($secondIsFalseType);
