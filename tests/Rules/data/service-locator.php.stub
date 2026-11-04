@@ -1,0 +1,25 @@
+<?php declare(strict_types = 1);
+
+namespace ServiceLocatorRules;
+
+use Psr\Container\ContainerInterface;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
+
+interface Mailer {}
+
+class Consumer
+{
+	public function __construct(
+		#[AutowireLocator(['mail' => Mailer::class, 'optional' => '?' . Mailer::class])]
+		private ContainerInterface $services
+	)
+	{
+	}
+
+	public function run(): void
+	{
+		$this->services->get('mail');
+		$this->services->get('missing');
+		$this->services->get('optional');
+	}
+}

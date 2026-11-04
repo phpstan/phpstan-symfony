@@ -11,8 +11,10 @@ use PHPStan\Symfony\ParameterMap;
 use PHPStan\Symfony\ServiceDefinition;
 use PHPStan\Symfony\ServiceMap;
 use PHPStan\Symfony\ServiceResultCacheValueExtension;
+use PHPStan\Type\BooleanType;
 use PHPStan\Type\Constant\ConstantBooleanType;
 use PHPStan\Type\DynamicMethodReturnTypeExtension;
+use PHPStan\Type\MixedType;
 use PHPStan\Type\ObjectType;
 use PHPStan\Type\Type;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
@@ -32,6 +34,8 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 
 	private ParameterMap $parameterMap;
 
+	private ?AutowireLocatorTypeExtension $locatorTypeExtension;
+
 	private ?ParameterBag $parameterBag = null;
 
 	/**
@@ -41,13 +45,15 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 		string $className,
 		bool $constantHassers,
 		ServiceMap $symfonyServiceMap,
-		ParameterMap $symfonyParameterMap
+		ParameterMap $symfonyParameterMap,
+		?AutowireLocatorTypeExtension $locatorTypeExtension = null
 	)
 	{
 		$this->className = $className;
 		$this->constantHassers = $constantHassers;
 		$this->serviceMap = $symfonyServiceMap;
 		$this->parameterMap = $symfonyParameterMap;
+		$this->locatorTypeExtension = $locatorTypeExtension;
 	}
 
 	public function getClass(): string
@@ -84,6 +90,12 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 	{
 		if (!isset($methodCall->getArgs()[0])) {
 			return null;
+		}
+
+		$services = $this->locatorTypeExtension !== null ? $this->locatorTypeExtension->getServices($methodCall->var, $scope) : null;
+		if ($services !== null) {
+			$key = $scope->getType($methodCall->getArgs()[0]->value);
+			return $services->hasOffsetValueType($key)->no() ? new MixedType() : $services->getOffsetValueType($key);
 		}
 
 		$parameterBag = $this->tryGetParameterBag();
@@ -137,6 +149,12 @@ final class ServiceDynamicReturnTypeExtension implements DynamicMethodReturnType
 	{
 		if (!isset($methodCall->getArgs()[0]) || !$this->constantHassers) {
 			return null;
+		}
+
+		$services = $this->locatorTypeExtension !== null ? $this->locatorTypeExtension->getServices($methodCall->var, $scope) : null;
+		if ($services !== null) {
+			$has = $services->hasOffsetValueType($scope->getType($methodCall->getArgs()[0]->value));
+			return $has->maybe() ? new BooleanType() : new ConstantBooleanType($has->yes());
 		}
 
 		$serviceId = $this->serviceMap::getServiceIdFromNode($methodCall->getArgs()[0]->value, $scope);

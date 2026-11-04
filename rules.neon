@@ -1,4 +1,5 @@
 rules:
+	- PHPStan\Rules\Symfony\ServiceLocatorServiceRule
 	- PHPStan\Rules\Symfony\ContainerInterfacePrivateServiceRule
 	- PHPStan\Rules\Symfony\ContainerInterfaceUnknownServiceRule
 	- PHPStan\Rules\Symfony\UndefinedArgumentRule

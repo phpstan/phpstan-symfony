@@ -11,6 +11,7 @@ parameters:
 		messenger:
 			handleTraitWrappers: []
 	stubFiles:
+		- stubs/Psr/Container/ContainerInterface.stub
 		- stubs/Symfony/Bundle/FrameworkBundle/Controller/AbstractController.stub
 		- stubs/Symfony/Component/Form/AbstractType.stub
 		- stubs/Symfony/Component/Form/FormBuilderInterface.stub
@@ -35,6 +36,14 @@ parametersSchema:
 	])
 
 services:
+	-
+		class: PHPStan\Type\Symfony\ServiceLocatorMapResolver
+		arguments:
+			parser: @defaultAnalysisParser
+	-
+		class: PHPStan\Type\Symfony\AutowireLocatorTypeExtension
+		tags: [phpstan.broker.expressionTypeResolverExtension]
+
 	# console resolver
 	-
 		factory: PHPStan\Symfony\ConsoleApplicationResolver

@@ -1,0 +1,63 @@
+<?php declare(strict_types = 1);
+
+namespace SubscribedLocatorTypes;
+
+use Psr\Container\ContainerInterface;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
+use Symfony\Contracts\Service\ServiceSubscriberInterface;
+use function PHPStan\Testing\assertType;
+
+interface Mailer {}
+interface Logger {}
+interface Counter {}
+
+class Consumer
+{
+	public function __construct(
+		#[AutowireLocator([
+			'ignored' => new SubscribedService(key: 'mail', type: Mailer::class),
+			new SubscribedService(type: Logger::class),
+			new SubscribedService(key: 'optional', type: Logger::class, nullable: true),
+			new SubscribedService(key: 'both', type: Logger::class . '&' . Counter::class),
+			new SubscribedService(key: 'either', type: Logger::class . '|' . Mailer::class),
+		])]
+		private ContainerInterface $services
+	)
+	{
+	}
+
+	public function run(): void
+	{
+		assertType('SubscribedLocatorTypes\Mailer', $this->services->get('mail'));
+		assertType('SubscribedLocatorTypes\Logger', $this->services->get(Logger::class));
+		assertType('SubscribedLocatorTypes\Logger', $this->services->get('optional'));
+		assertType('bool', $this->services->has('optional'));
+		assertType('false', $this->services->has('ignored'));
+		assertType('SubscribedLocatorTypes\Counter&SubscribedLocatorTypes\Logger', $this->services->get('both'));
+		assertType('SubscribedLocatorTypes\Logger|SubscribedLocatorTypes\Mailer', $this->services->get('either'));
+	}
+}
+
+class Subscriber implements ServiceSubscriberInterface
+{
+	public function __construct(private ContainerInterface $services)
+	{
+		assertType('SubscribedLocatorTypes\Mailer', $services->get('mail'));
+	}
+
+	public static function getSubscribedServices(): array
+	{
+		return [
+			new SubscribedService(key: 'mail', type: Mailer::class),
+			'optional' => new SubscribedService(type: Logger::class, nullable: true),
+		];
+	}
+
+	public function run(): void
+	{
+		assertType('SubscribedLocatorTypes\Mailer', $this->services->get('mail'));
+		assertType('SubscribedLocatorTypes\Logger', $this->services->get('optional'));
+		assertType('bool', $this->services->has('optional'));
+	}
+}

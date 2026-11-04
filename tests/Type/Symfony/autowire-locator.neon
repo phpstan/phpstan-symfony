@@ -1,0 +1,8 @@
+includes:
+	- ../../../extension.neon
+
+parameters:
+	fileExtensions: [php, stub]
+	scanFiles:
+		- data/autowire-locator.php.stub
+		- data/subscribed-service-locator.php.stub

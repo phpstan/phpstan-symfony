@@ -1,0 +1,149 @@
+<?php declare(strict_types = 1);
+
+namespace AutowireLocatorTypes;
+
+use Psr\Container\ContainerInterface;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Contracts\Service\Attribute\SubscribedService;
+use Symfony\Contracts\Service\ServiceSubscriberInterface;
+use Symfony\Contracts\Service\ServiceSubscriberTrait;
+use function PHPStan\Testing\assertType;
+
+interface Mailer
+{
+}
+
+interface Logger
+{
+}
+
+class Consumer
+{
+	private ContainerInterface $copied;
+
+	public function __construct(
+		#[AutowireLocator(['mail' => Mailer::class, Logger::class, 'optional' => '?' . Logger::class])]
+		private ContainerInterface $services,
+		#[AutowireLocator([])]
+		private ContainerInterface $empty,
+		#[AutowireLocator('app.handlers')]
+		private ContainerInterface $tagged,
+		#[AutowireLocator(['invalid' => 'Invalid<'])]
+		private ContainerInterface $invalid
+	)
+	{
+		assertType('AutowireLocatorTypes\Mailer', $services->get('mail'));
+		$copy = $services;
+		assertType('AutowireLocatorTypes\Logger', $copy->get(Logger::class));
+		$this->copied = $services;
+	}
+
+	public function run(bool $choose): void
+	{
+		assertType('AutowireLocatorTypes\Mailer', $this->services->get('mail'));
+		assertType('AutowireLocatorTypes\Mailer', $this->copied->get('mail'));
+		assertType('AutowireLocatorTypes\Logger', $this->services->get('optional'));
+		assertType('true', $this->services->has('mail'));
+		assertType('bool', $this->services->has('optional'));
+		assertType('false', $this->services->has('missing'));
+		assertType('false', $this->empty->has('mail'));
+		assertType('mixed', $this->tagged->get('unknown'));
+		assertType('bool', $this->tagged->has('unknown'));
+		assertType('mixed', $this->invalid->get('invalid'));
+		$key = $choose ? 'mail' : Logger::class;
+		assertType('AutowireLocatorTypes\Logger|AutowireLocatorTypes\Mailer', $this->services->get($key));
+	}
+}
+
+class Subscriber implements ServiceSubscriberInterface
+{
+	use ServiceSubscriberTrait;
+
+	/** @var ContainerInterface */
+	protected $container;
+
+	#[SubscribedService]
+	public function mailer(): Mailer
+	{
+		assertType('AutowireLocatorTypes\Mailer', $this->container->get(__METHOD__));
+		return $this->container->get(__METHOD__);
+	}
+
+	#[SubscribedService('logger')]
+	public function optionalLogger(): ?Logger
+	{
+		assertType('AutowireLocatorTypes\Logger', $this->container->get('logger'));
+		assertType('bool', $this->container->has('logger'));
+		return $this->container->get('logger');
+	}
+}
+
+class ConstantConsumer
+{
+	private const SERVICES = ['mail' => Mailer::class, 'optional' => '?' . Logger::class];
+
+	public function __construct(
+		#[AutowireLocator(self::SERVICES)]
+		private ContainerInterface $services
+	)
+	{
+	}
+
+	public function run(): void
+	{
+		assertType('AutowireLocatorTypes\Mailer', $this->services->get('mail'));
+		assertType('AutowireLocatorTypes\Logger', $this->services->get('optional'));
+		assertType('bool', $this->services->has('optional'));
+	}
+}
+
+class LogService implements Logger {}
+
+class OtherContainer implements ContainerInterface
+{
+	public function get(string $id): Logger { return new LogService(); }
+	public function has(string $id): bool { return true; }
+}
+
+class ReassignedConsumer
+{
+	public function __construct(
+		#[AutowireLocator(['mail' => Mailer::class])]
+		ContainerInterface $services
+	)
+	{
+		$copy = $services;
+		$services = new OtherContainer();
+		assertType('AutowireLocatorTypes\Logger', $services->get('mail'));
+		assertType('AutowireLocatorTypes\Mailer', $copy->get('mail'));
+		$shadow = static function (ContainerInterface $services): void {
+			assertType('mixed', $services->get('mail'));
+		};
+	}
+}
+
+class ExplicitContainerSubscriber implements ServiceSubscriberInterface
+{
+	public function __construct(
+		#[Autowire(service: 'app.global')]
+		private ContainerInterface $container
+	)
+	{
+	}
+
+	public static function getSubscribedServices(): array { return ['mail' => Mailer::class]; }
+
+	public function run(): void
+	{
+		assertType('mixed', $this->container->get('mail'));
+	}
+}
+
+class ChildSubscriber extends Subscriber
+{
+	public function run(): void
+	{
+		assertType('AutowireLocatorTypes\Mailer', $this->container->get(Subscriber::class . '::mailer'));
+	}
+}

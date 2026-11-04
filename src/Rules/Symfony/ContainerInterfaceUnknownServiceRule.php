@@ -12,7 +12,9 @@ use PHPStan\Rules\RuleErrorBuilder;
 use PHPStan\Symfony\ServiceMap;
 use PHPStan\Symfony\ServiceResultCacheValueExtension;
 use PHPStan\Type\ObjectType;
+use PHPStan\Type\Symfony\AutowireLocatorTypeExtension;
 use PHPStan\Type\Symfony\Helper;
+use PHPStan\Type\Symfony\ServiceLocatorTypeHelper;
 use function sprintf;
 
 /**
@@ -25,10 +27,13 @@ final class ContainerInterfaceUnknownServiceRule implements Rule
 
 	private Printer $printer;
 
-	public function __construct(ServiceMap $symfonyServiceMap, Printer $printer)
+	private ?AutowireLocatorTypeExtension $locatorTypeExtension;
+
+	public function __construct(ServiceMap $symfonyServiceMap, Printer $printer, ?AutowireLocatorTypeExtension $locatorTypeExtension = null)
 	{
 		$this->serviceMap = $symfonyServiceMap;
 		$this->printer = $printer;
+		$this->locatorTypeExtension = $locatorTypeExtension;
 	}
 
 	public function getNodeType(): string
@@ -50,6 +55,9 @@ final class ContainerInterfaceUnknownServiceRule implements Rule
 		}
 
 		$argType = $scope->getType($node->var);
+		if (ServiceLocatorTypeHelper::getServices($argType) !== null || ($this->locatorTypeExtension !== null && $this->locatorTypeExtension->getServices($node->var, $scope) !== null)) {
+			return [];
+		}
 		$isContainerBagType = (new ObjectType('Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface'))->isSuperTypeOf($argType);
 		if ($isContainerBagType->yes()) {
 			return [];
