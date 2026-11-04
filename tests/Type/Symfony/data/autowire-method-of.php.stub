@@ -1,0 +1,29 @@
+<?php declare(strict_types = 1);
+
+namespace AutowireMethodOfTypes;
+
+use Closure;
+use Symfony\Component\DependencyInjection\Attribute\AutowireMethodOf;
+use function PHPStan\Testing\assertType;
+
+interface Formatter
+{
+	/** @return non-empty-string */
+	public function format(string $value): string;
+}
+
+class Consumer
+{
+	public function __construct(
+		#[AutowireMethodOf(Formatter::class)]
+		private Closure $format
+	)
+	{
+		assertType('non-empty-string', $format('hello'));
+	}
+
+	public function run(string $value): void
+	{
+		assertType('non-empty-string', ($this->format)($value));
+	}
+}
