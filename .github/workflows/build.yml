@@ -201,3 +201,84 @@ jobs:
 
       - name: "PHPStan"
         run: "make phpstan"
+
+  mutation-testing:
+    name: "Mutation Testing"
+    runs-on: "ubuntu-latest"
+    needs: ["tests", "static-analysis"]
+    if: github.event_name == 'pull_request'
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version:
+          - "8.3"
+          - "8.4"
+          - "8.5"
+        operating-system: [ubuntu-latest]
+
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@dc2769abcc0fcfbadfc1df54081c1608579ef6b2 # v2.22.2
+        with:
+          egress-policy: audit
+
+      - name: "Checkout"
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: "Checkout build-infection"
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          repository: "phpstan/build-infection"
+          path: "build-infection"
+          ref: "1.x"
+
+      # The action comes from the phpstan/build-infection checkout above, which the $/ self-repository syntax cannot load
+      - uses: ./build-infection/.github/actions/setup-php # zizmor: ignore[self-repository]
+        with:
+          php-version: "${{ matrix.php-version }}"
+          php-extensions: mbstring
+
+      - name: "Install dependencies"
+        run: "composer install --no-interaction --no-progress"
+
+      - name: "Install build-infection dependencies"
+        working-directory: "build-infection"
+        run: "composer install --no-interaction --no-progress"
+
+      - name: "Configure infection"
+        run: |
+          php build-infection/bin/infection-config.php \
+          > infection.json5
+          jq . infection.json5
+
+      - name: "Restore result cache"
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ./tmp
+          key: "result-cache-v1-${{ matrix.php-version }}-${{ github.run_id }}"
+          restore-keys: |
+            result-cache-v1-${{ matrix.php-version }}-
+
+      - name: "Run infection"
+        run: |
+          git fetch --depth=1 origin "$GITHUB_BASE_REF"
+          infection \
+            --git-diff-base=origin/"$GITHUB_BASE_REF" \
+            --git-diff-lines \
+            --ignore-msi-with-no-mutations \
+            --min-msi=100 \
+            --min-covered-msi=100 \
+            --log-verbosity=all \
+            --debug \
+            --logger-text=php://stdout
+
+      - name: "Save result cache"
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        if: ${{ !cancelled() }}
+        with:
+          path: ./tmp
+          key: "result-cache-v1-${{ matrix.php-version }}-${{ github.run_id }}"
