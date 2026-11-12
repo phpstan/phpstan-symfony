@@ -215,7 +215,6 @@ jobs:
           - "8.3"
           - "8.4"
           - "8.5"
-        operating-system: [ubuntu-latest]
 
     steps:
       - name: Harden the runner (Audit all outbound calls)
