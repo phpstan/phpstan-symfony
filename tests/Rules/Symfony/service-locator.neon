@@ -1,0 +1,7 @@
+includes:
+	- ../../../extension.neon
+
+parameters:
+	fileExtensions: [php, stub]
+	scanFiles:
+		- ../data/service-locator.php.stub

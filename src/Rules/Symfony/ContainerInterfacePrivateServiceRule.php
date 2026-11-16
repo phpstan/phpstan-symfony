@@ -12,6 +12,8 @@ use PHPStan\Symfony\ServiceMap;
 use PHPStan\Symfony\ServiceResultCacheValueExtension;
 use PHPStan\TrinaryLogic;
 use PHPStan\Type\ObjectType;
+use PHPStan\Type\Symfony\AutowireLocatorTypeExtension;
+use PHPStan\Type\Symfony\ServiceLocatorTypeHelper;
 use PHPStan\Type\Type;
 use function sprintf;
 
@@ -23,9 +25,12 @@ final class ContainerInterfacePrivateServiceRule implements Rule
 
 	private ServiceMap $serviceMap;
 
-	public function __construct(ServiceMap $symfonyServiceMap)
+	private ?AutowireLocatorTypeExtension $locatorTypeExtension;
+
+	public function __construct(ServiceMap $symfonyServiceMap, ?AutowireLocatorTypeExtension $locatorTypeExtension = null)
 	{
 		$this->serviceMap = $symfonyServiceMap;
+		$this->locatorTypeExtension = $locatorTypeExtension;
 	}
 
 	public function getNodeType(): string
@@ -38,6 +43,9 @@ final class ContainerInterfacePrivateServiceRule implements Rule
 	 */
 	public function processNode(Node $node, Scope $scope): array
 	{
+		if (ServiceLocatorTypeHelper::getServices($scope->getType($node->var)) !== null || ($this->locatorTypeExtension !== null && $this->locatorTypeExtension->getServices($node->var, $scope) !== null)) {
+			return [];
+		}
 		if (!$node->name instanceof Node\Identifier) {
 			return [];
 		}

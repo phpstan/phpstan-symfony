@@ -1,0 +1,39 @@
+<?php declare(strict_types = 1);
+
+namespace SubscribedServiceHooks;
+
+use Symfony\Contracts\Service\Attribute\SubscribedService;
+use Symfony\Contracts\Service\ServiceMethodsSubscriberTrait;
+use Symfony\Contracts\Service\ServiceSubscriberInterface;
+use function PHPStan\Testing\assertType;
+
+interface Mailer {}
+interface Logger {}
+
+class Subscriber implements ServiceSubscriberInterface
+{
+	use ServiceMethodsSubscriberTrait;
+
+	#[SubscribedService]
+	public Mailer $mailer {
+		get {
+			assertType('SubscribedServiceHooks\Mailer', $this->container->get(__METHOD__));
+			return $this->container->get(__METHOD__);
+		}
+	}
+
+	#[SubscribedService(key: 'log')]
+	public ?Logger $logger {
+		get {
+			assertType('SubscribedServiceHooks\Logger', $this->container->get('log'));
+			assertType('bool', $this->container->has('log'));
+			return $this->container->get('log');
+		}
+	}
+
+	public function run(): void
+	{
+		assertType('SubscribedServiceHooks\Mailer', $this->container->get(self::class . '::$mailer::get'));
+		assertType('SubscribedServiceHooks\Logger', $this->container->get('log'));
+	}
+}

@@ -1,0 +1,4 @@
+parameters:
+	phpVersion: 80400
+	scanFiles:
+		- data/subscribed-service-hooks.php.stub
