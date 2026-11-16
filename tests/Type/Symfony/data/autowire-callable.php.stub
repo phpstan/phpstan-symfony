@@ -1,0 +1,98 @@
+<?php declare(strict_types = 1);
+
+namespace AutowireCallableTypes;
+
+use Closure;
+use Symfony\Component\DependencyInjection\Attribute\AutowireCallable;
+use Symfony\Component\DependencyInjection\Attribute\AutowireServiceClosure;
+use function PHPStan\Testing\assertType;
+
+interface Formatter
+{
+
+	/** @return non-empty-string */
+	public function format(string $value, int $flags = 0): string;
+
+}
+
+class Helpers
+{
+
+	/**
+	 * @template T
+	 * @param T $value
+	 * @return T
+	 */
+	public function identity($value)
+	{
+		return $value;
+	}
+
+	public function __invoke(int $value): bool
+	{
+		return $value > 0;
+	}
+
+	public static function count(string ...$values): int
+	{
+		return count($values);
+	}
+
+}
+
+class Consumer
+{
+
+	private Closure $copied;
+
+	public function __construct(
+		#[AutowireCallable(service: Formatter::class, method: 'format')]
+		private Closure $format,
+		#[AutowireCallable(service: Helpers::class, method: 'identity')]
+		private Closure $identity,
+		#[AutowireServiceClosure(Helpers::class)]
+		private Closure $helpers,
+		#[AutowireCallable(service: Helpers::class)]
+		private Closure $invoke,
+		#[AutowireCallable(callable: [Helpers::class, 'count'])]
+		private Closure $count,
+		#[AutowireCallable(callable: Helpers::class . '::count')]
+		private Closure $staticString,
+		#[AutowireCallable(callable: 'AutowireCallableTypes\\length')]
+		private Closure $length,
+		#[AutowireCallable(service: Helpers::class)]
+		?Closure $maybe = null
+	)
+	{
+		assertType('non-empty-string', $format('hello'));
+		$copy = $format;
+		assertType('non-empty-string', $copy('hello'));
+		$this->copied = $format;
+		$format = static fn (): int => 1;
+		assertType('1', $format());
+		$shadow = static function (Closure $format): void {
+			assertType('mixed', $format());
+		};
+		if ($maybe !== null) {
+			assertType('bool', $maybe(1));
+		}
+	}
+
+	public function run(string $value): void
+	{
+		assertType('non-empty-string', ($this->format)($value));
+		assertType('non-empty-string', ($this->copied)($value));
+		assertType("'hello'", ($this->identity)('hello'));
+		assertType('AutowireCallableTypes\\Helpers', ($this->helpers)());
+		assertType('bool', ($this->invoke)(1));
+		assertType('int', ($this->count)('hello', 'world'));
+		assertType('int', ($this->staticString)('hello'));
+		assertType('int', ($this->length)($value));
+	}
+
+}
+
+function length(string $value): int
+{
+	return strlen($value);
+}

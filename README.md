@@ -35,6 +35,7 @@ This extension provides following features:
 * Notifies you when you access undefined console command arguments or options.
 * Validates default values of console command arguments and options.
 * Recognizes `@required` annotation and `#[Required]` attribute for autowiring properties and methods.
+* Infers callable signatures from `#[AutowireCallable]`, `#[AutowireMethodOf]`, and `#[AutowireServiceClosure]`. Checks method targets and interface adapters.
 * Optionally correct return types for `InputInterface::getArgument()`, `::getOption()`, `::getOptions()`, `::hasArgument()`, and `::hasOption()`.
 * Optionally provides correct return type for `Command::getHelper()` method.
 

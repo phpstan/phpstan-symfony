@@ -35,6 +35,14 @@ parametersSchema:
 	])
 
 services:
+	-
+		class: PHPStan\Type\Symfony\AutowireCallableTypeResolver
+	-
+		class: PHPStan\Type\Symfony\AutowireCallableTypeExtension
+		arguments:
+			parser: @defaultAnalysisParser
+		tags: [phpstan.broker.expressionTypeResolverExtension, phpstan.ignoreErrorExtension]
+
 	# console resolver
 	-
 		factory: PHPStan\Symfony\ConsoleApplicationResolver

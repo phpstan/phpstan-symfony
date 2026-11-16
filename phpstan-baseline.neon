@@ -1,6 +1,18 @@
 parameters:
 	ignoreErrors:
 		-
+			message: '#^Although PHPStan\\Node\\InClassMethodNode is covered by backward compatibility promise, this instanceof assumption might break because it''s not guaranteed to always stay the same\.$#'
+			identifier: phpstanApi.instanceofAssumption
+			count: 1
+			path: src/Type/Symfony/AutowireCallableTypeExtension.php
+
+		-
+			message: '#^Although PHPStan\\Node\\ClassPropertyNode is covered by backward compatibility promise, this instanceof assumption might break because it''s not guaranteed to always stay the same\.$#'
+			identifier: phpstanApi.instanceofAssumption
+			count: 1
+			path: src/Type/Symfony/AutowireCallableTypeExtension.php
+
+		-
 			message: '#^Call to internal method Symfony\\Component\\Console\\Command\\Command\:\:mergeApplicationDefinition\(\) from outside its root namespace Symfony\.$#'
 			identifier: method.internal
 			count: 1
