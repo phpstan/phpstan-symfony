@@ -8,6 +8,13 @@ namespace Symfony\Component\HttpFoundation;
 class ParameterBag implements \IteratorAggregate
 {
     /**
+     * @return array<mixed>
+     */
+    public function all(?string $key = null): array
+    {
+    }
+
+    /**
      * @return list<array-key>
      */
     public function keys(): array
