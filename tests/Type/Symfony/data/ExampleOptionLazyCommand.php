@@ -42,10 +42,10 @@ final class ExampleOptionLazyCommand extends Command
 
 		assertType('1|string|null', $input->getOption('bb'));
 		assertType('1|string', $input->getOption('cc'));
-		assertType('array<int, 1|string|null>', $input->getOption('dd'));
-		assertType('array<int, 1|string>', $input->getOption('ee'));
+		assertType('array{1}|array<int, string|null>', $input->getOption('dd'));
+		assertType('array{1}|array<int, string>', $input->getOption('ee'));
 
-		assertType('array{a: bool, b: string|null, c: string|null, d: array<int, string|null>, e: array<int, string>, f: bool|null, bb: 1|string|null, cc: 1|string, dd: array<int, 1|string|null>, ee: array<int, 1|string>, help: bool, quiet: bool, verbose: bool, version: bool, ansi: bool|null, no-interaction: bool}', $input->getOptions());
+		assertType('array{a: bool, b: string|null, c: string|null, d: array<int, string|null>, e: array<int, string>, f: bool|null, bb: 1|string|null, cc: 1|string, dd: array{1}|array<int, string|null>, ee: array{1}|array<int, string>, help: bool, quiet: bool, verbose: bool, version: bool, ansi: bool|null, no-interaction: bool}', $input->getOptions());
 	}
 
 }
