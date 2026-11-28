@@ -3,7 +3,8 @@ rules:
     config:
       # Repository-level secrets used by release automation; they are not scoped to deployment environments.
       allow:
-        - PHPSTAN_BOT_TOKEN
+        - PHPSTAN_BOT_CONTENTS_TOKEN
+        - RELEASE_DISPATCH_TOKEN
         - MASTODON_ACCESS_TOKEN
         - TWITTER_CONSUMER_API_KEY
         - TWITTER_CONSUMER_API_SECRET

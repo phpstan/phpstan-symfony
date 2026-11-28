@@ -34,12 +34,12 @@ jobs:
         id: changelog
         uses: metcalfc/changelog-generator@bb7a08e07e326061351dab6ce89c72f13797043c # v4.9.1
         with:
-          myToken: ${{ secrets.PHPSTAN_BOT_TOKEN }}
+          myToken: ${{ github.token }}
 
       - name: "Create release" # zizmor: ignore[superfluous-actions]
         uses: softprops/action-gh-release@8a0cd651e5b2365bd640854a3fa5dfc70e4875f3 # v3.0.4
         with:
-          token: ${{ secrets.PHPSTAN_BOT_TOKEN }}
+          token: ${{ secrets.PHPSTAN_BOT_CONTENTS_TOKEN }}
           tag_name: ${{ github.ref_name }}
           name: ${{ github.ref_name }}
           body: ${{ steps.changelog.outputs.changelog }}
